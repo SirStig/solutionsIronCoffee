@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <!-- Mobile Optimization -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="theme-color" content="#0A192F" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F1F5F9" media="(prefers-color-scheme: light)" />
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="IronCoffee LLC - Professional Web Development & Mobile App Solutions">
+    <meta name="description" content="Expert web development, mobile app development, and business systems by IronCoffee LLC. Custom websites, React Native apps, AWS cloud solutions, and technology consulting services.">
+    <meta name="keywords" content="web development, mobile app development, React development, React Native, AWS cloud services, custom websites, business systems, technology consulting, FastAPI, PostgreSQL, TypeScript, professional web design, SEO optimization, e-commerce development, mobile apps, iPhone apps, Android apps, responsive design, cloud infrastructure, database design, API development, software consulting">
+    <meta name="author" content="IronCoffee LLC">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="bingbot" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="distribution" content="global">
+    <meta name="rating" content="general">
+    <meta name="copyright" content="IronCoffee LLC">
+    
+    <!-- Geo Location -->
+    <meta name="geo.region" content="US">
+    <meta name="geo.placename" content="United States">
+    <meta name="ICBM" content="39.8283, -98.5795">
+    
+    <!-- Business Information -->
+    <meta name="business:contact_data:email" content="Joshua@ironcoffee.com">
+    <meta name="business:contact_data:website" content="https://solutions.ironcoffee.com">
+    <meta name="business:contact_data:company_name" content="IronCoffee LLC">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- PWA support -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="%PUBLIC_URL%/logo152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/logo180.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="%PUBLIC_URL%/logo167.png" />
+    
+    <!-- Apple Splash Screen Images -->
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/splash/apple-splash-2048-2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" />
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/splash/apple-splash-1668-2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" />
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/splash/apple-splash-1536-2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" />
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/splash/apple-splash-1125-2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/splash/apple-splash-828-1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" />
+    
+    <!-- Safari Pinned Tab Icon -->
+    <link rel="mask-icon" href="%PUBLIC_URL%/safari-pinned-tab.svg" color="#0A192F" />
+    
+    <!-- Microsoft Tile -->
+    <meta name="msapplication-TileColor" content="#0A192F" />
+    <meta name="msapplication-TileImage" content="%PUBLIC_URL%/logo144.png" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://solutions.ironcoffee.com" />
+    <meta property="og:site_name" content="IronCoffee LLC" />
+    <meta property="og:title" content="IronCoffee LLC - Professional Web Development & Mobile App Solutions" />
+    <meta property="og:description" content="Expert web development, mobile app development, and business systems by IronCoffee LLC. Custom websites, React Native apps, AWS cloud solutions, and technology consulting services." />
+    <meta property="og:image" content="https://solutions.ironcoffee.com/og-image.png" />
+    <meta property="og:image:secure_url" content="https://solutions.ironcoffee.com/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="IronCoffee LLC - Professional Web Development Services" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="article:author" content="IronCoffee LLC" />
+    <meta property="business:contact_data:email" content="Joshua@ironcoffee.com" />
+    <meta property="business:contact_data:website" content="https://solutions.ironcoffee.com" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@ironcoffee" />
+    <meta name="twitter:creator" content="@ironcoffee" />
+    <meta name="twitter:url" content="https://solutions.ironcoffee.com" />
+    <meta name="twitter:title" content="IronCoffee LLC - Professional Web Development & Mobile App Solutions" />
+    <meta name="twitter:description" content="Expert web development, mobile app development, and business systems by IronCoffee LLC. Custom websites, React Native apps, AWS cloud solutions, and technology consulting services." />
+    <meta name="twitter:image" content="https://solutions.ironcoffee.com/og-image.png" />
+    <meta name="twitter:image:alt" content="IronCoffee LLC - Professional Web Development Services" />
+    
+    <!-- LinkedIn -->
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="627" />
+    
+    <!-- Pinterest -->
+    <meta name="pinterest-rich-pin" content="true" />
+    <meta property="og:see_also" content="https://solutions.ironcoffee.com/portfolio" />
+    <meta property="og:see_also" content="https://solutions.ironcoffee.com/services" />
+    <meta property="og:see_also" content="https://solutions.ironcoffee.com/about" />
+    <meta property="og:see_also" content="https://solutions.ironcoffee.com/contact" />
+    
+    <title>IronCoffee LLC - Professional Web Development & Mobile App Solutions</title>
+    
+    <!-- Additional SEO Tags -->
+    <meta name="application-name" content="IronCoffee LLC">
+    <meta name="apple-mobile-web-app-title" content="IronCoffee LLC">
+    <meta name="msapplication-tooltip" content="Professional Web Development Services">
+    <meta name="msapplication-starturl" content="https://solutions.ironcoffee.com">
+    <meta name="msapplication-navbutton-color" content="#0A192F">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://solutions.ironcoffee.com" />
+    
+    <!-- Alternate Languages -->
+    <link rel="alternate" hreflang="en-us" href="https://solutions.ironcoffee.com" />
+    <link rel="alternate" hreflang="en" href="https://solutions.ironcoffee.com" />
+    <link rel="alternate" hreflang="x-default" href="https://solutions.ironcoffee.com" />
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="//solutions.ironcoffee.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="%PUBLIC_URL%/logo192.png" as="image" />
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://solutions.ironcoffee.com/#organization",
+          "name": "IronCoffee LLC",
+          "url": "https://solutions.ironcoffee.com",
+          "email": "Joshua@ironcoffee.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://solutions.ironcoffee.com/logo192.png",
+            "width": 192,
+            "height": 192
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "Joshua@ironcoffee.com",
+            "contactType": "customer service",
+            "availableLanguage": "English"
+          },
+          "sameAs": [
+            "https://solutions.ironcoffee.com"
+          ],
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "US"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://solutions.ironcoffee.com/#website",
+          "url": "https://solutions.ironcoffee.com",
+          "name": "IronCoffee LLC - Professional Web Development Services",
+          "description": "Expert web development, mobile app development, and business systems by IronCoffee LLC. Custom websites, React Native apps, AWS cloud solutions, and technology consulting services.",
+          "publisher": {
+            "@id": "https://solutions.ironcoffee.com/#organization"
+          },
+          "inLanguage": "en-US",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://solutions.ironcoffee.com/search?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://solutions.ironcoffee.com/#webpage",
+          "url": "https://solutions.ironcoffee.com",
+          "name": "IronCoffee LLC - Professional Web Development & Mobile App Solutions",
+          "isPartOf": {
+            "@id": "https://solutions.ironcoffee.com/#website"
+          },
+          "about": {
+            "@id": "https://solutions.ironcoffee.com/#organization"
+          },
+          "description": "Expert web development, mobile app development, and business systems by IronCoffee LLC. Custom websites, React Native apps, AWS cloud solutions, and technology consulting services.",
+          "inLanguage": "en-US"
+        },
+        {
+          "@type": "LocalBusiness",
+          "@id": "https://solutions.ironcoffee.com/#business",
+          "name": "IronCoffee LLC",
+          "image": "https://solutions.ironcoffee.com/og-image.png",
+          "url": "https://solutions.ironcoffee.com",
+          "email": "Joshua@ironcoffee.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "US"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "Joshua@ironcoffee.com",
+            "contactType": "customer service"
+          },
+          "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "09:00",
+            "closes": "17:00"
+          },
+          "priceRange": "$$",
+          "currenciesAccepted": "USD",
+          "paymentAccepted": "Cash, Credit Card, Bank Transfer"
+        },
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://solutions.ironcoffee.com/#service",
+          "name": "Professional Web Development Services",
+          "provider": {
+            "@id": "https://solutions.ironcoffee.com/#organization"
+          },
+          "serviceType": "Web Development",
+          "description": "Custom web development, mobile app development, and business systems development services.",
+          "areaServed": "Worldwide",
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Web Development Services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Website Development",
+                  "description": "Professional websites that help your business grow online"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Mobile App Development",
+                  "description": "Apps for your business that work on both iPhone and Android"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Business Systems",
+                  "description": "Behind-the-scenes systems that power your digital operations"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Technology Consulting",
+                  "description": "Strategic guidance for your technology decisions"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Inline critical CSS -->
+    <style>
+      :root {
+        --safe-area-inset-top: env(safe-area-inset-top);
+        --safe-area-inset-bottom: env(safe-area-inset-bottom);
+      }
+      
+      body {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        -webkit-touch-callout: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      #root {
+        height: 100vh;
+        height: calc(100vh - var(--safe-area-inset-top) - var(--safe-area-inset-bottom));
+        padding: var(--safe-area-inset-top) 0 var(--safe-area-inset-bottom);
+      }
+      
+      .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #64FFDA;
+      }
+
+      @media (max-width: 768px) {
+        html {
+          font-size: 14px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        html {
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>

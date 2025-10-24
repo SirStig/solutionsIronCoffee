@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  
+  <!-- Homepage - Primary Landing Page -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/</loc>
+    <lastmod>2025-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/og-image.png</image:loc>
+      <image:title>IronCoffee LLC - Professional Web Development Services</image:title>
+      <image:caption>Expert web development, mobile app development, and business systems by IronCoffee LLC</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/logo192.png</image:loc>
+      <image:title>IronCoffee LLC Logo</image:title>
+    </image:image>
+    <video:video>
+      <video:thumbnail_loc>https://solutions.ironcoffee.com/images/fallbacks/hero.png</video:thumbnail_loc>
+      <video:title>IronCoffee LLC - App Overview Montage</video:title>
+      <video:description>Overview of professional web development and mobile app development services</video:description>
+      <video:content_loc>https://solutions.ironcoffee.com/videos/app-overview-montage.mp4</video:content_loc>
+      <video:duration>30</video:duration>
+    </video:video>
+  </url>
+  
+  <!-- About Page - Company Information -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/about</loc>
+    <lastmod>2025-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/profile.JPEG</image:loc>
+      <image:title>Joshua - IronCoffee LLC Founder</image:title>
+      <image:caption>Professional web developer and technology consultant</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Portfolio Page - Showcase Work -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/portfolio</loc>
+    <lastmod>2025-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/financial.png</image:loc>
+      <image:title>Financial Management Application</image:title>
+      <image:caption>Custom financial management web application</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/gamedev-mod.png</image:loc>
+      <image:title>Game Development Project</image:title>
+      <image:caption>Game modification and development project</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/rlr.png</image:loc>
+      <image:title>RLR Project</image:title>
+      <image:caption>Custom web application development project</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/yoked.png</image:loc>
+      <image:title>Yoked Fitness Application</image:title>
+      <image:caption>Mobile fitness application development</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/yokedcache.png</image:loc>
+      <image:title>Yoked Cache System</image:title>
+      <image:caption>Backend caching system for fitness application</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Services Page - Business Offerings -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/services</loc>
+    <lastmod>2025-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/services/web-dev.jpg</image:loc>
+      <image:title>Web Development Services</image:title>
+      <image:caption>Professional web development and mobile app development services</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Contact Page - Business Contact -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/contact</loc>
+    <lastmod>2025-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Individual Service Pages (if they exist as separate routes) -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/services/web-development</loc>
+    <lastmod>2025-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://solutions.ironcoffee.com/services/mobile-app-development</loc>
+    <lastmod>2025-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://solutions.ironcoffee.com/services/business-systems</loc>
+    <lastmod>2025-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://solutions.ironcoffee.com/services/technology-consulting</loc>
+    <lastmod>2025-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Important Static Resources -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/manifest.json</loc>
+    <lastmod>2025-09-19</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+</urlset> 

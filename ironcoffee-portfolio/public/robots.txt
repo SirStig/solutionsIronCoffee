@@ -1,0 +1,78 @@
+# https://www.robotstxt.org/robotstxt.html
+# Robots.txt for IronCoffee LLC - Professional Web Development Services
+# Website: https://solutions.ironcoffee.com
+# Contact: Joshua@ironcoffee.com
+
+# Allow all major search engine crawlers
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Allow all other crawlers
+User-agent: *
+Allow: /
+Crawl-delay: 2
+
+# Explicitly allow important directories
+Allow: /images/
+Allow: /static/
+Allow: /videos/
+Allow: /manifest.json
+Allow: /favicon.ico
+Allow: /logo*.png
+Allow: /og-image.png
+
+# Disallow unnecessary files and directories
+Disallow: /build/
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /*.map$
+Disallow: /static/js/*.LICENSE.txt
+Disallow: /scripts/
+Disallow: /.git/
+Disallow: /.env
+Disallow: /package*.json
+Disallow: /tsconfig.json
+Disallow: /README.md
+
+# Sitemap locations
+Sitemap: https://solutions.ironcoffee.com/sitemap.xml
+Sitemap: https://solutions.ironcoffee.com/sitemap-images.xml
+
+# Host preference (helps with canonical URLs)
+Host: https://solutions.ironcoffee.com

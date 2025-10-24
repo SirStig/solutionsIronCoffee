@@ -1,0 +1,61 @@
+/*
+  # Security Headers
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; font-src 'self' https: data:; connect-src 'self' https: wss:; media-src 'self' https: data: blob:;
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  
+  # SEO and Performance Headers
+  Cache-Control: public, max-age=31536000, immutable
+  X-Robots-Tag: index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1
+  X-DNS-Prefetch-Control: on
+  
+  # Business Information Headers
+  X-Business-Name: IronCoffee LLC
+  X-Business-Email: Joshua@ironcoffee.com
+  X-Business-Website: https://solutions.ironcoffee.com
+  X-Business-Services: Web Development, Mobile App Development, Business Systems, Technology Consulting
+
+# Specific file types with optimized caching
+/static/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/static/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+/videos/*
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+# Manifest and service worker
+/manifest.json
+  Cache-Control: public, max-age=86400
+  Content-Type: application/manifest+json
+
+# Sitemaps
+/sitemap*.xml
+  Cache-Control: public, max-age=86400
+  Content-Type: application/xml
+  X-Robots-Tag: noindex
+
+# Robots.txt
+/robots.txt
+  Cache-Control: public, max-age=86400
+  Content-Type: text/plain
+  X-Robots-Tag: noindex
+
+# Favicon and icons
+/favicon.ico
+  Cache-Control: public, max-age=31536000
+  Content-Type: image/x-icon
+
+/logo*.png
+  Cache-Control: public, max-age=31536000
+  Content-Type: image/png 

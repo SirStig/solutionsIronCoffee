@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Homepage Images -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/</loc>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/og-image.png</image:loc>
+      <image:title>IronCoffee LLC - Professional Web Development Services</image:title>
+      <image:caption>Expert web development, mobile app development, and business systems by IronCoffee LLC. Custom websites, React Native apps, AWS cloud solutions.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/logo192.png</image:loc>
+      <image:title>IronCoffee LLC Logo</image:title>
+      <image:caption>Professional web development company logo</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/logo512.png</image:loc>
+      <image:title>IronCoffee LLC High Resolution Logo</image:title>
+      <image:caption>High resolution logo for IronCoffee LLC web development services</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/fallbacks/hero.png</image:loc>
+      <image:title>Hero Image - Web Development Services</image:title>
+      <image:caption>Professional web development and mobile app development hero image</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- About Page Images -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/about</loc>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/profile.JPEG</image:loc>
+      <image:title>Joshua - IronCoffee LLC Founder and Lead Developer</image:title>
+      <image:caption>Professional web developer, mobile app developer, and technology consultant specializing in React, React Native, and AWS cloud solutions</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Portfolio Page Images -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/portfolio</loc>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/financial.png</image:loc>
+      <image:title>Financial Management Web Application</image:title>
+      <image:caption>Custom financial management web application built with React, TypeScript, and FastAPI backend</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/gamedev-mod.png</image:loc>
+      <image:title>Game Development and Modification Project</image:title>
+      <image:caption>Custom game development and modification project showcasing programming expertise</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/rlr.png</image:loc>
+      <image:title>RLR Custom Web Application</image:title>
+      <image:caption>Custom web application development project with modern frontend and backend technologies</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/yoked.png</image:loc>
+      <image:title>Yoked Fitness Mobile Application</image:title>
+      <image:caption>React Native mobile fitness application for iOS and Android with AWS backend integration</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/yokedcache.png</image:loc>
+      <image:title>Yoked Cache Backend System</image:title>
+      <image:caption>High-performance backend caching system for mobile fitness application using AWS services</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Services Page Images -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/services</loc>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/services/web-dev.jpg</image:loc>
+      <image:title>Professional Web Development Services</image:title>
+      <image:caption>Comprehensive web development services including React development, mobile apps, business systems, and technology consulting</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- App Icons and PWA Images -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/manifest.json</loc>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/logo144.png</image:loc>
+      <image:title>IronCoffee LLC App Icon 144px</image:title>
+      <image:caption>Progressive Web App icon for IronCoffee LLC</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/logo152.png</image:loc>
+      <image:title>IronCoffee LLC App Icon 152px</image:title>
+      <image:caption>Apple Touch Icon for IronCoffee LLC web development services</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/logo167.png</image:loc>
+      <image:title>IronCoffee LLC App Icon 167px</image:title>
+      <image:caption>Apple Touch Icon for iPad - IronCoffee LLC</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/logo180.png</image:loc>
+      <image:title>IronCoffee LLC App Icon 180px</image:title>
+      <image:caption>Apple Touch Icon for iPhone - IronCoffee LLC</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/logo384.png</image:loc>
+      <image:title>IronCoffee LLC App Icon 384px</image:title>
+      <image:caption>Large Progressive Web App icon for IronCoffee LLC</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/favicon.ico</image:loc>
+      <image:title>IronCoffee LLC Favicon</image:title>
+      <image:caption>Website favicon for IronCoffee LLC professional web development services</image:caption>
+    </image:image>
+  </url>
+  
+</urlset>

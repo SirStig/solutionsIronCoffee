@@ -1,0 +1,90 @@
+{
+  "short_name": "IronCoffee LLC",
+  "name": "IronCoffee LLC - Professional Web Development Services",
+  "description": "Expert web development, mobile app development, and business systems by IronCoffee LLC. Custom websites, React Native apps, AWS cloud solutions, and technology consulting services.",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo384.png",
+      "type": "image/png",
+      "sizes": "384x384",
+      "purpose": "any"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "https://solutions.ironcoffee.com",
+  "scope": "https://solutions.ironcoffee.com",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "theme_color": "#0A192F",
+  "background_color": "#0A192F",
+  "orientation": "portrait",
+  "categories": ["business", "productivity", "technology", "developer", "professional"],
+  "keywords": ["web development", "mobile app development", "React", "React Native", "AWS", "technology consulting", "custom websites", "business systems"],
+  "lang": "en-US",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Services",
+      "url": "/services",
+      "description": "Web development and mobile app services",
+      "icons": [{ "src": "logo192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Portfolio",
+      "url": "/portfolio",
+      "description": "View our project portfolio and case studies",
+      "icons": [{ "src": "logo192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "About",
+      "url": "/about",
+      "description": "Learn about IronCoffee LLC",
+      "icons": [{ "src": "logo192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Contact",
+      "url": "/contact",
+      "description": "Get in touch - Joshua@ironcoffee.com",
+      "icons": [{ "src": "logo192.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "IronCoffee LLC - Professional Web Development Services"
+    },
+    {
+      "src": "logo512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "IronCoffee LLC Logo"
+    }
+  ],
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+}
