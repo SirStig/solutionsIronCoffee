@@ -323,29 +323,6 @@ const Portfolio = () => {
   const projects: Project[] = [
     {
       id: 1,
-      title: 'EncodeForge',
-      description: 'Cross-platform media processing suite combining hardware-accelerated video encoding, AI-powered subtitle generation with Whisper, and smart metadata-driven file renaming inside a polished desktop UI.',
-      technologies: [
-        'JavaFX',
-        'Python',
-        'FastAPI',
-        'FFmpeg',
-        'OpenAI Whisper',
-        'PyTorch',
-        'Docker'
-      ],
-      image: `${process.env.PUBLIC_URL}/images/projects/encodeforge-encoder.png`,
-      images: [
-        `${process.env.PUBLIC_URL}/images/projects/encodeforge-encoder.png`,
-        `${process.env.PUBLIC_URL}/images/projects/encodeforge-metadata.png`,
-        `${process.env.PUBLIC_URL}/images/projects/encodeforge-subtitles.png`
-      ],
-      category: ['Desktop App', 'AI', 'Media Processing'],
-      status: { label: 'Public Release', color: 'success' },
-      githubUrl: 'https://github.com/SirStig/EncodeForge'
-    },
-    {
-      id: 2,
       title: 'Project Yoked',
       description: 'Revolutionary fitness social platform featuring AI-powered content moderation, Instagram-style interactions, comprehensive fitness tracking, personalized progress analytics, and virtual personal training. Leading development as CEO/Founder of Project Yoked LLC, creating the future of connected fitness experiences.',
       technologies: [
@@ -365,29 +342,7 @@ const Portfolio = () => {
       isPrivate: true,
     },
     {
-      id: 3,
-      title: 'YokedCache',
-      description: 'High-performance Python cache library with intelligent auto-invalidation, multi-backend support, and seamless FastAPI/SQLAlchemy integration. Features advanced capabilities like vector similarity search, production monitoring with Prometheus/StatsD, and comprehensive CLI tools. Delivers 60-90% database load reduction and 200-500ms faster response times.',
-      technologies: [
-        'Python',
-        'Redis',
-        'FastAPI',
-        'SQLAlchemy',
-        'Memcached',
-        'Async/Await',
-        'Prometheus',
-        'StatsD',
-        'PyPI',
-        'CLI Tools'
-      ],
-      image: `${process.env.PUBLIC_URL}/images/projects/yokedcache.png`,
-      category: ['Python Library', 'Backend', 'Performance'],
-      status: { label: 'Public Release', color: 'success' },
-      liveUrl: 'https://pypi.org/project/yokedcache/',
-      githubUrl: 'https://github.com/SirStig/yokedcache'
-    },
-    {
-      id: 4,
+      id: 2,
       title: 'EagleChair Digital Flagship',
       description: 'End-to-end commerce experience for a premium furniture brand featuring a FastAPI backend with JWT auth, async PostgreSQL, Redis caching, and a modern React storefront focused on product storytelling and conversions.',
       technologies: [
@@ -412,6 +367,51 @@ const Portfolio = () => {
       githubUrl: 'https://github.com/SirStig/eaglechair'
     },
     {
+      id: 3,
+      title: 'EncodeForge',
+      description: 'Cross-platform media processing suite combining hardware-accelerated video encoding, AI-powered subtitle generation with Whisper, and smart metadata-driven file renaming inside a polished desktop UI.',
+      technologies: [
+        'JavaFX',
+        'Python',
+        'FastAPI',
+        'FFmpeg',
+        'OpenAI Whisper',
+        'PyTorch',
+        'Docker'
+      ],
+      image: `${process.env.PUBLIC_URL}/images/projects/encodeforge-encoder.png`,
+      images: [
+        `${process.env.PUBLIC_URL}/images/projects/encodeforge-encoder.png`,
+        `${process.env.PUBLIC_URL}/images/projects/encodeforge-metadata.png`,
+        `${process.env.PUBLIC_URL}/images/projects/encodeforge-subtitles.png`
+      ],
+      category: ['Desktop App', 'AI', 'Media Processing'],
+      status: { label: 'Public Release', color: 'success' },
+      githubUrl: 'https://github.com/SirStig/EncodeForge'
+    },
+    {
+      id: 4,
+      title: 'YokedCache',
+      description: 'High-performance Python cache library with intelligent auto-invalidation, multi-backend support, and seamless FastAPI/SQLAlchemy integration. Features advanced capabilities like vector similarity search, production monitoring with Prometheus/StatsD, and comprehensive CLI tools. Delivers 60-90% database load reduction and 200-500ms faster response times.',
+      technologies: [
+        'Python',
+        'Redis',
+        'FastAPI',
+        'SQLAlchemy',
+        'Memcached',
+        'Async/Await',
+        'Prometheus',
+        'StatsD',
+        'PyPI',
+        'CLI Tools'
+      ],
+      image: `${process.env.PUBLIC_URL}/images/projects/yokedcache.png`,
+      category: ['Python Library', 'Backend', 'Performance'],
+      status: { label: 'Public Release', color: 'success' },
+      liveUrl: 'https://pypi.org/project/yokedcache/',
+      githubUrl: 'https://github.com/SirStig/yokedcache'
+    },
+    {
       id: 5,
       title: 'Financial Project',
       description: 'Next-generation financial management platform with bank-level security, real-time transaction processing, and intelligent financial insights. Built with modern APIs for seamless payment integration and comprehensive financial tracking.',
@@ -429,7 +429,7 @@ const Portfolio = () => {
       ],
       image: `${process.env.PUBLIC_URL}/images/projects/financial.png`,
       category: ['Web App', 'FinTech'],
-      status: { label: 'In Development', color: 'warning' },
+      status: { label: 'Halted', color: 'warning' },
       isPrivate: true
     },
     {
@@ -444,6 +444,7 @@ const Portfolio = () => {
         'Unity Networking'
       ],
       image: `${process.env.PUBLIC_URL}/images/projects/rlr.png`,
+      status: { label: 'Old Project', color: 'error' },
       category: ['Game Development']
     },
     {
@@ -455,6 +456,7 @@ const Portfolio = () => {
         'C#',
       ],
       image: `${process.env.PUBLIC_URL}/images/projects/gamedev-mod.png`,
+      status: { label: 'Old Project', color: 'error' },
       category: ['Desktop App'],
       githubUrl: 'https://github.com/SirStig/Ultimate-Mod-Maker'
     }

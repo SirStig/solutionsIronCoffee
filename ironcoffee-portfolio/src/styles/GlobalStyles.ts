@@ -199,13 +199,15 @@ export const GlobalStyles = createGlobalStyle`
 
       .MuiButton-contained,
       .MuiButton-outlined {
-        background: rgba(13, 148, 136, 0.1);
-        border: 1px solid rgba(13, 148, 136, 0.3);
-        color: #0D9488;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: #111827;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 
         &:hover {
-          background: rgba(13, 148, 136, 0.2);
-          border-color: #0D9488;
+          background: rgba(255, 255, 255, 0.25);
+          border-color: rgba(255, 255, 255, 0.35);
+          box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
         }
       }
 
@@ -227,6 +229,20 @@ export const GlobalStyles = createGlobalStyle`
     &.dark-mode {
       .MuiAppBar-root {
         background: rgba(10, 25, 47, 0.8) !important;
+      }
+
+      .MuiButton-contained,
+      .MuiButton-outlined {
+        background: rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #FFFFFF;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.25);
+          border-color: rgba(255, 255, 255, 0.25);
+          box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+        }
       }
     }
   }

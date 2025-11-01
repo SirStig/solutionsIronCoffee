@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Typography, Box, Button, Grid } from '@mui/material';
+import { Container, Typography, Box, Button, Grid, Chip } from '@mui/material';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
@@ -9,10 +9,10 @@ import AnimatedSection from '../components/AnimatedSection';
 
 const HeroSection = styled.section`
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
   /* Modern viewport units with fallback */
   @supports (height: 100dvh) {
-    min-height: 100dvh;
+    height: 100dvh;
   }
   display: flex;
   -webkit-box-align: center;
@@ -36,26 +36,6 @@ const HeroSection = styled.section`
   @media (min-width: 768px) {
     padding-top: clamp(80px, 8vw, 100px);
     margin-top: clamp(-80px, -8vw, -100px);
-  }
-  
-  @media (min-width: 1920px) {
-    padding-top: clamp(100px, 5vw, 120px);
-    margin-top: clamp(-100px, -5vw, -120px);
-  }
-  
-  @media (min-width: 2560px) {
-    padding-top: clamp(120px, 4vw, 140px);
-    margin-top: clamp(-120px, -4vw, -140px);
-  }
-  
-  @media (min-width: 3840px) {
-    padding-top: clamp(140px, 3vw, 160px);
-    margin-top: clamp(-140px, -3vw, -160px);
-  }
-  
-  @media (min-width: 7680px) {
-    padding-top: clamp(160px, 2vw, 200px);
-    margin-top: clamp(-160px, -2vw, -200px);
   }
 `;
 
@@ -81,7 +61,7 @@ const HeroBackground = styled.div`
   
   /* High DPI support */
   @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-    background-image: url('/images/fallbacks/hero.png'); /* Could be upgraded to @2x version */
+    background-image: url('/images/fallbacks/hero.png');
   }
 `;
 
@@ -102,516 +82,199 @@ const HeroOverlay = styled.div`
     : 'rgba(0, 0, 0, 0.75)'
   };
   z-index: 1;
-  
-  /* Enhanced browser compatibility for gradients */
-  background: -webkit-${({ theme }) => theme.palette.mode === 'light' 
-    ? `linear-gradient(135deg, 
-        rgba(59, 130, 246, 0.4) 0%, 
-        rgba(147, 51, 234, 0.35) 25%, 
-        rgba(16, 185, 129, 0.3) 50%, 
-        rgba(245, 101, 101, 0.25) 75%, 
-        rgba(251, 191, 36, 0.2) 100%
-      )`
-    : 'rgba(0, 0, 0, 0.75)'
-  };
-  background: -moz-${({ theme }) => theme.palette.mode === 'light' 
-    ? `linear-gradient(135deg, 
-        rgba(59, 130, 246, 0.4) 0%, 
-        rgba(147, 51, 234, 0.35) 25%, 
-        rgba(16, 185, 129, 0.3) 50%, 
-        rgba(245, 101, 101, 0.25) 75%, 
-        rgba(251, 191, 36, 0.2) 100%
-      )`
-    : 'rgba(0, 0, 0, 0.75)'
-  };
-  background: -o-${({ theme }) => theme.palette.mode === 'light' 
-    ? `linear-gradient(135deg, 
-        rgba(59, 130, 246, 0.4) 0%, 
-        rgba(147, 51, 234, 0.35) 25%, 
-        rgba(16, 185, 129, 0.3) 50%, 
-        rgba(245, 101, 101, 0.25) 75%, 
-        rgba(251, 191, 36, 0.2) 100%
-      )`
-    : 'rgba(0, 0, 0, 0.75)'
-  };
 `;
 
 const StyledContainer = styled(Container)`
   position: relative;
   z-index: 2;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   width: 100%;
+  height: 100%;
+  padding-top: clamp(6vh, 9vh, 14vh);
   
   /* Enhanced mobile centering */
   @media (max-width: 767px) {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     text-align: center;
+    padding-top: clamp(5vh, 7vh, 12vh);
   }
   
   @media (min-width: 768px) {
-    display: block;
+    display: flex;
     text-align: left;
+    padding-top: clamp(7vh, 11vh, 17vh);
   }
 `;
 
 const HeroContent = styled.div`
-  max-width: clamp(400px, 50vw, 800px);
-  text-align: left;
+  max-width: clamp(400px, 50vw, 900px);
+  text-align: center;
   width: 100%;
+  margin: 0 auto;
   
   /* Enhanced responsive sizing */
-  @media (max-width: 320px) {
-    max-width: 95%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-  }
-  
-  @media (max-width: 480px) {
-    max-width: 90%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-  }
-  
   @media (max-width: 767px) {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
+    max-width: 90%;
   }
   
   @media (min-width: 768px) {
-    text-align: left;
-    max-width: clamp(500px, 45vw, 700px);
-    display: block;
-    margin: 0;
-  }
-  
-  @media (min-width: 1920px) {
-    max-width: clamp(700px, 40vw, 900px);
-  }
-  
-  @media (min-width: 2560px) {
-    max-width: clamp(900px, 35vw, 1200px);
-  }
-  
-  @media (min-width: 3840px) {
-    max-width: clamp(1200px, 30vw, 1600px);
-  }
-  
-  @media (min-width: 7680px) {
-    max-width: clamp(1600px, 25vw, 2400px);
+    max-width: clamp(500px, 45vw, 900px);
   }
 `;
 
-
-const ServiceCard = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.05);
-  
-  /* Enhanced backdrop filter with browser compatibility */
+const HeroTag = styled(motion.div)`
+  display: inline-block;
+  padding: clamp(0.25rem, 0.75vw, 0.4rem) clamp(0.6rem, 1.5vw, 0.9rem);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
   
+  @media (max-width: 767px) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+`;
+
+const AboutSection = styled.section`
+  padding: clamp(5rem, 10vw, 8rem) 0;
+  background: transparent;
+`;
+
+const StoryCard = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: clamp(16px, 2.5vw, 20px);
-  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem);
-  margin: clamp(1rem, 3vw, 1.5rem) 0;
-  
-  /* Enhanced box shadow with browser compatibility */
+  padding: clamp(1.5rem, 4vw, 2.5rem);
   box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.1);
-  
   border: 1px solid rgba(255, 255, 255, 0.1);
-  
-  /* Comprehensive transition support */
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  -webkit-transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  -moz-transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  -ms-transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  -o-transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  
-  /* Touch improvements */
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  
-  /* Performance optimization */
-  will-change: transform, box-shadow;
-  
-  /* Enhanced responsive design for all screen sizes */
-  @media (max-width: 320px) {
-    padding: clamp(1.25rem, 4vw, 1.5rem) clamp(1rem, 3vw, 1.25rem);
-    margin: clamp(0.75rem, 2.5vw, 1rem) 0;
-    border-radius: clamp(12px, 4vw, 16px);
-  }
-  
-  @media (max-width: 480px) {
-    padding: clamp(1.5rem, 4.5vw, 2rem) clamp(1.25rem, 3.5vw, 1.5rem);
-    margin: clamp(1rem, 3vw, 1.25rem) 0;
-    border-radius: clamp(14px, 3.5vw, 18px);
-  }
-  
-  @media (max-width: 768px) {
-    padding: clamp(2rem, 4vw, 2.5rem) clamp(1.5rem, 3vw, 2rem);
-    margin: clamp(1.25rem, 3.5vw, 1.5rem) 0;
-  }
-  
-  @media (min-width: 1920px) {
-    padding: 2.5rem 2rem;
-    margin: 1.5rem 0;
-    border-radius: 16px;
-    max-width: none; /* Allow normal width but control padding */
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg,
-      ${props => props.theme.palette.primary.main}15,
-      ${props => props.theme.palette.secondary.main}10
-    );
-    /* Browser compatibility for gradients */
-    background: -webkit-linear-gradient(135deg,
-      ${props => props.theme.palette.primary.main}15,
-      ${props => props.theme.palette.secondary.main}10
-    );
-    background: -moz-linear-gradient(135deg,
-      ${props => props.theme.palette.primary.main}15,
-      ${props => props.theme.palette.secondary.main}10
-    );
-    background: -o-linear-gradient(135deg,
-      ${props => props.theme.palette.primary.main}15,
-      ${props => props.theme.palette.secondary.main}10
-    );
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    -webkit-transition: opacity 0.4s ease;
-    -moz-transition: opacity 0.4s ease;
-    z-index: 0;
-  }
-
-  &:hover {
-    /* Transform with full browser compatibility */
-    transform: translateY(-8px);
-    -webkit-transform: translateY(-8px);
-    -moz-transform: translateY(-8px);
-    -ms-transform: translateY(-8px);
-    -o-transform: translateY(-8px);
-    
-    /* Enhanced responsive shadow */
-    box-shadow: 0 clamp(16px, 2vw, 24px) clamp(48px, 5vw, 64px) rgba(0, 0, 0, 0.2);
-    -webkit-box-shadow: 0 clamp(16px, 2vw, 24px) clamp(48px, 5vw, 64px) rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 clamp(16px, 2vw, 24px) clamp(48px, 5vw, 64px) rgba(0, 0, 0, 0.2);
-    
-    border-color: rgba(255, 255, 255, 0.2);
-
-    &::before {
-      opacity: 1;
-    }
-  }
-
-  &:active {
-    transform: translateY(-4px);
-    -webkit-transform: translateY(-4px);
-    -moz-transform: translateY(-4px);
-    -ms-transform: translateY(-4px);
-    -o-transform: translateY(-4px);
-    
-    transition: all 0.1s ease;
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-  }
-  
-  /* Touch device optimizations */
-  @media (hover: none) and (pointer: coarse) {
-    &:hover {
-      transform: none;
-      -webkit-transform: none;
-      -moz-transform: none;
-    }
-    
-    &:active {
-      transform: scale(0.98);
-      -webkit-transform: scale(0.98);
-      -moz-transform: scale(0.98);
-    }
-  }
-`;
-
-const WhyChooseSection = styled.section`
-  padding: clamp(3rem, 6vw, 5rem) 0;
-  background: transparent;
-  
-  /* Enhanced responsive design for all screen sizes */
-  @media (max-width: 320px) {
-    padding: clamp(2rem, 6vw, 3rem) 0;
-  }
-  
-  @media (max-width: 480px) {
-    padding: clamp(2.5rem, 7vw, 4rem) 0;
-  }
-  
-  @media (max-width: 768px) {
-    padding: clamp(3rem, 6vw, 5rem) 0;
-  }
-  
-  @media (min-width: 1920px) {
-    padding: 5rem 0;
-  }
-`;
-
-const VideoContainer = styled.div`
-  position: relative;
-  width: 100%;
-  /* Maintain 16:9 aspect ratio */
-  aspect-ratio: 16 / 9;
-  border-radius: clamp(16px, 2.5vw, 28px);
-  overflow: hidden;
-  
-  /* Enhanced box shadow with browser compatibility */
-  box-shadow: 0 clamp(20px, 3vw, 32px) clamp(60px, 5vw, 80px) rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0 clamp(20px, 3vw, 32px) clamp(60px, 5vw, 80px) rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 clamp(20px, 3vw, 32px) clamp(60px, 5vw, 80px) rgba(0, 0, 0, 0.3);
-  
-  background: rgba(0, 0, 0, 0.1);
-  
-  /* Performance optimization */
-  will-change: transform;
-  
-  /* Fallback for browsers that don't support aspect-ratio */
-  @supports not (aspect-ratio: 16 / 9) {
-    height: 0;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-  }
-  
-  /* Enhanced responsive design with 16:9 maintained */
-  @media (max-width: 320px) {
-    margin-top: clamp(1rem, 3vw, 1.5rem);
-    border-radius: clamp(12px, 3vw, 16px);
-    max-height: clamp(180px, 45vw, 220px);
-  }
-  
-  @media (max-width: 480px) {
-    margin-top: clamp(1.5rem, 3.5vw, 2rem);
-    border-radius: clamp(14px, 3.5vw, 18px);
-    max-height: clamp(220px, 42vw, 280px);
-  }
-  
-  @media (max-width: 768px) {
-    margin-top: clamp(2rem, 4vw, 3rem);
-    border-radius: clamp(16px, 2.5vw, 20px);
-    max-height: clamp(280px, 40vw, 350px);
-  }
-  
-  @media (min-width: 1920px) {
-    border-radius: 16px;
-    max-height: 350px;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    -o-object-fit: cover; /* Opera support */
-    -webkit-object-fit: cover; /* Safari support */
-    
-    /* Performance improvements */
-    will-change: transform;
-    
-    /* Prevent dragging */
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-    user-drag: none;
-    
-    /* Touch improvements */
-    -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: transparent;
-    
-    /* Fallback for browsers that don't support aspect-ratio */
-    @supports not (aspect-ratio: 16 / 9) {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-  }
-`;
-
-const CustomWebsiteSection = styled.section`
-  padding: clamp(3rem, 6vw, 5rem) 0;
-  background: transparent;
-  border-radius: 0;
-  
-  /* Enhanced responsive design for all screen sizes */
-  @media (max-width: 320px) {
-    padding: clamp(2rem, 6vw, 3rem) 0;
-  }
-  
-  @media (max-width: 480px) {
-    padding: clamp(2.5rem, 7vw, 4rem) 0;
-  }
-  
-  @media (max-width: 768px) {
-    padding: clamp(3rem, 6vw, 5rem) 0;
-  }
-  
-  @media (min-width: 1920px) {
-    padding: 5rem 0;
-  }
-`;
-
-const ComparisonCard = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.08);
-  
-  /* Enhanced backdrop filter with browser compatibility */
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  
-  border-radius: clamp(12px, 2vw, 16px);
-  padding: clamp(1.5rem, 3vw, 2rem);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  
-  /* Comprehensive transition support */
+  height: 100%;
   transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  
-  /* Performance optimization */
-  will-change: transform, box-shadow;
-  
-  /* Touch improvements */
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
   
   &:hover {
-    /* Transform with full browser compatibility */
     transform: translateY(-4px);
-    -webkit-transform: translateY(-4px);
-    -moz-transform: translateY(-4px);
-    -ms-transform: translateY(-4px);
-    -o-transform: translateY(-4px);
-    
-    /* Enhanced responsive shadow */
-    box-shadow: 0 clamp(12px, 2vw, 18px) clamp(40px, 4vw, 56px) rgba(0, 0, 0, 0.15);
-    -webkit-box-shadow: 0 clamp(12px, 2vw, 18px) clamp(40px, 4vw, 56px) rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: 0 clamp(12px, 2vw, 18px) clamp(40px, 4vw, 56px) rgba(0, 0, 0, 0.15);
-    
+    box-shadow: 0 clamp(12px, 2vw, 20px) clamp(40px, 5vw, 60px) rgba(0, 0, 0, 0.15);
     border-color: rgba(255, 255, 255, 0.2);
   }
+`;
+
+const KeywordTag = styled(Chip)`
+  margin: 0.5rem 0.5rem 0.5rem 0;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: ${props => props.theme.palette.text.primary};
+  font-weight: 500;
+  transition: all 0.3s ease;
   
-  /* Enhanced responsive design */
-  @media (max-width: 320px) {
-    padding: clamp(1rem, 2.5vw, 1.25rem);
-    margin-bottom: clamp(0.75rem, 2vw, 1rem);
-    border-radius: clamp(10px, 2.5vw, 12px);
-  }
-  
-  @media (max-width: 480px) {
-    padding: clamp(1.25rem, 3vw, 1.5rem);
-    margin-bottom: clamp(0.875rem, 2.2vw, 1.25rem);
-    border-radius: clamp(12px, 2.2vw, 14px);
-  }
-  
-  @media (max-width: 768px) {
-    padding: clamp(1.5rem, 2.8vw, 2rem);
-    margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
-  }
-  
-  @media (min-width: 1920px) {
-    padding: 2rem;
-    border-radius: 16px;
-    max-width: 500px;
-    margin: 0 auto 1rem;
-  }
-  
-  /* Touch device optimizations */
-  @media (hover: none) and (pointer: coarse) {
-    &:hover {
-      transform: none;
-      -webkit-transform: none;
-      -moz-transform: none;
-    }
-    
-    &:active {
-      transform: scale(0.98);
-      -webkit-transform: scale(0.98);
-      -moz-transform: scale(0.98);
-    }
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
   }
 `;
 
 const ServicesSection = styled.section`
-  padding: clamp(2rem, 5vw, 4rem) 0;
+  padding: clamp(5rem, 10vw, 8rem) 0;
   background: transparent;
+`;
+
+const ServicesCard = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: clamp(16px, 2.5vw, 20px);
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: 100%;
+  transition: all 0.3s ease;
   
-  /* Enhanced responsive design for all screen sizes */
-  @media (max-width: 320px) {
-    padding: clamp(1.5rem, 4vw, 2rem) 0;
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 clamp(12px, 2vw, 20px) clamp(40px, 5vw, 60px) rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
   }
+`;
+
+const FeaturedProductsSection = styled.section`
+  padding: clamp(5rem, 10vw, 8rem) 0;
+  background: transparent;
+`;
+
+const ProjectCard = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: clamp(16px, 2.5vw, 20px);
+  overflow: hidden;
+  box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  height: 100%;
   
-  @media (max-width: 480px) {
-    padding: clamp(1.75rem, 5vw, 2.5rem) 0;
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 clamp(12px, 2vw, 20px) clamp(40px, 5vw, 60px) rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
   }
+`;
+
+const ProjectImage = styled.div<{ imageUrl: string }>`
+  width: 100%;
+  height: 350px;
+  background-image: url(${props => props.imageUrl});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   
   @media (max-width: 768px) {
-    padding: clamp(2rem, 5vw, 3rem) 0;
+    height: 280px;
   }
+`;
+
+const CustomWebsiteSection = styled.section`
+  padding: clamp(5rem, 10vw, 8rem) 0;
+  background: transparent;
+`;
+
+const ComparisonCard = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: clamp(12px, 2vw, 16px);
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
   
-  @media (min-width: 1920px) {
-    padding: 4rem 0;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 clamp(12px, 2vw, 18px) clamp(40px, 4vw, 56px) rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
   }
+`;
+
+const CTASection = styled.section`
+  padding: clamp(5rem, 10vw, 8rem) 0;
+  background: transparent;
+  text-align: center;
 `;
 
 const Home = () => {
   const navigate = useNavigate();
-  
-  const handleServiceClick = (index: number) => {
-    navigate('/services', { state: { scrollToIndex: index } });
-  };
 
   return (
     <PageTransition>
       <Helmet>
-        <title>IronCoffee Solutions - Web Development & Mobile App Solutions</title>
-        <meta name="description" content="Professional web development, mobile app development, and backend solutions using React, React Native, TypeScript, FastAPI, Python, and AWS. Transform your digital presence with our expert services." />
+        <title>IronCoffee Solutions - From Idea to Deployment</title>
+        <meta name="description" content="Next-generation software solutions for websites, servers, and mobile apps. Transform your idea into a reality with custom development that delivers excellence." />
       </Helmet>
 
       <HeroSection>
@@ -620,229 +283,118 @@ const Home = () => {
         <StyledContainer maxWidth="lg">
           <HeroContent>
             <AnimatedSection>
+              <HeroTag
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontSize: { xs: '0.5rem', sm: '0.6rem', md: '0.7rem' },
+                    fontWeight: 600,
+                    color: 'white',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
+                  }}
+                >
+                  Next-Generation Software Solutions
+                </Typography>
+              </HeroTag>
+
               <Typography
                 variant="h1"
                 sx={{
-                  fontSize: { xs: '2.5rem', md: '3.5rem' },
-                  textAlign: { xs: 'center', sm: 'center', md: 'left' },
-                  fontWeight: 700,
-                  marginBottom: 3,
-                  color: (theme: any) => theme.palette.mode === 'light' ? 'text.primary' : 'white',
+                  fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem', lg: '5.5rem' },
+                  textAlign: 'center',
+                  fontWeight: 800,
+                  marginBottom: 2,
                   width: '100%',
-                  
-                  /* Enhanced responsive text alignment */
-                  '@media (max-width: 767px)': {
-                    textAlign: 'center',
-                  },
-                  '@media (min-width: 768px)': {
-                    textAlign: 'left',
-                  },
+                  lineHeight: 1.2,
+                  letterSpacing: { xs: '-0.02em', sm: '-0.03em', md: '-0.04em' },
+                  paddingTop: '0.1em',
+                  paddingBottom: '0.15em',
+                  background: 'linear-gradient(135deg, #64FFDA 0%, #3B82F6 25%, #8B5CF6 50%, #EC4899 75%, #F59E0B 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  display: 'block',
                 }}
               >
-                Crafting Digital Excellence
+                From Idea to Deployment
               </Typography>
 
               <Typography
-                variant="h4"
+                variant="h5"
                 sx={{
-                  fontSize: { xs: '1rem', md: '1.3rem' },
-                  textAlign: { xs: 'center', sm: 'center', md: 'left' },
-                  marginBottom: 4,
-                  fontWeight: 500,
-                  color: (theme: any) => theme.palette.mode === 'light' ? 'text.primary' : 'rgba(255, 255, 255, 0.9)',
+                  fontSize: { xs: '0.9rem', sm: '1rem', md: '1.15rem' },
+                  textAlign: 'center',
+                  marginBottom: { xs: 3, md: 4 },
+                  fontWeight: 400,
+                  color: 'rgba(255, 255, 255, 0.9)',
                   width: '100%',
-                  
-                  /* Enhanced responsive text alignment */
-                  '@media (max-width: 767px)': {
-                    textAlign: 'center',
-                  },
-                  '@media (min-width: 768px)': {
-                    textAlign: 'left',
-                  },
+                  maxWidth: '700px',
+                  mx: 'auto',
+                  lineHeight: 1.7,
                 }}
               >
-                React & React Native • FastAPI & Python • AWS Cloud
+                Transforming your vision into powerful digital solutions. Specializing in websites, servers, and mobile apps that drive results.
               </Typography>
 
               <Box sx={{ 
                 display: 'flex', 
-                gap: 'clamp(0.75rem, 3vw, 2rem)', 
+                gap: 'clamp(1rem, 3vw, 1.5rem)', 
                 flexWrap: 'wrap',
-                justifyContent: { xs: 'center', md: 'flex-start' },
+                justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
-                
-                /* Enhanced responsive layout */
-                '@media (max-width: 320px)': {
-                  flexDirection: 'column',
-                  gap: '0.75rem',
-                  width: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                },
-                '@media (max-width: 480px)': {
-                  flexDirection: 'column',
-                  gap: '1rem',
-                  width: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                },
-                '@media (max-width: 767px)': {
-                  flexDirection: 'column',
-                  gap: '1.25rem',
-                  width: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                },
-                '@media (min-width: 768px)': {
-                  justifyContent: 'flex-start',
-                  flexDirection: 'row',
-                  gap: 'clamp(1.5rem, 3vw, 2rem)',
-                }
               }}>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                  style={{ 
-                    width: '100%',
-                    maxWidth: '280px',
-                    display: 'flex',
-                    justifyContent: 'center'
-                  }}
                 >
                   <Button
                     component={Link}
-                    to="/contact"
+                    to="/portfolio"
                     variant="contained"
-                    color="primary"
                     size="large"
                     sx={{
-                      padding: 'clamp(10px, 2.5vw, 16px) clamp(24px, 6vw, 40px)',
-                      fontSize: 'clamp(0.9rem, 2.2vw, 1.1rem)',
-                      fontWeight: 600,
-                      width: { xs: '100%', md: 'auto' },
-                      minWidth: { xs: '200px', sm: '220px', md: '160px' },
-                      backgroundColor: 'rgba(59, 130, 246, 0.9)',
+                      fontSize: { xs: '0.9rem', sm: '1rem' },
+                      width: { xs: '100%', sm: 'auto' },
+                      minWidth: { xs: '180px', sm: '160px' },
                       color: 'white',
-                      backdropFilter: 'blur(10px)',
-                      WebkitBackdropFilter: 'blur(10px)',
-                      boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)',
-                      
-                      /* Comprehensive transition support */
-                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      WebkitTransition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      MozTransition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      
-                      /* Touch improvements */
-                      touchAction: 'manipulation',
-                      WebkitTapHighlightColor: 'transparent',
-                      
-                      /* Enhanced responsive sizing */
-                      '@media (max-width: 320px)': {
-                        padding: '12px 20px',
-                        fontSize: '0.9rem',
-                        minWidth: '180px',
-                      },
-                      '@media (max-width: 480px)': {
-                        padding: '14px 24px',
-                        fontSize: '1rem',
-                        minWidth: '200px',
-                      },
-                      '@media (min-width: 1920px)': {
-                        padding: '16px 32px',
-                        fontSize: '1.1rem',
-                      },
-                      '@media (min-width: 2560px)': {
-                        padding: '16px 32px',
-                        fontSize: '1.1rem',
-                      },
-                      
-                      '&:hover': {
-                        backgroundColor: 'rgba(37, 99, 235, 1)', // Darker blue for better contrast
-                        color: 'white', // Ensure text stays white
-                        boxShadow: '0 6px 20px rgba(59, 130, 246, 0.6)',
-                        transform: 'translateY(-2px)',
-                        WebkitTransform: 'translateY(-2px)',
-                        MozTransform: 'translateY(-2px)',
-                      }
                     }}
                   >
-                    Get Started
+                    View My Work
                   </Button>
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                  style={{ 
-                    width: '100%',
-                    maxWidth: '280px',
-                    display: 'flex',
-                    justifyContent: 'center'
-                  }}
                 >
                   <Button
                     component={Link}
-                    to="/portfolio"
-                    variant="outlined"
-                    color="primary"
+                    to="/contact"
+                    variant="contained"
                     size="large"
                     sx={{
-                      padding: 'clamp(10px, 2.5vw, 16px) clamp(24px, 6vw, 40px)',
-                      fontSize: 'clamp(0.9rem, 2.2vw, 1.1rem)',
-                      fontWeight: 600,
-                      width: { xs: '100%', md: 'auto' },
-                      minWidth: { xs: '200px', sm: '220px', md: '160px' },
-                      borderColor: 'rgba(255, 255, 255, 0.8)',
+                      fontSize: { xs: '0.9rem', sm: '1rem' },
+                      width: { xs: '100%', sm: 'auto' },
+                      minWidth: { xs: '180px', sm: '160px' },
                       color: 'white',
-                      backdropFilter: 'blur(10px)',
-                      WebkitBackdropFilter: 'blur(10px)',
-                      borderWidth: '2px',
-                      
-                      /* Comprehensive transition support */
-                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      WebkitTransition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      MozTransition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      
-                      /* Touch improvements */
-                      touchAction: 'manipulation',
-                      WebkitTapHighlightColor: 'transparent',
-                      
-                      /* Enhanced responsive sizing */
-                      '@media (max-width: 320px)': {
-                        padding: '12px 20px',
-                        fontSize: '0.9rem',
-                        minWidth: '180px',
-                        borderWidth: '1.5px',
-                      },
-                      '@media (max-width: 480px)': {
-                        padding: '14px 24px',
-                        fontSize: '1rem',
-                        minWidth: '200px',
-                        borderWidth: '2px',
-                      },
-                      '@media (min-width: 1920px)': {
-                        padding: '16px 32px',
-                        fontSize: '1.1rem',
-                      },
-                      '@media (min-width: 2560px)': {
-                        padding: '16px 32px',
-                        fontSize: '1.1rem',
-                      },
-                      
+                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(147, 51, 234, 0.9) 100%)',
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                      boxShadow: '0 4px 20px rgba(59, 130, 246, 0.4)',
                       '&:hover': {
-                        borderColor: 'white',
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        borderWidth: '2px',
-                        transform: 'translateY(-2px)',
-                        WebkitTransform: 'translateY(-2px)',
-                        MozTransform: 'translateY(-2px)',
-                        boxShadow: '0 4px 15px rgba(255, 255, 255, 0.2)',
+                        background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.95) 0%, rgba(126, 34, 206, 0.95) 100%)',
+                        boxShadow: '0 6px 30px rgba(59, 130, 246, 0.6)',
+                        border: '1px solid rgba(255, 255, 255, 0.4)',
                       }
                     }}
                   >
-                    View Portfolio
+                    Start Your Project
                   </Button>
                 </motion.div>
               </Box>
@@ -851,180 +403,369 @@ const Home = () => {
         </StyledContainer>
       </HeroSection>
 
-      <WhyChooseSection>
-        <Container maxWidth="xl">
-          <AnimatedSection delay={0.3}>
-            <Grid container spacing={6} alignItems="center">
-              <Grid item xs={12} md={6}>
-                <Typography 
-                  variant="h2" 
-                  sx={{ 
-                    mb: 4,
-                    fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
-                    fontWeight: 700,
-                    textAlign: { xs: 'center', md: 'left' }
-                  }}
-                >
-                  Why Choose IronCoffee Solutions?
-                </Typography>
-                <Typography 
-                  variant="h5" 
-                  sx={{ 
-                    mb: 3,
-                    fontWeight: 400,
-                    lineHeight: 1.6,
-                    fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.5rem' },
-                    color: 'text.secondary',
-                    textAlign: { xs: 'center', md: 'left' }
-                  }}
-                >
-                  Expert craftsmanship meets cutting-edge innovation.
-                </Typography>
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
-                    fontSize: { xs: '1rem', sm: '1.1rem' },
-                    lineHeight: 1.7,
-                    color: 'text.secondary',
-                    textAlign: { xs: 'center', md: 'left' }
-                  }}
-                >
-                  Professional web designer who handles everything – from stunning visuals and SEO optimization 
-                  to custom functionality that perfectly showcases your business. No templates, no limitations, just pure custom excellence.
-                </Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <VideoContainer>
-                  <video 
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline
-                  >
-                    <source src="/videos/app-overview-montage.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </VideoContainer>
-              </Grid>
-            </Grid>
-          </AnimatedSection>
-        </Container>
-      </WhyChooseSection>
-
-      <ServicesSection>
-        <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
-          <AnimatedSection delay={0.4}>
+      <AboutSection>
+        <Container maxWidth="lg">
+          <AnimatedSection delay={0.2}>
             <Typography 
               variant="h2" 
-              align="center" 
+              align="center"
               sx={{ 
-                mb: 6,
-                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+                mb: 1,
+                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
                 fontWeight: 700
               }}
             >
-              Services
+              About
+            </Typography>
+            <Typography 
+              variant="h5" 
+              align="center"
+              sx={{ 
+                mb: 3,
+                color: 'text.secondary',
+                fontWeight: 400,
+                fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' }
+              }}
+            >
+              Creative Technologist & Problem Solver
+            </Typography>
+            <Typography 
+              variant="body1" 
+              align="center"
+              sx={{ 
+                mb: 5,
+                color: 'text.secondary',
+                maxWidth: '700px',
+                mx: 'auto',
+                fontSize: { xs: '0.95rem', sm: '1rem', md: '1.1rem' },
+                lineHeight: 1.7
+              }}
+            >
+              Passionate about crafting digital experiences that blend cutting-edge technology with intuitive design. With over a year of hands-on experience in full-stack development, I specialize in building scalable web applications, robust backend systems, and engaging mobile experiences. I thrive on turning complex problems into elegant, performant solutions that users love to interact with.
             </Typography>
 
-            <Box sx={{ maxWidth: '1200px', mx: 'auto' }}>
-              {[
-                {
-                  title: 'Frontend Development',
-                  description: 'React & TypeScript mastery creating stunning, responsive user interfaces with Material-UI, smooth animations, and pixel-perfect designs that captivate users.',
-                  icon: '🎨',
-                  highlight: 'Beautiful UI/UX + Lightning Performance',
-                  link: '/services'
-                },
-                {
-                  title: 'Backend Development',
-                  description: 'Python, FastAPI & AWS cloud infrastructure powering scalable APIs, secure databases, and robust systems that handle enterprise-level traffic.',
-                  icon: '⚙️',
-                  highlight: 'Enterprise-Grade Architecture',
-                  link: '/services'
-                },
-                {
-                  title: 'Mobile App Development',
-                  description: 'React Native expertise delivering native-performance mobile experiences across iOS & Android with seamless cloud integration and App Store optimization.',
-                  icon: '📱',
-                  highlight: 'Cross-Platform Excellence',
-                  link: '/services'
-                },
-                {
-                  title: 'IT Solutions & Consulting',
-                  description: 'Complete technology strategy, cloud migration, system optimization, and technical consulting to modernize your business infrastructure and workflows.',
-                  icon: '💼',
-                  highlight: 'Strategic Technology Partnership',
-                  link: '/services'
-                },
-              ].map((service, index) => (
-                <AnimatedSection key={index} delay={0.2 * (index + 1)}>
-                  <ServiceCard
-                    onClick={() => handleServiceClick(index)}
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
-                  >
-                    <Grid container spacing={3} alignItems="center">
-                      <Grid item xs={12} sm={2} md={1}>
-                        <Box sx={{ 
-                          textAlign: { xs: 'center', sm: 'left' },
-                          fontSize: { xs: '3rem', sm: '3.5rem', md: '4rem' }
-                        }}>
-                          {service.icon}
-                        </Box>
-                      </Grid>
-                      <Grid item xs={12} sm={10} md={11}>
-                        <Box sx={{ position: 'relative', zIndex: 1, textAlign: { xs: 'center', sm: 'left' } }}>
-                          <Typography 
-                            variant="h4" 
-                            sx={{ 
-                              mb: 1,
-                              fontSize: { xs: '1.5rem', sm: '1.8rem', md: '2rem' },
-                              fontWeight: 600
-                            }}
-                          >
-                            {service.title}
-                          </Typography>
-                          <Typography 
-                            variant="subtitle1"
-                            sx={{
-                              color: 'primary.main',
-                              fontSize: { xs: '0.9rem', sm: '1rem' },
-                              fontWeight: 500,
-                              mb: 1
-                            }}
-                          >
-                            {service.highlight}
-                          </Typography>
-                          <Typography 
-                            variant="body1"
-                            sx={{
-                              color: 'text.secondary',
-                              fontSize: { xs: '0.95rem', sm: '1rem', md: '1.1rem' },
-                              lineHeight: 1.6
-                            }}
-                          >
-                            {service.description}
-                          </Typography>
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </ServiceCard>
-                </AnimatedSection>
-              ))}
+            <Grid container spacing={3} sx={{ mb: 4 }}>
+              <Grid item xs={12} md={6}>
+                <StoryCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
+                    My Approach
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.7 }}>
+                    I believe in thorough research and understanding your unique needs before writing a single line of code. This ensures every solution is perfectly tailored to your vision and goals. Every project gets the attention it deserves – from initial research to final polish.
+                  </Typography>
+                </StoryCard>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <StoryCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
+                    The Result
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.7 }}>
+                    There's nothing more satisfying than seeing a project come to life. I take pride in delivering solutions that not only work flawlessly but look stunning and perform exceptionally. I'm a perfectionist who creates premium deliverables that exceed expectations.
+                  </Typography>
+                </StoryCard>
+              </Grid>
+            </Grid>
+
+            <Box sx={{ textAlign: 'center', mt: 4, mb: 4 }}>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  mb: 3,
+                  fontWeight: 600,
+                  fontSize: { xs: '1rem', md: '1.1rem' }
+                }}
+              >
+                What You Can Expect
+              </Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1, mb: 4 }}>
+                {['Mission-Driven', 'Excellence', 'Innovation', 'Client-First', 'Professionalism', 'Modern Technologies', 'Premium Deliverables'].map((keyword) => (
+                  <KeywordTag
+                    key={keyword}
+                    label={keyword}
+                    sx={{
+                      fontSize: { xs: '0.65rem', sm: '0.7rem', md: '0.75rem' },
+                      padding: { xs: '0.2rem 0.5rem', md: '0.3rem 0.65rem' },
+                      height: { xs: '22px', md: '26px' }
+                    }}
+                  />
+                ))}
+              </Box>
+              <Button
+                component={Link}
+                to="/about"
+                variant="outlined"
+                size="large"
+                sx={{
+                  padding: '12px 32px',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                }}
+              >
+                Learn More About Me
+              </Button>
+            </Box>
+          </AnimatedSection>
+        </Container>
+      </AboutSection>
+
+      <ServicesSection>
+        <Container maxWidth="lg">
+          <AnimatedSection delay={0.3}>
+            <Typography 
+              variant="h2" 
+              align="center"
+              sx={{ 
+                mb: 1,
+                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
+                fontWeight: 700
+              }}
+            >
+              My Services
+            </Typography>
+            <Typography 
+              variant="h6" 
+              align="center"
+              sx={{ 
+                mb: 5,
+                color: 'text.secondary',
+                maxWidth: '700px',
+                mx: 'auto',
+                fontSize: { xs: '1rem', md: '1.1rem' },
+                lineHeight: 1.7
+              }}
+            >
+              From beautiful websites to powerful mobile apps, I build solutions that drive your business forward.
+            </Typography>
+
+            <Grid container spacing={3} sx={{ mb: 4 }}>
+              <Grid item xs={12} md={6}>
+                <ServicesCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <Typography variant="h5" sx={{ mb: 1, fontWeight: 600, fontSize: { xs: '1.1rem', md: '1.25rem' } }}>
+                    Custom Web Development
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6, mb: 1.5, fontSize: { xs: '0.85rem', md: '0.9rem' } }}>
+                    Stunning websites, landing pages, and web applications built from the ground up. No templates, just pure custom excellence tailored to your brand.
+                  </Typography>
+                  <Box component="ul" sx={{ pl: 0, m: 0, listStyle: 'none' }}>
+                    {['E-Commerce Stores', 'Business Websites', 'Web Applications', 'Landing Pages'].map((item) => (
+                      <Box component="li" key={item} sx={{ mb: 0.5, color: 'text.primary', fontSize: { xs: '0.95rem', md: '1rem' }, fontWeight: 500, '&::before': { content: '"✓ "', color: 'primary.main', fontWeight: 'bold', mr: 0.75 } }}>
+                        {item}
+                      </Box>
+                    ))}
+                  </Box>
+                </ServicesCard>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <ServicesCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <Typography variant="h5" sx={{ mb: 1, fontWeight: 600, fontSize: { xs: '1.1rem', md: '1.25rem' } }}>
+                    Management Systems & CMS
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6, mb: 1.5, fontSize: { xs: '0.85rem', md: '0.9rem' } }}>
+                    Full-featured content management systems with click-to-edit capabilities. Manage your products, content, and business data through intuitive admin dashboards.
+                  </Typography>
+                  <Box component="ul" sx={{ pl: 0, m: 0, listStyle: 'none' }}>
+                    {['Click-to-Edit Content', 'Product & Inventory Management', 'Admin Dashboards', 'Custom Options Management'].map((item) => (
+                      <Box component="li" key={item} sx={{ mb: 0.5, color: 'text.primary', fontSize: { xs: '0.95rem', md: '1rem' }, fontWeight: 500, '&::before': { content: '"✓ "', color: 'primary.main', fontWeight: 'bold', mr: 0.75 } }}>
+                        {item}
+                      </Box>
+                    ))}
+                  </Box>
+                </ServicesCard>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <ServicesCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <Typography variant="h5" sx={{ mb: 1, fontWeight: 600, fontSize: { xs: '1.1rem', md: '1.25rem' } }}>
+                    Mobile Apps
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6, mb: 1.5, fontSize: { xs: '0.85rem', md: '0.9rem' } }}>
+                    Native-performance mobile applications for iOS and Android. Beautiful interfaces, smooth animations, and powerful functionality.
+                  </Typography>
+                  <Box component="ul" sx={{ pl: 0, m: 0, listStyle: 'none' }}>
+                    {['iOS & Android Apps', 'Native Performance', 'Cloud Integration', 'Real-Time Features'].map((item) => (
+                      <Box component="li" key={item} sx={{ mb: 0.5, color: 'text.primary', fontSize: { xs: '0.95rem', md: '1rem' }, fontWeight: 500, '&::before': { content: '"✓ "', color: 'primary.main', fontWeight: 'bold', mr: 0.75 } }}>
+                        {item}
+                      </Box>
+                    ))}
+                  </Box>
+                </ServicesCard>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <ServicesCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <Typography variant="h5" sx={{ mb: 1, fontWeight: 600, fontSize: { xs: '1.1rem', md: '1.25rem' } }}>
+                    Server & Backend Solutions
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6, mb: 1.5, fontSize: { xs: '0.85rem', md: '0.9rem' } }}>
+                    Robust backend systems, APIs, and cloud infrastructure that scale with your business and keep everything running smoothly.
+                  </Typography>
+                  <Box component="ul" sx={{ pl: 0, m: 0, listStyle: 'none' }}>
+                    {['Cloud Infrastructure', 'API Development', 'Database Systems', 'DevOps & Scaling'].map((item) => (
+                      <Box component="li" key={item} sx={{ mb: 0.5, color: 'text.primary', fontSize: { xs: '0.95rem', md: '1rem' }, fontWeight: 500, '&::before': { content: '"✓ "', color: 'primary.main', fontWeight: 'bold', mr: 0.75 } }}>
+                        {item}
+                      </Box>
+                    ))}
+                  </Box>
+                </ServicesCard>
+              </Grid>
+            </Grid>
+
+            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap', mt: 4 }}>
+              <Button
+                component={Link}
+                to="/services"
+                variant="contained"
+                size="large"
+                sx={{
+                  padding: '12px 32px',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                }}
+              >
+                View All Services
+              </Button>
             </Box>
           </AnimatedSection>
         </Container>
       </ServicesSection>
 
+      <FeaturedProductsSection>
+        <Container maxWidth="lg">
+          <AnimatedSection delay={0.4}>
+            <Typography 
+              variant="h2" 
+              align="center"
+              sx={{ 
+                mb: 1,
+                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
+                fontWeight: 700
+              }}
+            >
+              Featured Projects
+            </Typography>
+            <Typography 
+              variant="h6" 
+              align="center"
+              sx={{ 
+                mb: 5,
+                color: 'text.secondary',
+                maxWidth: '700px',
+                mx: 'auto',
+                fontSize: { xs: '1rem', md: '1.1rem' },
+                lineHeight: 1.7
+              }}
+            >
+              See how I've helped bring ambitious ideas to life with stunning results.
+            </Typography>
+
+            <Grid container spacing={4}>
+              <Grid item xs={12} md={6}>
+                <ProjectCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  onClick={() => navigate('/portfolio')}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <ProjectImage imageUrl="/images/projects/yoked.png" />
+                  <Box sx={{ p: 3 }}>
+                    <Typography variant="h5" sx={{ mb: 1, fontWeight: 600 }}>
+                      Project Yoked
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.7, mb: 2 }}>
+                      A revolutionary fitness social platform featuring AI-powered content, comprehensive tracking, and personalized analytics. Built as CEO/Founder of Project Yoked LLC.
+                    </Typography>
+                    <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
+                      {['Mobile App', 'Web App', 'AI', 'Social Platform'].map((tag) => (
+                        <Chip
+                          key={tag}
+                          label={tag}
+                          size="small"
+                          sx={{
+                            background: 'rgba(255, 255, 255, 0.08)',
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            fontSize: '0.65rem',
+                            height: '20px',
+                            padding: '0 0.5rem',
+                            '& .MuiChip-label': {
+                              padding: '0 0.25rem',
+                              fontSize: '0.65rem',
+                            }
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                </ProjectCard>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <ProjectCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  onClick={() => navigate('/portfolio')}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <ProjectImage imageUrl="/images/projects/eaglechair-homepage.png" />
+                  <Box sx={{ p: 3 }}>
+                    <Typography variant="h5" sx={{ mb: 1, fontWeight: 600 }}>
+                      Eagle Chair Project
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.7, mb: 2 }}>
+                      A premium furniture brand's complete digital flagship experience. Beautiful e-commerce platform with seamless shopping and product storytelling.
+                    </Typography>
+                    <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
+                      {['E-Commerce', 'Web App', 'Premium Brand'].map((tag) => (
+                        <Chip
+                          key={tag}
+                          label={tag}
+                          size="small"
+                          sx={{
+                            background: 'rgba(255, 255, 255, 0.08)',
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            fontSize: '0.65rem',
+                            height: '20px',
+                            padding: '0 0.5rem',
+                            '& .MuiChip-label': {
+                              padding: '0 0.25rem',
+                              fontSize: '0.65rem',
+                            }
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                </ProjectCard>
+              </Grid>
+            </Grid>
+          </AnimatedSection>
+        </Container>
+      </FeaturedProductsSection>
+
       <CustomWebsiteSection>
         <Container maxWidth="lg">
-          <AnimatedSection delay={0.6}>
+          <AnimatedSection delay={0.5}>
             <Typography 
               variant="h3" 
               align="center"
               sx={{ 
                 mb: 2,
-                fontSize: { xs: '1.8rem', sm: '2.2rem', md: '2.5rem' },
+                fontSize: { xs: '1.5rem', sm: '1.875rem', md: '2.25rem' },
                 fontWeight: 700
               }}
             >
@@ -1092,22 +833,6 @@ const Home = () => {
                   fontWeight: 600,
                   color: 'primary.main',
                   fontSize: 'clamp(1.1rem, 2.5vw, 1.3rem)',
-                  
-                  /* Enhanced responsive sizing */
-                  '@media (max-width: 320px)': {
-                    fontSize: '1rem',
-                    mb: 2,
-                  },
-                  '@media (max-width: 480px)': {
-                    fontSize: '1.1rem',
-                    mb: 2.5,
-                  },
-                  '@media (min-width: 768px)': {
-                    fontSize: '1.25rem',
-                  },
-                  '@media (min-width: 1920px)': {
-                    fontSize: '1.3rem',
-                  },
                 }}
               >
                 Investment: Only domain + hosting costs after launch
@@ -1120,26 +845,6 @@ const Home = () => {
                   lineHeight: 1.7,
                   color: 'text.secondary',
                   fontSize: 'clamp(1rem, 2.2vw, 1.15rem)',
-                  
-                  /* Enhanced responsive sizing */
-                  '@media (max-width: 320px)': {
-                    fontSize: '0.95rem',
-                    maxWidth: '95%',
-                    lineHeight: 1.6,
-                  },
-                  '@media (max-width: 480px)': {
-                    fontSize: '1rem',
-                    maxWidth: '90%',
-                    lineHeight: 1.65,
-                  },
-                  '@media (min-width: 768px)': {
-                    fontSize: '1.1rem',
-                    maxWidth: '650px',
-                  },
-                  '@media (min-width: 1920px)': {
-                    fontSize: '1.15rem',
-                    maxWidth: '700px',
-                  },
                 }}
               >
                 I handle everything – design, development, SEO optimization, performance tuning, and strategic positioning. 
@@ -1150,6 +855,66 @@ const Home = () => {
           </AnimatedSection>
         </Container>
       </CustomWebsiteSection>
+
+      <CTASection>
+        <Container maxWidth="md">
+          <AnimatedSection delay={0.6}>
+            <Typography 
+              variant="h2" 
+              align="center"
+              sx={{ 
+                mb: 3,
+                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
+                fontWeight: 700
+              }}
+            >
+              Ready to Bring Your Idea to Life?
+            </Typography>
+            <Typography 
+              variant="h6" 
+              align="center"
+              sx={{ 
+                mb: 4,
+                color: 'text.secondary',
+                maxWidth: '600px',
+                mx: 'auto',
+                lineHeight: 1.7,
+                fontSize: { xs: '1rem', md: '1.1rem' }
+              }}
+            >
+              Let's transform your vision into a powerful digital solution. Whether it's a website, mobile app, or custom platform, I'm here to make it happen.
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Button
+                component={Link}
+                to="/contact"
+                variant="contained"
+                size="large"
+                sx={{
+                  padding: '14px 36px',
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                }}
+              >
+                Get Started Today
+              </Button>
+              <Button
+                component={Link}
+                to="/portfolio"
+                variant="outlined"
+                size="large"
+                sx={{
+                  padding: '14px 36px',
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                }}
+              >
+                View My Work
+              </Button>
+            </Box>
+          </AnimatedSection>
+        </Container>
+      </CTASection>
     </PageTransition>
   );
 };

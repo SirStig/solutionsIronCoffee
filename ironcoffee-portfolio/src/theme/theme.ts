@@ -597,14 +597,18 @@ const getDesignTokens = (mode: PaletteMode) => ({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 'clamp(4px, 0.5vw, 8px)',
-          padding: 'clamp(8px, 1.5vw, 16px) clamp(20px, 3vw, 36px)',
+          borderRadius: '50px',
+          padding: '10px 28px',
+          fontWeight: 500,
+          textTransform: 'none',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
           /* Comprehensive transition support */
-          transition: 'all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1)',
-          WebkitTransition: 'all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1)',
-          MozTransition: 'all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1)',
-          msTransition: 'all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1)',
-          OTransition: 'all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          WebkitTransition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          MozTransition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          msTransition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          OTransition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           /* Touch improvements */
           touchAction: 'manipulation',
           WebkitTapHighlightColor: 'transparent',
@@ -647,19 +651,26 @@ const getDesignTokens = (mode: PaletteMode) => ({
           },
         },
         contained: {
-          backgroundColor: mode === 'dark' ? 'transparent' : 'rgba(13, 148, 136, 0.1)',
-          border: mode === 'dark' ? '1px solid #FFFFFFFF' : '1px solid #FFFFFFFF',
-          color: mode === 'dark' ? '#FFFFFFFF' : '#FFFFFFFF',
+          backgroundColor: mode === 'dark' ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 255, 255, 0.15)',
+          border: mode === 'dark' ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(255, 255, 255, 0.25)',
+          color: mode === 'dark' ? '#FFFFFF' : '#111827',
+          boxShadow: mode === 'dark' ? '0 4px 20px rgba(0, 0, 0, 0.3)' : '0 4px 20px rgba(0, 0, 0, 0.1)',
           '&:hover': {
-            backgroundColor: mode === 'dark' ? 'rgba(100, 255, 218, 0.1)' : 'rgba(13, 148, 136, 0.2)',
+            backgroundColor: mode === 'dark' ? 'rgba(0, 0, 0, 0.25)' : 'rgba(255, 255, 255, 0.25)',
+            borderColor: mode === 'dark' ? 'rgba(255, 255, 255, 0.25)' : 'rgba(255, 255, 255, 0.35)',
+            boxShadow: mode === 'dark' ? '0 6px 30px rgba(0, 0, 0, 0.4)' : '0 6px 30px rgba(0, 0, 0, 0.15)',
           },
         },
         outlined: {
-          borderColor: mode === 'dark' ? '#FFFFFFFF' : '#FFFFFFFF',
-          color: mode === 'dark' ? '#FFFFFFFF' : '#FFFFFFFF',
+          backgroundColor: mode === 'dark' ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 255, 255, 0.15)',
+          borderColor: mode === 'dark' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.25)',
+          borderWidth: '1px',
+          color: mode === 'dark' ? '#FFFFFF' : '#111827',
+          boxShadow: mode === 'dark' ? '0 4px 20px rgba(0, 0, 0, 0.3)' : '0 4px 20px rgba(0, 0, 0, 0.1)',
           '&:hover': {
-            backgroundColor: mode === 'dark' ? 'rgba(100, 255, 218, 0.1)' : 'rgba(13, 148, 136, 0.1)',
-            borderColor: mode === 'dark' ? '#64FFDA' : '#FFFFFFFF',
+            backgroundColor: mode === 'dark' ? 'rgba(0, 0, 0, 0.25)' : 'rgba(255, 255, 255, 0.25)',
+            borderColor: mode === 'dark' ? 'rgba(255, 255, 255, 0.25)' : 'rgba(255, 255, 255, 0.35)',
+            boxShadow: mode === 'dark' ? '0 6px 30px rgba(0, 0, 0, 0.4)' : '0 6px 30px rgba(0, 0, 0, 0.15)',
           },
         },
         text: {

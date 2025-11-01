@@ -1,428 +1,589 @@
 import React from 'react';
-import { Container, Typography, Grid, Box, Card, LinearProgress, Avatar } from '@mui/material';
+import { Container, Typography, Grid, Box, Avatar, Chip } from '@mui/material';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
+import PageTransition from '../components/PageTransition';
+import AnimatedSection from '../components/AnimatedSection';
 
-const SkillCard = styled(Card)`
-  padding: clamp(1.5rem, 3vw, 3rem);
-  height: 100%;
-  
-  /* Comprehensive transition support */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  -webkit-transition: transform 0.3s ease, box-shadow 0.3s ease;
-  -moz-transition: transform 0.3s ease, box-shadow 0.3s ease;
-  -ms-transition: transform 0.3s ease, box-shadow 0.3s ease;
-  -o-transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
-  /* Performance optimization */
-  will-change: transform, box-shadow;
-  
-  /* Touch improvements */
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
+const HeroSection = styled.section`
+  padding: clamp(5rem, 10vw, 8rem) 0 clamp(3rem, 6vw, 5rem);
+  background: transparent;
+`;
 
-  &:hover {
-    /* Transform with full browser compatibility */
-    transform: translateY(-8px);
-    -webkit-transform: translateY(-8px);
-    -moz-transform: translateY(-8px);
-    -ms-transform: translateY(-8px);
-    -o-transform: translateY(-8px);
-    
-    /* Enhanced responsive shadow */
-    box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(24px, 3vw, 40px) rgba(0, 0, 0, 0.15);
-    -webkit-box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(24px, 3vw, 40px) rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(24px, 3vw, 40px) rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Enhanced responsive design */
-  @media (max-width: 320px) {
-    padding: clamp(1rem, 2.5vw, 1.25rem);
-  }
-  
-  @media (max-width: 480px) {
-    padding: clamp(1.25rem, 3vw, 1.75rem);
-  }
-  
-  @media (max-width: 768px) {
-    padding: clamp(1.5rem, 2.8vw, 2.25rem);
-  }
-  
-  @media (min-width: 1920px) {
-    padding: 2rem;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  
-  /* Touch device optimizations */
-  @media (hover: none) and (pointer: coarse) {
-    &:hover {
-      transform: none;
-      -webkit-transform: none;
-      -moz-transform: none;
-    }
-    
-    &:active {
-      transform: scale(0.98);
-      -webkit-transform: scale(0.98);
-      -moz-transform: scale(0.98);
-    }
-  }
+const Section = styled.section`
+  padding: clamp(5rem, 10vw, 8rem) 0;
+  background: transparent;
+`;
+
+const ValuesSection = styled.section`
+  padding: 0 0 clamp(5rem, 10vw, 8rem) 0;
+  background: transparent;
 `;
 
 const StyledAvatar = styled(Avatar)`
   && {
-    width: clamp(180px, 15vw, 280px);
-    height: clamp(180px, 15vw, 280px);
-    margin-bottom: clamp(1.5rem, 3vw, 3rem);
-    
-    /* Enhanced box shadow with browser compatibility */
-    box-shadow: 0 clamp(20px, 3vw, 32px) clamp(40px, 5vw, 64px) clamp(-15px, -2vw, -24px) rgba(2, 12, 27, 0.7),
-                inset 0 0 clamp(30px, 4vw, 48px) clamp(10px, 1.5vw, 16px) rgba(0, 0, 0, 0.2);
-    -webkit-box-shadow: 0 clamp(20px, 3vw, 32px) clamp(40px, 5vw, 64px) clamp(-15px, -2vw, -24px) rgba(2, 12, 27, 0.7),
-                        inset 0 0 clamp(30px, 4vw, 48px) clamp(10px, 1.5vw, 16px) rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 clamp(20px, 3vw, 32px) clamp(40px, 5vw, 64px) clamp(-15px, -2vw, -24px) rgba(2, 12, 27, 0.7),
-                     inset 0 0 clamp(30px, 4vw, 48px) clamp(10px, 1.5vw, 16px) rgba(0, 0, 0, 0.2);
-    
-    /* Comprehensive transition support */
-    transition: all 0.3s ease-in-out;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    
-    object-fit: cover;
-    -o-object-fit: cover; /* Opera support */
-    border-radius: 50%;
-    border: none;
-    background: ${({ theme }) => theme.palette.background.default};
-    
-    /* Performance optimization */
-    will-change: transform, box-shadow;
-    
-    /* Touch improvements */
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border-radius: 50%;
-      box-shadow: inset 0 0 clamp(20px, 3vw, 32px) clamp(5px, 1vw, 8px) rgba(0, 0, 0, 0.25);
-      -webkit-box-shadow: inset 0 0 clamp(20px, 3vw, 32px) clamp(5px, 1vw, 8px) rgba(0, 0, 0, 0.25);
-      -moz-box-shadow: inset 0 0 clamp(20px, 3vw, 32px) clamp(5px, 1vw, 8px) rgba(0, 0, 0, 0.25);
-      pointer-events: none;
-    }
-
-    /* Enhanced responsive design for all screen sizes */
-    @media (max-width: 320px) {
-      width: clamp(150px, 12vw, 180px);
-      height: clamp(150px, 12vw, 180px);
-      margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
-    }
-
-    @media (max-width: 480px) {
-      width: clamp(180px, 14vw, 220px);
-      height: clamp(180px, 14vw, 220px);
-      margin-bottom: clamp(1.25rem, 3vw, 2rem);
-    }
-
-    @media (max-width: 768px) {
-      width: clamp(220px, 16vw, 280px);
-      height: clamp(220px, 16vw, 280px);
-      margin-bottom: clamp(1.5rem, 3.5vw, 2.5rem);
-    }
-
-    @media (min-width: 1024px) {
-      width: clamp(250px, 14vw, 320px);
-      height: clamp(250px, 14vw, 320px);
-    }
-    
-    @media (min-width: 1920px) {
-      width: 250px;
-      height: 250px;
-      margin-bottom: 2rem;
-    }
-
-    &:hover {
-      /* Transform with full browser compatibility */
-      transform: scale(1.03);
-      -webkit-transform: scale(1.03);
-      -moz-transform: scale(1.03);
-      -ms-transform: scale(1.03);
-      -o-transform: scale(1.03);
-      
-      /* Enhanced responsive shadow on hover */
-      box-shadow: 0 clamp(25px, 4vw, 40px) clamp(50px, 6vw, 80px) clamp(-12px, -1.5vw, -20px) rgba(2, 12, 27, 0.8),
-                  inset 0 0 clamp(35px, 5vw, 56px) clamp(12px, 1.8vw, 20px) rgba(0, 0, 0, 0.25);
-      -webkit-box-shadow: 0 clamp(25px, 4vw, 40px) clamp(50px, 6vw, 80px) clamp(-12px, -1.5vw, -20px) rgba(2, 12, 27, 0.8),
-                          inset 0 0 clamp(35px, 5vw, 56px) clamp(12px, 1.8vw, 20px) rgba(0, 0, 0, 0.25);
-      -moz-box-shadow: 0 clamp(25px, 4vw, 40px) clamp(50px, 6vw, 80px) clamp(-12px, -1.5vw, -20px) rgba(2, 12, 27, 0.8),
-                       inset 0 0 clamp(35px, 5vw, 56px) clamp(12px, 1.8vw, 20px) rgba(0, 0, 0, 0.25);
-    }
-    
-    /* Touch device optimizations */
-    @media (hover: none) and (pointer: coarse) {
-      &:hover {
-        transform: none;
-        -webkit-transform: none;
-        -moz-transform: none;
-      }
-      
-      &:active {
-        transform: scale(0.98);
-        -webkit-transform: scale(0.98);
-        -moz-transform: scale(0.98);
-      }
-    }
+    width: clamp(200px, 20vw, 300px);
+    height: clamp(200px, 20vw, 300px);
+    margin: 0 auto;
+    box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.2);
+    border: 3px solid rgba(255, 255, 255, 0.1);
   }
 `;
 
-const About = () => {
-  const skills = {
-    frontend: [
-      { name: 'React & TypeScript', level: 90 },
-      { name: 'Material-UI & Styled Components', level: 85 },
-      { name: 'HTML5 & CSS3', level: 90 },
-      { name: 'Framer Motion', level: 85 },
-      { name: 'React Native', level: 80 },
-    ],
-    backend: [
-      { name: 'Python & FastAPI', level: 90 },
-      { name: '.NET & C#', level: 85 },
-      { name: 'SQLAlchemy & PostgreSQL', level: 85 },
-      { name: 'Redis & Celery', level: 80 },
-      { name: 'RESTful APIs', level: 90 },
-    ],
-    cloud: [
-      { name: 'AWS Services', level: 85 },
-      { name: 'AWS CLI', level: 85 },
-      { name: 'Docker & Containerization', level: 80 },
-      { name: 'CI/CD Pipelines', level: 80 },
-      { name: 'Firebase', level: 75 },
-    ],
-    gamedev: [
-      { name: 'Unity Engine', level: 85 },
-      { name: 'C# Game Development', level: 85 },
-      { name: 'Unity UI & Physics', level: 80 },
-      { name: 'Game Architecture', level: 75 },
-    ],
-  };
+const ContentCard = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: clamp(16px, 2.5vw, 20px);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: 100%;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 clamp(12px, 2vw, 20px) clamp(40px, 5vw, 60px) rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+`;
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6
-      }
+const ValueTag = styled(Box)`
+  display: inline-block;
+  padding: clamp(0.3rem, 0.75vw, 0.5rem) clamp(0.75rem, 1.5vw, 1rem);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
+  font-weight: 500;
+  color: ${({ theme }) => theme.palette.text.primary};
+`;
+
+const TechStackContainer = styled(Box)`
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: clamp(16px, 2.5vw, 20px);
+  padding: clamp(2rem, 4vw, 3rem);
+  box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
+const About = () => {
+  const whyChooseMe = [
+    {
+      title: 'All-in-One Developer',
+      description: 'I handle every aspect of your project. From initial design and SEO to frontend, backend, mobile apps, and deployment – I think through it all, figure it all out, and execute it efficiently. You get one developer who understands the entire stack.'
+    },
+    {
+      title: 'Perfectionist Who Delivers',
+      description: 'I refuse to deliver anything half-baked. If something isn\'t right, I\'ll scrap it and rebuild it entirely rather than compromise. Every client deserves perfection, and I\'m willing to work 80+ hour weeks with sleepless nights to achieve it.'
+    },
+    {
+      title: 'Self-Taught Mastery',
+      description: '15 years of coding since I was 10, with thousands of hours spent learning through trial and error. I have a deep, complex understanding of technologies because I\'ve figured them out from the ground up – no shortcuts, just comprehensive knowledge.'
+    },
+    {
+      title: 'Fast, Efficient & Driven',
+      description: 'Speed matters, but so does quality. I work efficiently without sacrificing excellence. My drive is fueled by big goals and the motivation to provide the best for my family. When I commit to your project, nothing stops me from seeing it through perfectly.'
+    },
+    {
+      title: 'Full-Stack Infrastructure Expertise',
+      description: 'Beyond code, I understand servers, networks, databases, and cloud infrastructure. I\'ve set up entire systems from scratch – AWS infrastructure, VPN servers, media servers, network administration, and more. Your entire technical ecosystem is in capable hands.'
+    },
+    {
+      title: 'Client Satisfaction Above All',
+      description: 'Your happiness is my priority. I want every single client happy, even if it means starting over completely. I\'d rather rebuild from scratch than deliver something you\'re not thrilled with. Your success is my success.'
     }
+  ];
+
+  const values = [
+    'Perfectionism',
+    'Dedication',
+    'Excellence',
+    'Innovation',
+    'Client-First',
+    'Problem-Solving',
+    'Self-Improvement',
+    'Persistence',
+    'Comprehensive Understanding',
+    'Quality Above All'
+  ];
+
+  const technologies = {
+    frontend: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Material-UI'],
+    backend: ['Python', 'FastAPI', 'Celery', 'Redis', 'PostgreSQL', 'MySQL', 'SQLAlchemy'],
+    mobile: ['React Native', 'iOS Development', 'Android Development'],
+    cloudDevOps: ['Docker', 'GitHub', 'AWS', 'Dreamhost', 'CI/CD', 'Hyper-V', 'Firebase'],
+    networkSystems: ['VPNs', 'Servers', 'Ollama', 'Ubiquiti', 'Network Administration', 'Firewall Configuration']
   };
 
   return (
-    <>
+    <PageTransition>
       <Helmet>
         <title>About - IronCoffee Solutions</title>
-        <meta name="description" content="Learn about our expertise in web development, mobile app development, backend development, and game development. Meet the creative technologist behind IronCoffee Solutions with over a year of experience." />
+        <meta name="description" content="Learn about my expertise, values, and passion for creating exceptional digital experiences. Discover why I'm the right choice for your project." />
       </Helmet>
 
-      <Box component="section" sx={{ 
-        pt: { xs: 8, md: 12 },
-        pb: { xs: 4, md: 6 },
-        background: 'transparent',
-        color: 'white'
-      }}>
-        <Container maxWidth="lg">
-          <Grid container spacing={6} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={fadeInUp}
-              >
-                <Typography variant="h1" sx={{ 
-                  mb: 3,
-                  fontSize: { xs: '2.5rem', md: '3.5rem' },
-                  fontWeight: 700
-                }}>
-                  About Me
+      <HeroSection>
+        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
+          <AnimatedSection>
+            <Grid container spacing={4} alignItems="center">
+              <Grid item xs={12} md={6}>
+                <Typography 
+                  variant="h1" 
+                  sx={{ 
+                    mb: 2,
+                    fontSize: { xs: '2.5rem', sm: '3rem', md: '3.5rem' },
+                    fontWeight: 700
+                  }}
+                >
+                  Who I Am
                 </Typography>
-                <Typography variant="h4" sx={{ 
-                  mb: 4,
-                  fontWeight: 400,
-                  color: 'rgba(255, 255, 255, 0.9)'
-                }}>
+                <Typography 
+                  variant="h4" 
+                  sx={{ 
+                    mb: 3,
+                    fontWeight: 400,
+                    color: 'text.secondary',
+                    fontSize: { xs: '1.25rem', md: '1.5rem' }
+                  }}
+                >
                   Creative Technologist & Problem Solver
                 </Typography>
-              </motion.div>
-            </Grid>
-            <Grid item xs={12} md={6} sx={{ textAlign: 'center' }}>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-              >
+                <Typography 
+                  variant="body1" 
+                  sx={{ 
+                    mb: 3,
+                    color: 'text.secondary',
+                    fontSize: { xs: '1rem', md: '1.1rem' },
+                    lineHeight: 1.7
+                  }}
+                >
+                  I've been coding since I was 10 years old, starting with Java mods for Minecraft and even working on the team for the first-ever mod maker for Minecraft. My journey began watching my father build mobile apps at his company, which sparked my passion for development. From there, I taught myself everything – HTML, CSS, JavaScript, Python, React, mobile development, and so much more through thousands of hours of trial, error, and relentless learning.
+                </Typography>
+                <Typography 
+                  variant="body1" 
+                  sx={{ 
+                    mb: 3,
+                    color: 'text.secondary',
+                    fontSize: { xs: '1rem', md: '1.1rem' },
+                    lineHeight: 1.7
+                  }}
+                >
+                  In 2024, I made the decision to pursue development full-time. Since then, I've built everything from full e-commerce platforms with complete CMS systems to massive social media platforms, media processing applications, and complex financial systems. I'm entirely self-taught – no college, no formal training – just pure dedication and the drive to figure things out.
+                </Typography>
+                <Typography 
+                  variant="body1" 
+                  sx={{ 
+                    color: 'text.secondary',
+                    fontSize: { xs: '1rem', md: '1.1rem' },
+                    lineHeight: 1.7
+                  }}
+                >
+                  What makes me unique? I'm a true all-in-one developer. I handle design, SEO, frontend, backend, mobile apps, DevOps, infrastructure, and everything in between. I can think through entire systems, solve complex problems quickly, and execute efficiently. I'm extremely driven, work tirelessly when needed, and strive for perfection in every single project.
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={6} sx={{ textAlign: 'center' }}>
                 <StyledAvatar
                   alt="Profile Picture"
                   src={`${process.env.PUBLIC_URL}/images/profile.JPEG`}
                   sx={{ 
-                    margin: '0 auto',
                     bgcolor: 'secondary.main',
                   }}
                 />
-              </motion.div>
+              </Grid>
             </Grid>
-          </Grid>
+          </AnimatedSection>
         </Container>
-      </Box>
+      </HeroSection>
 
-      <Container maxWidth="lg" sx={{ py: 8 }}>
-        <Grid container spacing={6}>
-          <Grid item xs={12} md={6}>
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeInUp}
+      <Section>
+        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
+          <AnimatedSection delay={0.2}>
+            <Typography 
+              variant="h2" 
+              align="center"
+              sx={{ 
+                mb: 1,
+                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
+                fontWeight: 700
+              }}
             >
-              <Typography variant="h2" gutterBottom>
-                Modern Tech Stack
-              </Typography>
-              <Typography variant="body1" paragraph>
-                Passionate about crafting digital experiences that blend cutting-edge technology with intuitive design. With over a year of hands-on experience in full-stack development,
-                I specialize in building scalable web applications, robust backend systems, and engaging mobile experiences. My journey spans from React-powered user interfaces
-                to Python-driven APIs, AWS cloud architectures, and immersive Unity games. I thrive on turning complex problems into elegant, performant solutions
-                that users love to interact with.
-              </Typography>
-            </motion.div>
-          </Grid>
+              Why Choose Me
+            </Typography>
+            <Typography 
+              variant="h6" 
+              align="center"
+              sx={{ 
+                mb: 5,
+                color: 'text.secondary',
+                maxWidth: '700px',
+                mx: 'auto',
+                fontSize: { xs: '1rem', md: '1.1rem' },
+                lineHeight: 1.7
+              }}
+            >
+              What sets me apart in delivering exceptional results
+            </Typography>
 
-          <Grid item xs={12} md={6}>
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeInUp}
-            >
-              <Typography variant="h3" gutterBottom>
-                Frontend Development
-              </Typography>
-              <Box sx={{ mb: 4 }}>
-                {skills.frontend.map((skill) => (
-                  <Box key={skill.name} sx={{ mb: 2 }}>
-                    <Typography variant="subtitle1" gutterBottom>
-                      {skill.name}
-                    </Typography>
-                    <LinearProgress
-                      variant="determinate"
-                      value={skill.level}
-                      sx={{
-                        height: 8,
-                        borderRadius: 4,
-                        backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                        '& .MuiLinearProgress-bar': {
-                          borderRadius: 4,
-                          background: 'linear-gradient(45deg, #7928CA, #FF0080)',
-                        },
+            <Grid container spacing={3}>
+              {whyChooseMe.map((item, index) => (
+                <Grid item xs={12} sm={6} md={4} key={item.title}>
+                  <ContentCard
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  >
+                    <Typography 
+                      variant="h5" 
+                      sx={{ 
+                        mb: 1.5, 
+                        fontWeight: 600, 
+                        fontSize: { xs: '1.1rem', md: '1.25rem' } 
                       }}
-                    />
-                  </Box>
+                    >
+                      {item.title}
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: 'text.secondary', 
+                        lineHeight: 1.7, 
+                        fontSize: { xs: '0.9rem', md: '0.95rem' } 
+                      }}
+                    >
+                      {item.description}
+                    </Typography>
+                  </ContentCard>
+                </Grid>
+              ))}
+            </Grid>
+          </AnimatedSection>
+        </Container>
+      </Section>
+
+      <ValuesSection>
+        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
+          <AnimatedSection delay={0.3}>
+            <Typography 
+              variant="h2" 
+              align="center"
+              sx={{ 
+                mb: 1,
+                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
+                fontWeight: 700
+              }}
+            >
+              My Values
+            </Typography>
+            <Typography 
+              variant="h6" 
+              align="center"
+              sx={{ 
+                mb: 4,
+                color: 'text.secondary',
+                maxWidth: '700px',
+                mx: 'auto',
+                fontSize: { xs: '1rem', md: '1.1rem' },
+                lineHeight: 1.7
+              }}
+            >
+              The principles that guide my work
+            </Typography>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 1.5 }}>
+              {values.map((value) => (
+                <ValueTag key={value}>
+                  {value}
+                </ValueTag>
+              ))}
+            </Box>
+          </AnimatedSection>
+        </Container>
+      </ValuesSection>
+
+      <Section>
+        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
+          <AnimatedSection delay={0.35}>
+            <Typography 
+              variant="h2" 
+              align="center"
+              sx={{ 
+                mb: 1,
+                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
+                fontWeight: 700
+              }}
+            >
+              My Journey & Major Projects
+            </Typography>
+            <Typography 
+              variant="h6" 
+              align="center"
+              sx={{ 
+                mb: 5,
+                color: 'text.secondary',
+                maxWidth: '700px',
+                mx: 'auto',
+                fontSize: { xs: '1rem', md: '1.1rem' },
+                lineHeight: 1.7
+              }}
+            >
+              Building ambitious projects and learning through doing
+            </Typography>
+
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+                <ContentCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <Typography 
+                    variant="h5" 
+                    sx={{ 
+                      mb: 1.5, 
+                      fontWeight: 600, 
+                      fontSize: { xs: '1.1rem', md: '1.25rem' },
+                      color: 'primary.main'
+                    }}
+                  >
+                    Project Yoked
+                  </Typography>
+                  <Typography 
+                    variant="body2" 
+                    sx={{ 
+                      color: 'text.secondary', 
+                      lineHeight: 1.7, 
+                      fontSize: { xs: '0.9rem', md: '0.95rem' },
+                      mb: 2
+                    }}
+                  >
+                    A massive fitness social media platform I developed entirely myself as CEO/Founder. Complete mobile app, full website, and backend servers using AI for content moderation, AWS infrastructure for video processing, subscriptions, ad systems, comprehensive workout tracking with gamification, and a full admin dashboard.
+                  </Typography>
+                </ContentCard>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <ContentCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <Typography 
+                    variant="h5" 
+                    sx={{ 
+                      mb: 1.5, 
+                      fontWeight: 600, 
+                      fontSize: { xs: '1.1rem', md: '1.25rem' },
+                      color: 'primary.main'
+                    }}
+                  >
+                    Eagle Chair E-Commerce Platform
+                  </Typography>
+                  <Typography 
+                    variant="body2" 
+                    sx={{ 
+                      color: 'text.secondary', 
+                      lineHeight: 1.7, 
+                      fontSize: { xs: '0.9rem', md: '0.95rem' },
+                      mb: 2
+                    }}
+                  >
+                    Migrating a premium furniture brand from WordPress to a fully custom solution. Complete e-commerce platform with a comprehensive CMS system, custom server architecture, and database optimization. Almost complete, with a live demo showcasing the full backend infrastructure.
+                  </Typography>
+                </ContentCard>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <ContentCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <Typography 
+                    variant="h5" 
+                    sx={{ 
+                      mb: 1.5, 
+                      fontWeight: 600, 
+                      fontSize: { xs: '1.1rem', md: '1.25rem' },
+                      color: 'primary.main'
+                    }}
+                  >
+                    EncodeForge
+                  </Typography>
+                  <Typography 
+                    variant="body2" 
+                    sx={{ 
+                      color: 'text.secondary', 
+                      lineHeight: 1.7, 
+                      fontSize: { xs: '0.9rem', md: '0.95rem' },
+                      mb: 2
+                    }}
+                  >
+                    My own media processing application using FFMPEG for encoding, AI-powered subtitle generation, metadata extraction, and file management. Originally built in Java, now being converted to Python with PySide for a modern cross-platform experience.
+                  </Typography>
+                </ContentCard>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <ContentCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <Typography 
+                    variant="h5" 
+                    sx={{ 
+                      mb: 1.5, 
+                      fontWeight: 600, 
+                      fontSize: { xs: '1.1rem', md: '1.25rem' },
+                      color: 'primary.main'
+                    }}
+                  >
+                    Financial Platform
+                  </Typography>
+                  <Typography 
+                    variant="body2" 
+                    sx={{ 
+                      color: 'text.secondary', 
+                      lineHeight: 1.7, 
+                      fontSize: { xs: '0.9rem', md: '0.95rem' },
+                      mb: 2
+                    }}
+                  >
+                    Built a comprehensive financial management platform using Stripe, Plaid, and PayPal APIs with pure HTML, CSS, JavaScript, and Python FastAPI. Near completion but halted due to banking regulatory costs – a testament to taking on ambitious projects and learning from the experience.
+                  </Typography>
+                </ContentCard>
+              </Grid>
+            </Grid>
+          </AnimatedSection>
+        </Container>
+      </Section>
+
+      <Section>
+        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
+          <AnimatedSection delay={0.4}>
+            <Typography 
+              variant="h2" 
+              align="center"
+              sx={{ 
+                mb: 1,
+                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
+                fontWeight: 700
+              }}
+            >
+              Beyond Code
+            </Typography>
+            <Typography 
+              variant="h6" 
+              align="center"
+              sx={{ 
+                mb: 5,
+                color: 'text.secondary',
+                maxWidth: '700px',
+                mx: 'auto',
+                fontSize: { xs: '1rem', md: '1.1rem' },
+                lineHeight: 1.7
+              }}
+            >
+              What drives me and what I enjoy outside of development
+            </Typography>
+
+            <Box sx={{ maxWidth: '800px', mx: 'auto' }}>
+              <ContentCard
+                whileHover={{ scale: 1.01 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              >
+                <Typography 
+                  variant="body1" 
+                  sx={{ 
+                    color: 'text.secondary', 
+                    lineHeight: 1.8, 
+                    fontSize: { xs: '1rem', md: '1.1rem' },
+                    mb: 2
+                  }}
+                >
+                  My motivation comes from having huge, ambitious goals and the drive to achieve them – no matter how impossible they may seem to others. I'm driven by the desire to provide the best for my family, which means I'm willing to work 80+ hour weeks with sleepless nights when necessary. I don't stop at obstacles; I find solutions.
+                </Typography>
+                <Typography 
+                  variant="body1" 
+                  sx={{ 
+                    color: 'text.secondary', 
+                    lineHeight: 1.8, 
+                    fontSize: { xs: '1rem', md: '1.1rem' }
+                  }}
+                >
+                  When I'm not coding, you'll find me hiking, ice skating, skiing, driving, enjoying music, fishing, camping, or exploring the outdoors. These activities recharge me and keep me balanced, allowing me to bring fresh perspectives and energy to every project.
+                </Typography>
+              </ContentCard>
+            </Box>
+          </AnimatedSection>
+        </Container>
+      </Section>
+
+      <Section>
+        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
+          <AnimatedSection delay={0.5}>
+            <Typography 
+              variant="h2" 
+              align="center"
+              sx={{ 
+                mb: 1,
+                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
+                fontWeight: 700
+              }}
+            >
+              Technologies & Expertise
+            </Typography>
+            <Typography 
+              variant="h6" 
+              align="center"
+              sx={{ 
+                mb: 5,
+                color: 'text.secondary',
+                maxWidth: '700px',
+                mx: 'auto',
+                fontSize: { xs: '1rem', md: '1.1rem' },
+                lineHeight: 1.7
+              }}
+            >
+              The modern tools and technologies I work with
+            </Typography>
+
+            <TechStackContainer>
+              <Grid container spacing={4}>
+                {Object.entries(technologies).map(([key, techs]) => (
+                  <Grid item xs={12} sm={6} md={4} key={key}>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        mb: 2, 
+                        fontWeight: 600, 
+                        fontSize: { xs: '1rem', md: '1.1rem' }, 
+                        color: 'primary.main' 
+                      }}
+                    >
+                      {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                      {techs.map((tech) => (
+                        <Chip
+                          key={tech}
+                          label={tech}
+                          size="small"
+                          sx={{
+                            background: 'rgba(255, 255, 255, 0.08)',
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            color: 'text.primary',
+                            fontSize: '0.8rem',
+                            height: '28px',
+                            fontWeight: 500
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Grid>
                 ))}
-              </Box>
-            </motion.div>
-          </Grid>
-        </Grid>
-
-        <Box sx={{ mt: 8 }}>
-          <Typography variant="h3" gutterBottom>
-            Backend & Tools
-          </Typography>
-          <Grid container spacing={4}>
-            {[...skills.backend, ...skills.cloud].map((skill) => (
-              <Grid item xs={12} sm={6} md={4} key={skill.name}>
-                            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeInUp}
-            >
-                <SkillCard>
-                  <Typography variant="h5" gutterBottom>
-                    {skill.name}
-                  </Typography>
-                  <LinearProgress
-                    variant="determinate"
-                    value={skill.level}
-                    sx={{
-                      height: 8,
-                      borderRadius: 4,
-                      backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                      '& .MuiLinearProgress-bar': {
-                        borderRadius: 4,
-                        background: 'linear-gradient(45deg, #64FFDA, #0A192F)',
-                      },
-                    }}
-                  />
-                </SkillCard>
-              </motion.div>
               </Grid>
-            ))}
-          </Grid>
-        </Box>
-
-
-
-        <Box sx={{ mt: 8 }}>
-          <Typography variant="h3" gutterBottom>
-            Game Development
-          </Typography>
-          <Grid container spacing={4}>
-            {skills.gamedev.map((skill) => (
-              <Grid item xs={12} sm={6} md={3} key={skill.name}>
-                            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeInUp}
-            >
-                <SkillCard>
-                  <Typography variant="h5" gutterBottom>
-                    {skill.name}
-                  </Typography>
-                  <LinearProgress
-                    variant="determinate"
-                    value={skill.level}
-                    sx={{
-                      height: 8,
-                      borderRadius: 4,
-                      backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                      '& .MuiLinearProgress-bar': {
-                        borderRadius: 4,
-                        background: 'linear-gradient(45deg, #FF49DB, #FF7CE5)',
-                      },
-                    }}
-                  />
-                </SkillCard>
-              </motion.div>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-
-
-      </Container>
-    </>
+            </TechStackContainer>
+          </AnimatedSection>
+        </Container>
+      </Section>
+    </PageTransition>
   );
 };
 
