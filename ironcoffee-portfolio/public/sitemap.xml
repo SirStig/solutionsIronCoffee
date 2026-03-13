@@ -73,6 +73,82 @@
     </image:image>
   </url>
   
+  <!-- Project Detail Pages -->
+  <url>
+    <loc>https://solutions.ironcoffee.com/portfolio/project-yoked</loc>
+    <lastmod>2025-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/yoked.png</image:loc>
+      <image:title>Project Yoked - Fitness Social Platform</image:title>
+      <image:caption>Revolutionary fitness social platform with AI-powered content moderation and comprehensive tracking</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://solutions.ironcoffee.com/portfolio/eaglechair</loc>
+    <lastmod>2025-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/eaglechair-homepage.png</image:loc>
+      <image:title>EagleChair Digital Flagship</image:title>
+      <image:caption>End-to-end commerce experience for premium furniture brand</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://solutions.ironcoffee.com/portfolio/beyond25</loc>
+    <lastmod>2025-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/beyond25/PlaylistsChat.png</image:loc>
+      <image:title>Beyond25 - AI-Curated Music Discovery</image:title>
+      <image:caption>AI-curated music discovery app with Gemini and Ollama</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://solutions.ironcoffee.com/portfolio/expo-media-engine</loc>
+    <lastmod>2025-03-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/expo-media-engine.png</image:loc>
+      <image:title>Expo Media Engine</image:title>
+      <image:caption>Professional React Native Expo module for video composition and editing</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://solutions.ironcoffee.com/portfolio/encodeforge</loc>
+    <lastmod>2025-03-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://solutions.ironcoffee.com/portfolio/yokedcache</loc>
+    <lastmod>2025-03-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://solutions.ironcoffee.com/portfolio/financial-project</loc>
+    <lastmod>2025-03-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://solutions.ironcoffee.com/portfolio/rlr-project</loc>
+    <lastmod>2025-03-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://solutions.ironcoffee.com/portfolio/game-dev-tycoon-mod-maker</loc>
+    <lastmod>2025-03-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
   <!-- Services Page - Business Offerings -->
   <url>
     <loc>https://solutions.ironcoffee.com/services</loc>

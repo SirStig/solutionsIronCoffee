@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Globe, Smartphone, Database, Server, ShoppingCart, Layout, Users, Code2, MessageSquare, TrendingUp, ArrowRight } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import AnimatedSection from '../components/AnimatedSection';
+import { useMobileDetect } from '../hooks/useMobileDetect';
 
 const HeroSection = styled.section`
   padding: clamp(5rem, 10vw, 8rem) 0 clamp(3rem, 6vw, 5rem);
@@ -137,6 +138,7 @@ const CTASection = styled.section`
 `;
 
 const Services = () => {
+  const { isMobile } = useMobileDetect();
   const coreServices = [
     {
       title: 'Web Development',
@@ -159,7 +161,7 @@ const Services = () => {
       description: 'Native-performance mobile applications for iOS and Android. Built complete social platforms with real-time messaging, background notifications, subscription services, and cloud integration. Your app works seamlessly across devices.',
       icon: Smartphone,
       color: '#EC4899',
-      features: ['iOS & Android Apps', 'Cloud Integration', 'Real-Time Messaging', 'Push Notifications', 'Subscription Services', 'Native Performance'],
+      features: ['iOS & Android Apps', 'Swift & Xcode', 'Cloud Integration', 'Real-Time Messaging', 'Push Notifications', 'Subscription Services', 'Native Performance'],
       image: `${process.env.PUBLIC_URL}/images/services/mobile-apps.png`
     },
     {
@@ -328,8 +330,8 @@ const Services = () => {
                     key={service.title}
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-100px' }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true, margin: isMobile ? '100px' : '-20px' }}
+                    transition={{ duration: isMobile ? 0.25 : 0.3, delay: index * 0.05 }}
                   >
                     <Grid container spacing={4} alignItems="center">
                       {/* Content Side */}

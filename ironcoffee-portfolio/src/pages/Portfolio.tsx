@@ -3,7 +3,11 @@ import { Container, Typography, Box, Chip, Button, ChipProps, Link } from '@mui/
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
-import { Launch as LaunchIcon, GitHub as GitHubIcon, Lock as LockIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { Launch as LaunchIcon, GitHub as GitHubIcon, Lock as LockIcon, Apple as AppleIcon, Shop as PlayStoreIcon } from '@mui/icons-material';
+import { useMobileDetect } from '../hooks/useMobileDetect';
+import { projects } from '../data/projects';
+import type { Project } from '../data/projects';
 
 const ProjectContainer = styled.div`
   display: grid;
@@ -12,11 +16,26 @@ const ProjectContainer = styled.div`
   width: 100%;
   min-height: 400px;
   margin-bottom: 6rem;
+  cursor: pointer;
+  border-radius: 16px;
+  padding: 1rem;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)'};
+  }
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 2rem;
     margin-bottom: 4rem;
+    padding: 0.75rem;
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 3rem;
+    padding: 0.5rem;
+    min-height: 300px;
   }
 `;
 
@@ -53,6 +72,7 @@ const MediaContainer = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  max-height: min(50vh, 480px);
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
@@ -61,16 +81,33 @@ const MediaContainer = styled.div`
     transform: translateY(-4px);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
   }
+
+  @media (max-width: 768px) {
+    max-height: min(45vh, 360px);
+  }
+
+  @media (max-width: 480px) {
+    max-height: min(40vh, 300px);
+  }
 `;
 
 const ProjectImage = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  max-height: min(50vh, 480px);
+  object-fit: contain;
   transition: transform 0.3s ease-in-out;
 
   ${MediaContainer}:hover & {
     transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    max-height: min(45vh, 360px);
+  }
+
+  @media (max-width: 480px) {
+    max-height: min(40vh, 300px);
   }
 `;
 
@@ -125,11 +162,20 @@ const ThumbnailImage = styled.img`
 const ProjectVideo = styled.video`
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  max-height: min(50vh, 480px);
+  object-fit: contain;
   transition: transform 0.3s ease-in-out;
 
   ${MediaContainer}:hover & {
     transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    max-height: min(45vh, 360px);
+  }
+
+  @media (max-width: 480px) {
+    max-height: min(40vh, 300px);
   }
 `;
 
@@ -211,7 +257,7 @@ interface StatusChipProps extends Omit<ChipProps, 'color'> {
   color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
 }
 
-const StatusChip = styled(Chip)<StatusChipProps>`
+const StatusChip = styled(Chip) <StatusChipProps>`
   && {
     background: ${({ theme, color }) => theme.palette[color || 'primary']?.main};
     color: white;
@@ -245,26 +291,6 @@ const StyledButton = styled(Button)`
   }
 `;
 
-interface ProjectStatus {
-  label: string;
-  color: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
-}
-
-interface Project {
-  id: number;
-  title: string;
-  description: string;
-  technologies: string[];
-  image: string;
-  images?: string[];
-  video?: string;
-  category: string[];
-  status?: ProjectStatus;
-  isPrivate?: boolean;
-  liveUrl?: string;
-  githubUrl?: string;
-}
-
 const ProjectMedia: React.FC<{ project: Project }> = ({ project }) => {
   const hasMultipleImages = project.images && project.images.length > 1;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -273,6 +299,8 @@ const ProjectMedia: React.FC<{ project: Project }> = ({ project }) => {
     ? project.images![currentImageIndex]
     : project.images?.[0] || project.image;
 
+  const showVideo = project.video && (!hasMultipleImages || currentImageIndex === 0);
+
   const handleSelectImage = (index: number) => {
     setCurrentImageIndex(index);
   };
@@ -280,9 +308,9 @@ const ProjectMedia: React.FC<{ project: Project }> = ({ project }) => {
   return (
     <>
       <MediaContainer>
-        {project.video ? (
+        {showVideo ? (
           <ProjectVideo
-            src={project.video}
+            src={project.video!}
             autoPlay
             muted
             loop
@@ -320,147 +348,8 @@ const ProjectMedia: React.FC<{ project: Project }> = ({ project }) => {
 };
 
 const Portfolio = () => {
-  const projects: Project[] = [
-    {
-      id: 1,
-      title: 'Project Yoked',
-      description: 'Revolutionary fitness social platform featuring AI-powered content moderation, Instagram-style interactions, comprehensive fitness tracking, personalized progress analytics, and virtual personal training. Leading development as CEO/Founder of Project Yoked LLC, creating the future of connected fitness experiences.',
-      technologies: [
-        'React.js',
-        'React Native',
-        'TypeScript',
-        'AWS CLI',
-        'AWS',
-        'FastAPI',
-        'Python',
-        'PostgreSQL'
-      ],
-      image: `${process.env.PUBLIC_URL}/images/projects/yoked.png`,
-      video: `${process.env.PUBLIC_URL}/videos/app-overview-montage.mp4`,
-      category: ['Mobile App', 'Web App', 'AI'],
-      status: { label: 'In Development', color: 'warning' },
-      isPrivate: true,
-    },
-    {
-      id: 2,
-      title: 'EagleChair Digital Flagship',
-      description: 'End-to-end commerce experience for a premium furniture brand featuring a FastAPI backend with JWT auth, async PostgreSQL, Redis caching, and a modern React storefront focused on product storytelling and conversions.',
-      technologies: [
-        'FastAPI',
-        'Python',
-        'PostgreSQL',
-        'Redis',
-        'Next.js',
-        'React',
-        'TypeScript',
-        'Tailwind CSS'
-      ],
-      image: `${process.env.PUBLIC_URL}/images/projects/eaglechair-homepage.png`,
-      images: [
-        `${process.env.PUBLIC_URL}/images/projects/eaglechair-homepage.png`,
-        `${process.env.PUBLIC_URL}/images/projects/eaglechair-catalog.png`,
-        `${process.env.PUBLIC_URL}/images/projects/eaglechair-product-dropdown.png`
-      ],
-      category: ['Web App', 'E-commerce'],
-      status: { label: 'In Development', color: 'warning' },
-      liveUrl: 'https://joshua.eaglechair.com/',
-      githubUrl: 'https://github.com/SirStig/eaglechair'
-    },
-    {
-      id: 3,
-      title: 'EncodeForge',
-      description: 'Cross-platform media processing suite combining hardware-accelerated video encoding, AI-powered subtitle generation with Whisper, and smart metadata-driven file renaming inside a polished desktop UI.',
-      technologies: [
-        'JavaFX',
-        'Python',
-        'FastAPI',
-        'FFmpeg',
-        'OpenAI Whisper',
-        'PyTorch',
-        'Docker'
-      ],
-      image: `${process.env.PUBLIC_URL}/images/projects/encodeforge-encoder.png`,
-      images: [
-        `${process.env.PUBLIC_URL}/images/projects/encodeforge-encoder.png`,
-        `${process.env.PUBLIC_URL}/images/projects/encodeforge-metadata.png`,
-        `${process.env.PUBLIC_URL}/images/projects/encodeforge-subtitles.png`
-      ],
-      category: ['Desktop App', 'AI', 'Media Processing'],
-      status: { label: 'Public Release', color: 'success' },
-      githubUrl: 'https://github.com/SirStig/EncodeForge'
-    },
-    {
-      id: 4,
-      title: 'YokedCache',
-      description: 'High-performance Python cache library with intelligent auto-invalidation, multi-backend support, and seamless FastAPI/SQLAlchemy integration. Features advanced capabilities like vector similarity search, production monitoring with Prometheus/StatsD, and comprehensive CLI tools. Delivers 60-90% database load reduction and 200-500ms faster response times.',
-      technologies: [
-        'Python',
-        'Redis',
-        'FastAPI',
-        'SQLAlchemy',
-        'Memcached',
-        'Async/Await',
-        'Prometheus',
-        'StatsD',
-        'PyPI',
-        'CLI Tools'
-      ],
-      image: `${process.env.PUBLIC_URL}/images/projects/yokedcache.png`,
-      category: ['Python Library', 'Backend', 'Performance'],
-      status: { label: 'Public Release', color: 'success' },
-      liveUrl: 'https://pypi.org/project/yokedcache/',
-      githubUrl: 'https://github.com/SirStig/yokedcache'
-    },
-    {
-      id: 5,
-      title: 'Financial Project',
-      description: 'Next-generation financial management platform with bank-level security, real-time transaction processing, and intelligent financial insights. Built with modern APIs for seamless payment integration and comprehensive financial tracking.',
-      technologies: [
-        'HTML',
-        'CSS',
-        'JavaScript',
-        'Python',
-        'FastAPI',
-        'StripeAPI',
-        'PlaidAPI',
-        'PayPal API',
-        'PostgreSQL',
-        'SQLAlchemy'
-      ],
-      image: `${process.env.PUBLIC_URL}/images/projects/financial.png`,
-      category: ['Web App', 'FinTech'],
-      status: { label: 'Halted', color: 'warning' },
-      isPrivate: true
-    },
-    {
-      id: 6,
-      title: 'The RLR Project',
-      description: 'Exciting arcade-style game inspired by the popular Starcraft 2 mini-game "Runling Run". A collaborative project showcasing Unity expertise, physics-based gameplay, and multiplayer networking features.',
-      technologies: [
-        'Unity',
-        'C#',
-        'Unity UI',
-        'Unity Physics',
-        'Unity Networking'
-      ],
-      image: `${process.env.PUBLIC_URL}/images/projects/rlr.png`,
-      status: { label: 'Old Project', color: 'error' },
-      category: ['Game Development']
-    },
-    {
-      id: 7,
-      title: 'Game Dev Tycoon Mod Maker',
-      description: 'Powerful modding toolkit for Game Dev Tycoon that empowers creators to build custom content, modify game mechanics, and extend gameplay. Features an intuitive interface for seamless mod development and community sharing.',
-      technologies: [
-        '.NET',
-        'C#',
-      ],
-      image: `${process.env.PUBLIC_URL}/images/projects/gamedev-mod.png`,
-      status: { label: 'Old Project', color: 'error' },
-      category: ['Desktop App'],
-      githubUrl: 'https://github.com/SirStig/Ultimate-Mod-Maker'
-    }
-  ];
+  const navigate = useNavigate();
+  const { isMobile } = useMobileDetect();
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -468,7 +357,7 @@ const Portfolio = () => {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6
+        duration: isMobile ? 0.25 : 0.3
       }
     }
   };
@@ -480,7 +369,7 @@ const Portfolio = () => {
         <meta name="description" content="Explore our portfolio of web applications, mobile apps, and software solutions." />
       </Helmet>
 
-      <Box component="section" sx={{ 
+      <Box component="section" sx={{
         pt: { xs: 6, md: 12 },
         pb: { xs: 3, md: 6 },
         background: 'transparent',
@@ -492,18 +381,18 @@ const Portfolio = () => {
             animate="visible"
             variants={fadeInUp}
           >
-            <Typography variant="h1" sx={{ 
+            <Typography variant="h1" sx={{
               mb: { xs: 2, md: 3 },
               fontSize: { xs: '2rem', sm: '2.5rem', md: '3.5rem' },
               fontWeight: 700
             }}>
               Portfolio
             </Typography>
-            <Typography variant="h4" sx={{ 
+            <Typography variant="h4" sx={{
               mb: { xs: 3, md: 4 },
               fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2rem' },
               fontWeight: 400,
-              color: (theme: any) => theme.palette.mode === 'light' 
+              color: (theme: any) => theme.palette.mode === 'light'
                 ? 'text.primary'
                 : 'rgba(255, 255, 255, 0.9)'
             }}>
@@ -513,26 +402,26 @@ const Portfolio = () => {
         </Container>
       </Box>
 
-      <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 } }}>
+      <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 }, px: { xs: 2, sm: 3 } }}>
         {projects.map((project, index) => (
           <motion.div
             key={project.id}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: isMobile ? '100px' : '-20px' }}
             variants={fadeInUp}
             custom={index}
           >
-            <ProjectContainer>
+            <ProjectContainer onClick={() => navigate(`/portfolio/${project.slug}`)} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && navigate(`/portfolio/${project.slug}`)}>
               <ContentSection>
                 <ProjectHeader>
                   <ProjectTitle>
                     {project.title}
                   </ProjectTitle>
                   <ProjectSubtitle>
-                    <Typography 
-                      variant="subtitle1" 
-                      sx={{ 
+                    <Typography
+                      variant="subtitle1"
+                      sx={{
                         color: 'text.secondary',
                         fontWeight: 500,
                         fontSize: '1.1rem'
@@ -541,30 +430,38 @@ const Portfolio = () => {
                       {project.category.join(' • ')}
                     </Typography>
                     {project.status && (
-                      <StatusChip 
+                      <StatusChip
                         label={project.status.label}
                         color={project.status.color}
                         size="small"
                       />
                     )}
                     {project.isPrivate && (
-                      <StatusChip 
+                      <StatusChip
                         icon={<LockIcon />}
                         label="Private"
                         color="error"
                         size="small"
                       />
                     )}
+                    {project.githubPrivate && (
+                      <StatusChip
+                        icon={<LockIcon />}
+                        label="Private Code"
+                        color="info"
+                        size="small"
+                      />
+                    )}
                   </ProjectSubtitle>
                 </ProjectHeader>
-                
+
                 <ProjectDescription>
                   {project.description}
                 </ProjectDescription>
 
-                <ButtonContainer>
+                <ButtonContainer onClick={(e) => e.stopPropagation()}>
                   {project.liveUrl && (
-                    <Link 
+                    <Link
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -574,7 +471,52 @@ const Portfolio = () => {
                         variant="outlined"
                         startIcon={<LaunchIcon />}
                       >
-                        Live Demo
+                        {project.liveUrlLabel || 'Live Demo'}
+                      </StyledButton>
+                    </Link>
+                  )}
+                  {project.npmUrl && (
+                    <Link
+                      href={project.npmUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      underline="none"
+                    >
+                      <StyledButton
+                        variant="outlined"
+                        startIcon={<LaunchIcon />}
+                      >
+                        NPM Package
+                      </StyledButton>
+                    </Link>
+                  )}
+                  {project.appStoreUrl && (
+                    <Link
+                      href={project.appStoreUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      underline="none"
+                    >
+                      <StyledButton
+                        variant="outlined"
+                        startIcon={<AppleIcon />}
+                      >
+                        App Store
+                      </StyledButton>
+                    </Link>
+                  )}
+                  {project.playStoreUrl && (
+                    <Link
+                      href={project.playStoreUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      underline="none"
+                    >
+                      <StyledButton
+                        variant="outlined"
+                        startIcon={<PlayStoreIcon />}
+                      >
+                        Play Store
                       </StyledButton>
                     </Link>
                   )}
@@ -596,7 +538,7 @@ const Portfolio = () => {
                 </ButtonContainer>
               </ContentSection>
 
-              <MediaSection>
+              <MediaSection onClick={(e) => e.stopPropagation()}>
                 <ProjectMedia project={project} />
                 <TechStack>
                   {project.technologies.map((tech) => (

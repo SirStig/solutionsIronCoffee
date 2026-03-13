@@ -676,11 +676,11 @@ const Home = () => {
             </Typography>
 
             <Grid container spacing={4}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <ProjectCard
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  onClick={() => navigate('/portfolio')}
+                  onClick={() => navigate('/portfolio/project-yoked')}
                   style={{ cursor: 'pointer' }}
                 >
                   <ProjectImage imageUrl="/images/projects/yoked.png" />
@@ -714,11 +714,11 @@ const Home = () => {
                   </Box>
                 </ProjectCard>
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <ProjectCard
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  onClick={() => navigate('/portfolio')}
+                  onClick={() => navigate('/portfolio/eaglechair')}
                   style={{ cursor: 'pointer' }}
                 >
                   <ProjectImage imageUrl="/images/projects/eaglechair-homepage.png" />
@@ -731,6 +731,44 @@ const Home = () => {
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
                       {['E-Commerce', 'Web App', 'Premium Brand'].map((tag) => (
+                        <Chip
+                          key={tag}
+                          label={tag}
+                          size="small"
+                          sx={{
+                            background: 'rgba(255, 255, 255, 0.08)',
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            fontSize: '0.65rem',
+                            height: '20px',
+                            padding: '0 0.5rem',
+                            '& .MuiChip-label': {
+                              padding: '0 0.25rem',
+                              fontSize: '0.65rem',
+                            }
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                </ProjectCard>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <ProjectCard
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  onClick={() => navigate('/portfolio/beyond25')}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <ProjectImage imageUrl="/images/projects/beyond25/CreatePlaylistsInSeconds.png" />
+                  <Box sx={{ p: 3 }}>
+                    <Typography variant="h5" sx={{ mb: 1, fontWeight: 600 }}>
+                      Beyond25
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.7, mb: 2 }}>
+                      AI-curated music discovery. Tell Beyond25 what you're in the mood for and get playlists tailored to you. Save to Apple Music or Spotify with one tap.
+                    </Typography>
+                    <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
+                      {['Mobile App', 'AI', 'Music Discovery'].map((tag) => (
                         <Chip
                           key={tag}
                           label={tag}

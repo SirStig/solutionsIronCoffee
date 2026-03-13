@@ -65,6 +65,21 @@
       <image:title>Yoked Cache Backend System</image:title>
       <image:caption>High-performance backend caching system for mobile fitness application using AWS services</image:caption>
     </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/eaglechair-homepage.png</image:loc>
+      <image:title>EagleChair Digital Flagship</image:title>
+      <image:caption>End-to-end commerce experience for premium furniture brand</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/beyond25/PlaylistsChat.png</image:loc>
+      <image:title>Beyond25 - AI-Curated Music Discovery</image:title>
+      <image:caption>AI-curated music discovery app with Gemini and Ollama</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/expo-media-engine.png</image:loc>
+      <image:title>Expo Media Engine</image:title>
+      <image:caption>Professional React Native Expo module for video composition and editing</image:caption>
+    </image:image>
   </url>
   
   <!-- Services Page Images -->

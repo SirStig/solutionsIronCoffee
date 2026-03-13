@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Fab, useTheme, Zoom } from '@mui/material';
+import { Fab, Zoom } from '@mui/material';
 import { KeyboardArrowUp } from '@mui/icons-material';
 import styled from 'styled-components';
 import { useMobileDetect } from '../hooks/useMobileDetect';

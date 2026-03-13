@@ -114,7 +114,7 @@ const About = () => {
   const technologies = {
     frontend: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Material-UI'],
     backend: ['Python', 'FastAPI', 'Celery', 'Redis', 'PostgreSQL', 'MySQL', 'SQLAlchemy'],
-    mobile: ['React Native', 'iOS Development', 'Android Development'],
+    mobile: ['React Native', 'Swift', 'Xcode', 'iOS Development', 'Android Development'],
     cloudDevOps: ['Docker', 'GitHub', 'AWS', 'Dreamhost', 'CI/CD', 'Hyper-V', 'Firebase'],
     networkSystems: ['VPNs', 'Servers', 'Ollama', 'Ubiquiti', 'Network Administration', 'Firewall Configuration']
   };

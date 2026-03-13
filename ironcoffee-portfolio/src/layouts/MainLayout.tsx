@@ -8,6 +8,7 @@ import { useTheme as useThemeContext } from '../context/ThemeContext';
 import Home from '../pages/Home';
 import Services from '../pages/Services';
 import Portfolio from '../pages/Portfolio';
+import ProjectPage from '../pages/ProjectPage';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
 
@@ -997,6 +998,7 @@ const MainLayout: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/portfolio/:slug" element={<ProjectPage />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

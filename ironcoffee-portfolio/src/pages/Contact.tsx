@@ -3,8 +3,9 @@ import { Container, Typography, Grid, Box, TextField, Button, Card, IconButton, 
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
-import { Email as EmailIcon, Phone as PhoneIcon, LocationOn as LocationIcon, LinkedIn as LinkedInIcon, GitHub as GitHubIcon } from '@mui/icons-material';
+import { Email as EmailIcon, LocationOn as LocationIcon, LinkedIn as LinkedInIcon, GitHub as GitHubIcon } from '@mui/icons-material';
 import emailjs from '@emailjs/browser';
+import { useMobileDetect } from '../hooks/useMobileDetect';
 
 const ContactCard = styled(motion(Card))`
   padding: 2rem;
@@ -133,13 +134,15 @@ const Contact = () => {
     }));
   };
 
+  const { isMobile } = useMobileDetect();
+  
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6
+        duration: isMobile ? 0.25 : 0.3
       }
     }
   };
@@ -189,7 +192,7 @@ const Contact = () => {
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: isMobile ? '100px' : '-20px' }}
               variants={fadeInUp}
             >
               <Typography variant="h2" gutterBottom>
@@ -272,7 +275,7 @@ const Contact = () => {
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: isMobile ? '100px' : '-20px' }}
               variants={fadeInUp}
             >
               <ContactCard>
