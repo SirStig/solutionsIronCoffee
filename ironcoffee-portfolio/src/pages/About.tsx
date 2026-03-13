@@ -122,8 +122,16 @@ const About = () => {
   return (
     <PageTransition>
       <Helmet>
-        <title>About - IronCoffee Solutions</title>
-        <meta name="description" content="Learn about my expertise, values, and passion for creating exceptional digital experiences. Discover why I'm the right choice for your project." />
+        <title>Joshua Kac - Full-Stack Developer | IronCoffee Solutions</title>
+        <meta name="description" content="Joshua Kac is a self-taught full-stack developer with 15+ years of experience, specializing in web development, mobile apps, and cloud infrastructure. Founder of IronCoffee LLC." />
+        <meta name="author" content="Joshua Kac" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ProfilePage",
+          "mainEntity": {
+            "@id": "https://solutions.ironcoffee.com/#person"
+          }
+        })}</script>
       </Helmet>
 
       <HeroSection>

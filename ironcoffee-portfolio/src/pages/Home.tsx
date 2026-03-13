@@ -273,8 +273,9 @@ const Home = () => {
   return (
     <PageTransition>
       <Helmet>
-        <title>IronCoffee Solutions - From Idea to Deployment</title>
-        <meta name="description" content="Next-generation software solutions for websites, servers, and mobile apps. Transform your idea into a reality with custom development that delivers excellence." />
+        <title>Joshua Kac | IronCoffee Solutions - From Idea to Deployment</title>
+        <meta name="description" content="Joshua Kac — full-stack developer and founder of IronCoffee Solutions. Custom websites, mobile apps, and backend systems built from idea to deployment. Based in the US." />
+        <meta name="author" content="Joshua Kac" />
       </Helmet>
 
       <HeroSection>
