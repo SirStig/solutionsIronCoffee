@@ -62,17 +62,17 @@ export const projects: Project[] = [
       'Personalized progress analytics',
       'Virtual personal training'
     ],
-    image: `${base}/images/projects/yoked.png`,
-    video: `${base}/videos/app-overview-montage.mp4`,
+    image: `${base}images/projects/yoked.png`,
+    video: `${base}videos/app-overview-montage.mp4`,
     images: [
-      `${base}/images/projects/yoked.png`,
-      `${base}/images/projects/projectyoked/AProCoachInYourPocket.png`,
-      `${base}/images/projects/projectyoked/MainSplitLeft.png`,
-      `${base}/images/projects/projectyoked/MainSplitRight.png`,
-      `${base}/images/projects/projectyoked/2.6Food700Exercises.png`,
-      `${base}/images/projects/projectyoked/SocialWithSUbstance.png`,
-      `${base}/images/projects/projectyoked/Recovery1.1.4.png`,
-      `${base}/images/projects/projectyoked/YourJourneyReplayed.png`
+      `${base}images/projects/yoked.png`,
+      `${base}images/projects/projectyoked/AProCoachInYourPocket.png`,
+      `${base}images/projects/projectyoked/MainSplitLeft.png`,
+      `${base}images/projects/projectyoked/MainSplitRight.png`,
+      `${base}images/projects/projectyoked/2.6Food700Exercises.png`,
+      `${base}images/projects/projectyoked/SocialWithSUbstance.png`,
+      `${base}images/projects/projectyoked/Recovery1.1.4.png`,
+      `${base}images/projects/projectyoked/YourJourneyReplayed.png`
     ],
     category: ['Mobile App', 'Web App', 'AI'],
     status: { label: 'Live', color: 'success' },
@@ -97,11 +97,11 @@ export const projects: Project[] = [
       'TypeScript',
       'Tailwind CSS'
     ],
-    image: `${base}/images/projects/eaglechair-homepage.png`,
+    image: `${base}images/projects/eaglechair-homepage.png`,
     images: [
-      `${base}/images/projects/eaglechair-homepage.png`,
-      `${base}/images/projects/eaglechair-catalog.png`,
-      `${base}/images/projects/eaglechair-product-dropdown.png`
+      `${base}images/projects/eaglechair-homepage.png`,
+      `${base}images/projects/eaglechair-catalog.png`,
+      `${base}images/projects/eaglechair-product-dropdown.png`
     ],
     category: ['Web App', 'E-commerce'],
     status: { label: 'In Development', color: 'warning' },
@@ -138,16 +138,16 @@ export const projects: Project[] = [
       'Dark mode, no ads, no selling of your data',
       'Pricing: credit packs and subscriptions planned; web checkout and App Store release still in progress',
     ],
-    image: `${base}/images/projects/beyond25/CreatePlaylistsInSeconds.png`,
+    image: `${base}images/projects/beyond25/CreatePlaylistsInSeconds.png`,
     images: [
-      `${base}/images/projects/beyond25/CreatePlaylistsInSeconds.png`,
-      `${base}/images/projects/beyond25/DiscoverSongs&Artists.png`,
-      `${base}/images/projects/beyond25/Spotify&AppleMusic.png`,
-      `${base}/images/projects/beyond25/CreatePlaylistsWithThousandsOfSongs.png`,
-      `${base}/images/projects/beyond25/SplitImage1.png`,
-      `${base}/images/projects/beyond25/SplitImage2.png`,
-      `${base}/images/projects/beyond25/PlaylistsChat.png`,
-      `${base}/images/projects/beyond25/Curating.png`
+      `${base}images/projects/beyond25/CreatePlaylistsInSeconds.png`,
+      `${base}images/projects/beyond25/DiscoverSongs&Artists.png`,
+      `${base}images/projects/beyond25/Spotify&AppleMusic.png`,
+      `${base}images/projects/beyond25/CreatePlaylistsWithThousandsOfSongs.png`,
+      `${base}images/projects/beyond25/SplitImage1.png`,
+      `${base}images/projects/beyond25/SplitImage2.png`,
+      `${base}images/projects/beyond25/PlaylistsChat.png`,
+      `${base}images/projects/beyond25/Curating.png`
     ],
     category: ['Mobile App', 'AI', 'Music'],
     status: { label: 'Preparing for Release', color: 'info' },
@@ -183,7 +183,7 @@ export const projects: Project[] = [
       'useCompositionOverlays hook for interactive overlays in Skia space',
       'Stitch and compress with H.264/H.265 presets; MIT-licensed Swift and Kotlin',
     ],
-    image: `${base}/images/projects/expo-media-engine.png`,
+    image: `${base}images/projects/expo-media-engine.png`,
     category: ['React Native', 'NPM Package', 'Media Processing'],
     status: { label: 'npm latest: 1.0.0-alpha-3', color: 'info' },
     npmUrl: 'https://www.npmjs.com/package/@projectyoked/expo-media-engine',
@@ -226,7 +226,7 @@ export const projects: Project[] = [
       'Observability: Prometheus, StatsD, and tracing-friendly cache spans',
       'Optional vector / similarity helpers and a CLI for inspection and health',
     ],
-    image: `${base}/images/projects/yokedcache.png`,
+    image: `${base}images/projects/yokedcache.png`,
     category: ['Python Library', 'Backend', 'Performance'],
     status: { label: 'v1.0.0', color: 'success' },
     liveUrl: 'https://pypi.org/project/yokedcache/',
@@ -248,11 +248,11 @@ export const projects: Project[] = [
       'PyTorch',
       'Docker'
     ],
-    image: `${base}/images/projects/encodeforge-encoder.png`,
+    image: `${base}images/projects/encodeforge-encoder.png`,
     images: [
-      `${base}/images/projects/encodeforge-encoder.png`,
-      `${base}/images/projects/encodeforge-metadata.png`,
-      `${base}/images/projects/encodeforge-subtitles.png`
+      `${base}images/projects/encodeforge-encoder.png`,
+      `${base}images/projects/encodeforge-metadata.png`,
+      `${base}images/projects/encodeforge-subtitles.png`
     ],
     category: ['Desktop App', 'AI', 'Media Processing'],
     status: { label: 'Public Release', color: 'success' },
@@ -275,7 +275,7 @@ export const projects: Project[] = [
       'PostgreSQL',
       'SQLAlchemy'
     ],
-    image: `${base}/images/projects/financial.png`,
+    image: `${base}images/projects/financial.png`,
     category: ['Web App', 'FinTech'],
     status: { label: 'Halted', color: 'warning' },
     isPrivate: true
@@ -292,7 +292,7 @@ export const projects: Project[] = [
       'Unity Physics',
       'Unity Networking'
     ],
-    image: `${base}/images/projects/rlr.png`,
+    image: `${base}images/projects/rlr.png`,
     status: { label: 'Old Project', color: 'error' },
     category: ['Game Development']
   },
@@ -305,7 +305,7 @@ export const projects: Project[] = [
       '.NET',
       'C#',
     ],
-    image: `${base}/images/projects/gamedev-mod.png`,
+    image: `${base}images/projects/gamedev-mod.png`,
     status: { label: 'Old Project', color: 'error' },
     category: ['Desktop App'],
     githubUrl: 'https://github.com/SirStig/Ultimate-Mod-Maker'
