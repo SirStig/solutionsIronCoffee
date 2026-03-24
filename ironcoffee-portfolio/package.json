@@ -2,7 +2,7 @@
   "name": "ironcoffee-portfolio",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://solutions.ironcoffee.com",
+  "type": "module",
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.14.0",
@@ -10,17 +10,6 @@
     "@mui/icons-material": "^6.4.5",
     "@mui/material": "^6.4.5",
     "@sentry/react": "^9.2.0",
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.126",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "@types/react-ga": "^2.1.3",
-    "@types/react-router-dom": "^5.3.3",
-    "@types/styled-components": "^5.1.34",
     "framer-motion": "^12.4.7",
     "lucide-react": "^0.552.0",
     "react": "^18.2.0",
@@ -29,37 +18,34 @@
     "react-helmet-async": "^2.0.5",
     "react-intersection-observer": "^9.15.1",
     "react-router-dom": "^7.2.0",
-    "react-scripts": "5.0.1",
     "styled-components": "^6.1.15",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/styled-components": "^5.1.34",
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^25.0.0",
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8"
+  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "predeploy": "npm run build",
-    "deploy": "echo 'Ready to deploy build/ directory to Dreamhost via SFTP'",
+    "deploy": "echo 'Deploy build/ to Dreamhost via SFTP. Ensure .htaccess is uploaded (enable hidden files).'",
     "verify": "node scripts/verify-deploy.js",
     "check-upload": "node scripts/check-upload.js"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }

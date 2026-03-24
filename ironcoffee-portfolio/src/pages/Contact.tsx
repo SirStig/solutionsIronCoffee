@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Email as EmailIcon, LocationOn as LocationIcon, LinkedIn as LinkedInIcon, GitHub as GitHubIcon } from '@mui/icons-material';
 import emailjs from '@emailjs/browser';
 import { useMobileDetect } from '../hooks/useMobileDetect';
+import { SOCIAL_LINKS } from '../constants/social';
 
 const ContactCard = styled(motion(Card))`
   padding: 2rem;
@@ -80,8 +81,8 @@ const Contact = () => {
     setLoading(true);
     
     try {
-      const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
-      const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 
       if (!serviceId || !templateId) {
         throw new Error('EmailJS configuration is missing');
@@ -313,12 +314,12 @@ const Contact = () => {
                   Connect with Me
                 </Typography>
                 <Box>
-                  <SocialLink href="https://www.linkedin.com/in/joshua-kac-aa50b7131" target="_blank" rel="noopener noreferrer">
+                  <SocialLink href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">
                     <SocialButton aria-label="LinkedIn">
                       <LinkedInIcon />
                     </SocialButton>
                   </SocialLink>
-                  <SocialLink href="https://github.com/SirStig" target="_blank" rel="noopener noreferrer">
+                  <SocialLink href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">
                     <SocialButton aria-label="GitHub">
                       <GitHubIcon />
                     </SocialButton>

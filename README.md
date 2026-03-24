@@ -1,188 +1,101 @@
 <div align="center">
 
-# Hi, I'm Joshua 👋
+# Joshua Kac
 
-### Creative Technologist & Full-Stack Developer
-
-**Building the future, one line of code at a time** | **Parker, CO** | **Available for Projects**
+**Full-stack & mobile engineer · Founder, Project Yoked LLC**  
+Parker, CO · Open to select freelance and collaboration
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-solutions.ironcoffee.com-3B82F6?style=for-the-badge&logo=react&logoColor=white)](https://solutions.ironcoffee.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Joshua_Kac-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/joshua-kac-aa50b7131)
 [![Email](https://img.shields.io/badge/Email-joshua@ironcoffee.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:joshua@ironcoffee.com)
 
----
-
 </div>
 
-## 🚀 About Me
+---
 
-I'm a **self-taught full-stack developer** with **15+ years of coding experience** (started at age 10). I specialize in building end-to-end solutions—from beautiful user interfaces to robust backend systems and scalable infrastructure.
+## Overview
 
-**What sets me apart:**
-- 🔧 **All-in-One Developer**: Design, SEO, frontend, backend, mobile apps, DevOps, and infrastructure
-- 🎯 **Perfectionist**: I won't deliver anything half-baked—I'll rebuild it entirely if needed
-- ⚡ **Fast & Driven**: Work efficiently without sacrificing quality, willing to go the extra mile
-- 🧠 **Deep Understanding**: Self-taught mastery through thousands of hours of trial, error, and relentless learning
+I build end-to-end products: web and mobile clients, APIs, data layers, and the operational pieces around them (performance, caching, observability, deployment). I’ve been writing code for 15+ years and lead product engineering as **CEO/Founder of [Project Yoked LLC](https://www.projectyoked.com)**.
 
-**Currently:** CEO/Founder of **Project Yoked LLC** | Building revolutionary fitness platforms and digital experiences
+**Focus areas**
+
+- Product-grade **React** and **React Native / Expo** applications  
+- **FastAPI** and **Python** backends, **PostgreSQL**, **Redis**, and pragmatic cloud usage (**AWS**, containers)  
+- **Open source** libraries where reusable pieces deserve a public home  
+
+More detail, case studies, and visuals: **[solutions.ironcoffee.com](https://solutions.ironcoffee.com)**.
 
 ---
 
-## 💼 What I Do
+## Selected work
 
-I transform ideas into powerful digital solutions. Whether it's a custom website, mobile app, or complex platform—I handle everything from concept to deployment.
+Work below matches the public **[portfolio](https://solutions.ironcoffee.com/portfolio)** (titles, status, and links kept in sync with that site).
 
-### Core Services
-- 🌐 **Custom Web Development** - E-commerce, business websites, web applications, landing pages
-- 📱 **Mobile Apps** - Native iOS & Android applications with React Native
-- 🗄️ **CMS & Management Systems** - Click-to-edit content, product management, admin dashboards
-- ⚙️ **Backend & Infrastructure** - APIs, cloud infrastructure, database optimization, DevOps
-
-### Specialized Solutions
-- 🛒 E-Commerce Platforms
-- 👥 Social Media Platforms
-- 📊 SEO & Performance Optimization
-- 🔄 DevOps & Automation
-- 💡 Technical Consultation
-- 🎨 Advanced UI/UX Design
+| Project | Role / type | Stack (high level) | Links & status |
+|--------|-------------|-------------------|----------------|
+| **[Project Yoked](https://www.projectyoked.com)** | Fitness social platform — CEO/Founder | React, React Native, Swift, TypeScript, FastAPI, Python, PostgreSQL, AWS | [Web](https://www.projectyoked.com) · [App Store](https://apps.apple.com/us/app/project-yoked/id6747534923) · [Play Store](https://play.google.com/store/apps/details?id=com.projectyoked.mobile) · **Live** |
+| **[Beyond25](https://www.beyond-25.com)** | AI-assisted music discovery (Expo / RN, web) | React Native, Expo, TypeScript, Gemini, Ollama, Apple Music, YouTube Music | [Site (early access)](https://www.beyond-25.com) · **Preparing for release** (mobile + full web checkout not shipped yet) |
+| **[EagleChair Digital Flagship](https://joshua.eaglechair.com/)** | Premium furniture commerce | FastAPI, Python, PostgreSQL, Redis, Next.js, React, TypeScript, Tailwind CSS | [Live preview](https://joshua.eaglechair.com/) · **In development** |
+| **[Expo Media Engine](https://www.npmjs.com/package/@projectyoked/expo-media-engine)** | Open-source native video engine for Expo | Expo, Expo Modules API, React Native, TypeScript, Swift, Kotlin, AVFoundation, MediaCodec, OpenGL ES 2.0 | [npm](https://www.npmjs.com/package/@projectyoked/expo-media-engine) · [Docs](https://sirstig.github.io/projectyoked-expo-media-engine/) · [GitHub](https://github.com/SirStig/projectyoked-expo-media-engine) · Pre-release **1.0.0-alpha-3** (stable line **0.1.x** on npm) |
+| **[YokedCache](https://pypi.org/project/yokedcache/)** | FastAPI-first caching (Redis, multi-backend, metrics, CLI) | Python, FastAPI, Redis, orjson, SQLAlchemy, OpenTelemetry, Prometheus, optional Memcached / disk / SQLite / vector extras | [PyPI](https://pypi.org/project/yokedcache/) · [Docs](https://sirstig.github.io/yokedcache/) · [GitHub](https://github.com/SirStig/yokedcache) · **v1.0.0** |
+| **[EncodeForge](https://github.com/SirStig/EncodeForge)** | Desktop media tooling | JavaFX, Python, FastAPI, FFmpeg, Whisper, PyTorch, Docker | [GitHub](https://github.com/SirStig/EncodeForge) · **Public** |
 
 ---
 
-## 🛠️ Tech Stack
+## Tech I use often
 
-### Frontend
-![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
-![Material-UI](https://img.shields.io/badge/Material--UI-0081CB?style=flat-square&logo=material-ui&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=flat-square&logo=framer&logoColor=white)
+<p>
+  <img alt="React" src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" />
+  <img alt="React Native" src="https://img.shields.io/badge/React_Native-20232A?style=flat-square&logo=react&logoColor=61DAFB" />
+  <img alt="Expo" src="https://img.shields.io/badge/Expo-000020?style=flat-square&logo=expo&logoColor=white" />
+  <img alt="Next.js" src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white" />
+  <img alt="MUI" src="https://img.shields.io/badge/MUI-007FFF?style=flat-square&logo=mui&logoColor=white" />
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" />
+  <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
+  <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" />
+  <img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-316192?style=flat-square&logo=postgresql&logoColor=white" />
+  <img alt="Redis" src="https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white" />
+  <img alt="AWS" src="https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazon-aws&logoColor=white" />
+  <img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white" />
+  <img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white" />
+</p>
 
-### Backend
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=FastAPI&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat-square&logo=postgresql&logoColor=white)
-![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
-![Celery](https://img.shields.io/badge/Celery-37814A?style=flat-square&logo=celery&logoColor=white)
-![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-000000?style=flat-square&logo=sqlalchemy&logoColor=white)
-
-### Mobile & Cloud
-![React Native](https://img.shields.io/badge/React_Native-20232A?style=flat-square&logo=react&logoColor=61DAFB)
-![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazon-aws&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)
-
-### Infrastructure & Tools
-![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)
-![CI/CD](https://img.shields.io/badge/CI%2FCD-2088FF?style=flat-square&logo=github-actions&logoColor=white)
-![Ubiquiti](https://img.shields.io/badge/Ubiquiti-0559C9?style=flat-square&logo=ubiquiti&logoColor=white)
+*(Portfolio site itself is React + TypeScript + Material UI + styled-components + Framer Motion on Create React App — see repo `ironcoffee-portfolio`.)*
 
 ---
 
-## 🎯 Featured Projects
-
-### [Project Yoked](https://solutions.ironcoffee.com/portfolio) 🏋️
-**Fitness Social Platform** | *CEO/Founder of Project Yoked LLC*
-
-Revolutionary fitness social platform with AI-powered content moderation, Instagram-style interactions, comprehensive tracking, personalized analytics, and virtual personal training.
-
-**Stack:** React, React Native, TypeScript, FastAPI, Python, PostgreSQL, AWS
-
-**Status:** 🟡 In Development
-
----
-
-### [EagleChair Digital Flagship](https://joshua.eaglechair.com/) 🪑
-**Premium E-Commerce Platform**
-
-End-to-end commerce experience for a premium furniture brand. FastAPI backend with JWT auth, async PostgreSQL, Redis caching, and modern React storefront.
-
-**Stack:** FastAPI, Python, PostgreSQL, Redis, Next.js, React, TypeScript, Tailwind CSS
-
-**Status:** 🟡 In Development | [Live Demo](https://joshua.eaglechair.com/) | [GitHub](https://github.com/SirStig/eaglechair)
-
----
-
-### [EncodeForge](https://github.com/SirStig/EncodeForge) 🎬
-**Cross-Platform Media Processing Suite**
-
-Hardware-accelerated video encoding, AI-powered subtitle generation with Whisper, and smart metadata-driven file renaming.
-
-**Stack:** JavaFX, Python, FastAPI, FFmpeg, OpenAI Whisper, PyTorch, Docker
-
-**Status:** 🟢 Public Release | [GitHub](https://github.com/SirStig/EncodeForge)
-
----
-
-### [YokedCache](https://pypi.org/project/yokedcache/) ⚡
-**High-Performance Python Cache Library**
-
-Intelligent auto-invalidation, multi-backend support, and seamless FastAPI/SQLAlchemy integration. Delivers 60-90% database load reduction and 200-500ms faster response times.
-
-**Stack:** Python, Redis, FastAPI, SQLAlchemy, Memcached, Prometheus, StatsD
-
-**Status:** 🟢 Public Release | [PyPI](https://pypi.org/project/yokedcache/) | [GitHub](https://github.com/SirStig/yokedcache)
-
----
-
-## 📊 GitHub Stats
+## GitHub stats
 
 <div align="center">
-  
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=SirStig&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=3B82F6&icon_color=8B5CF6)
 
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=SirStig&layout=compact&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=3B82F6)
-
-![GitHub Streak](https://github-readme-streak-stats.demolab.com/?user=SirStig&theme=tokyonight&hide_border=true&background=0D1117&ring=3B82F6&fire=8B5CF6&currStreakLabel=3B82F6)
+<img height="165" alt="GitHub stats" src="https://github-readme-stats.vercel.app/api?username=SirStig&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=3B82F6&icon_color=8B5CF6&rank_icon=github" />
+<img height="165" alt="Top languages" src="https://github-readme-stats.vercel.app/api/top-langs/?username=SirStig&layout=compact&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=3B82F6&langs_count=8" />
 
 </div>
 
 ---
 
-## 🌟 My Values
+## Outside of work
 
-**Perfectionism** • **Dedication** • **Excellence** • **Innovation** • **Client-First** • **Problem-Solving** • **Self-Improvement** • **Persistence** • **Comprehensive Understanding** • **Quality Above All**
-
----
-
-## 🎨 Beyond Code
-
-When I'm not coding, you'll find me:
-- 🏔️ Hiking in the mountains
-- ⛸️ Ice skating
-- 🎿 Skiing
-- 🚗 Driving
-- 🎵 Enjoying music
-- 🎣 Fishing
-- ⛺ Camping
-- 🌲 Exploring the outdoors
-
-These activities recharge me and keep me balanced, bringing fresh perspectives to every project.
+Hiking, skiing, ice skating, camping, fishing, driving, music — mostly anything that gets me outside or recharges focus.
 
 ---
 
-## 🤝 Let's Connect
+## Contact
 
-I'm always open to:
-- 💼 **Freelance opportunities** - Custom web development, mobile apps, backend systems
-- 🤝 **Collaborations** - Interesting projects and partnerships
-- 💬 **Consultations** - Technical guidance and architecture planning
-- 📧 **Questions** - Feel free to reach out!
+| | |
+|--|--|
+| **Email** | [joshua@ironcoffee.com](mailto:joshua@ironcoffee.com) |
+| **Portfolio** | [solutions.ironcoffee.com](https://solutions.ironcoffee.com) |
+| **LinkedIn** | [Joshua Kac](https://www.linkedin.com/in/joshua-kac-aa50b7131) |
 
-**Get in touch:**
-- 📧 Email: [joshua@ironcoffee.com](mailto:joshua@ironcoffee.com)
-- 🌐 Portfolio: [solutions.ironcoffee.com](https://solutions.ironcoffee.com)
-- 💼 LinkedIn: [Joshua Kac](https://www.linkedin.com/in/joshua-kac-aa50b7131)
+Freelance, collaborations, and technical consultations: reach out by email with a short note on scope and timing.
 
 ---
 
 <div align="center">
 
-**Transforming ideas into powerful digital solutions** 🚀
-
-*From Idea to Deployment*
-
-![Profile Views](https://komarev.com/ghpvc/?username=SirStig&color=3B82F6&style=for-the-badge)
+![Profile views](https://komarev.com/ghpvc/?username=SirStig&color=3B82F6&style=flat-square&label=Profile+views)
 
 </div>
-

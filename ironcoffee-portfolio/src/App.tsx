@@ -18,7 +18,7 @@ import { initSentry } from './services/errorTracking';
 import { ErrorBoundary } from '@sentry/react';
 
 // Initialize services in production
-if (process.env.NODE_ENV === 'production') {
+if (import.meta.env.PROD) {
   initGA();
   initSentry();
 }
@@ -28,7 +28,7 @@ const PageViewTracker: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production') {
+    if (import.meta.env.PROD) {
       logPageView(location.pathname + location.search);
     }
   }, [location]);
@@ -52,7 +52,7 @@ const AppContent = () => {
   useEffect(() => {
     // Initialize EmailJS with public key from environment variable
     const initEmailJS = () => {
-      const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
       if (!publicKey) {
         console.error('EmailJS public key is not defined in environment variables');
         return;

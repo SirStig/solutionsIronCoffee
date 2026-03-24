@@ -1,11 +1,13 @@
 import React from 'react';
-import { Container, Typography, Box, Button, Grid, Chip } from '@mui/material';
+import { Container, Typography, Box, Button, Grid, Chip, IconButton } from '@mui/material';
+import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import PageTransition from '../components/PageTransition';
 import AnimatedSection from '../components/AnimatedSection';
+import { SOCIAL_LINKS } from '../constants/social';
 
 const HeroSection = styled.section`
   position: relative;
@@ -398,6 +400,34 @@ const Home = () => {
                     Start Your Project
                   </Button>
                 </motion.div>
+              </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 3 }}>
+                <IconButton
+                  component="a"
+                  href={SOCIAL_LINKS.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  sx={{ 
+                    color: 'rgba(255, 255, 255, 0.9)', 
+                    '&:hover': { color: '#64FFDA', transform: 'translateY(-2px)' } 
+                  }}
+                >
+                  <LinkedInIcon sx={{ fontSize: '1.5rem' }} />
+                </IconButton>
+                <IconButton
+                  component="a"
+                  href={SOCIAL_LINKS.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                  sx={{ 
+                    color: 'rgba(255, 255, 255, 0.9)', 
+                    '&:hover': { color: '#64FFDA', transform: 'translateY(-2px)' } 
+                  }}
+                >
+                  <GitHubIcon sx={{ fontSize: '1.5rem' }} />
+                </IconButton>
               </Box>
             </AnimatedSection>
           </HeroContent>

@@ -3,10 +3,10 @@ const https = require('https');
 const criticalFiles = [
   '/',
   '/index.html',
+  '/portfolio',
   '/manifest.json',
   '/robots.txt',
-  '/sitemap.xml',
-  '/.htaccess'
+  '/sitemap.xml'
 ];
 
 const checkFile = (path) => {
@@ -50,10 +50,14 @@ const main = async () => {
   console.log('\nChecking for common issues...');
   try {
     const indexResponse = await checkFile('/');
+    const portfolioResponse = await checkFile('/portfolio');
     if (indexResponse.status === 404) {
       console.error('WARNING: index.html not found or not serving correctly');
     }
-    if (indexResponse.status === 403) {
+    if (portfolioResponse.status === 404) {
+      console.error('WARNING: /portfolio returns 404 - .htaccess SPA fallback may not be deployed. Ensure build/.htaccess exists; enable "show hidden files" in SFTP.');
+    }
+    if (indexResponse.status === 403 || portfolioResponse.status === 403) {
       console.error('WARNING: Possible permissions issue');
     }
     if (indexResponse.contentType && indexResponse.contentType.includes('text/plain')) {

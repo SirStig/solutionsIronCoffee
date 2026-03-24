@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemText, Button, Container, useScrollTrigger, Box } from '@mui/material';
-import { Menu as MenuIcon, LightMode, DarkMode } from '@mui/icons-material';
+import { Menu as MenuIcon, LightMode, DarkMode, GitHub as GitHubIcon, LinkedIn as LinkedInIcon } from '@mui/icons-material';
 import { Link, useLocation, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTheme as useMuiTheme } from '@mui/material/styles';
@@ -11,6 +11,7 @@ import Portfolio from '../pages/Portfolio';
 import ProjectPage from '../pages/ProjectPage';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
+import { SOCIAL_LINKS } from '../constants/social';
 
 interface Props {
   children: React.ReactElement;
@@ -633,7 +634,9 @@ const MainLayout: React.FC = () => {
       <Box sx={{ 
         p: 'clamp(1rem, 3vw, 2rem)', 
         display: 'flex', 
-        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '1rem',
         borderTop: theme => `1px solid ${theme.palette.mode === 'dark'
           ? 'rgba(255, 255, 255, 0.1)'
           : 'rgba(0, 0, 0, 0.1)'}`,
@@ -643,6 +646,30 @@ const MainLayout: React.FC = () => {
         '@media (max-width: 320px)': { p: '0.75rem' },
         '@media (max-width: 480px)': { p: '1rem' },
       }}>
+        <Box sx={{ display: 'flex', gap: '0.5rem' }}>
+          <IconButton
+            component="a"
+            href={SOCIAL_LINKS.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            onClick={handleDrawerToggle}
+            sx={{ color: 'inherit' }}
+          >
+            <LinkedInIcon />
+          </IconButton>
+          <IconButton
+            component="a"
+            href={SOCIAL_LINKS.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+            onClick={handleDrawerToggle}
+            sx={{ color: 'inherit' }}
+          >
+            <GitHubIcon />
+          </IconButton>
+        </Box>
         <ThemeToggleButton 
           onClick={() => {
             toggleTheme();
@@ -744,8 +771,39 @@ const MainLayout: React.FC = () => {
                 position: 'absolute', 
                 right: 0,
                 display: { xs: 'none', md: 'flex' },
-                alignItems: 'center'
+                alignItems: 'center',
+                gap: 0.5,
               }}>
+                <IconButton
+                  component="a"
+                  href={SOCIAL_LINKS.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  size="small"
+                  sx={{
+                    color: 'inherit',
+                    opacity: 0.8,
+                    '&:hover': { opacity: 1, color: theme.palette.primary.main },
+                  }}
+                >
+                  <LinkedInIcon sx={{ fontSize: '1.25rem' }} />
+                </IconButton>
+                <IconButton
+                  component="a"
+                  href={SOCIAL_LINKS.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                  size="small"
+                  sx={{
+                    color: 'inherit',
+                    opacity: 0.8,
+                    '&:hover': { opacity: 1, color: theme.palette.primary.main },
+                  }}
+                >
+                  <GitHubIcon sx={{ fontSize: '1.25rem' }} />
+                </IconButton>
                 <ThemeToggleButton 
                   onClick={toggleTheme} 
                   aria-label="toggle theme"
@@ -1201,7 +1259,53 @@ const MainLayout: React.FC = () => {
           </Box>
 
           <Box sx={{ 
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 'clamp(0.75rem, 2vw, 1.25rem)',
             mt: 'clamp(2rem, 5vw, 4rem)',
+          }}>
+            <IconButton
+              component="a"
+              href={SOCIAL_LINKS.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              sx={{
+                color: 'text.secondary',
+                opacity: 0.8,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  color: 'primary.main',
+                  opacity: 1,
+                  transform: 'translateY(-2px)',
+                },
+              }}
+            >
+              <LinkedInIcon sx={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)' }} />
+            </IconButton>
+            <IconButton
+              component="a"
+              href={SOCIAL_LINKS.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              sx={{
+                color: 'text.secondary',
+                opacity: 0.8,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  color: 'primary.main',
+                  opacity: 1,
+                  transform: 'translateY(-2px)',
+                },
+              }}
+            >
+              <GitHubIcon sx={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)' }} />
+            </IconButton>
+          </Box>
+
+          <Box sx={{ 
+            mt: 'clamp(1.5rem, 3vw, 2.5rem)',
             pt: 'clamp(1.5rem, 4vw, 3rem)',
             borderTop: theme => `1px solid ${theme.palette.mode === 'dark'
               ? 'rgba(255, 255, 255, 0.1)'

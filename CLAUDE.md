@@ -13,11 +13,11 @@ The app lives entirely in `ironcoffee-portfolio/`. All commands below should be 
 ```bash
 cd ironcoffee-portfolio
 
-npm start          # Dev server (port 3000)
-npm run build      # Production build
-npm test           # Jest test suite
+npm run dev        # Vite dev server (port 5173)
+npm run build      # Production build → build/
+npm test           # Vitest
 npm run verify     # Verify live deployment
-npm run check-upload  # Check upload status
+npm run check-upload  # Check upload status (including /portfolio SPA routing)
 ```
 
 ## Architecture
@@ -35,7 +35,7 @@ npm run check-upload  # Check upload status
 
 **Project data**: `src/data/projects.ts` is the single source of truth for all portfolio projects. Each project has slug, title, tech stack, images, links, and longDescription/features for the detail page.
 
-**Services**: `src/services/analytics.ts` (GA4) and `src/services/errorTracking.ts` (Sentry) — initialized on app load. Keys come from env vars: `REACT_APP_GA_ID`, `REACT_APP_SENTRY_DSN`, `REACT_APP_EMAILJS_PUBLIC_KEY`.
+**Services**: `src/services/analytics.ts` (GA4) and `src/services/errorTracking.ts` (Sentry) — initialized on app load. Keys come from env vars: `VITE_GA_MEASUREMENT_ID`, `VITE_SENTRY_DSN`, `VITE_EMAILJS_PUBLIC_KEY`, `VITE_EMAILJS_SERVICE_ID`, `VITE_EMAILJS_TEMPLATE_ID`.
 
 **Key custom hooks**:
 - `useMobileDetect` — device detection for conditional rendering
@@ -45,7 +45,7 @@ npm run check-upload  # Check upload status
 
 ## Key Dependencies
 
-- React 18.2 + TypeScript 4.9.5, Create React App (react-scripts)
+- React 18.2 + TypeScript 4.9.5, Vite 6
 - Material-UI 6.4.5, Styled-components 6.1.15
 - Framer Motion 12.4.7 for animations
 - React Router DOM 7.2.0

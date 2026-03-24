@@ -1,10 +1,12 @@
 import React from 'react';
-import { Container, Typography, Grid, Box, Avatar, Chip } from '@mui/material';
+import { Container, Typography, Grid, Box, Avatar, Chip, IconButton } from '@mui/material';
+import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import PageTransition from '../components/PageTransition';
 import AnimatedSection from '../components/AnimatedSection';
+import { SOCIAL_LINKS } from '../constants/social';
 
 const HeroSection = styled.section`
   padding: clamp(5rem, 10vw, 8rem) 0 clamp(3rem, 6vw, 5rem);
@@ -196,11 +198,33 @@ const About = () => {
               <Grid item xs={12} md={6} sx={{ textAlign: 'center' }}>
                 <StyledAvatar
                   alt="Profile Picture"
-                  src={`${process.env.PUBLIC_URL}/images/profile.JPEG`}
+                  src={`${import.meta.env.BASE_URL}images/profile.JPEG`}
                   sx={{ 
                     bgcolor: 'secondary.main',
                   }}
                 />
+                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 2 }}>
+                  <IconButton
+                    component="a"
+                    href={SOCIAL_LINKS.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                    sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
+                  >
+                    <LinkedInIcon />
+                  </IconButton>
+                  <IconButton
+                    component="a"
+                    href={SOCIAL_LINKS.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="GitHub"
+                    sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
+                  >
+                    <GitHubIcon />
+                  </IconButton>
+                </Box>
               </Grid>
             </Grid>
           </AnimatedSection>

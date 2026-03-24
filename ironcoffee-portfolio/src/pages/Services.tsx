@@ -146,7 +146,7 @@ const Services = () => {
       icon: Globe,
       color: '#3B82F6',
       features: ['E-Commerce Platforms', 'Business Websites', 'Portfolio Sites', 'Landing Pages', 'Web Applications', 'Performance Optimized'],
-      image: `${process.env.PUBLIC_URL}/images/services/web-dev.png`
+      image: `${import.meta.env.BASE_URL}images/services/web-dev.png`
     },
     {
       title: 'Content Management Systems',
@@ -154,7 +154,7 @@ const Services = () => {
       icon: Database,
       color: '#8B5CF6',
       features: ['Click-to-Edit Content', 'Product & Inventory Management', 'Custom Options Management', 'Full Admin Dashboards', 'Automated Workflows', 'Data Management'],
-      image: `${process.env.PUBLIC_URL}/images/services/cms.png`
+      image: `${import.meta.env.BASE_URL}images/services/cms.png`
     },
     {
       title: 'Mobile Apps',
@@ -162,7 +162,7 @@ const Services = () => {
       icon: Smartphone,
       color: '#EC4899',
       features: ['iOS & Android Apps', 'Swift & Xcode', 'Cloud Integration', 'Real-Time Messaging', 'Push Notifications', 'Subscription Services', 'Native Performance'],
-      image: `${process.env.PUBLIC_URL}/images/services/mobile-apps.png`
+      image: `${import.meta.env.BASE_URL}images/services/mobile-apps.png`
     },
     {
       title: 'Backend & Infrastructure',
@@ -170,7 +170,7 @@ const Services = () => {
       icon: Server,
       color: '#10B981',
       features: ['Cloud Infrastructure', 'API Development', 'Database Optimization', 'DevOps & Scaling', 'Network Administration', 'Server Management'],
-      image: `${process.env.PUBLIC_URL}/images/services/backend-infrastructure.jpg`
+      image: `${import.meta.env.BASE_URL}images/services/backend-infrastructure.jpg`
     }
   ];
 

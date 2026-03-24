@@ -29,7 +29,7 @@ export interface Project {
   githubPrivate?: boolean;
 }
 
-const base = process.env.PUBLIC_URL || '';
+const base = import.meta.env.BASE_URL;
 
 export const projects: Project[] = [
   {
