@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { Launch as LaunchIcon, GitHub as GitHubIcon, Lock as LockIcon, Apple as AppleIcon, Shop as PlayStoreIcon } from '@mui/icons-material';
+import { Launch as LaunchIcon, GitHub as GitHubIcon, MenuBook as MenuBookIcon, Lock as LockIcon, Apple as AppleIcon, Shop as PlayStoreIcon } from '@mui/icons-material';
 import { useMobileDetect } from '../hooks/useMobileDetect';
 import { projects } from '../data/projects';
 import type { Project } from '../data/projects';
+import RegistryInsights from '../components/RegistryInsights';
 
 const ProjectContainer = styled.div`
   display: grid;
@@ -459,6 +460,12 @@ const Portfolio = () => {
                   {project.description}
                 </ProjectDescription>
 
+                <RegistryInsights
+                  slug={project.slug}
+                  variant="compact"
+                  onClickStop={(e) => e.stopPropagation()}
+                />
+
                 <ButtonContainer onClick={(e) => e.stopPropagation()}>
                   {project.liveUrl && (
                     <Link
@@ -532,6 +539,21 @@ const Portfolio = () => {
                         startIcon={<GitHubIcon />}
                       >
                         View Code
+                      </StyledButton>
+                    </Link>
+                  )}
+                  {project.docsUrl && (
+                    <Link
+                      href={project.docsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      underline="none"
+                    >
+                      <StyledButton
+                        variant="outlined"
+                        startIcon={<MenuBookIcon />}
+                      >
+                        Documentation
                       </StyledButton>
                     </Link>
                   )}

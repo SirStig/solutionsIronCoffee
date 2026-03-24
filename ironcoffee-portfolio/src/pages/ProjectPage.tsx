@@ -4,9 +4,10 @@ import { Container, Typography, Box, Chip, Button, ChipProps } from '@mui/materi
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
-import { Launch as LaunchIcon, GitHub as GitHubIcon, Lock as LockIcon, Apple as AppleIcon, Shop as PlayStoreIcon, ArrowBack as ArrowBackIcon } from '@mui/icons-material';
+import { Launch as LaunchIcon, GitHub as GitHubIcon, MenuBook as MenuBookIcon, Lock as LockIcon, Apple as AppleIcon, Shop as PlayStoreIcon, ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import { getProjectBySlug, Project } from '../data/projects';
 import PageTransition from '../components/PageTransition';
+import RegistryInsights from '../components/RegistryInsights';
 
 const BackButton = styled(Button)`
   && {
@@ -380,6 +381,7 @@ const ProjectPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
           >
+            <RegistryInsights slug={project.slug} variant="full" />
             <Typography
               variant="body1"
               sx={{
@@ -503,6 +505,24 @@ const ProjectPage = () => {
                   }}
                 >
                   View Code
+                </Button>
+              )}
+              {project.docsUrl && (
+                <Button
+                  variant="outlined"
+                  href={project.docsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  startIcon={<MenuBookIcon />}
+                  sx={{
+                    color: 'primary.main',
+                    borderColor: 'primary.main',
+                    minHeight: 44,
+                    width: { xs: '100%', sm: 'auto' },
+                    '&:hover': { borderColor: 'primary.main', bgcolor: 'primary.main', color: 'primary.contrastText' },
+                  }}
+                >
+                  Documentation
                 </Button>
               )}
             </ButtonContainer>
