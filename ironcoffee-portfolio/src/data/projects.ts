@@ -3,6 +3,11 @@ export interface ProjectStatus {
   color: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
 }
 
+export type ProjectLiveStatus =
+  | { kind: 'pypi'; package: string }
+  | { kind: 'npm'; package: string }
+  | { kind: 'github-release'; owner: string; repo: string };
+
 export interface Project {
   id: number;
   slug: string;
@@ -27,6 +32,10 @@ export interface Project {
   software?: string[];
   languages?: string[];
   githubPrivate?: boolean;
+  /** Shields.io or similar image URL; shown linking to GitHub Releases when githubUrl is set */
+  downloadsBadgeUrl?: string;
+  /** When set, status chip label is fetched at runtime; `status.label` is fallback if the request fails */
+  liveStatus?: ProjectLiveStatus;
 }
 
 const base = import.meta.env.BASE_URL;
@@ -159,9 +168,9 @@ export const projects: Project[] = [
     slug: 'expo-media-engine',
     title: 'Expo Media Engine',
     description:
-      'MIT-licensed native video composition for Expo on iOS and Android. Multi-track timeline, frame-accurate live preview (AVPlayer / OpenGL ES), nine filters, eight transitions, full audio mixing with fades and keyframes, interactive Skia-ready overlays, and fast stitch plus H.264/H.265 export. npm latest is 1.0.0-alpha-3 (pre-release line); pin @projectyoked/expo-media-engine@0.1.3 for the stable 0.1.x line. Built for and used in production in the Project Yoked app.',
+      'MIT-licensed native video composition for Expo on iOS and Android. Multi-track timeline, frame-accurate live preview (AVPlayer / OpenGL ES), nine filters, eight transitions, full audio mixing with fades and keyframes, interactive Skia-ready overlays, and fast stitch plus H.264/H.265 export. Check npm for the current latest (pre-release) tag; pin @projectyoked/expo-media-engine@0.1.3 for the stable 0.1.x line. Built for and used in production in the Project Yoked app.',
     longDescription:
-      'Expo Media Engine brings hardware-accelerated editing to React Native without proprietary SDKs or per-minute billing. The pre-release line on npm (latest 1.0.0-alpha-3) offers multi-track composition, preview that matches export, filters and transitions, multi-track audio with automation, useCompositionOverlays for Skia-aligned overlays, concatenation with transcoding fallback, and compression presets. The stable 0.1.x line focuses on basic single-video export and audio utilities—pin @projectyoked/expo-media-engine@0.1.3 if you want that track.',
+      'Expo Media Engine brings hardware-accelerated editing to React Native without proprietary SDKs or per-minute billing. The pre-release line on npm offers multi-track composition, preview that matches export, filters and transitions, multi-track audio with automation, useCompositionOverlays for Skia-aligned overlays, concatenation with transcoding fallback, and compression presets. The stable 0.1.x line focuses on basic single-video export and audio utilities—pin @projectyoked/expo-media-engine@0.1.3 if you want that track.',
     technologies: [
       'Expo',
       'Expo Modules API',
@@ -185,7 +194,8 @@ export const projects: Project[] = [
     ],
     image: `${base}images/projects/expo-media-engine.png`,
     category: ['React Native', 'NPM Package', 'Media Processing'],
-    status: { label: 'npm latest: 1.0.0-alpha-3', color: 'info' },
+    status: { label: 'npm latest', color: 'info' },
+    liveStatus: { kind: 'npm', package: '@projectyoked/expo-media-engine' },
     npmUrl: 'https://www.npmjs.com/package/@projectyoked/expo-media-engine',
     githubUrl: 'https://github.com/SirStig/projectyoked-expo-media-engine',
     docsUrl: 'https://sirstig.github.io/projectyoked-expo-media-engine/',
@@ -195,9 +205,9 @@ export const projects: Project[] = [
     slug: 'yokedcache',
     title: 'YokedCache',
     description:
-      'Version 1.0.0 on PyPI. Production-oriented Python caching for FastAPI: Redis-backed storage with tag-aware auto-invalidation, decorators and dependencies that fit existing endpoints, and multi-backend routing across Redis, Memcached, memory, disk, and SQLite. Includes resilience patterns (circuit breaker, retries, stale-if-error), HTTP caching middleware (ETag, Cache-Control), Prometheus/StatsD metrics, optional vector-style cache helpers, and a CLI for keys, stats, and health.',
+      'On PyPI. Production-oriented Python caching for FastAPI: Redis-backed storage with tag-aware auto-invalidation, decorators and dependencies that fit existing endpoints, and multi-backend routing across Redis, Memcached, memory, disk, and SQLite. Includes resilience patterns (circuit breaker, retries, stale-if-error), HTTP caching middleware (ETag, Cache-Control), Prometheus/StatsD metrics, optional vector-style cache helpers, and a CLI for keys, stats, and health.',
     longDescription:
-      'YokedCache 1.0.0 is a full stable release on PyPI. It is designed so you do not have to bolt on a separate documentation stack to operate it in production: clear hooks for invalidation, observability, and degradation under load. Use it to cut database pressure and speed up API responses while keeping invalidation predictable. Install with pip install yokedcache; full guides and API reference live on the documentation site.',
+      'YokedCache is a stable, production-oriented library on PyPI. It is designed so you do not have to bolt on a separate documentation stack to operate it in production: clear hooks for invalidation, observability, and degradation under load. Use it to cut database pressure and speed up API responses while keeping invalidation predictable. Install with pip install yokedcache; full guides and API reference live on the documentation site.',
     technologies: [
       'Python',
       'FastAPI',
@@ -228,7 +238,8 @@ export const projects: Project[] = [
     ],
     image: `${base}images/projects/yokedcache.png`,
     category: ['Python Library', 'Backend', 'Performance'],
-    status: { label: 'v1.0.0', color: 'success' },
+    status: { label: 'PyPI', color: 'success' },
+    liveStatus: { kind: 'pypi', package: 'yokedcache' },
     liveUrl: 'https://pypi.org/project/yokedcache/',
     liveUrlLabel: 'PyPI',
     githubUrl: 'https://github.com/SirStig/yokedcache',
@@ -238,15 +249,24 @@ export const projects: Project[] = [
     id: 3,
     slug: 'encodeforge',
     title: 'EncodeForge',
-    description: 'Cross-platform media processing suite combining hardware-accelerated video encoding, AI-powered subtitle generation with Whisper, and smart metadata-driven file renaming inside a polished desktop UI.',
+    description:
+      'Open-source desktop FFmpeg GUI for Windows, macOS, and Linux: GPU batch encoding (NVENC, AMF, Quick Sync, VideoToolbox), local AI subtitles via faster-whisper, and smart renaming from TMDB, TVDB, AniDB, and more — Fluent Design UI with PySide6.',
+    longDescription:
+      'EncodeForge is a free MIT-licensed desktop app that pairs a Fluent Design interface (PySide6 / PyQt-Fluent-Widgets) with FFmpeg, Nuitka-built binaries, and local faster-whisper transcription — no cloud required for subtitles. Queue encodes, normalize audio, pull subtitles from multiple providers as fallback, and preview metadata-driven renames before applying. Downloads and docs live on the project site; releases ship on GitHub.',
     technologies: [
-      'JavaFX',
       'Python',
-      'FastAPI',
+      'PySide6',
+      'PyQt-Fluent-Widgets',
       'FFmpeg',
-      'OpenAI Whisper',
-      'PyTorch',
-      'Docker'
+      'faster-whisper',
+      'Nuitka',
+      'Qt 6',
+    ],
+    features: [
+      'Hardware-accelerated batch encoding (NVENC, AMF, Quick Sync, VideoToolbox)',
+      'Local AI subtitles with faster-whisper (90+ languages), plus multi-provider download fallback',
+      'Smart renaming from TMDB, TVDB, AniDB, Kitsu, Jikan, TVmaze, and more with preview',
+      'Dark and light themes, queue management, and exportable logs',
     ],
     image: `${base}images/projects/encodeforge-encoder.png`,
     images: [
@@ -255,8 +275,13 @@ export const projects: Project[] = [
       `${base}images/projects/encodeforge-subtitles.png`
     ],
     category: ['Desktop App', 'AI', 'Media Processing'],
-    status: { label: 'Public Release', color: 'success' },
-    githubUrl: 'https://github.com/SirStig/EncodeForge'
+    status: { label: 'Release', color: 'info' },
+    liveStatus: { kind: 'github-release', owner: 'SirStig', repo: 'EncodeForge' },
+    liveUrl: 'https://sirstig.github.io/EncodeForge/',
+    liveUrlLabel: 'Website',
+    githubUrl: 'https://github.com/SirStig/EncodeForge',
+    downloadsBadgeUrl:
+      'https://img.shields.io/github/downloads/SirStig/EncodeForge/total?style=flat-square&label=downloads',
   },
   {
     id: 5,

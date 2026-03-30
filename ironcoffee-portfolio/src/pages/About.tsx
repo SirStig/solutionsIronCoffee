@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Typography, Grid, Box, Avatar, Chip, IconButton } from '@mui/material';
+import { Container, Typography, Grid, Box, Avatar, Chip, IconButton, Link } from '@mui/material';
 import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
@@ -448,7 +448,11 @@ const About = () => {
                       mb: 2
                     }}
                   >
-                    My own media processing application using FFMPEG for encoding, AI-powered subtitle generation, metadata extraction, and file management. Originally built in Java, now being converted to Python with PySide for a modern cross-platform experience.
+                    Open-source desktop media tool: FFmpeg-based GPU encoding, local AI subtitles with faster-whisper, and metadata-driven renaming — Python, PySide6, and a Fluent Design UI for Windows, macOS, and Linux. Site and downloads at{' '}
+                    <Link href="https://sirstig.github.io/EncodeForge/" target="_blank" rel="noopener noreferrer">
+                      sirstig.github.io/EncodeForge
+                    </Link>
+                    .
                   </Typography>
                 </ContentCard>
               </Grid>

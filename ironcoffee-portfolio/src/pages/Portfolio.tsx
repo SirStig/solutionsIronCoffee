@@ -9,6 +9,7 @@ import { useMobileDetect } from '../hooks/useMobileDetect';
 import { projects } from '../data/projects';
 import type { Project } from '../data/projects';
 import RegistryInsights from '../components/RegistryInsights';
+import LiveProjectStatusChip from '../components/LiveProjectStatusChip';
 
 const ProjectContainer = styled.div`
   display: grid;
@@ -430,13 +431,7 @@ const Portfolio = () => {
                     >
                       {project.category.join(' • ')}
                     </Typography>
-                    {project.status && (
-                      <StatusChip
-                        label={project.status.label}
-                        color={project.status.color}
-                        size="small"
-                      />
-                    )}
+                    <LiveProjectStatusChip project={project} />
                     {project.isPrivate && (
                       <StatusChip
                         icon={<LockIcon />}
@@ -555,6 +550,25 @@ const Portfolio = () => {
                       >
                         Documentation
                       </StyledButton>
+                    </Link>
+                  )}
+                  {project.downloadsBadgeUrl && project.githubUrl && (
+                    <Link
+                      href={`${project.githubUrl}/releases`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      underline="none"
+                      onClick={(e) => e.stopPropagation()}
+                      sx={{ display: 'inline-flex', alignItems: 'center', lineHeight: 0 }}
+                    >
+                      <Box
+                        component="img"
+                        src={project.downloadsBadgeUrl}
+                        alt="Total GitHub release downloads"
+                        loading="lazy"
+                        decoding="async"
+                        sx={{ height: 20, display: 'block' }}
+                      />
                     </Link>
                   )}
                 </ButtonContainer>

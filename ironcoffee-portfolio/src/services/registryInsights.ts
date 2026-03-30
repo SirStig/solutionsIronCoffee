@@ -64,6 +64,16 @@ export async function fetchPypiInsights(
   };
 }
 
+export async function fetchGithubReleaseTag(
+  owner: string,
+  repo: string,
+  signal?: AbortSignal
+): Promise<string | null> {
+  const encOwner = encodeURIComponent(owner);
+  const encRepo = encodeURIComponent(repo);
+  return fetchShieldsValue(`/github/v/release/${encOwner}/${encRepo}.json`, signal);
+}
+
 export async function fetchNpmInsights(
   packageName: string,
   signal?: AbortSignal

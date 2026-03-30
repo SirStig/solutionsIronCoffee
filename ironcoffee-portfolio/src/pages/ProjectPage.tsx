@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Typography, Box, Chip, Button, ChipProps } from '@mui/material';
+import { Container, Typography, Box, Chip, Button, ChipProps, Link } from '@mui/material';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ import { Launch as LaunchIcon, GitHub as GitHubIcon, MenuBook as MenuBookIcon, L
 import { getProjectBySlug, Project } from '../data/projects';
 import PageTransition from '../components/PageTransition';
 import RegistryInsights from '../components/RegistryInsights';
+import LiveProjectStatusChip from '../components/LiveProjectStatusChip';
 
 const BackButton = styled(Button)`
   && {
@@ -361,9 +362,7 @@ const ProjectPage = () => {
               <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500 }}>
                 {project.category.join(' • ')}
               </Typography>
-              {project.status && (
-                <StatusChip label={project.status.label} color={project.status.color} size="small" />
-              )}
+              <LiveProjectStatusChip key={project.slug} project={project} />
               {project.isPrivate && (
                 <StatusChip icon={<LockIcon />} label="Private" color="error" size="small" />
               )}
@@ -526,6 +525,25 @@ const ProjectPage = () => {
                 </Button>
               )}
             </ButtonContainer>
+            {project.downloadsBadgeUrl && project.githubUrl && (
+              <Box sx={{ mt: 2 }}>
+                <Link
+                  href={`${project.githubUrl}/releases`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{ display: 'inline-flex', lineHeight: 0 }}
+                >
+                  <Box
+                    component="img"
+                    src={project.downloadsBadgeUrl}
+                    alt="Total GitHub release downloads"
+                    loading="lazy"
+                    decoding="async"
+                    sx={{ height: 20, display: 'block' }}
+                  />
+                </Link>
+              </Box>
+            )}
           </motion.div>
         </ContentSection>
       </Container>
