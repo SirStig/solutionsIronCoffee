@@ -98,13 +98,13 @@
   </url>
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio/beyond25</loc>
-    <lastmod>2025-03-13</lastmod>
+    <lastmod>2026-04-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://solutions.ironcoffee.com/images/projects/beyond25/PlaylistsChat.png</image:loc>
-      <image:title>Beyond25 - AI-Curated Music Discovery</image:title>
-      <image:caption>AI-curated music discovery app with Gemini and Ollama</image:caption>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/beyond25/marketing-site.png</image:loc>
+      <image:title>Beyond25 - AI Music Curator</image:title>
+      <image:caption>AI music curator for Apple Music and YouTube Music with Gemini and optional Ollama</image:caption>
     </image:image>
   </url>
   <url>

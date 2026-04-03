@@ -790,7 +790,7 @@ const Home = () => {
                   onClick={() => navigate('/portfolio/beyond25')}
                   style={{ cursor: 'pointer' }}
                 >
-                  <ProjectImage imageUrl="/images/projects/beyond25/CreatePlaylistsInSeconds.png" />
+                  <ProjectImage imageUrl="/images/projects/beyond25/marketing-site.png" />
                   <Box sx={{ p: 3 }}>
                     <Typography variant="h5" sx={{ mb: 1, fontWeight: 600 }}>
                       Beyond25
