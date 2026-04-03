@@ -110,7 +110,6 @@ export const projects: Project[] = [
     images: [
       `${base}images/projects/eaglechair-homepage.png`,
       `${base}images/projects/eaglechair-catalog.png`,
-      `${base}images/projects/eaglechair-product-dropdown.png`
     ],
     category: ['Web App', 'E-commerce'],
     status: { label: 'In Development', color: 'warning' },

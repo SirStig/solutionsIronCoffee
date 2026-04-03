@@ -87,13 +87,18 @@
   </url>
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio/eaglechair</loc>
-    <lastmod>2025-03-13</lastmod>
+    <lastmod>2026-04-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
       <image:loc>https://solutions.ironcoffee.com/images/projects/eaglechair-homepage.png</image:loc>
       <image:title>EagleChair Digital Flagship</image:title>
-      <image:caption>End-to-end commerce experience for premium furniture brand</image:caption>
+      <image:caption>Commercial furniture storefront hero and navigation</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/eaglechair-catalog.png</image:loc>
+      <image:title>EagleChair product categories</image:title>
+      <image:caption>Category grid for chairs, barstools, booths, tables, and more</image:caption>
     </image:image>
   </url>
   <url>
