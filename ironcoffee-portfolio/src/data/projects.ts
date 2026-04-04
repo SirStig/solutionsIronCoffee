@@ -121,9 +121,9 @@ export const projects: Project[] = [
     slug: 'beyond25',
     title: 'Beyond25',
     description:
-      'Your AI music curator (in development). Describe what you want to hear—the AI researches, curates, and builds playlists you can sync to Apple Music or YouTube Music, or use Lite mode with no music account (catalog metadata, previews, and links). Spotify connect, search, and save are not available to most users: Spotify\'s extended API path effectively requires very large scale (on the order of ~250K MAU). Premium Gemini research, larger playlists, and optional local Ollama are part of the product as web checkout and the App Store release ship.',
+      'Your AI music curator—live on the web. Describe what you want to hear—the AI researches, curates, and builds playlists you can sync to Apple Music or YouTube Music, or use Lite mode with no music account (catalog metadata, previews, and links). The browser WebApp feels almost like the native app; subscriptions and credit packs are sold with Stripe. Native mobile apps are not on the App Store or Play Store yet. Spotify connect, search, and save are not available to most users: Spotify\'s extended API path effectively requires very large scale (on the order of ~250K MAU). Premium Gemini research, larger playlists, and optional local Ollama are part of the product.',
     longDescription:
-      'Beyond25 is an AI-powered music curator built with Expo and React Native (TypeScript), targeting native and web from one codebase. You describe the vibe; the app researches tracks, curates, and delivers playlists through chat and dedicated curation flows. Link Apple Music for full curation against your catalog, library context, and one-tap saves, or sign in with Google for YouTube Music to save playlists, like videos, and use your YouTube playlists or liked videos as chat context. Lite mode needs no music service: you still get AI playlists and public catalog metadata, with previews where Apple or other APIs allow, and library save stays off until you connect. Spotify connect, search, and save are not available to the general public because Spotify keeps third-party apps in restricted developer access until they qualify for extended API use—requirements that imply very large active audiences (roughly on the order of ~250K MAU). The app may still surface Spotify in settings for transparency; authorized accounts may use it only for internal testing. Powered by Gemini (premium) with optional Ollama locally. Dark mode, no ads, no selling of your data. The marketing site at beyond-25.com is live for early access—users can create accounts and explore—but subscribing and buying credit packs on the web is not available yet, and the mobile app is not on the App Store. Preparing for full release.',
+      'Beyond25 is an AI-powered music curator built with Expo and React Native (TypeScript), targeting native and web from one codebase. You describe the vibe; the app researches tracks, curates, and delivers playlists through chat and dedicated curation flows. Link Apple Music for full curation against your catalog, library context, and one-tap saves, or sign in with Google for YouTube Music to save playlists, like videos, and use your YouTube playlists or liked videos as chat context. Lite mode needs no music service: you still get AI playlists and public catalog metadata, with previews where Apple or other APIs allow, and library save stays off until you connect. Spotify connect, search, and save are not available to the general public because Spotify keeps third-party apps in restricted developer access until they qualify for extended API use—requirements that imply very large active audiences (roughly on the order of ~250K MAU). The app may still surface Spotify in settings for transparency; authorized accounts may use it only for internal testing. Powered by Gemini (premium) with optional Ollama locally. Dark mode, no ads, no selling of your data. beyond-25.com is released for the web: you can use the product in a WebApp that feels almost like the mobile app, and buy subscriptions or credit packs through Stripe. Native iOS and Android store releases are still to come.',
     technologies: [
       'React Native',
       'Expo',
@@ -134,9 +134,10 @@ export const projects: Project[] = [
       'YouTube Music',
       'Google Sign-In',
       'Sign in with Apple',
+      'Stripe',
     ],
     features: [
-      'Marketing site — Early access signup, demo, features, and pricing story',
+      'beyond-25.com — Live WebApp (near-native feel), accounts, Stripe checkout for subscriptions and credit packs',
       'Curating — Premium flows to build playlists with clear progress and results',
       'Research — AI-driven discovery before tracks land in your mix',
       'Playlist in chat — Full playlists surfaced inline in the conversation',
@@ -146,7 +147,7 @@ export const projects: Project[] = [
       'Local AI — Ollama for curation without spending cloud credits',
       'Voice input — Mic instead of typing where supported',
       'Dark mode, no ads, no selling of your data',
-      'Pricing: credit packs and subscriptions planned; web checkout and App Store release still in progress',
+      'Pricing: credit packs and subscriptions on the web via Stripe; native app store releases not shipped yet',
     ],
     image: `${base}images/projects/beyond25/marketing-site.png`,
     images: [
@@ -158,8 +159,8 @@ export const projects: Project[] = [
       `${base}images/projects/beyond25/settings-music-providers.png`,
       `${base}images/projects/beyond25/ollama-provider.png`,
     ],
-    category: ['Mobile App', 'AI', 'Music'],
-    status: { label: 'Preparing for Release', color: 'info' },
+    category: ['Web App', 'Mobile App', 'AI', 'Music'],
+    status: { label: 'Web live · Mobile TBA', color: 'success' },
     liveUrl: 'https://www.beyond-25.com',
     liveUrlLabel: 'Website',
   },

@@ -796,10 +796,10 @@ const Home = () => {
                       Beyond25
                     </Typography>
                     <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.7, mb: 2 }}>
-                      In development: AI-curated music discovery with Apple Music, YouTube Music, or Lite mode. Spotify isn&apos;t available for most users yet (Spotify&apos;s extended API access expects very large apps). The site is early access; the React Native app and web subscriptions or credit packs are not out yet.
+                      Live on the web: AI-curated music with Apple Music, YouTube Music, or Lite mode. The WebApp feels almost like the native app; Stripe handles subscriptions and credit packs. Native mobile apps are not on the stores yet. Spotify isn&apos;t available for most users (Spotify&apos;s extended API access expects very large apps).
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
-                      {['Mobile App', 'AI', 'Music Discovery'].map((tag) => (
+                      {['Web App', 'Mobile App', 'AI', 'Music Discovery'].map((tag) => (
                         <Chip
                           key={tag}
                           label={tag}
