@@ -124,15 +124,36 @@ const About = () => {
   return (
     <PageTransition>
       <Helmet>
-        <title>Joshua Kac - Full-Stack Developer | IronCoffee Solutions</title>
-        <meta name="description" content="Joshua Kac is a self-taught full-stack developer with 15+ years of experience, specializing in web development, mobile apps, and cloud infrastructure. Founder of IronCoffee LLC." />
+        <title>About Joshua Kac | Full-Stack Developer - IronCoffee Solutions</title>
+        <meta name="description" content="Joshua Kac is a self-taught full-stack developer with 15+ years of experience, specializing in web development, mobile apps, and cloud infrastructure. Founder of IronCoffee LLC and CEO/Founder of Project Yoked LLC." />
         <meta name="author" content="Joshua Kac" />
+        <meta name="keywords" content="Joshua Kac, about Joshua Kac, IronCoffee founder, Project Yoked CEO, full-stack developer, self-taught developer, React developer, mobile app developer" />
+        <link rel="canonical" href="https://solutions.ironcoffee.com/about" />
+        <meta property="og:type" content="profile" />
+        <meta property="og:url" content="https://solutions.ironcoffee.com/about" />
+        <meta property="og:title" content="About Joshua Kac | Full-Stack Developer - IronCoffee Solutions" />
+        <meta property="og:description" content="Self-taught full-stack developer with 15+ years of experience. Founder of IronCoffee LLC, CEO/Founder of Project Yoked LLC." />
+        <meta property="og:image" content="https://solutions.ironcoffee.com/images/profile.JPEG" />
+        <meta property="profile:first_name" content="Joshua" />
+        <meta property="profile:last_name" content="Kac" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="About Joshua Kac | IronCoffee Solutions" />
+        <meta name="twitter:description" content="Self-taught full-stack developer with 15+ years of experience. Founder of IronCoffee LLC." />
+        <meta name="twitter:image" content="https://solutions.ironcoffee.com/images/profile.JPEG" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "ProfilePage",
           "mainEntity": {
             "@id": "https://solutions.ironcoffee.com/#person"
           }
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://solutions.ironcoffee.com/" },
+            { "@type": "ListItem", "position": 2, "name": "About", "item": "https://solutions.ironcoffee.com/about" }
+          ]
         })}</script>
       </Helmet>
 

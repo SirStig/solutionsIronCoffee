@@ -1,0 +1,25 @@
+# IronCoffee Solutions
+
+> IronCoffee Solutions is the portfolio and services site of Joshua Kac, a self-taught full-stack developer with 15+ years of experience, founder of IronCoffee LLC, and CEO/Founder of Project Yoked LLC. IronCoffee builds custom websites, mobile apps, backend systems, and AWS cloud infrastructure end-to-end.
+
+## About
+- [About Joshua Kac](https://solutions.ironcoffee.com/about): Background, skills, experience.
+- [Services](https://solutions.ironcoffee.com/services): Web development, mobile app development (iOS/Android), backend/API (FastAPI, Node.js), AWS cloud, consulting.
+- [Contact](https://solutions.ironcoffee.com/contact): Joshua@ironcoffee.com.
+
+## Portfolio Projects
+- [Project Yoked](https://solutions.ironcoffee.com/portfolio/project-yoked): AI-powered fitness social platform (React Native, Swift, FastAPI, AWS, PostgreSQL).
+- [Beyond25](https://solutions.ironcoffee.com/portfolio/beyond25): iOS wellness/community application.
+- [EagleChair](https://solutions.ironcoffee.com/portfolio/eaglechair): Commercial furniture e-commerce platform.
+- [Expo Media Engine](https://solutions.ironcoffee.com/portfolio/expo-media-engine): Open-source React Native Expo video composition module.
+- [YokedCache](https://solutions.ironcoffee.com/portfolio/yokedcache): Python caching library (PyPI).
+- [EncodeForge](https://solutions.ironcoffee.com/portfolio/encodeforge): Encoding toolkit.
+- [Financial Project](https://solutions.ironcoffee.com/portfolio/financial-project): Custom financial management web application.
+- [RLR Project](https://solutions.ironcoffee.com/portfolio/rlr-project): Web application development project.
+- [Game Dev Tycoon Mod Maker](https://solutions.ironcoffee.com/portfolio/game-dev-tycoon-mod-maker): Game modification tool.
+
+## Tech Stack
+- Frontend: React 18, TypeScript, Vite, MUI, Styled-Components, Framer Motion
+- Mobile: React Native, Swift, Xcode
+- Backend: FastAPI, Python, Node.js, PostgreSQL
+- Cloud: AWS, Docker, CI/CD, Firebase

@@ -329,8 +329,45 @@ const ProjectPage = () => {
   return (
     <PageTransition>
       <Helmet>
-        <title>{project.title} - IronCoffee Solutions</title>
+        <title>{project.title} | Portfolio - IronCoffee Solutions</title>
         <meta name="description" content={project.description} />
+        <meta name="keywords" content={[project.title, ...project.technologies, ...(project.category || []), 'Joshua Kac', 'IronCoffee'].join(', ')} />
+        <meta name="author" content="Joshua Kac" />
+        <link rel="canonical" href={`https://solutions.ironcoffee.com/portfolio/${project.slug}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://solutions.ironcoffee.com/portfolio/${project.slug}`} />
+        <meta property="og:title" content={`${project.title} | IronCoffee Solutions`} />
+        <meta property="og:description" content={project.description} />
+        <meta property="og:image" content={`https://solutions.ironcoffee.com${project.image.startsWith('/') ? '' : '/'}${project.image.replace(/^\//, '')}`} />
+        <meta property="article:author" content="Joshua Kac" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${project.title} | IronCoffee Solutions`} />
+        <meta name="twitter:description" content={project.description} />
+        <meta name="twitter:image" content={`https://solutions.ironcoffee.com${project.image.startsWith('/') ? '' : '/'}${project.image.replace(/^\//, '')}`} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": project.appStoreUrl || project.playStoreUrl || project.npmUrl ? "SoftwareApplication" : "CreativeWork",
+          "name": project.title,
+          "description": project.longDescription || project.description,
+          "url": `https://solutions.ironcoffee.com/portfolio/${project.slug}`,
+          "image": `https://solutions.ironcoffee.com${project.image.startsWith('/') ? '' : '/'}${project.image.replace(/^\//, '')}`,
+          "author": { "@id": "https://solutions.ironcoffee.com/#person" },
+          "creator": { "@id": "https://solutions.ironcoffee.com/#person" },
+          "publisher": { "@id": "https://solutions.ironcoffee.com/#organization" },
+          "keywords": project.technologies.join(', '),
+          ...(project.appStoreUrl || project.playStoreUrl ? { "applicationCategory": "MobileApplication", "operatingSystem": [project.appStoreUrl && "iOS", project.playStoreUrl && "Android"].filter(Boolean).join(', ') } : {}),
+          ...(project.npmUrl ? { "applicationCategory": "DeveloperApplication" } : {}),
+          ...(project.liveUrl ? { "sameAs": [project.liveUrl, project.githubUrl, project.npmUrl, project.appStoreUrl, project.playStoreUrl].filter(Boolean) } : {})
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://solutions.ironcoffee.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Portfolio", "item": "https://solutions.ironcoffee.com/portfolio" },
+            { "@type": "ListItem", "position": 3, "name": project.title, "item": `https://solutions.ironcoffee.com/portfolio/${project.slug}` }
+          ]
+        })}</script>
       </Helmet>
 
       <Container maxWidth="lg" sx={{ py: { xs: 3, sm: 4, md: 6 }, px: { xs: 2, sm: 3 } }}>

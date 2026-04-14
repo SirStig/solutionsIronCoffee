@@ -12,6 +12,7 @@ import ProjectPage from '../pages/ProjectPage';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
 import { SOCIAL_LINKS } from '../constants/social';
+import SiteLogo from '../components/SiteLogo';
 
 interface Props {
   children: React.ReactElement;
@@ -182,27 +183,16 @@ const StyledAppBar = styled(AppBar)`
 
 const Logo = styled(Link)`
 && {
-  font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
-  font-size: clamp(0.95rem, 2.5vw, 1.2rem);
-  font-weight: 600;
-  letter-spacing: 0.25px;
-  color: white;
   text-decoration: none;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.5rem;
   position: relative;
   transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
-  white-space: nowrap;
   overflow: hidden;
-  text-shadow: 
-    0 1px 2px rgba(0, 0, 0, 0.5),
-    0 2px 5px rgba(0, 0, 0, 0.3),
-    0 4px 8px rgba(0, 0, 0, 0.2);
 
   &:hover {
     transform: translateY(-1px);
@@ -214,27 +204,6 @@ const Logo = styled(Link)`
     transform: translateY(0px);
     -webkit-transform: translateY(0px);
     -moz-transform: translateY(0px);
-  }
-  
-  /* Responsive sizes */
-  @media (max-width: 599px) {
-    font-size: 0.95rem;
-    letter-spacing: 0.2px;
-  }
-  
-  @media (min-width: 600px) and (max-width: 959px) {
-    font-size: 1.05rem;
-    letter-spacing: 0.25px;
-  }
-  
-  @media (min-width: 1920px) {
-    font-size: 1.3rem;
-    letter-spacing: 0.3px;
-  }
-  
-  @media (min-width: 3840px) {
-    font-size: 1.5rem;
-    letter-spacing: 0.4px;
   }
 `;
 
@@ -496,8 +465,9 @@ const MainLayout: React.FC = () => {
         <Logo 
           to="/" 
           onClick={handleDrawerToggle}
+          aria-label="IronCoffee Solutions"
         >
-          IronCoffee Solutions
+          <SiteLogo context="drawer" />
         </Logo>
       </Box>
       
@@ -740,8 +710,8 @@ const MainLayout: React.FC = () => {
                 display: 'flex',
                 alignItems: 'center'
               }}>
-                <Logo to="/">
-                  IronCoffee Solutions
+                <Logo to="/" aria-label="IronCoffee Solutions">
+                  <SiteLogo context="header" />
                 </Logo>
               </Box>
               
@@ -1109,8 +1079,9 @@ const MainLayout: React.FC = () => {
             }}>
               <Logo 
                 to="/"
+                aria-label="IronCoffee Solutions"
               >
-                IronCoffee Solutions
+                <SiteLogo context="footer" />
               </Logo>
               <Box sx={{ 
                 mt: 'clamp(0.5rem, 2vw, 1.5rem)', 

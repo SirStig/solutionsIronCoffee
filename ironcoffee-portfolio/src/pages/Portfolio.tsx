@@ -367,8 +367,43 @@ const Portfolio = () => {
   return (
     <>
       <Helmet>
-        <title>Portfolio - IronCoffee Solutions</title>
-        <meta name="description" content="Explore our portfolio of web applications, mobile apps, and software solutions." />
+        <title>Portfolio | Projects by Joshua Kac - IronCoffee Solutions</title>
+        <meta name="description" content="Browse projects by Joshua Kac: Project Yoked fitness platform, Beyond25, EagleChair, Expo Media Engine, YokedCache, EncodeForge and more — web apps, mobile apps, and open-source tools." />
+        <meta name="keywords" content="IronCoffee portfolio, Joshua Kac projects, Project Yoked, Beyond25, EagleChair, YokedCache, EncodeForge, open source, React projects, mobile app portfolio" />
+        <link rel="canonical" href="https://solutions.ironcoffee.com/portfolio" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://solutions.ironcoffee.com/portfolio" />
+        <meta property="og:title" content="Portfolio | IronCoffee Solutions" />
+        <meta property="og:description" content="Explore web apps, mobile apps, and open-source projects by Joshua Kac." />
+        <meta property="og:image" content="https://solutions.ironcoffee.com/og-image.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Portfolio | IronCoffee Solutions" />
+        <meta name="twitter:description" content="Explore web apps, mobile apps, and open-source projects by Joshua Kac." />
+        <meta name="twitter:image" content="https://solutions.ironcoffee.com/og-image.png" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://solutions.ironcoffee.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Portfolio", "item": "https://solutions.ironcoffee.com/portfolio" }
+          ]
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "url": "https://solutions.ironcoffee.com/portfolio",
+          "name": "IronCoffee Solutions Portfolio",
+          "hasPart": projects.map((p, i) => ({
+            "@type": "CreativeWork",
+            "position": i + 1,
+            "name": p.title,
+            "description": p.description,
+            "url": `https://solutions.ironcoffee.com/portfolio/${p.slug}`,
+            "image": `https://solutions.ironcoffee.com${p.image.startsWith('/') ? '' : '/'}${p.image.replace(/^\//, '')}`,
+            "author": { "@id": "https://solutions.ironcoffee.com/#person" },
+            "keywords": p.technologies.join(', ')
+          }))
+        })}</script>
       </Helmet>
 
       <Box component="section" sx={{

@@ -151,8 +151,33 @@ const Contact = () => {
   return (
     <>
       <Helmet>
-        <title>Contact - IronCoffee Solutions</title>
-        <meta name="description" content="Get in touch with us for web development, game development, and IT solutions. Schedule a consultation or discuss your project needs." />
+        <title>Contact Joshua Kac | IronCoffee Solutions - Start Your Project</title>
+        <meta name="description" content="Contact Joshua Kac at IronCoffee Solutions for web development, mobile apps, backend systems, and technology consulting. Email Joshua@ironcoffee.com or schedule a free consultation." />
+        <meta name="keywords" content="contact IronCoffee, contact Joshua Kac, hire web developer, hire mobile app developer, free consultation, web development quote" />
+        <link rel="canonical" href="https://solutions.ironcoffee.com/contact" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://solutions.ironcoffee.com/contact" />
+        <meta property="og:title" content="Contact Joshua Kac | IronCoffee Solutions" />
+        <meta property="og:description" content="Get in touch for web, mobile, backend, and cloud development services. Free consultation available." />
+        <meta property="og:image" content="https://solutions.ironcoffee.com/og-image.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Joshua Kac | IronCoffee Solutions" />
+        <meta name="twitter:description" content="Get in touch for web, mobile, backend, and cloud development services." />
+        <meta name="twitter:image" content="https://solutions.ironcoffee.com/og-image.png" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "url": "https://solutions.ironcoffee.com/contact",
+          "mainEntity": { "@id": "https://solutions.ironcoffee.com/#organization" }
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://solutions.ironcoffee.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Contact", "item": "https://solutions.ironcoffee.com/contact" }
+          ]
+        })}</script>
       </Helmet>
 
       <Box component="section" sx={{ 

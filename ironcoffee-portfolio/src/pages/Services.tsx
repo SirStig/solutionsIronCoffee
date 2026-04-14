@@ -256,8 +256,39 @@ const Services = () => {
   return (
     <PageTransition>
       <Helmet>
-        <title>Services - IronCoffee Solutions</title>
-        <meta name="description" content="Comprehensive web development, mobile app development, CMS systems, and backend solutions. See how we bring your ideas to life." />
+        <title>Services | Web, Mobile & Cloud Development - IronCoffee Solutions</title>
+        <meta name="description" content="Full-service web development, iOS & Android mobile apps, FastAPI/Node backends, AWS cloud infrastructure, and technology consulting by Joshua Kac at IronCoffee Solutions." />
+        <meta name="keywords" content="web development services, mobile app development, iOS development, Android development, React Native, FastAPI, AWS cloud, backend development, API development, technology consulting, custom software development" />
+        <link rel="canonical" href="https://solutions.ironcoffee.com/services" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://solutions.ironcoffee.com/services" />
+        <meta property="og:title" content="Services | Web, Mobile & Cloud Development - IronCoffee Solutions" />
+        <meta property="og:description" content="Custom web, mobile, backend, and cloud solutions built end-to-end by Joshua Kac at IronCoffee Solutions." />
+        <meta property="og:image" content="https://solutions.ironcoffee.com/og-image.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Services | IronCoffee Solutions" />
+        <meta name="twitter:description" content="Custom web, mobile, backend, and cloud solutions built end-to-end by Joshua Kac." />
+        <meta name="twitter:image" content="https://solutions.ironcoffee.com/og-image.png" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://solutions.ironcoffee.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://solutions.ironcoffee.com/services" }
+          ]
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "IronCoffee Solutions Services",
+          "itemListElement": [
+            { "@type": "Service", "position": 1, "name": "Web Development", "description": "Custom websites and web applications built with React, TypeScript, and modern frameworks.", "provider": { "@id": "https://solutions.ironcoffee.com/#organization" }, "areaServed": "Worldwide" },
+            { "@type": "Service", "position": 2, "name": "Mobile App Development", "description": "Native iOS (Swift) and cross-platform (React Native) mobile applications for App Store and Google Play.", "provider": { "@id": "https://solutions.ironcoffee.com/#organization" }, "areaServed": "Worldwide" },
+            { "@type": "Service", "position": 3, "name": "Backend & API Development", "description": "FastAPI, Python, and Node.js backends with PostgreSQL, authentication, payments, and scalable architecture.", "provider": { "@id": "https://solutions.ironcoffee.com/#organization" }, "areaServed": "Worldwide" },
+            { "@type": "Service", "position": 4, "name": "Cloud Infrastructure (AWS)", "description": "AWS cloud architecture, deployment automation, storage, CDN, and DevOps.", "provider": { "@id": "https://solutions.ironcoffee.com/#organization" }, "areaServed": "Worldwide" },
+            { "@type": "Service", "position": 5, "name": "Technology Consulting", "description": "Architecture review, technology selection, and product strategy for startups and small businesses.", "provider": { "@id": "https://solutions.ironcoffee.com/#organization" }, "areaServed": "Worldwide" }
+          ]
+        })}</script>
       </Helmet>
 
       <HeroSection>

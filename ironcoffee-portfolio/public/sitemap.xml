@@ -6,7 +6,7 @@
   <!-- Homepage - Primary Landing Page -->
   <url>
     <loc>https://solutions.ironcoffee.com/</loc>
-    <lastmod>2025-09-19</lastmod>
+    <lastmod>2026-04-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -30,7 +30,7 @@
   <!-- About Page - Company Information -->
   <url>
     <loc>https://solutions.ironcoffee.com/about</loc>
-    <lastmod>2025-09-19</lastmod>
+    <lastmod>2026-04-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -43,7 +43,7 @@
   <!-- Portfolio Page - Showcase Work -->
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio</loc>
-    <lastmod>2025-09-19</lastmod>
+    <lastmod>2026-04-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -76,7 +76,7 @@
   <!-- Project Detail Pages -->
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio/project-yoked</loc>
-    <lastmod>2025-03-13</lastmod>
+    <lastmod>2026-04-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
@@ -114,7 +114,7 @@
   </url>
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio/expo-media-engine</loc>
-    <lastmod>2025-03-13</lastmod>
+    <lastmod>2026-04-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -125,31 +125,31 @@
   </url>
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio/encodeforge</loc>
-    <lastmod>2025-03-13</lastmod>
+    <lastmod>2026-04-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio/yokedcache</loc>
-    <lastmod>2025-03-13</lastmod>
+    <lastmod>2026-04-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio/financial-project</loc>
-    <lastmod>2025-03-13</lastmod>
+    <lastmod>2026-04-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio/rlr-project</loc>
-    <lastmod>2025-03-13</lastmod>
+    <lastmod>2026-04-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio/game-dev-tycoon-mod-maker</loc>
-    <lastmod>2025-03-13</lastmod>
+    <lastmod>2026-04-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -157,7 +157,7 @@
   <!-- Services Page - Business Offerings -->
   <url>
     <loc>https://solutions.ironcoffee.com/services</loc>
-    <lastmod>2025-09-19</lastmod>
+    <lastmod>2026-04-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -170,46 +170,9 @@
   <!-- Contact Page - Business Contact -->
   <url>
     <loc>https://solutions.ironcoffee.com/contact</loc>
-    <lastmod>2025-09-19</lastmod>
+    <lastmod>2026-04-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
-  <!-- Individual Service Pages (if they exist as separate routes) -->
-  <url>
-    <loc>https://solutions.ironcoffee.com/services/web-development</loc>
-    <lastmod>2025-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://solutions.ironcoffee.com/services/mobile-app-development</loc>
-    <lastmod>2025-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://solutions.ironcoffee.com/services/business-systems</loc>
-    <lastmod>2025-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://solutions.ironcoffee.com/services/technology-consulting</loc>
-    <lastmod>2025-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <!-- Important Static Resources -->
-  <url>
-    <loc>https://solutions.ironcoffee.com/manifest.json</loc>
-    <lastmod>2025-09-19</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  
-</urlset> 
+</urlset>

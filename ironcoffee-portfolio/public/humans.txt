@@ -1,0 +1,15 @@
+/* TEAM */
+Founder & Full-Stack Developer: Joshua Kac
+Contact: Joshua [at] ironcoffee.com
+Site: https://solutions.ironcoffee.com
+Location: United States
+
+/* THANKS */
+React, TypeScript, Vite, MUI, Framer Motion, FastAPI, AWS
+
+/* SITE */
+Last update: 2026/04/14
+Language: English
+Doctype: HTML5
+Components: React 18, TypeScript, MUI, Styled-Components, Framer Motion
+Software: Vite, Node.js

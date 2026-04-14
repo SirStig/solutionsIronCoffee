@@ -278,6 +278,39 @@ const Home = () => {
         <title>Joshua Kac | IronCoffee Solutions - From Idea to Deployment</title>
         <meta name="description" content="Joshua Kac — full-stack developer and founder of IronCoffee Solutions. Custom websites, mobile apps, and backend systems built from idea to deployment. Based in the US." />
         <meta name="author" content="Joshua Kac" />
+        <meta name="keywords" content="Joshua Kac, IronCoffee Solutions, full-stack developer, web development, mobile app development, React, React Native, FastAPI, AWS, PostgreSQL, TypeScript, custom software, technology consulting" />
+        <link rel="canonical" href="https://solutions.ironcoffee.com/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://solutions.ironcoffee.com/" />
+        <meta property="og:title" content="Joshua Kac | IronCoffee Solutions - From Idea to Deployment" />
+        <meta property="og:description" content="Full-stack developer Joshua Kac builds custom websites, mobile apps, and backend systems end-to-end at IronCoffee Solutions." />
+        <meta property="og:image" content="https://solutions.ironcoffee.com/og-image.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Joshua Kac | IronCoffee Solutions - From Idea to Deployment" />
+        <meta name="twitter:description" content="Full-stack developer Joshua Kac builds custom websites, mobile apps, and backend systems end-to-end at IronCoffee Solutions." />
+        <meta name="twitter:image" content="https://solutions.ironcoffee.com/og-image.png" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ProfessionalService",
+          "@id": "https://solutions.ironcoffee.com/#service",
+          "name": "IronCoffee Solutions",
+          "url": "https://solutions.ironcoffee.com/",
+          "image": "https://solutions.ironcoffee.com/og-image.png",
+          "priceRange": "$$",
+          "areaServed": "Worldwide",
+          "serviceType": ["Web Development", "Mobile App Development", "Cloud Infrastructure", "Technology Consulting"],
+          "provider": { "@id": "https://solutions.ironcoffee.com/#organization" }
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            { "@type": "Question", "name": "What services does IronCoffee Solutions offer?", "acceptedAnswer": { "@type": "Answer", "text": "Custom web development, native and cross-platform mobile app development (iOS & Android), backend/API engineering (FastAPI, Node), AWS cloud infrastructure, database design, and technology consulting." } },
+            { "@type": "Question", "name": "Who is Joshua Kac?", "acceptedAnswer": { "@type": "Answer", "text": "Joshua Kac is a self-taught full-stack developer with 15+ years of coding experience, founder of IronCoffee LLC, and CEO/Founder of Project Yoked LLC." } },
+            { "@type": "Question", "name": "Where is IronCoffee Solutions based?", "acceptedAnswer": { "@type": "Answer", "text": "IronCoffee LLC is based in the United States and serves clients worldwide remotely." } },
+            { "@type": "Question", "name": "How do I start a project?", "acceptedAnswer": { "@type": "Answer", "text": "Visit the Contact page at https://solutions.ironcoffee.com/contact or email Joshua@ironcoffee.com to schedule a free consultation." } }
+          ]
+        })}</script>
       </Helmet>
 
       <HeroSection>

@@ -70,6 +70,37 @@ Disallow: /package*.json
 Disallow: /tsconfig.json
 Disallow: /README.md
 
+# AI / LLM crawlers — explicitly allowed
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 # Sitemap locations
 Sitemap: https://solutions.ironcoffee.com/sitemap.xml
 Sitemap: https://solutions.ironcoffee.com/sitemap-images.xml
