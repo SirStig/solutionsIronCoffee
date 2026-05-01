@@ -71,10 +71,10 @@ export const projects: Project[] = [
       'Personalized progress analytics',
       'Virtual personal training'
     ],
-    image: `${base}images/projects/yoked.png`,
+    image: `${base}images/projects/projectyoked.png`,
     video: `${base}videos/app-overview-montage.mp4`,
     images: [
-      `${base}images/projects/yoked.png`,
+      `${base}images/projects/projectyoked.png`,
       `${base}images/projects/projectyoked/AProCoachInYourPocket.png`,
       `${base}images/projects/projectyoked/MainSplitLeft.png`,
       `${base}images/projects/projectyoked/MainSplitRight.png`,
@@ -150,9 +150,9 @@ export const projects: Project[] = [
       'iOS app live on the App Store; Android Play Store release to come',
       'Pricing: iOS uses Apple IAP; web uses Stripe for subscriptions and credit packs',
     ],
-    image: `${base}images/projects/beyond25/marketing-site.png`,
+    image: `${base}images/projects/beyond25/beyond25-site.png`,
     images: [
-      `${base}images/projects/beyond25/marketing-site.png`,
+      `${base}images/projects/beyond25/beyond25-site.png`,
       `${base}images/projects/beyond25/curating.png`,
       `${base}images/projects/beyond25/researching.png`,
       `${base}images/projects/beyond25/playlist-in-chat.png`,
