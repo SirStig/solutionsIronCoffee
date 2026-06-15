@@ -76,9 +76,19 @@
       <image:caption>Category grid for chairs, barstools, booths, tables, and more</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://solutions.ironcoffee.com/images/projects/beyond25/marketing-site.png</image:loc>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/beyond25/beyond25-site.png</image:loc>
       <image:title>Beyond25 - AI Music Curator</image:title>
-      <image:caption>AI music curator for Apple Music and YouTube Music with Gemini and optional Ollama</image:caption>
+      <image:caption>AI music curator on iOS, Android, and web — chat a prompt or build a playlist visually in Canvas mode, with Gemini and optional Ollama</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/hero.png</image:loc>
+      <image:title>Ourlee - Christianity-focused couples app</image:title>
+      <image:caption>Shared calendar, photos, notes, plans, goals, and faith for two — iOS, Android, and web from one Expo + React Native Web codebase</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/faith.png</image:loc>
+      <image:title>Ourlee faith layer</image:title>
+      <image:caption>Daily Bible verse and multi-day devotional series, hand-curated with no AI</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://solutions.ironcoffee.com/images/projects/expo-media-engine.png</image:loc>

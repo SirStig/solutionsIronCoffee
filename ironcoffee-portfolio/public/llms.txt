@@ -9,7 +9,8 @@
 
 ## Portfolio Projects
 - [Project Yoked](https://solutions.ironcoffee.com/portfolio/project-yoked): AI-powered fitness social platform (React Native, Swift, FastAPI, AWS, PostgreSQL).
-- [Beyond25](https://solutions.ironcoffee.com/portfolio/beyond25): iOS wellness/community application.
+- [Beyond25](https://solutions.ironcoffee.com/portfolio/beyond25): AI music curator on iOS, Android, and web — chat a prompt or build playlists visually in Canvas mode (Expo, React Native, Gemini, optional Ollama).
+- [Ourlee](https://solutions.ironcoffee.com/portfolio/ourlee): Christianity-focused couples app for iOS, Android, and web — shared calendar, photos, notes, plans, goals, and faith (Expo + React Native Web, FastAPI). Closed beta.
 - [EagleChair](https://solutions.ironcoffee.com/portfolio/eaglechair): Commercial furniture e-commerce platform.
 - [Expo Media Engine](https://solutions.ironcoffee.com/portfolio/expo-media-engine): Open-source React Native Expo video composition module.
 - [YokedCache](https://solutions.ironcoffee.com/portfolio/yokedcache): Python caching library (PyPI).
