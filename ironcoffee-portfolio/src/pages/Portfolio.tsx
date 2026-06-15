@@ -470,7 +470,7 @@ const Portfolio = () => {
                     {project.isPrivate && (
                       <StatusChip
                         icon={<LockIcon />}
-                        label="Private"
+                        label="Private Code"
                         color="error"
                         size="small"
                       />

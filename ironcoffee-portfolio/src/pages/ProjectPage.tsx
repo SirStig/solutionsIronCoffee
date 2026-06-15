@@ -401,7 +401,7 @@ const ProjectPage = () => {
               </Typography>
               <LiveProjectStatusChip key={project.slug} project={project} />
               {project.isPrivate && (
-                <StatusChip icon={<LockIcon />} label="Private" color="error" size="small" />
+                <StatusChip icon={<LockIcon />} label="Private Code" color="error" size="small" />
               )}
               {project.githubPrivate && (
                 <StatusChip icon={<LockIcon />} label="Private Code" color="info" size="small" />
