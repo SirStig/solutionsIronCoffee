@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Joshua Kac - Resume</title>
+  <style>
+    @page { margin: 0.6in; size: letter; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.35;
+      color: #000;
+      background: #fff;
+      max-width: 7.5in;
+      margin: 0 auto;
+      padding: 0.25in 0;
+    }
+    h1 {
+      font-size: 18pt;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .contact {
+      font-size: 9.5pt;
+      margin-bottom: 14px;
+    }
+    h2 {
+      font-size: 11pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #000;
+      margin: 14px 0 8px;
+      padding-bottom: 2px;
+    }
+    p { margin-bottom: 8px; }
+    ul {
+      margin: 0 0 10px 18px;
+      padding: 0;
+    }
+    li { margin-bottom: 4px; }
+    .job {
+      margin-bottom: 12px;
+    }
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+      margin-bottom: 2px;
+    }
+    .company {
+      font-weight: 700;
+    }
+    .location {
+      font-weight: 400;
+    }
+    .role-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+      margin-bottom: 6px;
+    }
+    .role {
+      font-style: italic;
+    }
+    .dates {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .skills-group {
+      margin-bottom: 4px;
+    }
+    .skills-group strong {
+      font-weight: 700;
+    }
+    @media print {
+      body { padding: 0; }
+      h2 { page-break-after: avoid; }
+      .job { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>JOSHUA KAC</h1>
+  <p class="contact">
+    Parker, CO 80138 | +1 720-202-1783 | joshua@ironcoffee.com<br>
+    solutions.ironcoffee.com | linkedin.com/in/joshua-kac-aa50b7131 | github.com/SirStig
+  </p>
+</header>
+
+<section>
+  <h2>Professional Summary</h2>
+  <p>
+    Highly accomplished Full-Stack Software Engineer with over 15 years of practical programming experience across mobile, desktop, and cloud platforms. Proven track record as a Co-Founder and CTO, architecting and shipping production-grade applications live on the iOS App Store and Google Play. Deep technical expertise in Python (FastAPI), JavaScript/TypeScript (React, React Native, Next.js), and AWS cloud infrastructure. Recognized for authoring and maintaining highly optimized open-source libraries.
+  </p>
+</section>
+
+<section>
+  <h2>Technical Skills</h2>
+  <p class="skills-group"><strong>Languages:</strong> Python, TypeScript, JavaScript, Swift, C#, C++, Java, SQL</p>
+  <p class="skills-group"><strong>Frontend:</strong> React, Next.js, React Native, Expo, Tailwind CSS, Material UI</p>
+  <p class="skills-group"><strong>Backend and API:</strong> FastAPI, Node.js, REST APIs, WebSockets, Pytest, SQLAlchemy</p>
+  <p class="skills-group"><strong>Cloud and DevOps:</strong> AWS (EC2, S3, RDS, Lambda, CloudFront), Docker, CI/CD (GitHub Actions)</p>
+  <p class="skills-group"><strong>Databases and Caching:</strong> PostgreSQL, Redis, SQLite, Memcached</p>
+  <p class="skills-group"><strong>Specialized:</strong> AI/ML Integration (Gemini, Ollama), Native Media (AVFoundation, FFmpeg)</p>
+</section>
+
+<section>
+  <h2>Technical Experience</h2>
+
+  <article class="job">
+    <div class="job-header">
+      <span class="company">Project Yoked LLC</span>
+      <span class="location">Parker, CO</span>
+    </div>
+    <div class="role-line">
+      <span class="role">Co-Founder and CTO / Lead Full-Stack Engineer</span>
+      <span class="dates">Jan 2025 - Present</span>
+    </div>
+    <ul>
+      <li>Architected, built, and deployed a full-scale fitness social platform currently live on the iOS App Store and Google Play.</li>
+      <li>Engineered the entire cross-platform product stack using React.js, React Native (Expo), Swift, and a FastAPI backend backed by PostgreSQL and Redis.</li>
+      <li>Designed and deployed AWS infrastructure utilizing EC2, S3, RDS, Lambda, and CloudFront with fully automated CI/CD pipelines via GitHub Actions.</li>
+      <li>Developed and open-sourced YokedCache (PyPI), a high-performance FastAPI caching library with multi-backend support, circuit-breaker patterns, and Prometheus telemetry.</li>
+      <li>Authored @projectyoked/expo-media-engine (npm), a native video composition engine utilizing AVFoundation and OpenGL ES 2.0 for multi-track video processing.</li>
+    </ul>
+  </article>
+
+  <article class="job">
+    <div class="job-header">
+      <span class="company">IronCoffee LLC</span>
+      <span class="location">Parker, CO</span>
+    </div>
+    <div class="role-line">
+      <span class="role">Lead Full-Stack Developer</span>
+      <span class="dates">May 2024 - Present</span>
+    </div>
+    <ul>
+      <li>Developed Beyond25, an AI-driven music curation platform utilizing React Native, Gemini AI, and local Ollama inference models, complete with Apple IAP and Stripe subscription pipelines.</li>
+      <li>Engineered EagleChair Digital Flagship, a premium e-commerce infrastructure combining a Next.js storefront with a secure, asynchronous FastAPI backend.</li>
+      <li>Integrated complex financial and identity APIs including Plaid, Stripe, PayPal, and Apple/Google Auth across client applications.</li>
+    </ul>
+  </article>
+
+  <article class="job">
+    <div class="job-header">
+      <span class="company">Freelance Software Engineer</span>
+      <span class="dates">Apr 2020 - May 2024</span>
+    </div>
+    <ul>
+      <li>Designed and delivered production-grade web and desktop applications for diverse clients using React, TypeScript, and Python.</li>
+      <li>Built custom developer tooling, game modifications, and desktop automation scripts utilizing Java and C#/.NET frameworks.</li>
+    </ul>
+  </article>
+</section>
+
+<section>
+  <h2>Education and Open Source</h2>
+  <ul>
+    <li><strong>Self-Directed Engineering Studies:</strong> 15+ years of deep technical immersion in software architecture, distributed systems, and secure application development.</li>
+    <li><strong>Open Source Contributor:</strong> Core maintainer of EncodeForge (FFmpeg Pyside6 GUI), YokedCache, and Expo Media Engine.</li>
+  </ul>
+</section>
+
+</body>
+</html>

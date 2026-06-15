@@ -1,0 +1,38 @@
+JOSHUA KAC
+Parker, CO 80138 | +1 720-202-1783 | joshua@ironcoffee.com
+solutions.ironcoffee.com | linkedin.com/in/joshua-kac-aa50b7131 | github.com/SirStig
+
+PROFESSIONAL SUMMARY
+Highly accomplished Full-Stack Software Engineer with over 15 years of practical programming experience across mobile, desktop, and cloud platforms. Proven track record as a Co-Founder and CTO, architecting and shipping production-grade applications live on the iOS App Store and Google Play. Deep technical expertise in Python (FastAPI), JavaScript/TypeScript (React, React Native, Next.js), and AWS cloud infrastructure. Recognized for authoring and maintaining highly optimized open-source libraries.
+
+TECHNICAL SKILLS
+Languages: Python, TypeScript, JavaScript, Swift, C#, C++, Java, SQL
+Frontend: React, Next.js, React Native, Expo, Tailwind CSS, Material UI
+Backend and API: FastAPI, Node.js, REST APIs, WebSockets, Pytest, SQLAlchemy
+Cloud and DevOps: AWS (EC2, S3, RDS, Lambda, CloudFront), Docker, CI/CD (GitHub Actions)
+Databases and Caching: PostgreSQL, Redis, SQLite, Memcached
+Specialized: AI/ML Integration (Gemini, Ollama), Native Media (AVFoundation, FFmpeg)
+
+TECHNICAL EXPERIENCE
+
+Project Yoked LLC | Parker, CO
+Co-Founder and CTO / Lead Full-Stack Engineer | Jan 2025 - Present
+- Architected, built, and deployed a full-scale fitness social platform currently live on the iOS App Store and Google Play.
+- Engineered the entire cross-platform product stack using React.js, React Native (Expo), Swift, and a FastAPI backend backed by PostgreSQL and Redis.
+- Designed and deployed AWS infrastructure utilizing EC2, S3, RDS, Lambda, and CloudFront with fully automated CI/CD pipelines via GitHub Actions.
+- Developed and open-sourced YokedCache (PyPI), a high-performance FastAPI caching library with multi-backend support, circuit-breaker patterns, and Prometheus telemetry.
+- Authored @projectyoked/expo-media-engine (npm), a native video composition engine utilizing AVFoundation and OpenGL ES 2.0 for multi-track video processing.
+
+IronCoffee LLC | Parker, CO
+Lead Full-Stack Developer | May 2024 - Present
+- Developed Beyond25, an AI-driven music curation platform utilizing React Native, Gemini AI, and local Ollama inference models, complete with Apple IAP and Stripe subscription pipelines.
+- Engineered EagleChair Digital Flagship, a premium e-commerce infrastructure combining a Next.js storefront with a secure, asynchronous FastAPI backend.
+- Integrated complex financial and identity APIs including Plaid, Stripe, PayPal, and Apple/Google Auth across client applications.
+
+Freelance Software Engineer | Apr 2020 - May 2024
+- Designed and delivered production-grade web and desktop applications for diverse clients using React, TypeScript, and Python.
+- Built custom developer tooling, game modifications, and desktop automation scripts utilizing Java and C#/.NET frameworks.
+
+EDUCATION AND OPEN SOURCE
+- Self-Directed Engineering Studies: 15+ years of deep technical immersion in software architecture, distributed systems, and secure application development.
+- Open Source Contributor: Core maintainer of EncodeForge (FFmpeg Pyside6 GUI), YokedCache, and Expo Media Engine.
