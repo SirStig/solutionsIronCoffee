@@ -81,12 +81,17 @@
       <image:caption>AI music curator on iOS, Android, and web — chat a prompt or build a playlist visually in Canvas mode, with Gemini and optional Ollama</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/hero.png</image:loc>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/home.png</image:loc>
       <image:title>Ourlee - Christianity-focused couples app</image:title>
       <image:caption>Shared calendar, photos, notes, plans, goals, and faith for two — iOS, Android, and web from one Expo + React Native Web codebase</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/faith.png</image:loc>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/together.png</image:loc>
+      <image:title>Ourlee Together hub</image:title>
+      <image:caption>Photos, notes, plans, and goals in one shared space</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/img-1763.png</image:loc>
       <image:title>Ourlee faith layer</image:title>
       <image:caption>Daily Bible verse and multi-day devotional series, hand-curated with no AI</image:caption>
     </image:image>

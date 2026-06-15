@@ -114,21 +114,21 @@
   </url>
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio/ourlee</loc>
-    <lastmod>2026-06-06</lastmod>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/hero.png</image:loc>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/home.png</image:loc>
       <image:title>Ourlee - Christianity-focused couples app</image:title>
       <image:caption>Shared calendar, photos, notes, plans, goals, and faith for two — iOS, Android, and web from one Expo + React Native Web codebase</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/calendar.png</image:loc>
-      <image:title>Ourlee shared calendar</image:title>
-      <image:caption>One shared calendar with optional two-way Google and Apple sync</image:caption>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/together.png</image:loc>
+      <image:title>Ourlee Together hub</image:title>
+      <image:caption>Photos, notes, plans, and goals in one shared space</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/faith.png</image:loc>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/img-1763.png</image:loc>
       <image:title>Ourlee faith layer</image:title>
       <image:caption>Daily Bible verse and multi-day devotional series, hand-curated with no AI</image:caption>
     </image:image>
