@@ -114,21 +114,21 @@
   </url>
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio/ourlee</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-07-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/home.png</image:loc>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/home.jpg</image:loc>
       <image:title>Ourlee - Christianity-focused couples app</image:title>
       <image:caption>Shared calendar, photos, notes, plans, goals, and faith for two — iOS, Android, and web from one Expo + React Native Web codebase</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/together.png</image:loc>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/together.jpg</image:loc>
       <image:title>Ourlee Together hub</image:title>
       <image:caption>Photos, notes, plans, and goals in one shared space</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/img-1763.png</image:loc>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/ourlee/faith.jpg</image:loc>
       <image:title>Ourlee faith layer</image:title>
       <image:caption>Daily Bible verse and multi-day devotional series, hand-curated with no AI</image:caption>
     </image:image>
@@ -149,6 +149,17 @@
     <lastmod>2026-04-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://solutions.ironcoffee.com/portfolio/novaswift</loc>
+    <lastmod>2026-07-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://solutions.ironcoffee.com/images/projects/novaswift/logo-banner.png</image:loc>
+      <image:title>NovaSwift</image:title>
+      <image:caption>Native Swift/Metal rebuild of Escape Velocity Nova for macOS, iPadOS, iOS, and tvOS</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://solutions.ironcoffee.com/portfolio/yokedcache</loc>
