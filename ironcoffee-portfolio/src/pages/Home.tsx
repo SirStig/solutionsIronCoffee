@@ -744,19 +744,19 @@ const Home = () => {
                 <ProjectCard
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  onClick={() => navigate('/portfolio/project-yoked')}
+                  onClick={() => navigate('/portfolio/ourlee')}
                   style={{ cursor: 'pointer' }}
                 >
-                  <ProjectImage imageUrl="/images/projects/projectyoked.png" />
+                  <ProjectImage imageUrl="/images/projects/ourlee/home.jpg" />
                   <Box sx={{ p: 3 }}>
                     <Typography variant="h5" sx={{ mb: 1, fontWeight: 600 }}>
-                      Project Yoked
+                      Ourlee
                     </Typography>
                     <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.7, mb: 2 }}>
-                      A revolutionary fitness social platform featuring AI-powered content, comprehensive tracking, and personalized analytics. Built as CEO/Founder of Project Yoked LLC.
+                      A private, glass-morphic space for couples—shared calendar, notes, photos, plans, goals, and a faith layer, synced in real time across iOS, Android, and web.
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
-                      {['Mobile App', 'Web App', 'AI', 'Social Platform'].map((tag) => (
+                      {['Mobile App', 'Web App', 'Faith'].map((tag) => (
                         <Chip
                           key={tag}
                           label={tag}
