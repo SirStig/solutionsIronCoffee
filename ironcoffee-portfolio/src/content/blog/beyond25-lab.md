@@ -76,7 +76,7 @@ habits, then re-running the comparison.
 It's worth doing because of what it costs. Right now a normal-sized playlist —
 research, synthesis, resolution, artwork, everything from start to finish —
 costs me about two cents in AI. There's a model I'm testing that would bring
-the same playlist down to roughly four tenths of a cent. That's about five
+the same playlist down to around a quarter of a cent. That's roughly eight
 times cheaper for the same work.
 
 I haven't switched. Changing the model everyone is actually using is a big
