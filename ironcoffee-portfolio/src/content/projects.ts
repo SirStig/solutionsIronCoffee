@@ -105,23 +105,31 @@ export const projects: Project[] = [
         href: 'https://play.google.com/store/apps/details?id=com.beyond25.app',
       },
     ],
-    image: 'projects/beyond25/playlist-in-chat',
+    image: 'projects/beyond25/mac-playlist',
     gallery: [
       {
-        name: 'projects/beyond25/curating',
-        alt: 'Beyond25 curating a playlist, with each research step streaming in live',
+        name: 'projects/beyond25/canvas',
+        alt: 'Beyond25 on iPhone: moods, genres and artists stacked on the Canvas, ready to generate',
       },
       {
         name: 'projects/beyond25/playlist-detail',
-        alt: 'A finished Beyond25 playlist, ready to save to a music library',
+        alt: 'A finished Beyond25 playlist on iPhone, one tap from saving to Apple Music',
       },
       {
-        name: 'projects/beyond25/researching',
-        alt: 'Beyond25 researching music press and catalog data before building',
+        name: 'projects/beyond25/blend',
+        alt: 'A Beyond25 Blend invite on iPhone, with the shared playlist ready to open',
       },
       {
-        name: 'projects/beyond25/ollama-provider',
-        alt: 'Beyond25 configured to run against a local Ollama model',
+        name: 'projects/beyond25/discover',
+        alt: 'The Beyond25 Discover feed on iPhone, browsing playlists published by the community',
+      },
+      {
+        name: 'projects/beyond25/music-services',
+        alt: 'Beyond25 music service settings on iPhone, with Apple Music and YouTube Music connected',
+      },
+      {
+        name: 'projects/beyond25/local-ai',
+        alt: 'Beyond25 on iPhone pointed at a local Ollama model instead of the cloud',
       },
     ],
     weight: 1,
