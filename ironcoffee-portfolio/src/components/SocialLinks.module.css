@@ -1,0 +1,89 @@
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+/* --- Compact icon row --------------------------------------------------- */
+.icons {
+  gap: var(--space-1);
+  margin-inline-start: calc(var(--space-2) * -1);
+}
+
+.icons .link {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+
+.icons .link:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+}
+
+/* --- Labelled cards ----------------------------------------------------- */
+.labelled {
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.labelled .link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease);
+}
+
+.labelled .link:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.handle {
+  font-size: var(--text-sm);
+  color: var(--text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 640px) {
+  .labelled {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .labelled > li {
+    flex: 1 1 14rem;
+  }
+}

@@ -1,101 +1,118 @@
-<div align="center">
+# solutions.ironcoffee.com
 
-# Joshua Kac
+Personal site for Joshua Kac — work, writing, and a way to get in touch.
 
-**Full-stack & mobile engineer · Founder, Project Yoked LLC**  
-Parker, CO · Open to select freelance and collaboration
+React 18 + TypeScript, built with Vite, prerendered to static HTML, deployed to
+Dreamhost as plain files.
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-solutions.ironcoffee.com-3B82F6?style=for-the-badge&logo=react&logoColor=white)](https://solutions.ironcoffee.com)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Joshua_Kac-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/joshua-kac-aa50b7131)
-[![Email](https://img.shields.io/badge/Email-joshua@ironcoffee.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:joshua@ironcoffee.com)
+Everything lives in `ironcoffee-portfolio/`.
 
-</div>
+```bash
+cd ironcoffee-portfolio
+npm install
+npm run dev          # http://localhost:5173
+```
 
+## Commands
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Vite dev server. Regenerates images first if needed. |
+| `npm run build` | Optimises media → client build → SSR build → prerender. Output in `build/`. |
+| `npm run serve` | Serves `build/` the way Apache does. **Use this, not `vite preview`** — see below. |
+| `npm test` | Vitest. |
+| `npm run typecheck` | `tsc --noEmit`. |
+| `npm run optimize:media` | Rebuilds `public/img/` from `assets/images/`. Cached; only changed files are re-encoded. |
+| `npm run generate:brand` | Rebuilds the favicon set and `og-image.png` from vector source. |
+
+> `vite preview` treats the build as a single-page app and serves `index.html`
+> for every unknown path, so `/about` renders the **home page's** markup and then
+> re-renders on the client. That looks exactly like a hydration bug that does not
+> exist in production. `npm run serve` resolves `/about` → `/about/index.html`
+> the way `.htaccess` does.
+
+## How it fits together
+
+**Content is data.** Three files, and nothing else needs touching to publish:
+
+- `src/content/site.ts` — name, bio, socials, nav.
+- `src/content/projects.ts` — every project. Copy rules are documented at the
+  top of the file; they exist to stop it bloating again.
+- `src/content/blog/*.md` — one file per post. Drop it in and it appears in the
+  index, the sitemap and the RSS feed.
+
+**Markdown is compiled at build time.** `plugins/vite-plugin-markdown.mjs` turns
+each `.md` into a plain object, running Marked and Shiki in Node so neither
+reaches the browser. Importing `./post.md?meta` gives everything except the
+rendered HTML — index pages use that variant so post bodies ship with the post's
+own chunk instead of the entry bundle.
+
+**Every route is prerendered.** `scripts/prerender.mjs` renders each URL to real
+HTML with its own `<title>`, meta, canonical and JSON-LD, and writes
+`build/work/beyond25/index.html` and so on. Crawlers and link unfurlers get full
+content with no JavaScript; visitors get a painted page before hydration. It
+also emits `sitemap.xml` and `rss.xml` from the same data, so they cannot drift
+from what exists.
+
+**Images are generated, not committed.** Sources live in `assets/` and are never
+served. `scripts/optimize-media.mjs` emits AVIF + WebP at four widths plus an
+inline blur placeholder into `public/img/`, and writes
+`src/generated/images.json`. Both are gitignored and rebuilt on demand
+(35.8 MB of source → 6.6 MB of derivatives, of which any one page loads a
+fraction). `<Img name="projects/ourlee/home">` looks up that manifest and
+renders a `<picture>` with correct intrinsic dimensions, so nothing shifts while
+loading.
+
+**Styling is CSS Modules over custom properties.** `src/styles/tokens.css` holds
+the whole palette, type scale and spacing; light is the base and dark overrides
+only what changes. There is no CSS-in-JS and no component library.
+
+## Adding things
+
+**A blog post** — create `src/content/blog/my-post.md`:
+
+```markdown
+---
+title: "What I learned"
+date: "2026-09-01"
+tags: [swift, ios]
+draft: false
 ---
 
-## Overview
+Body goes here.
+```
 
-I build end-to-end products: web and mobile clients, APIs, data layers, and the operational pieces around them (performance, caching, observability, deployment). I’ve been writing code for 15+ years and lead product engineering as **CEO/Founder of [Project Yoked LLC](https://www.projectyoked.com)**.
+Drafts are visible in dev and excluded from production builds.
 
-**Focus areas**
+**A project** — add an entry to `src/content/projects.ts`, put its screenshots in
+`assets/images/projects/<slug>/`, and run `npm run optimize:media`. Set
+`categories` to control which hub pages it appears on, and `weight` to control
+ordering. Tests will fail if an image key doesn't resolve or the copy limits are
+exceeded.
 
-- Product-grade **React** and **React Native / Expo** applications  
-- **FastAPI** and **Python** backends, **PostgreSQL**, **Redis**, and pragmatic cloud usage (**AWS**, containers)  
-- **Open source** libraries where reusable pieces deserve a public home  
+**Photos of Joshua** — replace `assets/images/profile.JPEG` and re-run
+`npm run optimize:media`. Anything roughly square at 1200px or wider works; it is
+rendered as a circle at 112px on the home page and 88–112px on About, so the
+crop wants the face centred.
 
-More detail, case studies, and visuals: **[solutions.ironcoffee.com](https://solutions.ironcoffee.com)**.
+## Deploying
 
----
+`npm run build`, then upload the contents of `build/` to the Dreamhost web root.
+`.htaccess` must go up too — enable hidden files in your SFTP client. It handles
+HTTPS, the `www` redirect, `/portfolio/*` → `/work/*` moves from the old site,
+clean URLs, caching (immutable for hashed assets, revalidate for HTML) and the
+security headers.
 
-## Selected work
+`npm run verify` checks the live deployment afterwards.
 
-Work below matches the public **[portfolio](https://solutions.ironcoffee.com/portfolio)** (titles, status, and links kept in sync with that site).
+## Environment
 
-| Project | Role / type | Stack (high level) | Links & status |
-|--------|-------------|-------------------|----------------|
-| **[Project Yoked](https://www.projectyoked.com)** | Fitness social platform — CEO/Founder | React, React Native, Swift, TypeScript, FastAPI, Python, PostgreSQL, AWS | [Web](https://www.projectyoked.com) · [App Store](https://apps.apple.com/us/app/project-yoked/id6747534923) · [Play Store](https://play.google.com/store/apps/details?id=com.projectyoked.mobile) · **Live** |
-| **[Beyond25](https://www.beyond-25.com)** | AI music curator: research, curate, playlists for Apple Music / YouTube Music (Expo / RN, web) | React Native, Expo, TypeScript, Gemini, Ollama, Apple Music, YouTube Music, Stripe | [beyond-25.com](https://www.beyond-25.com) · **Web live** (WebApp + Stripe); **native mobile not on stores yet** |
-| **[EagleChair Digital Flagship](https://joshua.eaglechair.com/)** | Premium furniture commerce | FastAPI, Python, PostgreSQL, Redis, Next.js, React, TypeScript, Tailwind CSS | [Live preview](https://joshua.eaglechair.com/) · **In development** |
-| **[Expo Media Engine](https://www.npmjs.com/package/@projectyoked/expo-media-engine)** | Open-source native video engine for Expo | Expo, Expo Modules API, React Native, TypeScript, Swift, Kotlin, AVFoundation, MediaCodec, OpenGL ES 2.0 | [npm](https://www.npmjs.com/package/@projectyoked/expo-media-engine) · [Docs](https://sirstig.github.io/projectyoked-expo-media-engine/) · [GitHub](https://github.com/SirStig/projectyoked-expo-media-engine) · Pre-release **1.0.0-alpha-3** (stable line **0.1.x** on npm) |
-| **[YokedCache](https://pypi.org/project/yokedcache/)** | FastAPI-first caching (Redis, multi-backend, metrics, CLI) | Python, FastAPI, Redis, orjson, SQLAlchemy, OpenTelemetry, Prometheus, optional Memcached / disk / SQLite / vector extras | [PyPI](https://pypi.org/project/yokedcache/) · [Docs](https://sirstig.github.io/yokedcache/) · [GitHub](https://github.com/SirStig/yokedcache) · **v1.0.0** |
-| **[EncodeForge](https://github.com/SirStig/EncodeForge)** | Desktop media tooling | JavaFX, Python, FastAPI, FFmpeg, Whisper, PyTorch, Docker | [GitHub](https://github.com/SirStig/EncodeForge) · **Public** |
+All optional — the site builds and runs without any of them.
 
----
-
-## Tech I use often
-
-<p>
-  <img alt="React" src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" />
-  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" />
-  <img alt="React Native" src="https://img.shields.io/badge/React_Native-20232A?style=flat-square&logo=react&logoColor=61DAFB" />
-  <img alt="Expo" src="https://img.shields.io/badge/Expo-000020?style=flat-square&logo=expo&logoColor=white" />
-  <img alt="Next.js" src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white" />
-  <img alt="MUI" src="https://img.shields.io/badge/MUI-007FFF?style=flat-square&logo=mui&logoColor=white" />
-  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" />
-  <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
-  <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" />
-  <img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-316192?style=flat-square&logo=postgresql&logoColor=white" />
-  <img alt="Redis" src="https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white" />
-  <img alt="AWS" src="https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazon-aws&logoColor=white" />
-  <img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white" />
-  <img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white" />
-</p>
-
-*(Portfolio site itself is React + TypeScript + Material UI + styled-components + Framer Motion on Create React App — see repo `ironcoffee-portfolio`.)*
-
----
-
-## GitHub stats
-
-<div align="center">
-
-<img height="165" alt="GitHub stats" src="https://github-readme-stats.vercel.app/api?username=SirStig&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=3B82F6&icon_color=8B5CF6&rank_icon=github" />
-<img height="165" alt="Top languages" src="https://github-readme-stats.vercel.app/api/top-langs/?username=SirStig&layout=compact&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=3B82F6&langs_count=8" />
-
-</div>
-
----
-
-## Outside of work
-
-Hiking, skiing, ice skating, camping, fishing, driving, music — mostly anything that gets me outside or recharges focus.
-
----
-
-## Contact
-
-| | |
-|--|--|
-| **Email** | [joshua@ironcoffee.com](mailto:joshua@ironcoffee.com) |
-| **Portfolio** | [solutions.ironcoffee.com](https://solutions.ironcoffee.com) |
-| **LinkedIn** | [Joshua Kac](https://www.linkedin.com/in/joshua-kac-aa50b7131) |
-
-Freelance, collaborations, and technical consultations: reach out by email with a short note on scope and timing.
-
----
-
-<div align="center">
-
-![Profile views](https://komarev.com/ghpvc/?username=SirStig&color=3B82F6&style=flat-square&label=Profile+views)
-
-</div>
+| Variable | Used for |
+| --- | --- |
+| `VITE_GA_MEASUREMENT_ID` | GA4. Loaded lazily, production only. |
+| `VITE_SENTRY_DSN` | Sentry. Loaded lazily, production only. |
+| `VITE_EMAILJS_PUBLIC_KEY` | Contact form. Without it the form is replaced by a mailto link. |
+| `VITE_EMAILJS_SERVICE_ID` | " |
+| `VITE_EMAILJS_TEMPLATE_ID` | " |

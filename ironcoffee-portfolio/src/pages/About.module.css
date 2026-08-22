@@ -1,0 +1,86 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding-block: clamp(2rem, 1.2rem + 3vw, 3.5rem) var(--space-6);
+}
+
+.photo {
+  width: 5.5rem;
+  flex: none;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+}
+
+.role {
+  margin-top: var(--space-2);
+  color: var(--text-muted);
+}
+
+.prose {
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  max-width: 38rem;
+}
+
+.prose > * + * {
+  margin-top: var(--space-4);
+}
+
+.prose h2 {
+  color: var(--text);
+  font-size: var(--text-xl);
+  margin-top: var(--space-7);
+}
+
+.prose a {
+  color: var(--text);
+  font-weight: 500;
+  text-decoration-color: var(--accent);
+}
+
+.prose a:hover {
+  color: var(--accent);
+}
+
+.lede {
+  font-size: var(--text-xl);
+  color: var(--text);
+  line-height: var(--leading-snug);
+}
+
+.list {
+  padding-inline-start: var(--space-5);
+}
+
+.list li + li {
+  margin-top: var(--space-2);
+}
+
+.list li::marker {
+  color: var(--accent);
+}
+
+.contact {
+  margin-top: var(--section-y);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+}
+
+.contactIntro {
+  margin-block: var(--space-3) var(--space-5);
+  color: var(--text-muted);
+  max-width: 34rem;
+}
+
+.resume {
+  margin-top: var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--text-faint);
+}
+
+@media (min-width: 640px) {
+  .photo {
+    width: 7rem;
+  }
+}

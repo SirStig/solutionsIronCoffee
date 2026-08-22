@@ -1,40 +1,88 @@
+# IronCoffee Solutions — Apache config for Dreamhost.
+# The build prerenders every route to <route>/index.html, so most requests are
+# served as static files and never touch the SPA fallback.
+
 <IfModule mod_rewrite.c>
-Options -MultiViews
-RewriteEngine On
-RewriteBase /
+  Options -MultiViews
+  RewriteEngine On
+  RewriteBase /
 
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # Force HTTPS.
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-RewriteRule ^index\.html$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.html [L,QSA]
+  # Canonical host: strip www.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^(.*)$ https://%1/$1 [L,R=301]
+
+  # --- Permanent moves from the previous site structure --------------------
+  RewriteRule ^portfolio/?$ /work [R=301,L]
+  RewriteRule ^portfolio/(.+?)/?$ /work/$1 [R=301,L]
+  RewriteRule ^services/?$ /about [R=301,L]
+
+  # Drop trailing slashes so each page has exactly one canonical URL.
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+  # Serve the prerendered page for a clean URL: /work/beyond25 →
+  # /work/beyond25/index.html.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+  RewriteRule ^(.+?)/?$ /$1/index.html [L]
+
+  # Anything still unmatched falls back to the SPA shell, which renders the
+  # client-side 404.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ /index.html [L]
 </IfModule>
 
-<IfModule mod_expires.c>
-  ExpiresActive On
-  ExpiresByType image/jpeg "access plus 1 year"
-  ExpiresByType image/gif "access plus 1 year"
-  ExpiresByType image/png "access plus 1 year"
-  ExpiresByType image/webp "access plus 1 year"
-  ExpiresByType image/svg+xml "access plus 1 year"
-  ExpiresByType image/x-icon "access plus 1 year"
-  ExpiresByType video/mp4 "access plus 1 year"
-  ExpiresByType video/mpeg "access plus 1 year"
-  ExpiresByType text/css "access plus 1 month"
-  ExpiresByType text/javascript "access plus 1 month"
-  ExpiresByType application/javascript "access plus 1 month"
-</IfModule>
+ErrorDocument 404 /404.html
 
-<IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript application/json
-</IfModule>
-
+# --- Caching ---------------------------------------------------------------
+# Hashed assets are immutable and cached for a year. HTML must never be, or a
+# deploy leaves visitors on a stale page pointing at deleted asset filenames.
 <IfModule mod_headers.c>
-  Header set X-XSS-Protection "1; mode=block"
-  Header set X-Frame-Options "DENY"
-  Header set X-Content-Type-Options "nosniff"
-  Header set Referrer-Policy "strict-origin-when-cross-origin"
-  Header always set Strict-Transport-Security "max-age=31536000; includeSubdomains"
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+
+  <FilesMatch "\.(js|css|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  <FilesMatch "\.(avif|webp|png|jpe?g|svg|ico|mp4)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  <FilesMatch "\.(xml|txt|json)$">
+    Header set Cache-Control "public, max-age=3600"
+  </FilesMatch>
+
+  # --- Security ------------------------------------------------------------
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+  # Everything is self-hosted; the only outbound calls are the analytics and
+  # error-tracking endpoints and the package registries the version badges read.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.ingest.sentry.io https://pypi.org https://registry.npmjs.org https://api.github.com https://api.emailjs.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://api.emailjs.com"
+</IfModule>
+
+# --- Compression -----------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css
+  AddOutputFilterByType DEFLATE application/xml application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/rss+xml application/javascript
+  AddOutputFilterByType DEFLATE application/json image/svg+xml
+</IfModule>
+
+# AVIF and WebP need explicit types on some Dreamhost configs.
+<IfModule mod_mime.c>
+  AddType image/avif .avif
+  AddType image/webp .webp
+  AddType font/woff2 .woff2
+  AddType application/manifest+json .webmanifest
 </IfModule>

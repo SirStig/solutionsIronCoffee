@@ -1,0 +1,53 @@
+.header {
+  padding-top: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+  padding-bottom: var(--space-6);
+  max-width: 40rem;
+}
+
+.intro {
+  margin-top: var(--space-3);
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+}
+
+.grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-5);
+}
+
+.grid > li {
+  height: 100%;
+}
+
+@media (min-width: 800px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.archive {
+  margin-top: var(--section-y);
+}
+
+.archiveTitle {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  margin-bottom: var(--space-2);
+}
+
+.archiveList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--border);
+}
+
+.empty {
+  color: var(--text-muted);
+}

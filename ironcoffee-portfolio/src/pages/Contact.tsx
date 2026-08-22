@@ -1,378 +1,135 @@
-import React, { useState } from 'react';
-import { Container, Typography, Grid, Box, TextField, Button, Card, IconButton, Snackbar, Alert } from '@mui/material';
-import { motion } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
-import styled from 'styled-components';
-import { Email as EmailIcon, LocationOn as LocationIcon, LinkedIn as LinkedInIcon, GitHub as GitHubIcon } from '@mui/icons-material';
-import emailjs from '@emailjs/browser';
-import { useMobileDetect } from '../hooks/useMobileDetect';
-import { SOCIAL_LINKS } from '../constants/social';
+import { useState, type FormEvent } from 'react';
+import Seo from '../components/Seo';
+import SocialLinks from '../components/SocialLinks';
+import { site } from '../content/site';
+import styles from './Contact.module.css';
 
-const ContactCard = styled(motion(Card))`
-  padding: 2rem;
-  height: 100%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+type State = 'idle' | 'sending' | 'sent' | 'error';
 
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  }
-`;
+const env = import.meta.env;
+const emailjsConfigured = Boolean(
+  env.VITE_EMAILJS_PUBLIC_KEY &&
+    env.VITE_EMAILJS_SERVICE_ID &&
+    env.VITE_EMAILJS_TEMPLATE_ID
+);
 
-const ContactInfo = styled(Box)`
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  
-  .MuiSvgIcon-root {
-    margin-right: 1rem;
-    color: ${props => props.theme.palette?.secondary.main};
-  }
-`;
+export default function Contact() {
+  const [state, setState] = useState<State>('idle');
+  const [error, setError] = useState('');
 
-const SocialButton = styled(IconButton)`
-  margin: 0 0.5rem;
-  color: ${props => props.theme.palette?.primary.main};
-  transition: all 0.3s ease;
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
 
-  &:hover {
-    color: ${props => props.theme.palette?.secondary.main};
-    transform: translateY(-4px);
-  }
-`;
+    // Bots fill every field, including the one nobody can see.
+    if ((form.elements.namedItem('company') as HTMLInputElement)?.value) {
+      setState('sent');
+      return;
+    }
 
-const SocialLink = styled.a`
-  text-decoration: none;
-`;
+    setState('sending');
+    setError('');
 
-interface FormData {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
-
-const Contact = () => {
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-
-  const [loading, setLoading] = useState(false);
-
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: '',
-    severity: 'success' as 'success' | 'error',
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    
     try {
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-
-      if (!serviceId || !templateId) {
-        throw new Error('EmailJS configuration is missing');
-      }
-
-      const result = await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-        }
+      // Loaded on submit so the SDK never reaches visitors who don't write.
+      const emailjs = (await import('@emailjs/browser')).default;
+      await emailjs.sendForm(
+        env.VITE_EMAILJS_SERVICE_ID,
+        env.VITE_EMAILJS_TEMPLATE_ID,
+        form,
+        { publicKey: env.VITE_EMAILJS_PUBLIC_KEY }
       );
-
-      if (result.status === 200) {
-        setSnackbar({
-          open: true,
-          message: 'Message sent successfully! I will get back to you soon.',
-          severity: 'success',
-        });
-
-        // Clear form
-        setFormData({
-          name: '',
-          email: '',
-          subject: '',
-          message: '',
-        });
-      } else {
-        throw new Error('Failed to send message');
-      }
-    } catch (error) {
-      console.error('EmailJS error:', error);
-      setSnackbar({
-        open: true,
-        message: 'Failed to send message. Please try again later.',
-        severity: 'error',
-      });
-    } finally {
-      setLoading(false);
+      form.reset();
+      setState('sent');
+    } catch (err) {
+      setState('error');
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Something went wrong. Email me directly instead.'
+      );
     }
-  };
-
-  const handleCloseSnackbar = () => {
-    setSnackbar(prev => ({
-      ...prev,
-      open: false,
-    }));
-  };
-
-  const { isMobile } = useMobileDetect();
-  
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: isMobile ? 0.25 : 0.3
-      }
-    }
-  };
+  }
 
   return (
     <>
-      <Helmet>
-        <title>Contact Joshua Kac | IronCoffee Solutions - Start Your Project</title>
-        <meta name="description" content="Contact Joshua Kac at IronCoffee Solutions for web development, mobile apps, backend systems, and technology consulting. Email Joshua@ironcoffee.com or schedule a free consultation." />
-        <meta name="keywords" content="contact IronCoffee, contact Joshua Kac, hire web developer, hire mobile app developer, free consultation, web development quote" />
-        <link rel="canonical" href="https://solutions.ironcoffee.com/contact" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://solutions.ironcoffee.com/contact" />
-        <meta property="og:title" content="Contact Joshua Kac | IronCoffee Solutions" />
-        <meta property="og:description" content="Get in touch for web, mobile, backend, and cloud development services. Free consultation available." />
-        <meta property="og:image" content="https://solutions.ironcoffee.com/og-image.png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Contact Joshua Kac | IronCoffee Solutions" />
-        <meta name="twitter:description" content="Get in touch for web, mobile, backend, and cloud development services." />
-        <meta name="twitter:image" content="https://solutions.ironcoffee.com/og-image.png" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "ContactPage",
-          "url": "https://solutions.ironcoffee.com/contact",
-          "mainEntity": { "@id": "https://solutions.ironcoffee.com/#organization" }
-        })}</script>
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://solutions.ironcoffee.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Contact", "item": "https://solutions.ironcoffee.com/contact" }
-          ]
-        })}</script>
-      </Helmet>
+      <Seo
+        title="Contact"
+        description={`Get in touch with Joshua Kac — available for contract work and engineering roles. ${site.email}`}
+        path="/contact"
+      />
 
-      <Box component="section" sx={{ 
-        pt: { xs: 8, md: 12 },
-        pb: { xs: 4, md: 6 },
-        background: 'transparent',
-        color: ({ palette }) => palette.mode === 'light' ? 'text.primary' : 'white'
-      }}>
-        <Container maxWidth="lg">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-          >
-            <Typography variant="h1" sx={{ 
-              mb: 3,
-              fontSize: { xs: '2.5rem', md: '3.5rem' },
-              fontWeight: 700
-            }}>
-              Get in Touch
-            </Typography>
-            <Typography variant="h4" sx={{ 
-              mb: 4,
-              fontWeight: 400,
-              color: ({ palette }) => palette.mode === 'light' 
-                ? 'text.primary'
-                : 'rgba(255, 255, 255, 0.9)'
-            }}>
-              Let's Discuss Your Next Project
-            </Typography>
-          </motion.div>
-        </Container>
-      </Box>
+      <div className="container-wide">
+        <header className={styles.header}>
+          <h1>Get in touch</h1>
+          <p className={styles.intro}>
+            Available for contract work and engineering roles. Email is fastest
+            &mdash; I read everything and reply to anything real.
+          </p>
+        </header>
 
-      <Container maxWidth="lg" sx={{ py: 8 }}>
-        <Grid container spacing={6}>
-          <Grid item xs={12} md={7}>
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: isMobile ? '100px' : '-20px' }}
-              variants={fadeInUp}
-            >
-              <Typography variant="h2" gutterBottom>
-                Send a Message
-              </Typography>
-              <Typography variant="body1" sx={{ mb: 4 }}>
-                Have a project in mind? Fill out the form below and I'll get back to you as soon as possible.
-              </Typography>
-              
-              <form onSubmit={handleSubmit}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      fullWidth
-                      label="Name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      disabled={loading}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      fullWidth
-                      label="Email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      disabled={loading}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      label="Subject"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      disabled={loading}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      multiline
-                      rows={6}
-                      label="Message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      disabled={loading}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="secondary"
-                      size="large"
-                      disabled={loading}
-                      sx={{ 
-                        px: 6,
-                        py: 1.5,
-                      }}
-                    >
-                      {loading ? 'Sending...' : 'Send Message'}
-                    </Button>
-                  </Grid>
-                </Grid>
-              </form>
-            </motion.div>
-          </Grid>
+        <SocialLinks variant="labelled" className={styles.socials} />
 
-          <Grid item xs={12} md={5}>
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: isMobile ? '100px' : '-20px' }}
-              variants={fadeInUp}
-            >
-              <ContactCard>
-                <Typography variant="h2" gutterBottom>
-                  Contact Info
-                </Typography>
-                
-                <Box sx={{ mb: 4 }}>
-                  <ContactInfo>
-                    <EmailIcon />
-                    <Box>
-                      <Typography variant="subtitle1" fontWeight="bold">
-                        Email
-                      </Typography>
-                      <Typography variant="body1">
-                        joshua@ironcoffee.com
-                      </Typography>
-                    </Box>
-                  </ContactInfo>
+        {emailjsConfigured ? (
+          <form className={styles.form} onSubmit={onSubmit} noValidate={false}>
+            <h2 className={styles.formTitle}>Or send a message here</h2>
 
-                  <ContactInfo>
-                    <LocationIcon />
-                    <Box>
-                      <Typography variant="subtitle1" fontWeight="bold">
-                        Location
-                      </Typography>
-                      <Typography variant="body1">
-                        Parker, CO
-                      </Typography>
-                    </Box>
-                  </ContactInfo>
-                </Box>
+            <div className={styles.row}>
+              <label className={styles.field}>
+                <span>Name</span>
+                <input type="text" name="from_name" required autoComplete="name" />
+              </label>
 
-                <Typography variant="h6" gutterBottom>
-                  Connect with Me
-                </Typography>
-                <Box>
-                  <SocialLink href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">
-                    <SocialButton aria-label="LinkedIn">
-                      <LinkedInIcon />
-                    </SocialButton>
-                  </SocialLink>
-                  <SocialLink href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">
-                    <SocialButton aria-label="GitHub">
-                      <GitHubIcon />
-                    </SocialButton>
-                  </SocialLink>
-                </Box>
-              </ContactCard>
-            </motion.div>
-          </Grid>
-        </Grid>
-      </Container>
+              <label className={styles.field}>
+                <span>Email</span>
+                <input
+                  type="email"
+                  name="reply_to"
+                  required
+                  autoComplete="email"
+                  inputMode="email"
+                />
+              </label>
+            </div>
 
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+            <label className={styles.field}>
+              <span>Message</span>
+              <textarea name="message" rows={6} required />
+            </label>
+
+            {/* Honeypot — hidden from people, irresistible to bots. */}
+            <label className={styles.honeypot} aria-hidden="true">
+              Company
+              <input type="text" name="company" tabIndex={-1} autoComplete="off" />
+            </label>
+
+            <div className={styles.actions}>
+              <button
+                type="submit"
+                className={styles.submit}
+                disabled={state === 'sending'}
+              >
+                {state === 'sending' ? 'Sending…' : 'Send message'}
+              </button>
+
+              <p
+                className={styles.status}
+                role="status"
+                aria-live="polite"
+                data-state={state}
+              >
+                {state === 'sent' && 'Thanks — I’ll get back to you shortly.'}
+                {state === 'error' && error}
+              </p>
+            </div>
+          </form>
+        ) : (
+          <p className={styles.fallback}>
+            The contact form isn&rsquo;t configured on this build. Email{' '}
+            <a href={`mailto:${site.email}`}>{site.email}</a> directly.
+          </p>
+        )}
+      </div>
     </>
   );
-};
-
-export default Contact; 
+}

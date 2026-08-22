@@ -1,97 +1,93 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, useLocation } from 'react-router-dom';
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { HelmetProvider } from 'react-helmet-async';
-import CssBaseline from '@mui/material/CssBaseline';
+import { Suspense, useEffect } from 'react';
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
-import { createCustomTheme } from './theme/theme';
-import { useTheme } from './context/ThemeContext';
-import MainLayout from './layouts/MainLayout';
-import CursorFollower from './components/CursorFollower';
-import BackgroundAnimation from './components/BackgroundAnimation';
-import { ScrollToTopOnMount, ScrollToTopButton } from './components/ScrollToTop';
-import useMagneticElements from './hooks/useMagneticElements';
-import emailjs from '@emailjs/browser';
-import { initGA, logPageView } from './services/analytics';
-import { initSentry } from './services/errorTracking';
-import { ErrorBoundary } from '@sentry/react';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import {
+  About,
+  Apps,
+  Blog,
+  BlogPost,
+  Contact,
+  Games,
+  NotFound,
+  OpenSource,
+  ProjectPage,
+  Work,
+} from './routes';
+import { logPageView } from './services/analytics';
+import './styles/tokens.css';
+import './styles/base.css';
 
-// Initialize services in production
-if (import.meta.env.PROD) {
-  initGA();
-  initSentry();
+/** `/portfolio/:slug` moved to `/work/:slug`; carry the slug across. */
+function LegacyProjectRedirect() {
+  const { slug } = useParams<{ slug: string }>();
+  return <Navigate to={`/work/${slug}`} replace />;
 }
 
-// Track page views
-const PageViewTracker: React.FC = () => {
-  const location = useLocation();
+/** Reset scroll position and record a page view on every navigation. */
+function RouteEffects() {
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    if (import.meta.env.PROD) {
-      logPageView(location.pathname + location.search);
-    }
-  }, [location]);
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    logPageView(pathname);
+  }, [pathname]);
 
   return null;
-};
+}
 
-const AppContent = () => {
-  const { mode } = useTheme();
-  const theme = React.useMemo(() => createCustomTheme(mode), [mode]);
-
-  // Apply magnetic effects to all interactive elements globally
-  useMagneticElements({
-    padding: 60,
-    magnetStrength: 8,
-    activeTransition: 'transform 0.15s ease-out',
-    inactiveTransition: 'transform 0.3s ease-in-out',
-    selector: 'button, a, [role="button"], .magnetic, .MuiButton-root, .MuiIconButton-root'
-  });
-
-  useEffect(() => {
-    // Initialize EmailJS with public key from environment variable
-    const initEmailJS = () => {
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-      if (!publicKey) {
-        console.error('EmailJS public key is not defined in environment variables');
-        return;
-      }
-      emailjs.init(publicKey);
-    };
-
-    initEmailJS();
-  }, []);
-
+export default function App() {
   return (
-    <MuiThemeProvider theme={theme}>
-      <StyledThemeProvider theme={theme}>
-        <CssBaseline />
-        <>
-          <BackgroundAnimation />
-          <Router>
-            <ScrollToTopOnMount />
-            <PageViewTracker />
-            <CursorFollower />
-            <ErrorBoundary >
-              <MainLayout />
-              <ScrollToTopButton />
-            </ErrorBoundary>
-          </Router>
-        </>
-      </StyledThemeProvider>
-    </MuiThemeProvider>
-  );
-};
+    <ThemeProvider>
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
 
-const App = () => {
-  return (
-    <HelmetProvider>
-      <ThemeProvider>
-        <AppContent />
-      </ThemeProvider>
-    </HelmetProvider>
-  );
-};
+      <Header />
+      <RouteEffects />
 
-export default App;
+      <main id="main">
+        {/* No spinner. The client entry resolves the current route's chunk
+            before hydrating, so this fallback is only reached during in-app
+            navigation — where a flash of loading UI would be worse than a
+            beat of nothing. */}
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/work" element={<Work />} />
+            <Route path="/work/:slug" element={<ProjectPage />} />
+            <Route path="/apps" element={<Apps />} />
+            <Route path="/open-source" element={<OpenSource />} />
+            <Route path="/games" element={<Games />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+
+            {/* Old URLs from the previous site. .htaccess serves the real 301s;
+                these catch client-side navigation only, and redirect rather
+                than render so the same content never lives at two URLs. */}
+            <Route path="/portfolio" element={<Navigate to="/work" replace />} />
+            <Route
+              path="/portfolio/:slug"
+              element={<LegacyProjectRedirect />}
+            />
+            <Route path="/services" element={<Navigate to="/about" replace />} />
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </main>
+
+      <Footer />
+    </ThemeProvider>
+  );
+}

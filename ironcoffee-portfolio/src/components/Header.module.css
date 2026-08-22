@@ -1,0 +1,164 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* No backdrop-filter support: fall back to a solid bar rather than transparent. */
+@supports not (backdrop-filter: blur(1px)) {
+  .header {
+    background: var(--bg);
+  }
+}
+
+.inner {
+  max-width: var(--wide-width);
+  margin-inline: auto;
+  padding: var(--space-3) var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 640;
+  letter-spacing: var(--tracking-tight);
+  text-decoration: none;
+  margin-right: auto;
+  white-space: nowrap;
+}
+
+.brand:hover {
+  color: var(--text);
+}
+
+.mark {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  flex: none;
+  transition: transform var(--dur) var(--ease);
+}
+
+.brand:hover .mark {
+  transform: scale(1.35);
+}
+
+.desktopNav {
+  display: none;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.navLink {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+
+.navLink:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+}
+
+.active {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.menuButton {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  transition: color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+
+.menuButton:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+}
+
+/* --- Mobile panel ------------------------------------------------------- */
+.panel {
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  padding: var(--space-2) var(--gutter) var(--space-5);
+}
+
+.panel nav {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--wide-width);
+  margin-inline: auto;
+}
+
+.panelLink {
+  padding: var(--space-4) var(--space-1);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+}
+
+.panelLink:last-child {
+  border-bottom: none;
+  color: var(--accent);
+}
+
+.panelOpen nav > * {
+  animation: slide-in var(--dur) var(--ease) backwards;
+}
+
+/* Stagger the rows so the panel unfolds rather than snapping. */
+.panelOpen nav > *:nth-child(1) { animation-delay: 20ms; }
+.panelOpen nav > *:nth-child(2) { animation-delay: 40ms; }
+.panelOpen nav > *:nth-child(3) { animation-delay: 60ms; }
+.panelOpen nav > *:nth-child(4) { animation-delay: 80ms; }
+.panelOpen nav > *:nth-child(5) { animation-delay: 100ms; }
+.panelOpen nav > *:nth-child(6) { animation-delay: 120ms; }
+.panelOpen nav > *:nth-child(7) { animation-delay: 140ms; }
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@media (min-width: 900px) {
+  .desktopNav {
+    display: flex;
+  }
+
+  .menuButton {
+    display: none;
+  }
+
+  .panel {
+    display: none;
+  }
+}

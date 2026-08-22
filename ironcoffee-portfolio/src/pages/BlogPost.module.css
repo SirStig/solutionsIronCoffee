@@ -1,0 +1,251 @@
+/* As on the project pages: full-width container, narrow reading column. */
+.header,
+.prose,
+.pager {
+  max-width: 42rem;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.back:hover {
+  color: var(--accent);
+}
+
+.header {
+  padding-block: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-6);
+}
+
+.header h1 {
+  font-size: var(--text-3xl);
+}
+
+.meta {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-faint);
+}
+
+.tags {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-4) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tags li {
+  font-size: var(--text-xs);
+  padding: 0.1rem var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-faint);
+}
+
+/* ==========================================================================
+   Prose — styles for the HTML the markdown plugin emits.
+   ======================================================================== */
+.prose {
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--text-muted);
+}
+
+.prose > * + * {
+  margin-top: var(--space-5);
+}
+
+.prose :global(h2),
+.prose :global(h3) {
+  color: var(--text);
+  margin-top: var(--space-8);
+  margin-bottom: calc(var(--space-5) * -1 + var(--space-3));
+  scroll-margin-top: 5.5rem;
+}
+
+.prose :global(h2) {
+  font-size: var(--text-2xl);
+}
+
+.prose :global(h3) {
+  font-size: var(--text-xl);
+}
+
+/* Headings are wrapped in a self-link so each section is shareable. */
+.prose :global(.heading-anchor) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.prose :global(.heading-anchor:hover)::after {
+  content: ' #';
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.prose :global(a) {
+  color: var(--text);
+  font-weight: 500;
+  text-decoration-color: var(--accent);
+}
+
+.prose :global(a:hover) {
+  color: var(--accent);
+}
+
+.prose :global(strong) {
+  color: var(--text);
+  font-weight: 640;
+}
+
+.prose :global(ul),
+.prose :global(ol) {
+  padding-inline-start: var(--space-5);
+}
+
+.prose :global(li) + :global(li) {
+  margin-top: var(--space-2);
+}
+
+.prose :global(li)::marker {
+  color: var(--text-faint);
+}
+
+.prose :global(blockquote) {
+  border-inline-start: 3px solid var(--accent);
+  padding-inline-start: var(--space-5);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.prose :global(hr) {
+  margin-block: var(--space-7);
+}
+
+.prose :global(img) {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  width: 100%;
+}
+
+.prose :global(table) {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.prose :global(th),
+.prose :global(td) {
+  text-align: start;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.prose :global(th) {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* --- Inline code --------------------------------------------------------- */
+.prose :global(code) {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.35em;
+  font-size: 0.85em;
+  color: var(--text);
+}
+
+/* --- Code blocks ---------------------------------------------------------
+   Shiki is run at build time with both themes emitted as CSS variables on each
+   token (--s-light / --s-dark), so switching themes is a variable swap rather
+   than a re-highlight. The surrounding surface uses the site's own palette
+   instead of the theme's, so code blocks sit in the page rather than on it. */
+.prose :global(.code-block) {
+  margin-inline: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-subtle);
+}
+
+.prose :global(.shiki) {
+  margin: 0;
+  padding: var(--space-4);
+  overflow-x: auto;
+  font-size: var(--text-sm);
+  line-height: 1.65;
+  /* Shiki only writes custom properties inline (--s-light / --s-dark per
+     token), never a colour, so plain declarations here are enough. */
+  background: var(--bg-subtle);
+  color: var(--s-light);
+}
+
+.prose :global(.shiki span) {
+  color: var(--s-light);
+}
+
+:global([data-theme='dark']) .prose :global(.shiki) {
+  color: var(--s-dark);
+}
+
+:global([data-theme='dark']) .prose :global(.shiki span) {
+  color: var(--s-dark);
+}
+
+.prose :global(.code-block code) {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  display: block;
+  width: fit-content;
+  min-width: 100%;
+}
+
+/* --- Pager --------------------------------------------------------------- */
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--section-y);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border);
+}
+
+.pagerLink {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-width: 16rem;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.pagerLink:hover {
+  color: var(--accent);
+}
+
+.pagerNext {
+  text-align: end;
+  margin-inline-start: auto;
+}
+
+.pagerLabel {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
