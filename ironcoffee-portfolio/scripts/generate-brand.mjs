@@ -21,15 +21,12 @@ const CREAM = '#f5f2ef';
 const MUTED = '#a8a19b';
 
 /**
- * The mark: a copper bean on ink, with the seam cut out. Legible at 16px,
- * which rules out anything with lettering.
+ * The mark: the same copper dot used next to the wordmark in the header.
+ * Legible at 16px, which rules out anything with lettering.
  */
 const mark = (size) => `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="${INK}"/>
-  <g transform="rotate(-32 32 32)">
-    <ellipse cx="32" cy="32" rx="15" ry="21" fill="${COPPER}"/>
-    <path d="M32 12 C25 22, 25 42, 32 52 C39 42, 39 22, 32 12 Z" fill="${INK}" opacity="0.85"/>
-  </g>
+  <circle cx="32" cy="32" r="16" fill="${COPPER}"/>
 </svg>`;
 
 const ogImage = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
@@ -43,14 +40,7 @@ const ogImage = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="63
   <rect width="1200" height="630" fill="url(#bg)"/>
   <rect x="0" y="0" width="1200" height="5" fill="${COPPER}"/>
 
-  <g transform="translate(96, 150)">
-    <g transform="scale(1.5)">
-      <g transform="rotate(-32 32 32)">
-        <ellipse cx="32" cy="32" rx="15" ry="21" fill="${COPPER}"/>
-        <path d="M32 12 C25 22, 25 42, 32 52 C39 42, 39 22, 32 12 Z" fill="#0c0b0a" opacity="0.85"/>
-      </g>
-    </g>
-  </g>
+  <circle cx="120" cy="182" r="16" fill="${COPPER}"/>
 
   <text x="96" y="330" font-family="Inter, Helvetica, Arial, sans-serif"
         font-size="82" font-weight="700" fill="${CREAM}" letter-spacing="-2.5">Joshua Kac</text>

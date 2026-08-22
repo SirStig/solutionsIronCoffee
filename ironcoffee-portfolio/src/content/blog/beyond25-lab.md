@@ -26,7 +26,7 @@ product feature. It's a test harness.
 The Lab lets me create profiles, and a profile can override *every single*
 model slot in the pipeline independently. Chat naming, research synthesis,
 image generation, voice, cover art, the NSFW check, curation — all of it,
-per profile. We run through Gemini and OpenRouter, so in practice I can point
+per profile. They run through Gemini and OpenRouter, so in practice I can point
 any slot at almost any model I want.
 
 Then it instruments the whole run. Every tool call, every credit charged, every
@@ -44,22 +44,24 @@ returned, and whether the result is any good. I can also arm a profile for my
 own live chats, so I'm using a candidate configuration as a normal user would
 rather than only in a benchmark.
 
+![The Lab's head-to-head view, comparing profiles run against the same brief](projects/beyond25/lab-head-to-head)
+
 ## The bottlenecks it found were not where I expected
 
 The first thing it did was make research embarrassing. A research pass of
 thirty or forty queries was taking thirty to forty seconds. Watching the
-per-step timings made it obvious that wasn't model latency, it was how we were
+per-step timings made it obvious that wasn't model latency, it was how I was
 fanning the work out and how synthesis was handling the pile afterwards. After
 that round of work, three hundred queries finish in about five seconds, and a
 normal-sized research pass is close to instant.
 
 There was also a cap in synthesis quietly dropping research before the model
-ever saw it — so we were paying to gather information and then throwing part of
+ever saw it — so I was paying to gather information and then throwing part of
 it away. That one only showed up because the Lab counts what goes in against
 what comes out.
 
-Then there were the search bugs. We were hitting Wikipedia's search in a way that
-kept surfacing the wrong articles, so we moved to full-text search and added a
+Then there were the search bugs. I was hitting Wikipedia's search in a way that
+kept surfacing the wrong articles, so I moved to full-text search and added a
 keyword check that drops articles containing blocked words before they reach
 synthesis.
 
@@ -71,8 +73,8 @@ queries that went out, not just the playlist that came back.
 
 ## Testing other models is harder than swapping a string
 
-The other half of the Lab is comparing candidate models against what we
-currently run in production. Our live models work because everything has been
+The other half of the Lab is comparing candidate models against what I
+currently run in production. My live models work because everything has been
 tuned around them, and that cuts both ways: point a slot at a different model
 and it often does worse for reasons that have nothing to do with the model. So
 a lot of this has been rewriting prompts to be less dependent on one model's
@@ -84,16 +86,29 @@ costs me about two cents in AI. There's a model I'm testing that does the same
 work for around a quarter of a cent. That's roughly eight times cheaper.
 
 Here's one pair from a recent head-to-head, both given the same brief — forty
-songs, pop. Live settings took 65.7 seconds and $0.0313. The candidate took
-60.7 seconds and $0.0054. Both delivered, near-identical wall clock, about a
-sixth of the cost.
+songs, pop:
 
-The by-job breakdown is where it gets interesting. Research synthesis — the
-model call that reads what the search pass gathered, not the gathering itself —
-took 27.5 seconds and $0.0084 on the live profile, against 3.3 seconds and
-$0.0018 on the candidate. Curation went the other way — the candidate made seven
-model calls where live made four — and it was *still* far cheaper overall.
-That's the kind of thing you cannot see from a stopwatch and a monthly invoice.
+| Profile | Time | Cost |
+| --- | --- | --- |
+| Live | 65.7s | $0.0313 |
+| Candidate | 60.7s | $0.0054 |
+
+Both delivered, near-identical wall clock, about a sixth of the cost.
+
+The by-job breakdown is where it gets interesting:
+
+| Job | Live | Candidate |
+| --- | --- | --- |
+| Research synthesis | 27.5s · $0.0084 | 3.3s · $0.0018 |
+| Curation | 4 model calls | 7 model calls |
+
+Research synthesis is the model call that reads what the search pass
+gathered, not the gathering itself — nearly 10x faster on the candidate.
+Curation went the other way, with the candidate making more calls than live,
+and it was *still* far cheaper overall.
+
+> That's the kind of thing you cannot see from a stopwatch and a monthly
+> invoice.
 
 I haven't switched. Changing the model everyone is actually using is a big
 change and I'd rather keep running comparisons than find out in production.

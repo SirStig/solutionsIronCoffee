@@ -139,6 +139,33 @@
   width: 100%;
 }
 
+/* Manifest-backed images render as a <figure> reserving the intrinsic ratio,
+   with the blur placeholder painted underneath while the real image loads. */
+.prose :global(.blog-img) {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.prose :global(.blog-img) :global(img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: none;
+  border-radius: 0;
+}
+
+.prose :global(.blog-img) :global(figcaption) {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-faint);
+  border-top: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+
 .prose :global(table) {
   width: 100%;
   border-collapse: collapse;

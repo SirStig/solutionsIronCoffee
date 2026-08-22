@@ -18,6 +18,8 @@ figured I'd try the same thing with it.
 I did not expect that to mean building an entire game engine, natively, in
 Swift. But that's what it turned out to mean, so that's what I'm doing.
 
+![NovaSwift's flight HUD, mid-dogfight](projects/novaswift/flight-hud)
+
 ## I don't actually know how a lot of this works
 
 I can't reverse-engineer the original game especially well. I don't know how
@@ -32,11 +34,11 @@ the rest.
 That's genuinely the hardest part. Not the flight physics, not the rendering —
 figuring out what the game is even supposed to do when I can't read the source.
 
-Because I'm working from data I don't have any rights to, NovaSwift doesn't
-ship any of the original game's files. You bring your own legally-owned copy
-of EV Nova and the engine reads it at runtime — the same model OpenMW and
-OpenRA use for Morrowind and Command & Conquer. It felt like the only honest
-way to put this out there.
+> Because I'm working from data I don't have any rights to, NovaSwift doesn't
+> ship any of the original game's files. You bring your own legally-owned copy
+> of EV Nova and the engine reads it at runtime — the same model OpenMW and
+> OpenRA use for Morrowind and Command & Conquer. It felt like the only honest
+> way to put this out there.
 
 ## Performance was rough for a while
 
@@ -54,14 +56,21 @@ good instrumentation.
 ## Where it's at
 
 It runs natively on Mac, iPad, iPhone, and Apple TV, with controller support.
+
+![The galaxy map, showing the full system layout](projects/novaswift/galaxy-map)
+
 I've got full multiplayer working, though "working" is generous — it's still
 kind of buggy and finicky and I wouldn't trust it for anything serious yet.
+
+![Two ships in a multiplayer session](projects/novaswift/multiplayer)
 
 There's a pile of other stuff in there too: an in-game plugin store so people
 can install community content without digging through folders, and a Godot
 port for Linux and Windows I'm building on the side, sharing the same Swift
 engine underneath. There's a public TestFlight beta if anyone wants to poke at
 it.
+
+![The in-game plugin store](projects/novaswift/plugin-store)
 
 I should also just say plainly that most of the engine, and the digging
 through resource formats behind it, was built working alongside Claude Code.

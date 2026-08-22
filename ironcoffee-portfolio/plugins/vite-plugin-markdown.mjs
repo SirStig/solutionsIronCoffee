@@ -8,9 +8,26 @@
  * never downloads `marked` or `shiki`. Highlighted code uses CSS variables so a
  * single stylesheet themes both light and dark without re-highlighting.
  */
+import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Marked } from 'marked';
 import { createHighlighter } from 'shiki';
+
+const MANIFEST_PATH = fileURLToPath(
+  new URL('../src/generated/images.json', import.meta.url),
+);
+
+/** Blog posts reserve this much width for the reading column; matches .prose. */
+const PROSE_SIZES = '(min-width: 42rem) 42rem, 100vw';
+
+let manifestCache;
+function readManifest() {
+  manifestCache ??= fs.existsSync(MANIFEST_PATH)
+    ? JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'))
+    : {};
+  return manifestCache;
+}
 
 const LANGS = [
   'typescript',
@@ -153,6 +170,16 @@ export default function markdownPlugin() {
             return `<figure class="code-block" data-lang="${language}">${html}</figure>`;
           },
 
+          // A paragraph that's nothing but an image renders as a lone <img>
+          // token; wrapping the <figure> our image renderer emits in a <p>
+          // would nest block content inside an inline element.
+          paragraph({ tokens }) {
+            if (tokens.length === 1 && tokens[0].type === 'image') {
+              return this.image(tokens[0]);
+            }
+            return `<p>${this.parser.parseInline(tokens)}</p>`;
+          },
+
           heading({ tokens, depth }) {
             const text = this.parser.parseInline(tokens);
             const id = slugify(text);
@@ -171,8 +198,38 @@ export default function markdownPlugin() {
           },
 
           image({ href, title, text }) {
-            const t = title ? ` title="${title}"` : '';
-            return `<img src="${href}" alt="${text}"${t} loading="lazy" decoding="async" />`;
+            // A manifest key (no scheme, no leading slash) gets the same
+            // responsive <picture> the project pages render via <Img>. Anything
+            // else — an absolute path, an http(s) URL — passes through as-is.
+            const isManifestKey = !/^([a-z]+:)?\//i.test(href);
+            const entry = isManifestKey ? readManifest()[href] : undefined;
+
+            if (isManifestKey && !entry) {
+              console.warn(
+                `[markdown] image "${href}" has no entry in images.json — run \`npm run optimize:media\`.`,
+              );
+            }
+
+            if (!entry) {
+              const t = title ? ` title="${title}"` : '';
+              return `<img src="${href}" alt="${text}"${t} loading="lazy" decoding="async" />`;
+            }
+
+            const sources = entry.sources
+              .map(
+                (source) =>
+                  `<source type="${source.type}" sizes="${PROSE_SIZES}" srcset="${source.srcset
+                    .map((s) => `${s.url} ${s.width}w`)
+                    .join(', ')}" />`,
+              )
+              .join('');
+            const caption = title ? `<figcaption>${title}</figcaption>` : '';
+
+            return (
+              `<figure class="blog-img" style="aspect-ratio:${entry.width}/${entry.height};background-image:url('${entry.lqip}')">` +
+              `<picture>${sources}<img src="${entry.fallback}" alt="${text}" width="${entry.width}" height="${entry.height}" sizes="${PROSE_SIZES}" loading="lazy" decoding="async" /></picture>` +
+              `${caption}</figure>`
+            );
           },
         },
       });
