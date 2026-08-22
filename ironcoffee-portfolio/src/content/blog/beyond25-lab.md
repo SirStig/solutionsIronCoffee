@@ -31,7 +31,12 @@ any slot at almost any model I want.
 
 Then it instruments the whole run. Every tool call, every credit charged, every
 fraction of a cent of provider cost, every step's duration. A run comes out as
-a report I can actually read instead of a vibe.
+a report I can actually read instead of a vibe, and the spend gets attributed
+two ways: by model, and by job. By model tells me what I paid each provider.
+By job tells me *which part of the pipeline* caused it — curation, chat title,
+liner notes, research synthesis. Those two views disagree more often than you'd
+think, and the disagreement is usually the interesting part. A model that looks
+expensive by model is frequently just one that ran seven times instead of four.
 
 The part I use most is the head-to-head. I can fire five profiles at the same
 brief simultaneously and compare them on speed, cost, tool calls made, tracks
@@ -75,14 +80,33 @@ habits, then re-running the comparison.
 
 It's worth doing because of what it costs. Right now a normal-sized playlist —
 research, synthesis, resolution, artwork, everything from start to finish —
-costs me about two cents in AI. There's a model I'm testing that would bring
-the same playlist down to around a quarter of a cent. That's roughly eight
-times cheaper for the same work.
+costs me about two cents in AI. There's a model I'm testing that does the same
+work for around a quarter of a cent. That's roughly eight times cheaper.
+
+Here's one pair from a recent head-to-head, both given the same brief — forty
+songs, pop. Live settings took 65.7 seconds and $0.0313. The candidate took
+60.7 seconds and $0.0054. Both delivered, near-identical wall clock, about a
+sixth of the cost.
+
+The by-job breakdown is where it gets interesting. Research synthesis — the
+model call that reads what the search pass gathered, not the gathering itself —
+took 27.5 seconds and $0.0084 on the live profile, against 3.3 seconds and
+$0.0018 on the candidate. Curation went the other way — the candidate made seven
+model calls where live made four — and it was *still* far cheaper overall.
+That's the kind of thing you cannot see from a stopwatch and a monthly invoice.
 
 I haven't switched. Changing the model everyone is actually using is a big
 change and I'd rather keep running comparisons than find out in production.
 But that's the point of having the harness: I get to be slow about it on
 purpose.
+
+The honest number from the last thirty days: 65 runs across 9 profiles and 13
+different prompts, and only 68% of them produced a playlist at all. Just two
+of those actually errored — the rest completed and simply never delivered,
+usually because I'd pointed a slot at a model that couldn't hold the tool
+contract. Most configurations you try are bad. That's fine. That is precisely the
+failure I want happening in the Lab rather than in someone's app, and the
+entire month of finding out cost me about twenty-seven cents in API spend.
 
 ## Why cost is a user-facing feature
 
