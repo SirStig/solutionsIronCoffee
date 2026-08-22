@@ -123,12 +123,7 @@ export default function Contact() {
               </p>
             </div>
           </form>
-        ) : (
-          <p className={styles.fallback}>
-            The contact form isn&rsquo;t configured on this build. Email{' '}
-            <a href={`mailto:${site.email}`}>{site.email}</a> directly.
-          </p>
-        )}
+        ) : null}
       </div>
     </>
   );
