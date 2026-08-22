@@ -61,6 +61,10 @@ export default function Home() {
             building <Link to="/work/project-yoked">Project Yoked</Link> and
             learned more from it not working out than from anything that did.
           </p>
+          <p>
+            I build with AI heavily and say so openly &mdash;{' '}
+            <Link to="/about">here&rsquo;s how I actually use it</Link>.
+          </p>
         </div>
 
         <SocialLinks />

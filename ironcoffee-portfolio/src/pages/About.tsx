@@ -18,7 +18,7 @@ export default function About() {
         path="/about"
       />
 
-      <div className="container">
+      <div className="container-wide">
         <header className={styles.header}>
           <Img
             name="profile"
@@ -98,6 +98,29 @@ export default function About() {
               now&rdquo; is more useful to everyone than a green checkmark.
             </li>
           </ul>
+
+          <h2>On AI</h2>
+          <p>
+            I use AI heavily, and I&rsquo;d rather say that plainly than have
+            you wonder. It&rsquo;s involved in most of what I build.{' '}
+            <Link to="/work/novaswift">NovaSwift</Link> is the clearest example
+            &mdash; the engine, and the reverse-engineering of a
+            twenty-year-old resource format nobody had documented, came out of
+            working alongside Claude Code. It says so in the repo.
+          </p>
+          <p>
+            Where it earns its place is scaffolding, archaeology through
+            undocumented formats, and being the second opinion at one in the
+            morning. Where it doesn&rsquo;t is deciding what to build, or
+            excusing me from understanding what shipped. I still own the
+            architecture, the trade-offs and every bug that reaches production
+            &mdash; a tool that makes me faster doesn&rsquo;t make the judgement
+            calls for me.
+          </p>
+          <p>
+            I think being cagey about this is going to age badly. If it&rsquo;s
+            disqualifying for a role, better we both find that out early.
+          </p>
 
           <h2>Outside of that</h2>
           <p>

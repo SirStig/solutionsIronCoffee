@@ -2,7 +2,6 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import Seo from '../components/Seo';
 import Img from '../components/Img';
-import Reveal from '../components/Reveal';
 import LiveVersionBadge from '../components/LiveVersionBadge';
 import { getProject, statusLabels } from '../content/projects';
 import { site } from '../content/site';
@@ -37,7 +36,7 @@ export default function ProjectPage() {
         jsonLd={schema}
       />
 
-      <article className="container">
+      <article className="container-wide">
         <Link to="/work" className={styles.back}>
           <ArrowLeft size={15} aria-hidden /> Work
         </Link>
@@ -94,27 +93,27 @@ export default function ProjectPage() {
         </div>
 
         {project.highlights.length > 0 && (
-          <Reveal as="section" className={styles.block}>
+          <section className={styles.block}>
             <h2 className={styles.blockTitle}>What it does</h2>
             <ul className={styles.highlights}>
               {project.highlights.map((h) => (
                 <li key={h}>{h}</li>
               ))}
             </ul>
-          </Reveal>
+          </section>
         )}
 
-        <Reveal as="section" className={styles.block}>
+        <section className={styles.block}>
           <h2 className={styles.blockTitle}>Built with</h2>
           <ul className={styles.tech}>
             {project.tech.map((t) => (
               <li key={t}>{t}</li>
             ))}
           </ul>
-        </Reveal>
+        </section>
 
         {project.gallery && project.gallery.length > 0 && (
-          <Reveal as="section" className={styles.block}>
+          <section className={styles.block}>
             <h2 className={styles.blockTitle}>Screens</h2>
             <div className={styles.gallery}>
               {project.gallery.map((shot) => (
@@ -127,7 +126,7 @@ export default function ProjectPage() {
                 />
               ))}
             </div>
-          </Reveal>
+          </section>
         )}
 
         {project.note && <p className={styles.note}>{project.note}</p>}

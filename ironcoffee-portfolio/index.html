@@ -28,12 +28,9 @@
     />
 
     <script>
-      // Runs before first paint. Resolves the theme so a dark-mode load never
-      // flashes white, and marks that scripting is available — reveal-on-scroll
-      // is opt-in from this class, so content stays visible without JavaScript
-      // instead of being stuck at opacity 0.
+      // Resolves the theme before first paint so a dark-mode load never
+      // flashes white. ThemeContext reads whatever this sets.
       (function () {
-        document.documentElement.classList.add('js');
         try {
           var stored = localStorage.getItem('ic-theme');
           var mode =

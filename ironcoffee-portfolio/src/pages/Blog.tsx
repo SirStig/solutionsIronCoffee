@@ -27,7 +27,7 @@ export default function Blog() {
         jsonLd={schema}
       />
 
-      <div className="container">
+      <div className="container-wide">
         <header className={styles.header}>
           <h1>Writing</h1>
           <p className={styles.intro}>

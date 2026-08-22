@@ -1,3 +1,10 @@
+/* As on the project pages: full-width container, narrow reading column. */
+.header,
+.prose,
+.pager {
+  max-width: 42rem;
+}
+
 .back {
   display: inline-flex;
   align-items: center;

@@ -59,7 +59,7 @@ export default function Contact() {
         path="/contact"
       />
 
-      <div className="container">
+      <div className="container-wide">
         <header className={styles.header}>
           <h1>Get in touch</h1>
           <p className={styles.intro}>

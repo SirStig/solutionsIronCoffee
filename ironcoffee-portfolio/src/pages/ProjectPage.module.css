@@ -1,3 +1,13 @@
+/* The page spans the wide container so its left edge matches the header, but
+   the content column stays a readable width. */
+.header,
+.hero,
+.body,
+.block,
+.note {
+  max-width: 46rem;
+}
+
 .back {
   display: inline-flex;
   align-items: center;

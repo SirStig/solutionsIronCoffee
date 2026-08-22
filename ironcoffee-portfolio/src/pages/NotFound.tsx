@@ -13,7 +13,7 @@ export default function NotFound() {
         noindex
       />
 
-      <div className={`container ${styles.wrap}`}>
+      <div className={`container-wide ${styles.wrap}`}>
         <p className={styles.code}>404</p>
         <h1>That page doesn&rsquo;t exist.</h1>
         <p className={styles.text}>

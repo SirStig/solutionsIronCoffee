@@ -43,7 +43,7 @@ export default function BlogPost() {
         jsonLd={schema}
       />
 
-      <article className="container">
+      <article className="container-wide">
         <Link to="/blog" className={styles.back}>
           <ArrowLeft size={15} aria-hidden /> Writing
         </Link>
