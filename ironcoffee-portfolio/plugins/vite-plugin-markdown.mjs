@@ -226,7 +226,7 @@ export default function markdownPlugin() {
             const caption = title ? `<figcaption>${title}</figcaption>` : '';
 
             return (
-              `<figure class="blog-img" style="aspect-ratio:${entry.width}/${entry.height};background-image:url('${entry.lqip}')">` +
+              `<figure class="blog-img" style="aspect-ratio:${entry.width}/${entry.height};background-image:url('${entry.lqip}');max-width:${entry.width}px">` +
               `<picture>${sources}<img src="${entry.fallback}" alt="${text}" width="${entry.width}" height="${entry.height}" sizes="${PROSE_SIZES}" loading="lazy" decoding="async" /></picture>` +
               `${caption}</figure>`
             );

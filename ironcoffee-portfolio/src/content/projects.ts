@@ -141,17 +141,17 @@ export const projects: Project[] = [
     name: 'Ourlee',
     tagline: 'Walking in step, together.',
     summary:
-      'A calm shared space for Christian couples and households — one calendar, a daily verse, private notes and your own photo album. No followers, no feed, no comparison. Currently in closed beta.',
+      'A shared space I built for my partner and me, because every relationship app out there either has an interface that feels like an afterthought or costs more than it should for what it does. Ourlee bundles a shared calendar, shared files and photo library, location sharing, notes and a Christ-centred faith layer into one clean, minimal app. Currently in closed beta.',
     story:
-      'Every app built for couples eventually turns into a social network. Ourlee will not. There is no discover tab, no follower count, and nothing to compare yourself against — just a small, quiet room with your own chairs in it.\n\nFour tools that work together: a shared calendar everyone is actually on, a faith layer with a daily verse and multi-day devotionals, private notes for prayer lists and the small things worth remembering, and a photo album that surfaces memories on the day they happened.\n\nIt is deliberately not an AI product. The content is hand-curated and Christ-centred, there is no third-party analytics, and there are no ads. One Expo and React Native Web codebase ships it to iOS, Android and the web at once, against a FastAPI backend.',
+      'I did not like any of the apps built for couples — the interfaces are usually rough, and the good ones are expensive for what amounts to a shared calendar. I wanted something more thoughtful and more specific to us, so I built it myself with every feature we actually wanted.\n\nWe also had a practical problem: I am on iOS, my partner is on Android, so anything I built had to work identically on both from day one. That is why it is one Expo and React Native Web codebase, shipping to iOS, Android and the web at once against a FastAPI backend.\n\nIt is built around the people you share a life with: a shared calendar, shared files and a shared photo library, location sharing, private notes, and a faith layer with a daily verse and multi-day devotionals — all Christ-centred, in a clean, minimal UI. The content is hand-curated, there is no third-party analytics, and there are no ads.',
     year: '2026',
     status: 'beta',
     categories: ['apps'],
     highlights: [
-      'One shared calendar, with Google, CalDAV and EventKit sync',
+      'Shared calendar, shared files and a shared photo library',
+      'Location sharing between partners',
       'Daily verse and multi-day devotionals',
       'Private notes for prayer lists and reflections',
-      'Photos that resurface on the day they happened',
       'Invite only — single-use invites that expire',
     ],
     tech: [
@@ -239,9 +239,9 @@ export const projects: Project[] = [
     name: 'YokedCache',
     tagline: 'One async caching API. Five backends behind it.',
     summary:
-      'A Python caching library with the same async API across in-process memory, Redis, Memcached, disk and SQLite. Tag and pattern invalidation, optional Starlette HTTP middleware, and metrics built in. Published on PyPI.',
+      'A Python caching library that started as code inside Project Yoked, then got pulled out and rebuilt because every caching library I looked at made something simple far more complicated than it needed to be. One async API works identically across in-process memory, Redis, Memcached, disk and SQLite, with tagging and auto-invalidation built in. It runs in the backend of every project I ship now.',
     story:
-      'YokedCache came out of Project Yoked, where swapping cache backends between local dev and production kept meaning a rewrite. The fix was one async-first API that behaves identically across in-process memory, Redis, Memcached, disk and SQLite — memory works with no setup at all, so tests need no infrastructure.\n\nBeyond get and set it does the parts people usually hand-roll: invalidation by tag or pattern, SQLAlchemy-friendly helpers, optional HTTP caching middleware for Starlette, and production observability through Prometheus, StatsD and OpenTelemetry.',
+      'I was building a cache layer inside Project Yoked and kept looking at the caching libraries already out there wondering why something this simple had to be this complicated. So I pulled the code out, rebuilt it properly, and named it after the project it came from — Yoked, meaning shredded, jacked, built.\n\nThe result is one async-first API that behaves identically across in-process memory, Redis, Memcached, disk and SQLite — memory works with no setup at all, so tests need no infrastructure. Tag a key, invalidate the tag, done — no hand-rolled cache-busting logic. Beyond get and set it does the parts people usually skip: pattern invalidation, SQLAlchemy-friendly helpers, optional HTTP caching middleware for Starlette, and production observability through Prometheus, StatsD and OpenTelemetry.\n\nIt is the one library I reach for without thinking. Every backend I build now runs on it.',
     year: '2026',
     status: 'live',
     categories: ['open-source'],
@@ -273,9 +273,9 @@ export const projects: Project[] = [
     name: 'EncodeForge',
     tagline: 'An FFmpeg GUI that does not make you learn FFmpeg.',
     summary:
-      'A free, open-source desktop app for video encoding, AI subtitle generation and smart media renaming. Hardware-accelerated encoding, fully local subtitles via faster-whisper, and a scriptable CLI sharing the same core.',
+      'A free, open-source desktop app for video encoding, AI subtitle generation and smart media renaming, built to run a Jellyfin server properly. FileBot handled renaming and nothing else, and Jellyfin and Plex are both mediocre at the rest — so EncodeForge puts encoding, compression and subtitles behind one local UI instead of a pile of separate CLI tools.',
     story:
-      'FFmpeg can do anything, which is exactly why it is miserable to use for the things you do every week. EncodeForge wraps the parts that matter in a single desktop app: hardware-accelerated encoding through NVENC, AMF, Quick Sync or VideoToolbox, subtitle generation that runs entirely on your own machine via faster-whisper, and metadata-driven file renaming that pulls from eight sources.\n\nEverything the GUI does, the CLI does too — they share one core, so a batch job is the same code path as a button click. Version 0.5.0 is the first stable release of a full rewrite from JavaFX to PySide6.',
+      'I run a Jellyfin server. FileBot was the one tool that was actually good at renaming, but it stopped there — it did not touch re-encoding, compression or subtitles, and Jellyfin and Plex are both mediocre at handling that themselves. The tools to do it properly existed — FFmpeg, Whisper-based subtitle generation, and so on — but nothing tied them together in one place for free.\n\nThe first version was JavaFX, chosen so one codebase could ship to every platform. It worked, but it was buggy and janky, and — even though Java is the language I first really got into coding with — I have grown to dislike working in it. So over a long stretch of spare time, I rewrote it from scratch in Python with a PySide6 UI, fixing a long list of bugs along the way.\n\nWhat is there now: hardware-accelerated encoding through NVENC, AMF, Quick Sync and VideoToolbox, subtitle generation that runs fully local via faster-whisper, and metadata-driven renaming pulling from eight sources — GUI and CLI sharing one core, so a batch job is the same code path as a button click. Version 0.5.0 is the first stable release of that rewrite. It still has a long way to go, and I have a lot more planned for it.',
     year: '2026',
     status: 'live',
     categories: ['open-source'],
@@ -316,9 +316,9 @@ export const projects: Project[] = [
     name: 'Expo Media Engine',
     tagline: 'Video editing in Expo, without the per-minute bill.',
     summary:
-      'A hardware-accelerated video composition engine for Expo — multi-track editing, real-time preview, filters, transitions and audio mixing on both iOS and Android. Built on AVFoundation and MediaCodec, with no proprietary SDK behind it.',
+      'A native video-editing engine for Expo, built to close a real gap: every option for React Native was either on-device FFmpeg (buggy, huge, and since deprecated for this), a barebones open-source library, or a proprietary SDK costing thousands of dollars a year. Expo Media Engine aims at CapCut-level editing — full timeline, waveforms, filters, transitions and its own real-time rendering engine — running natively via AVFoundation and MediaCodec, no proprietary SDK behind it.',
     story:
-      'Video editing in React Native usually means renting someone else\'s cloud pipeline and paying per minute. This does it on the device: AVFoundation on iOS, MediaCodec and OpenGL ES 2.0 on Android, exposed through one Expo module.\n\nIt covers the full pipeline — real-time preview, multi-track composition, nine filters, eight transitions, audio mixing and H.264/H.265 export. Written for Project Yoked\'s video feed and published for anyone who needs the same thing.',
+      'Project Yoked needed real video editing — not a trim tool, something closer to CapCut. Every option I could find for React Native and Expo was one of three bad choices: FFmpeg running on-device, which is buggy, enormous, and has since been deprecated for this kind of use; a handful of open-source libraries with barely any features; or a proprietary SDK that costs thousands of dollars to license. None of it fit, so I wrote the engine myself, in native code.\n\nThe goal was the full picture: multi-track timeline editing, waveforms, audio mixing, overlays, filters, transitions, AI-assisted tools, and its own real-time rendering engine for live preview, export and compression — all in one package, exposed through a single Expo module over AVFoundation on iOS and MediaCodec/OpenGL ES on Android.\n\nIt has been on hiatus since Project Yoked was shut down. Last I checked, the core still mostly works, but it needs more time than I currently have to give it — this does not make any money, so it gets whatever is left over.',
     year: '2026',
     status: 'archived',
     categories: ['open-source'],

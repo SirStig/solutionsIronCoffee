@@ -38,13 +38,15 @@ liner notes, research synthesis. Those two views disagree more often than you'd
 think, and the disagreement is usually the interesting part. A model that looks
 expensive by model is frequently just one that ran seven times instead of four.
 
+![A single run's by-job breakdown](projects/beyond25/run-by-job)
+
 The part I use most is the head-to-head. I can fire five profiles at the same
 brief simultaneously and compare them on speed, cost, tool calls made, tracks
 returned, and whether the result is any good. I can also arm a profile for my
 own live chats, so I'm using a candidate configuration as a normal user would
 rather than only in a benchmark.
 
-![The Lab's head-to-head view, comparing profiles run against the same brief](projects/beyond25/lab-head-to-head)
+![Head-to-head comparison of two profiles run against the same brief](projects/beyond25/head-to-head)
 
 ## The bottlenecks it found were not where I expected
 
@@ -122,6 +124,8 @@ usually because I'd pointed a slot at a model that couldn't hold the tool
 contract. Most configurations you try are bad. That's fine. That is precisely the
 failure I want happening in the Lab rather than in someone's app, and the
 entire month of finding out cost me about twenty-seven cents in API spend.
+
+![The last thirty days, across every profile](projects/beyond25/overview-stats)
 
 ## Why cost is a user-facing feature
 

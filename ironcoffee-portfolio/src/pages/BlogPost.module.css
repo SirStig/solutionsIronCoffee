@@ -147,6 +147,9 @@
   overflow: hidden;
   background-size: cover;
   background-position: center;
+  /* max-width is set inline per image, to the source's native pixel width —
+     stops a narrow screenshot from being upscaled past its real resolution. */
+  margin-inline: auto;
 }
 
 .prose :global(.blog-img) :global(img) {
