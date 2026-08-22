@@ -1,0 +1,27 @@
+.reveal {
+  /* Visible by default. The `js` class is set on <html> before first paint, so
+     only browsers that will actually run the observer ever hide this — with
+     scripting off, or if the bundle fails to load, the content is simply
+     there. */
+  opacity: 1;
+}
+
+:global(html.js) .reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--dur-slow) var(--ease),
+    transform var(--dur-slow) var(--ease);
+}
+
+:global(html.js) .visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Never hide content from anyone who opted out of motion. */
+@media (prefers-reduced-motion: reduce) {
+  :global(html.js) .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

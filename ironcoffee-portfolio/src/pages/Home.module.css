@@ -1,0 +1,169 @@
+/* --- Intro -------------------------------------------------------------- */
+.intro {
+  padding-top: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+}
+
+.avatar {
+  width: 7rem;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-5);
+  border: 1px solid var(--border);
+}
+
+.hi {
+  margin-bottom: var(--space-4);
+  max-width: 20ch;
+}
+
+.lede {
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  max-width: 36rem;
+  margin-bottom: var(--space-5);
+}
+
+.lede p + p {
+  margin-top: var(--space-4);
+}
+
+.lede a {
+  color: var(--text);
+  font-weight: 500;
+  text-decoration-color: var(--accent);
+}
+
+.lede a:hover {
+  color: var(--accent);
+}
+
+.available {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.available a {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.available a:hover {
+  text-decoration: underline;
+}
+
+/* --- Sections ----------------------------------------------------------- */
+.section {
+  padding-top: var(--section-y);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.seeAll {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.seeAll:hover {
+  color: var(--accent);
+}
+
+.seeAll svg {
+  transition: transform var(--dur) var(--ease);
+}
+
+.seeAll:hover svg {
+  transform: translateX(3px);
+}
+
+/* --- Project grid ------------------------------------------------------- */
+.grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-5);
+}
+
+.grid > li {
+  height: 100%;
+}
+
+@media (min-width: 800px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Keep the reading measure comfortable even though the section spans the full
+   wide container, so every section still shares one left edge. */
+.postList,
+.sectionHead {
+  max-width: none;
+}
+
+/* --- Post list ---------------------------------------------------------- */
+.postList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.postList > li {
+  border-bottom: 1px solid var(--border);
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-1);
+  text-decoration: none;
+  transition: padding-inline-start var(--dur) var(--ease);
+}
+
+.post:hover {
+  color: inherit;
+  padding-inline-start: var(--space-3);
+}
+
+.postTitle {
+  font-weight: 600;
+}
+
+.post:hover .postTitle {
+  color: var(--accent);
+}
+
+.postMeta {
+  font-size: var(--text-sm);
+  color: var(--text-faint);
+}
+
+@media (min-width: 640px) {
+  .post {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-5);
+  }
+
+  .postMeta {
+    flex: none;
+  }
+}

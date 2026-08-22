@@ -1,35 +1,77 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { PaletteMode } from '@mui/material';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
 
-interface ThemeContextType {
-  mode: PaletteMode;
-  toggleTheme: () => void;
+type Mode = 'light' | 'dark';
+
+interface ThemeValue {
+  mode: Mode;
+  toggle: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType>({
-  mode: 'dark',
-  toggleTheme: () => {},
-});
+const ThemeContext = createContext<ThemeValue | null>(null);
+const STORAGE_KEY = 'ic-theme';
 
-export const useTheme = () => useContext(ThemeContext);
+/**
+ * Reads the mode the inline script in index.html already resolved and applied.
+ * Falling back to the media query keeps this correct under SSR/prerender.
+ */
+function initialMode(): Mode {
+  if (typeof document === 'undefined') return 'dark';
+  const applied = document.documentElement.dataset.theme;
+  if (applied === 'light' || applied === 'dark') return applied;
+  return window.matchMedia('(prefers-color-scheme: light)').matches
+    ? 'light'
+    : 'dark';
+}
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mode, setMode] = useState<PaletteMode>(() => {
-    const savedMode = localStorage.getItem('theme-mode');
-    return (savedMode as PaletteMode) || 'dark';
-  });
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [mode, setMode] = useState<Mode>(initialMode);
 
   useEffect(() => {
-    localStorage.setItem('theme-mode', mode);
+    document.documentElement.dataset.theme = mode;
+    try {
+      localStorage.setItem(STORAGE_KEY, mode);
+    } catch {
+      // Private browsing or blocked storage — the theme just won't persist.
+    }
   }, [mode]);
 
-  const toggleTheme = () => {
-    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-  };
+  // Follow the OS only while the visitor hasn't made an explicit choice.
+  useEffect(() => {
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+    if (stored) return;
 
-  return (
-    <ThemeContext.Provider value={{ mode, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    const mq = window.matchMedia('(prefers-color-scheme: light)');
+    const onChange = (e: MediaQueryListEvent) =>
+      setMode(e.matches ? 'light' : 'dark');
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  const toggle = useCallback(
+    () => setMode((m) => (m === 'dark' ? 'light' : 'dark')),
+    []
   );
-}; 
+
+  const value = useMemo(() => ({ mode, toggle }), [mode, toggle]);
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+}
+
+export function useTheme(): ThemeValue {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error('useTheme must be used inside <ThemeProvider>');
+  return ctx;
+}

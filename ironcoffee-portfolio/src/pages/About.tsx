@@ -1,647 +1,125 @@
-import React from 'react';
-import { Container, Typography, Grid, Box, Avatar, Chip, IconButton, Link } from '@mui/material';
-import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon } from '@mui/icons-material';
-import { motion } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
-import styled from 'styled-components';
-import PageTransition from '../components/PageTransition';
-import AnimatedSection from '../components/AnimatedSection';
-import { SOCIAL_LINKS } from '../constants/social';
+import { Link } from 'react-router-dom';
+import Seo from '../components/Seo';
+import Img from '../components/Img';
+import SocialLinks from '../components/SocialLinks';
+import { site } from '../content/site';
+import styles from './About.module.css';
 
-const HeroSection = styled.section`
-  padding: clamp(5rem, 10vw, 8rem) 0 clamp(3rem, 6vw, 5rem);
-  background: transparent;
-`;
-
-const Section = styled.section`
-  padding: clamp(5rem, 10vw, 8rem) 0;
-  background: transparent;
-`;
-
-const ValuesSection = styled.section`
-  padding: 0 0 clamp(5rem, 10vw, 8rem) 0;
-  background: transparent;
-`;
-
-const StyledAvatar = styled(Avatar)`
-  && {
-    width: clamp(200px, 20vw, 300px);
-    height: clamp(200px, 20vw, 300px);
-    margin: 0 auto;
-    box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.2);
-    border: 3px solid rgba(255, 255, 255, 0.1);
-  }
-`;
-
-const ContentCard = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: clamp(16px, 2.5vw, 20px);
-  padding: clamp(1.5rem, 3vw, 2.5rem);
-  box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  height: 100%;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 clamp(12px, 2vw, 20px) clamp(40px, 5vw, 60px) rgba(0, 0, 0, 0.15);
-    border-color: rgba(255, 255, 255, 0.2);
-  }
-`;
-
-const ValueTag = styled(Box)`
-  display: inline-block;
-  padding: clamp(0.3rem, 0.75vw, 0.5rem) clamp(0.75rem, 1.5vw, 1rem);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 50px;
-  font-size: clamp(0.7rem, 1vw, 0.85rem);
-  font-weight: 500;
-  color: ${({ theme }) => theme.palette.text.primary};
-`;
-
-const TechStackContainer = styled(Box)`
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: clamp(16px, 2.5vw, 20px);
-  padding: clamp(2rem, 4vw, 3rem);
-  box-shadow: 0 clamp(8px, 1.5vw, 16px) clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-`;
-
-const About = () => {
-  const whyChooseMe = [
-    {
-      title: 'All-in-One Developer',
-      description: 'I handle every aspect of your project. From initial design and SEO to frontend, backend, mobile apps, and deployment – I think through it all, figure it all out, and execute it efficiently. You get one developer who understands the entire stack.'
-    },
-    {
-      title: 'Perfectionist Who Delivers',
-      description: 'I refuse to deliver anything half-baked. If something isn\'t right, I\'ll scrap it and rebuild it entirely rather than compromise. Every client deserves perfection, and I\'m willing to work 80+ hour weeks with sleepless nights to achieve it.'
-    },
-    {
-      title: 'Self-Taught Mastery',
-      description: '15 years of coding since I was 10, with thousands of hours spent learning through trial and error. I have a deep, complex understanding of technologies because I\'ve figured them out from the ground up – no shortcuts, just comprehensive knowledge.'
-    },
-    {
-      title: 'Fast, Efficient & Driven',
-      description: 'Speed matters, but so does quality. I work efficiently without sacrificing excellence. My drive is fueled by big goals and the motivation to provide the best for my family. When I commit to your project, nothing stops me from seeing it through perfectly.'
-    },
-    {
-      title: 'Full-Stack Infrastructure Expertise',
-      description: 'Beyond code, I understand servers, networks, databases, and cloud infrastructure. I\'ve set up entire systems from scratch – AWS infrastructure, VPN servers, media servers, network administration, and more. Your entire technical ecosystem is in capable hands.'
-    },
-    {
-      title: 'Client Satisfaction Above All',
-      description: 'Your happiness is my priority. I want every single client happy, even if it means starting over completely. I\'d rather rebuild from scratch than deliver something you\'re not thrilled with. Your success is my success.'
-    }
-  ];
-
-  const values = [
-    'Perfectionism',
-    'Dedication',
-    'Excellence',
-    'Innovation',
-    'Client-First',
-    'Problem-Solving',
-    'Self-Improvement',
-    'Persistence',
-    'Comprehensive Understanding',
-    'Quality Above All'
-  ];
-
-  const technologies = {
-    frontend: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Material-UI'],
-    backend: ['Python', 'FastAPI', 'Celery', 'Redis', 'PostgreSQL', 'MySQL', 'SQLAlchemy'],
-    mobile: ['React Native', 'Swift', 'Xcode', 'iOS Development', 'Android Development'],
-    cloudDevOps: ['Docker', 'GitHub', 'AWS', 'Dreamhost', 'CI/CD', 'Hyper-V', 'Firebase'],
-    networkSystems: ['VPNs', 'Servers', 'Ollama', 'Ubiquiti', 'Network Administration', 'Firewall Configuration']
-  };
-
+/**
+ * Kept deliberately short. The work pages carry the detail; this page only has
+ * to answer "who is this and would I want to work with him".
+ */
+export default function About() {
   return (
-    <PageTransition>
-      <Helmet>
-        <title>About Joshua Kac | Full-Stack Developer - IronCoffee Solutions</title>
-        <meta name="description" content="Joshua Kac is a self-taught full-stack developer with 15+ years of experience, specializing in web development, mobile apps, and cloud infrastructure. Founder of IronCoffee LLC and CEO/Founder of Project Yoked LLC." />
-        <meta name="author" content="Joshua Kac" />
-        <meta name="keywords" content="Joshua Kac, about Joshua Kac, IronCoffee founder, Project Yoked CEO, full-stack developer, self-taught developer, React developer, mobile app developer" />
-        <link rel="canonical" href="https://solutions.ironcoffee.com/about" />
-        <meta property="og:type" content="profile" />
-        <meta property="og:url" content="https://solutions.ironcoffee.com/about" />
-        <meta property="og:title" content="About Joshua Kac | Full-Stack Developer - IronCoffee Solutions" />
-        <meta property="og:description" content="Self-taught full-stack developer with 15+ years of experience. Founder of IronCoffee LLC, CEO/Founder of Project Yoked LLC." />
-        <meta property="og:image" content="https://solutions.ironcoffee.com/images/profile.JPEG" />
-        <meta property="profile:first_name" content="Joshua" />
-        <meta property="profile:last_name" content="Kac" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="About Joshua Kac | IronCoffee Solutions" />
-        <meta name="twitter:description" content="Self-taught full-stack developer with 15+ years of experience. Founder of IronCoffee LLC." />
-        <meta name="twitter:image" content="https://solutions.ironcoffee.com/images/profile.JPEG" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "ProfilePage",
-          "mainEntity": {
-            "@id": "https://solutions.ironcoffee.com/#person"
-          }
-        })}</script>
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://solutions.ironcoffee.com/" },
-            { "@type": "ListItem", "position": 2, "name": "About", "item": "https://solutions.ironcoffee.com/about" }
-          ]
-        })}</script>
-      </Helmet>
+    <>
+      <Seo
+        title="About"
+        description="Joshua Kac — self-taught software engineer, founder of IronCoffee LLC. Builds apps end to end across backend, mobile, web and infrastructure."
+        path="/about"
+      />
 
-      <HeroSection>
-        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
-          <AnimatedSection>
-            <Grid container spacing={4} alignItems="center">
-              <Grid item xs={12} md={6}>
-                <Typography 
-                  variant="h1" 
-                  sx={{ 
-                    mb: 2,
-                    fontSize: { xs: '2.5rem', sm: '3rem', md: '3.5rem' },
-                    fontWeight: 700
-                  }}
-                >
-                  Who I Am
-                </Typography>
-                <Typography 
-                  variant="h4" 
-                  sx={{ 
-                    mb: 3,
-                    fontWeight: 400,
-                    color: 'text.secondary',
-                    fontSize: { xs: '1.25rem', md: '1.5rem' }
-                  }}
-                >
-                  Creative Technologist & Problem Solver
-                </Typography>
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
-                    mb: 3,
-                    color: 'text.secondary',
-                    fontSize: { xs: '1rem', md: '1.1rem' },
-                    lineHeight: 1.7
-                  }}
-                >
-                  I've been coding since I was 10 years old, starting with Java mods for Minecraft and even working on the team for the first-ever mod maker for Minecraft. My journey began watching my father build mobile apps at his company, which sparked my passion for development. From there, I taught myself everything – HTML, CSS, JavaScript, Python, React, mobile development, and so much more through thousands of hours of trial, error, and relentless learning.
-                </Typography>
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
-                    mb: 3,
-                    color: 'text.secondary',
-                    fontSize: { xs: '1rem', md: '1.1rem' },
-                    lineHeight: 1.7
-                  }}
-                >
-                  In 2024, I made the decision to pursue development full-time. Since then, I've built everything from full e-commerce platforms with complete CMS systems to massive social media platforms, media processing applications, and complex financial systems. I'm entirely self-taught – no college, no formal training – just pure dedication and the drive to figure things out.
-                </Typography>
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
-                    color: 'text.secondary',
-                    fontSize: { xs: '1rem', md: '1.1rem' },
-                    lineHeight: 1.7
-                  }}
-                >
-                  What makes me unique? I'm a true all-in-one developer. I handle design, SEO, frontend, backend, mobile apps, DevOps, infrastructure, and everything in between. I can think through entire systems, solve complex problems quickly, and execute efficiently. I'm extremely driven, work tirelessly when needed, and strive for perfection in every single project.
-                </Typography>
-              </Grid>
-              <Grid item xs={12} md={6} sx={{ textAlign: 'center' }}>
-                <StyledAvatar
-                  alt="Profile Picture"
-                  src={`${import.meta.env.BASE_URL}images/profile.JPEG`}
-                  sx={{ 
-                    bgcolor: 'secondary.main',
-                  }}
-                />
-                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 2 }}>
-                  <IconButton
-                    component="a"
-                    href={SOCIAL_LINKS.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn"
-                    sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
-                  >
-                    <LinkedInIcon />
-                  </IconButton>
-                  <IconButton
-                    component="a"
-                    href={SOCIAL_LINKS.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="GitHub"
-                    sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
-                  >
-                    <GitHubIcon />
-                  </IconButton>
-                </Box>
-              </Grid>
-            </Grid>
-          </AnimatedSection>
-        </Container>
-      </HeroSection>
+      <div className="container">
+        <header className={styles.header}>
+          <Img
+            name="profile"
+            alt="Joshua Kac"
+            className={styles.photo}
+            aspectRatio="1 / 1"
+            sizes="160px"
+            priority
+          />
+          <div>
+            <h1>About</h1>
+            <p className={styles.role}>Software engineer · IronCoffee LLC</p>
+          </div>
+        </header>
 
-      <Section>
-        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
-          <AnimatedSection delay={0.2}>
-            <Typography 
-              variant="h2" 
-              align="center"
-              sx={{ 
-                mb: 1,
-                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
-                fontWeight: 700
-              }}
-            >
-              Why Choose Me
-            </Typography>
-            <Typography 
-              variant="h6" 
-              align="center"
-              sx={{ 
-                mb: 5,
-                color: 'text.secondary',
-                maxWidth: '700px',
-                mx: 'auto',
-                fontSize: { xs: '1rem', md: '1.1rem' },
-                lineHeight: 1.7
-              }}
-            >
-              What sets me apart in delivering exceptional results
-            </Typography>
+        <div className={styles.prose}>
+          <p className={styles.lede}>
+            I&rsquo;m self-taught, I&rsquo;ve been writing code since I was a
+            kid, and I build the whole thing &mdash; backend, mobile, web and
+            the infrastructure underneath.
+          </p>
 
-            <Grid container spacing={3}>
-              {whyChooseMe.map((item, index) => (
-                <Grid item xs={12} sm={6} md={4} key={item.title}>
-                  <ContentCard
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  >
-                    <Typography 
-                      variant="h5" 
-                      sx={{ 
-                        mb: 1.5, 
-                        fontWeight: 600, 
-                        fontSize: { xs: '1.1rem', md: '1.25rem' } 
-                      }}
-                    >
-                      {item.title}
-                    </Typography>
-                    <Typography 
-                      variant="body2" 
-                      sx={{ 
-                        color: 'text.secondary', 
-                        lineHeight: 1.7, 
-                        fontSize: { xs: '0.9rem', md: '0.95rem' } 
-                      }}
-                    >
-                      {item.description}
-                    </Typography>
-                  </ContentCard>
-                </Grid>
-              ))}
-            </Grid>
-          </AnimatedSection>
-        </Container>
-      </Section>
+          <p>
+            That&rsquo;s not a boast about breadth, it&rsquo;s just how I work
+            best. When one person holds the API contract, the mobile client and
+            the deploy pipeline in their head at once, a lot of the usual
+            friction stops existing. It also means I can take something from
+            &ldquo;idea&rdquo; to &ldquo;in the App Store&rdquo; without needing
+            a team around me first.
+          </p>
 
-      <ValuesSection>
-        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
-          <AnimatedSection delay={0.3}>
-            <Typography 
-              variant="h2" 
-              align="center"
-              sx={{ 
-                mb: 1,
-                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
-                fontWeight: 700
-              }}
-            >
-              My Values
-            </Typography>
-            <Typography 
-              variant="h6" 
-              align="center"
-              sx={{ 
-                mb: 4,
-                color: 'text.secondary',
-                maxWidth: '700px',
-                mx: 'auto',
-                fontSize: { xs: '1rem', md: '1.1rem' },
-                lineHeight: 1.7
-              }}
-            >
-              The principles that guide my work
-            </Typography>
+          <h2>What I&rsquo;m doing now</h2>
+          <p>
+            Most of my time goes to <Link to="/work/beyond25">Beyond25</Link>, an
+            AI music curator that&rsquo;s live on iOS, Android, Mac and the web.
+            The interesting engineering there isn&rsquo;t the model &mdash;
+            it&rsquo;s making sure every track it suggests actually exists and
+            actually plays, which turns out to be most of the work.
+          </p>
+          <p>
+            Alongside it, <Link to="/work/ourlee">Ourlee</Link> is in closed
+            beta, and <Link to="/work/novaswift">NovaSwift</Link> is the thing I
+            build when I want to stop thinking about product &mdash; a
+            from-scratch Swift rebuild of a 2002 space sim, which mostly meant
+            reverse-engineering file formats nobody has documented in twenty
+            years.
+          </p>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 1.5 }}>
-              {values.map((value) => (
-                <ValueTag key={value}>
-                  {value}
-                </ValueTag>
-              ))}
-            </Box>
-          </AnimatedSection>
-        </Container>
-      </ValuesSection>
+          <h2>The one that didn&rsquo;t work</h2>
+          <p>
+            Before those I spent a long stretch as co-founder and lead developer
+            on <Link to="/work/project-yoked">Project Yoked</Link>, an
+            all-in-one fitness platform. It was enormously ambitious &mdash;
+            workout tracking, a video feed, a 1.7M-food nutrition database, a
+            per-muscle recovery model, an Apple Watch app &mdash; and it&rsquo;s
+            shut down now.
+          </p>
+          <p>
+            I put it on this site on purpose. It was too much surface area for
+            the team behind it, and that is a real lesson about scope that
+            I&rsquo;d rather have learned on my own project than on someone
+            else&rsquo;s. Two production libraries came out of it and outlived
+            it: <Link to="/work/yokedcache">YokedCache</Link> and the{' '}
+            <Link to="/work/expo-media-engine">Expo Media Engine</Link>, both
+            still published.
+          </p>
 
-      <Section>
-        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
-          <AnimatedSection delay={0.35}>
-            <Typography 
-              variant="h2" 
-              align="center"
-              sx={{ 
-                mb: 1,
-                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
-                fontWeight: 700
-              }}
-            >
-              My Journey & Major Projects
-            </Typography>
-            <Typography 
-              variant="h6" 
-              align="center"
-              sx={{ 
-                mb: 5,
-                color: 'text.secondary',
-                maxWidth: '700px',
-                mx: 'auto',
-                fontSize: { xs: '1rem', md: '1.1rem' },
-                lineHeight: 1.7
-              }}
-            >
-              Building ambitious projects and learning through doing
-            </Typography>
+          <h2>How I like to work</h2>
+          <ul className={styles.list}>
+            <li>Ship something small and real before designing the big version.</li>
+            <li>
+              Own the boring parts &mdash; deploys, migrations, error tracking
+              &mdash; because that&rsquo;s where products actually die.
+            </li>
+            <li>
+              Write the honest version of the status. &ldquo;Kinda broken right
+              now&rdquo; is more useful to everyone than a green checkmark.
+            </li>
+          </ul>
 
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <ContentCard
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                >
-                  <Typography 
-                    variant="h5" 
-                    sx={{ 
-                      mb: 1.5, 
-                      fontWeight: 600, 
-                      fontSize: { xs: '1.1rem', md: '1.25rem' },
-                      color: 'primary.main'
-                    }}
-                  >
-                    Project Yoked
-                  </Typography>
-                  <Typography 
-                    variant="body2" 
-                    sx={{ 
-                      color: 'text.secondary', 
-                      lineHeight: 1.7, 
-                      fontSize: { xs: '0.9rem', md: '0.95rem' },
-                      mb: 2
-                    }}
-                  >
-                    A massive fitness social media platform I developed entirely myself as CEO/Founder. Complete mobile app, full website, and backend servers using AI for content moderation, AWS infrastructure for video processing, subscriptions, ad systems, comprehensive workout tracking with gamification, and a full admin dashboard.
-                  </Typography>
-                </ContentCard>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <ContentCard
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                >
-                  <Typography 
-                    variant="h5" 
-                    sx={{ 
-                      mb: 1.5, 
-                      fontWeight: 600, 
-                      fontSize: { xs: '1.1rem', md: '1.25rem' },
-                      color: 'primary.main'
-                    }}
-                  >
-                    Eagle Chair E-Commerce Platform
-                  </Typography>
-                  <Typography 
-                    variant="body2" 
-                    sx={{ 
-                      color: 'text.secondary', 
-                      lineHeight: 1.7, 
-                      fontSize: { xs: '0.9rem', md: '0.95rem' },
-                      mb: 2
-                    }}
-                  >
-                    Migrating a premium furniture brand from WordPress to a fully custom solution. Complete e-commerce platform with a comprehensive CMS system, custom server architecture, and database optimization. Almost complete, with a live demo showcasing the full backend infrastructure.
-                  </Typography>
-                </ContentCard>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <ContentCard
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                >
-                  <Typography 
-                    variant="h5" 
-                    sx={{ 
-                      mb: 1.5, 
-                      fontWeight: 600, 
-                      fontSize: { xs: '1.1rem', md: '1.25rem' },
-                      color: 'primary.main'
-                    }}
-                  >
-                    EncodeForge
-                  </Typography>
-                  <Typography 
-                    variant="body2" 
-                    sx={{ 
-                      color: 'text.secondary', 
-                      lineHeight: 1.7, 
-                      fontSize: { xs: '0.9rem', md: '0.95rem' },
-                      mb: 2
-                    }}
-                  >
-                    Open-source desktop media tool: FFmpeg-based GPU encoding, local AI subtitles with faster-whisper, and metadata-driven renaming — Python, PySide6, and a Fluent Design UI for Windows, macOS, and Linux. Site and downloads at{' '}
-                    <Link href="https://sirstig.github.io/EncodeForge/" target="_blank" rel="noopener noreferrer">
-                      sirstig.github.io/EncodeForge
-                    </Link>
-                    .
-                  </Typography>
-                </ContentCard>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <ContentCard
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                >
-                  <Typography 
-                    variant="h5" 
-                    sx={{ 
-                      mb: 1.5, 
-                      fontWeight: 600, 
-                      fontSize: { xs: '1.1rem', md: '1.25rem' },
-                      color: 'primary.main'
-                    }}
-                  >
-                    Financial Platform
-                  </Typography>
-                  <Typography 
-                    variant="body2" 
-                    sx={{ 
-                      color: 'text.secondary', 
-                      lineHeight: 1.7, 
-                      fontSize: { xs: '0.9rem', md: '0.95rem' },
-                      mb: 2
-                    }}
-                  >
-                    Built a comprehensive financial management platform using Stripe, Plaid, and PayPal APIs with pure HTML, CSS, JavaScript, and Python FastAPI. Near completion but halted due to banking regulatory costs – a testament to taking on ambitious projects and learning from the experience.
-                  </Typography>
-                </ContentCard>
-              </Grid>
-            </Grid>
-          </AnimatedSection>
-        </Container>
-      </Section>
+          <h2>Outside of that</h2>
+          <p>
+            Games are what got me into this in the first place &mdash; my first
+            released project was a Game Dev Tycoon mod generator in 2016, and I
+            still end up back there. There&rsquo;s a{' '}
+            <Link to="/games">whole page of it</Link>.
+          </p>
+        </div>
 
-      <Section>
-        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
-          <AnimatedSection delay={0.4}>
-            <Typography 
-              variant="h2" 
-              align="center"
-              sx={{ 
-                mb: 1,
-                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
-                fontWeight: 700
-              }}
-            >
-              Beyond Code
-            </Typography>
-            <Typography 
-              variant="h6" 
-              align="center"
-              sx={{ 
-                mb: 5,
-                color: 'text.secondary',
-                maxWidth: '700px',
-                mx: 'auto',
-                fontSize: { xs: '1rem', md: '1.1rem' },
-                lineHeight: 1.7
-              }}
-            >
-              What drives me and what I enjoy outside of development
-            </Typography>
-
-            <Box sx={{ maxWidth: '800px', mx: 'auto' }}>
-              <ContentCard
-                whileHover={{ scale: 1.01 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              >
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
-                    color: 'text.secondary', 
-                    lineHeight: 1.8, 
-                    fontSize: { xs: '1rem', md: '1.1rem' },
-                    mb: 2
-                  }}
-                >
-                  My motivation comes from having huge, ambitious goals and the drive to achieve them – no matter how impossible they may seem to others. I'm driven by the desire to provide the best for my family, which means I'm willing to work 80+ hour weeks with sleepless nights when necessary. I don't stop at obstacles; I find solutions.
-                </Typography>
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
-                    color: 'text.secondary', 
-                    lineHeight: 1.8, 
-                    fontSize: { xs: '1rem', md: '1.1rem' }
-                  }}
-                >
-                  When I'm not coding, you'll find me hiking, ice skating, skiing, driving, enjoying music, fishing, camping, or exploring the outdoors. These activities recharge me and keep me balanced, allowing me to bring fresh perspectives and energy to every project.
-                </Typography>
-              </ContentCard>
-            </Box>
-          </AnimatedSection>
-        </Container>
-      </Section>
-
-      <Section>
-        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}>
-          <AnimatedSection delay={0.5}>
-            <Typography 
-              variant="h2" 
-              align="center"
-              sx={{ 
-                mb: 1,
-                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
-                fontWeight: 700
-              }}
-            >
-              Technologies & Expertise
-            </Typography>
-            <Typography 
-              variant="h6" 
-              align="center"
-              sx={{ 
-                mb: 5,
-                color: 'text.secondary',
-                maxWidth: '700px',
-                mx: 'auto',
-                fontSize: { xs: '1rem', md: '1.1rem' },
-                lineHeight: 1.7
-              }}
-            >
-              The modern tools and technologies I work with
-            </Typography>
-
-            <TechStackContainer>
-              <Grid container spacing={4}>
-                {Object.entries(technologies).map(([key, techs]) => (
-                  <Grid item xs={12} sm={6} md={4} key={key}>
-                    <Typography 
-                      variant="h6" 
-                      sx={{ 
-                        mb: 2, 
-                        fontWeight: 600, 
-                        fontSize: { xs: '1rem', md: '1.1rem' }, 
-                        color: 'primary.main' 
-                      }}
-                    >
-                      {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                      {techs.map((tech) => (
-                        <Chip
-                          key={tech}
-                          label={tech}
-                          size="small"
-                          sx={{
-                            background: 'rgba(255, 255, 255, 0.08)',
-                            border: '1px solid rgba(255, 255, 255, 0.15)',
-                            color: 'text.primary',
-                            fontSize: '0.8rem',
-                            height: '28px',
-                            fontWeight: 500
-                          }}
-                        />
-                      ))}
-                    </Box>
-                  </Grid>
-                ))}
-              </Grid>
-            </TechStackContainer>
-          </AnimatedSection>
-        </Container>
-      </Section>
-    </PageTransition>
+        <section className={styles.contact}>
+          <h2>Get in touch</h2>
+          <p className={styles.contactIntro}>
+            Open to contract work and engineering roles. The fastest way to
+            reach me is email.
+          </p>
+          <SocialLinks variant="labelled" />
+          <p className={styles.resume}>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </p>
+        </section>
+      </div>
+    </>
   );
-};
-
-export default About;
+}

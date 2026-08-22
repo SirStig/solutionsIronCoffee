@@ -1,0 +1,46 @@
+.frame {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background-color: var(--bg-subtle);
+  background-size: cover;
+  background-position: center;
+  border-radius: inherit;
+}
+
+/* <picture> is an inline box by default, so `height: 100%` on the <img> would
+   resolve against nothing and the image would overflow the frame and simply be
+   clipped — object-fit never getting a constrained box to work with. */
+.frame picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Letterboxed: the whole image is visible, centred over a blurred enlargement
+   of itself. Used for tall phone screenshots, which a wide card would
+   otherwise crop to an unreadable sliver. */
+.contain {
+  background-size: cover;
+}
+
+.contain img {
+  object-fit: contain;
+  padding: var(--space-3) var(--space-3) 0;
+}
+
+/* Cross-fade from the blur placeholder rather than popping in. */
+.loading {
+  opacity: 0;
+}
+
+.loaded {
+  opacity: 1;
+  transition: opacity var(--dur-slow) var(--ease);
+}

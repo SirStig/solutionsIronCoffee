@@ -1,0 +1,40 @@
+.button {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  transition: color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+
+.button:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+}
+
+/* Both icons occupy the same cell; only one is ever visible. */
+.sun,
+.moon {
+  grid-area: 1 / 1;
+  transition: transform var(--dur) var(--ease);
+}
+
+.button:hover .sun,
+.button:hover .moon {
+  transform: rotate(12deg) scale(1.08);
+}
+
+/* Dark theme offers the sun (switch to light); light theme offers the moon. */
+.sun {
+  display: none;
+}
+
+:global([data-theme='dark']) .sun {
+  display: block;
+}
+
+:global([data-theme='dark']) .moon {
+  display: none;
+}

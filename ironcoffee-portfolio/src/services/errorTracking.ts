@@ -1,30 +1,31 @@
-import * as Sentry from '@sentry/react';
+/**
+ * Sentry, loaded lazily and only in production.
+ *
+ * The SDK is heavy enough that it must never block first paint, so this module
+ * is imported from an idle callback and imports Sentry itself dynamically.
+ */
 
-export const initSentry = () => {
-  const dsn = import.meta.env.VITE_SENTRY_DSN;
-  if (dsn) {
+const dsn = import.meta.env.VITE_SENTRY_DSN;
+
+export async function initErrorTracking(): Promise<void> {
+  if (!dsn || !import.meta.env.PROD) return;
+
+  try {
+    const Sentry = await import('@sentry/react');
     Sentry.init({
       dsn,
-      tracesSampleRate: 1.0,
-      environment: import.meta.env.MODE,
-      enabled: import.meta.env.PROD,
-      replaysOnErrorSampleRate: 1.0,
-      replaysSessionSampleRate: 0.1
+      environment: 'production',
+      // Sample lightly: this is a portfolio, not a system of record.
+      tracesSampleRate: 0.1,
+      replaysSessionSampleRate: 0,
+      replaysOnErrorSampleRate: 0,
+      ignoreErrors: [
+        'ResizeObserver loop limit exceeded',
+        'ResizeObserver loop completed with undelivered notifications',
+        'Non-Error promise rejection captured',
+      ],
     });
-  } else {
-    console.warn('Sentry DSN is not defined');
+  } catch {
+    // Never let error tracking be the thing that breaks the page.
   }
-};
-
-export const logError = (error: Error, context?: Record<string, any>) => {
-  Sentry.captureException(error, {
-    extra: context
-  });
-};
-
-export const setUserContext = (userId: string, email?: string) => {
-  Sentry.setUser({
-    id: userId,
-    email
-  });
-}; 
+}

@@ -1,22 +1,39 @@
-import ReactGA from 'react-ga4';
+/**
+ * GA4, loaded lazily and only in production.
+ *
+ * `react-ga4` is imported dynamically so the tag never lands in the entry
+ * chunk. Page views fired before init are dropped rather than queued — losing
+ * the first hit is a better trade than holding a buffer forever.
+ */
 
-export const initGA = () => {
-  const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
-  if (measurementId) {
+let ready = false;
+
+const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
+
+export async function initAnalytics(): Promise<void> {
+  if (ready || !measurementId || !import.meta.env.PROD) return;
+
+  try {
+    const ReactGA = (await import('react-ga4')).default;
     ReactGA.initialize(measurementId);
-  } else {
-    console.warn('Google Analytics Measurement ID is not defined');
+    ready = true;
+    ReactGA.send({
+      hitType: 'pageview',
+      page: window.location.pathname + window.location.search,
+    });
+  } catch {
+    // Blocked by an extension or offline — analytics is never load-bearing.
   }
-};
+}
 
-export const logPageView = (path: string) => {
-  ReactGA.send({ hitType: "pageview", page: path });
-};
+export function logPageView(path: string): void {
+  if (!ready) return;
 
-export const logEvent = (category: string, action: string, label?: string) => {
-  ReactGA.event({
-    category,
-    action,
-    label
-  });
-}; 
+  import('react-ga4')
+    .then(({ default: ReactGA }) =>
+      ReactGA.send({ hitType: 'pageview', page: path })
+    )
+    .catch(() => {
+      /* ignore */
+    });
+}
