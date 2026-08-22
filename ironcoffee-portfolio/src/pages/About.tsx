@@ -106,7 +106,7 @@ export default function About() {
             <Link to="/work/novaswift">NovaSwift</Link> is the clearest example
             &mdash; the engine, and the reverse-engineering of a
             twenty-year-old resource format nobody had documented, came out of
-            working alongside Claude Code. It says so in the repo.
+            working alongside Claude Code.
           </p>
           <p>
             Where it earns its place is scaffolding, archaeology through
