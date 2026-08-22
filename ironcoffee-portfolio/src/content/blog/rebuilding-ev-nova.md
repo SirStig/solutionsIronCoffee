@@ -1,6 +1,6 @@
 ---
 title: "Rebuilding EV Nova, the game that ate my childhood"
-date: "2026-08-22"
+date: "2026-08-08"
 tags: [swift, games]
 excerpt: "I'm rebuilding EV Nova from scratch in Swift because I loved it as a kid and it barely runs anymore. It's still rough, and I'm fine saying so."
 ---
