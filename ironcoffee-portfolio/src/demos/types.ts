@@ -154,4 +154,13 @@ export interface DemoConfig {
    * demonstration rather than as a preview built for a real owner.
    */
   showcase?: boolean;
+
+  /**
+   * A config that is still being filled in. It is typechecked and validated by
+   * the tests like any other, but it is never prerendered, so there is no page
+   * on the deployed site and no link that can be sent by accident.
+   *
+   * Clear the flag once the hours, the photos and the real details are in.
+   */
+  draft?: boolean;
 }

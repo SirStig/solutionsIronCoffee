@@ -88,6 +88,10 @@ Demo images are manifest keys, not paths. Put sources in
 optimizer has not produced yet renders a branded gradient, so a config can be
 written and reviewed before the photos exist.
 
+A config marked `draft: true` is typechecked and validated by the tests but
+never prerendered, so a half-written business cannot become a link that gets
+sent by accident. Clear the flag when the content is actually gathered.
+
 Three separate things keep previews out of search: the `noindex, nofollow` tag
 the page renders, the `Disallow: /demo/` in `public/robots.txt`, and the
 prerenderer marking them `skipSitemap`.

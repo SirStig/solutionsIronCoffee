@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   daysRemaining,
   demos,
+  drafts,
   formatExpiry,
   fullAddress,
   isExpired,
@@ -24,6 +25,14 @@ describe('demo configs', () => {
   it('has at least one of each', () => {
     expect(showcases.length).toBeGreaterThanOrEqual(4);
     expect(previews.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('keeps drafts out of the built previews', () => {
+    for (const demo of drafts) {
+      expect(previews, `${demo.slug} is a draft`).not.toContain(demo);
+    }
+    // Drafts are still validated by every rule below, which is the point.
+    expect(all).toEqual(expect.arrayContaining(drafts));
   });
 
   it('keys every demo by its own slug', () => {

@@ -12,6 +12,7 @@ import type { DemoConfig } from './types';
 
 import copperAndComb from './configs/copper-and-comb';
 import franktownDental from './configs/franktown-dental';
+import jillsFeed from './configs/jills-feed';
 import ridgelineSmokehouse from './configs/ridgeline-smokehouse';
 import summitRidge from './configs/summit-ridge';
 import test from './configs/test';
@@ -22,6 +23,7 @@ const all: DemoConfig[] = [
   summitRidge,
   franktownDental,
   test,
+  jillsFeed,
 ];
 
 export const demos: Record<string, DemoConfig> = Object.fromEntries(
@@ -31,8 +33,19 @@ export const demos: Record<string, DemoConfig> = Object.fromEntries(
 /** Fictional businesses in the public gallery. Indexed, permanent. */
 export const showcases: DemoConfig[] = all.filter((d) => d.showcase);
 
-/** Real previews built for a named owner. Noindexed, expiring. */
-export const previews: DemoConfig[] = all.filter((d) => !d.showcase);
+/**
+ * Real previews built for a named owner. Noindexed, expiring, and built.
+ *
+ * Drafts are excluded deliberately. A half-written config should be under
+ * version control and under test, but it must not become a URL that can be
+ * pasted into a message to the business it names.
+ */
+export const previews: DemoConfig[] = all.filter(
+  (d) => !d.showcase && !d.draft
+);
+
+/** Configs still being filled in. In the repo, never on the deployed site. */
+export const drafts: DemoConfig[] = all.filter((d) => d.draft);
 
 export const getDemo = (slug: string): DemoConfig | undefined => demos[slug];
 

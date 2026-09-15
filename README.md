@@ -96,6 +96,11 @@ import it in `src/demos/index.ts`, drop photos in
 should need touching. The page appears at `/demo/<slug>`, is noindexed, and
 retires itself 60 days after `createdAt`.
 
+Mark it `draft: true` while you are still gathering hours and photos. A draft
+is kept under test but is never built, so there is no page and no link to send
+by mistake. `src/demos/configs/jills-feed.ts` is one, and it lists exactly what
+is still missing.
+
 To serve it at `<slug>.ironcoffee.com`, add the subdomain in the Dreamhost panel
 pointing at the same directory and issue its certificate. `.htaccess` already
 maps any non-reserved subdomain to `/demo/<label>/` and returns 404 for a
