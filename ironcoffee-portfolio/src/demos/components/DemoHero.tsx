@@ -34,10 +34,12 @@ export default function DemoHero({ config }: { config: DemoConfig }) {
 
           <div className={styles.heroActions}>
             <Cta href={hero.ctaHref}>{hero.ctaLabel}</Cta>
-            <Cta href={telHref(business.phone)} variant="ghost">
-              <Phone size={17} aria-hidden="true" />
-              {business.phone}
-            </Cta>
+            {business.phone && (
+              <Cta href={telHref(business.phone)} variant="ghost">
+                <Phone size={17} aria-hidden="true" />
+                {business.phone}
+              </Cta>
+            )}
           </div>
         </div>
       </div>

@@ -78,10 +78,12 @@ export default function DemoNav({
           ))}
         </nav>
 
-        <a className={styles.navPhone} href={telHref(business.phone)}>
-          <Phone size={16} aria-hidden="true" />
-          {business.phone}
-        </a>
+        {business.phone && (
+          <a className={styles.navPhone} href={telHref(business.phone)}>
+            <Phone size={16} aria-hidden="true" />
+            {business.phone}
+          </a>
+        )}
 
         <Cta href={hero.ctaHref} className={styles.navCta}>
           {hero.ctaLabel}

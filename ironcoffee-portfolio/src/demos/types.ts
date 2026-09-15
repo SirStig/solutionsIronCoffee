@@ -33,8 +33,14 @@ export interface DemoBusiness {
   /** Two-letter code, e.g. 'CO'. */
   state: string;
   address?: string;
-  /** Digits, punctuation, whatever reads well. `telHref()` strips it. */
-  phone: string;
+  /**
+   * Digits, punctuation, whatever reads well. `telHref()` strips it.
+   *
+   * Optional, because some small businesses genuinely run on a Facebook page
+   * and a booking link and publish no number at all. Every template degrades
+   * to the next best action rather than inventing one.
+   */
+  phone?: string;
   email?: string;
   facebookUrl?: string;
 }
@@ -163,4 +169,13 @@ export interface DemoConfig {
    * Clear the flag once the hours, the photos and the real details are in.
    */
   draft?: boolean;
+
+  /**
+   * The photography is generic category imagery, not this business's own.
+   *
+   * Says so on the page. An owner spots a picture of somebody else's shop
+   * immediately, and having already admitted it turns the one weak spot in a
+   * cold preview into evidence that you are straight with people.
+   */
+  placeholderPhotos?: boolean;
 }

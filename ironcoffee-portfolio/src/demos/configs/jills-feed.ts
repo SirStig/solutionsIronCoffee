@@ -14,7 +14,6 @@ import type { DemoConfig } from '../types';
  *   premise holds.
  *
  * Still needed, all of it from a visit or a phone call:
- *   - OPENING HOURS. Directory listings disagree and none are authoritative.
  *   - The brands they actually carry, and what is usually in stock.
  *   - Brand colors, eyedroppered from their sign or their logo.
  *   - One real detail for the About section: how long they have been there,
@@ -32,6 +31,7 @@ const jillsFeed: DemoConfig = {
   template: 'retail',
   // Clear this once the hours, photos and real details are in.
   draft: true,
+  placeholderPhotos: true,
 
   business: {
     name: "Jill's Feed & Country Supply",
@@ -73,6 +73,8 @@ const jillsFeed: DemoConfig = {
         { name: 'Animal health products' },
         { name: 'Seed' },
         { name: 'Chicks' },
+        { name: 'Hay' },
+        { name: 'Propane tank exchange' },
       ],
     },
   ],
@@ -82,30 +84,38 @@ const jillsFeed: DemoConfig = {
       title: 'Call to check stock',
       body: 'Ring the store before you drive out and we will tell you what is on hand.',
     },
+    {
+      title: 'Propane tank exchange',
+      body: 'Swap an empty cylinder for a full one while you are picking up feed.',
+    },
   ],
 
-  // TODO: every one of these is a placeholder. Get the real hours.
+  // Consistent across several directory listings. Worth one confirming glance
+  // at the door, since a wrong closing time is the detail an owner spots first.
   hours: [
-    { day: 'Monday', open: 'Call to confirm' },
-    { day: 'Tuesday', open: 'Call to confirm' },
-    { day: 'Wednesday', open: 'Call to confirm' },
-    { day: 'Thursday', open: 'Call to confirm' },
-    { day: 'Friday', open: 'Call to confirm' },
-    { day: 'Saturday', open: 'Call to confirm' },
-    { day: 'Sunday', open: 'Call to confirm' },
+    { day: 'Monday', open: '8am to 6pm' },
+    { day: 'Tuesday', open: '8am to 6pm' },
+    { day: 'Wednesday', open: '8am to 6pm' },
+    { day: 'Thursday', open: '8am to 6pm' },
+    { day: 'Friday', open: '8am to 6pm' },
+    { day: 'Saturday', open: '8am to 6pm' },
+    { day: 'Sunday', open: 'Closed' },
   ],
 
+  // No storefront or exterior shots on purpose. A generic interior reads as
+  // "this is the layout"; a photograph of somebody else's building with a sign
+  // on it reads as a claim about their premises.
   gallery: [
-    'demos/jills-feed/storefront',
     'demos/jills-feed/feed',
     'demos/jills-feed/chicks',
-    'demos/jills-feed/interior',
+    'demos/jills-feed/hay',
+    'demos/jills-feed/tack',
   ],
 
   about: {
     // TODO: replace entirely. This says nothing because nothing is confirmed.
     heading: 'A feed store in Elizabeth.',
-    body: "Jill's Feed & Country Supply carries feed, seed, animal health products and chicks for Elizabeth and the surrounding county.",
+    body: "Jill's Feed & Country Supply carries feed, hay, seed, animal health products and chicks for Elizabeth and the surrounding county, and swaps propane cylinders while you are in.",
     image: 'demos/jills-feed/about',
   },
 };

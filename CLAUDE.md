@@ -90,7 +90,17 @@ written and reviewed before the photos exist.
 
 A config marked `draft: true` is typechecked and validated by the tests but
 never prerendered, so a half-written business cannot become a link that gets
-sent by accident. Clear the flag when the content is actually gathered.
+sent by accident. Clear the flag when the content is actually gathered. Drafts
+still render on the dev server, so `npm run dev` is how you look at one.
+
+Two rules that exist because of how these get used. `business.phone` is
+optional, since some businesses publish only a Facebook page and a booking
+link, and every template degrades to the next best action rather than letting
+anyone invent a number. And `placeholderPhotos: true` prints a line on the page
+admitting the photography is generic, which is what you set on a preview for a
+real business until they hand over their own pictures. Never generate a
+storefront, an exterior or anything with signage for a real business: a generic
+interior reads as a layout, a building reads as a claim about their premises.
 
 Three separate things keep previews out of search: the `noindex, nofollow` tag
 the page renders, the `Disallow: /demo/` in `public/robots.txt`, and the

@@ -324,17 +324,19 @@ export function ContactDetails({ config }: { config: DemoConfig }) {
 
   return (
     <ul className={styles.contactList}>
-      <li className={styles.contactRow}>
-        <span className={styles.contactIcon}>
-          <Phone size={18} aria-hidden="true" />
-        </span>
-        <span>
-          <span className={styles.contactLabel}>Phone</span>
-          <a className={styles.contactValue} href={telHref(business.phone)}>
-            {business.phone}
-          </a>
-        </span>
-      </li>
+      {business.phone && (
+        <li className={styles.contactRow}>
+          <span className={styles.contactIcon}>
+            <Phone size={18} aria-hidden="true" />
+          </span>
+          <span>
+            <span className={styles.contactLabel}>Phone</span>
+            <a className={styles.contactValue} href={telHref(business.phone)}>
+              {business.phone}
+            </a>
+          </span>
+        </li>
+      )}
 
       {address && (
         <li className={styles.contactRow}>
@@ -403,10 +405,12 @@ export function CallBar({ config }: { config: DemoConfig }) {
 
   return (
     <div className={styles.callBar}>
-      <a className={styles.callBarItem} href={telHref(business.phone)}>
-        <Phone size={17} aria-hidden="true" />
-        Call
-      </a>
+      {business.phone && (
+        <a className={styles.callBarItem} href={telHref(business.phone)}>
+          <Phone size={17} aria-hidden="true" />
+          Call
+        </a>
+      )}
       <a
         className={`${styles.callBarItem} ${styles.callBarPrimary}`}
         href={hero.ctaHref}

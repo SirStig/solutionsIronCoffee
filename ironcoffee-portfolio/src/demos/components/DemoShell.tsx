@@ -84,9 +84,11 @@ export default function DemoShell({
             <div>
               <p className={styles.footerHeading}>Get in touch</p>
               <ul className={styles.footerList}>
-                <li>
-                  <a href={telHref(business.phone)}>{business.phone}</a>
-                </li>
+                {business.phone && (
+                  <li>
+                    <a href={telHref(business.phone)}>{business.phone}</a>
+                  </li>
+                )}
                 {business.email && (
                   <li>
                     <a href={`mailto:${business.email}`}>{business.email}</a>
@@ -153,8 +155,11 @@ export default function DemoShell({
                 <a href={site.url}>solutions.ironcoffee.com</a>
               </p>
               <p className={styles.disclosureMeta}>
-                Not affiliated with {business.name}. Photos belong to the
-                business and this page comes down on request, same day.
+                Not affiliated with {business.name}. This page comes down on
+                request, same day.
+                {config.placeholderPhotos
+                  ? ' The photographs are stand-ins to show the layout; the real site would use your own.'
+                  : ' Photos belong to the business.'}
               </p>
             </>
           )}

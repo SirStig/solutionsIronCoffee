@@ -31,7 +31,8 @@ export function BusinessForm({
 }) {
   const [state, setState] = useState<SendState>('idle');
 
-  const destination = config.business.email ?? config.business.phone;
+  const destination =
+    config.business.email ?? config.business.phone ?? 'your inbox';
   const isAppointment = variant === 'appointment';
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {

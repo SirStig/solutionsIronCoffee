@@ -10,9 +10,13 @@
  */
 import type { DemoConfig } from './types';
 
+import barrBear from './configs/barr-bear';
 import copperAndComb from './configs/copper-and-comb';
+import familyLawnCare from './configs/family-lawn-care';
 import franktownDental from './configs/franktown-dental';
+import hairGenius from './configs/hair-genius';
 import jillsFeed from './configs/jills-feed';
+import mkLiquors from './configs/mk-liquors';
 import ridgelineSmokehouse from './configs/ridgeline-smokehouse';
 import summitRidge from './configs/summit-ridge';
 import test from './configs/test';
@@ -24,6 +28,10 @@ const all: DemoConfig[] = [
   franktownDental,
   test,
   jillsFeed,
+  barrBear,
+  hairGenius,
+  familyLawnCare,
+  mkLiquors,
 ];
 
 export const demos: Record<string, DemoConfig> = Object.fromEntries(
