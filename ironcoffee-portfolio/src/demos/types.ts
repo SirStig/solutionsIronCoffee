@@ -71,6 +71,8 @@ export interface DemoHero {
 export interface DemoService {
   title: string;
   body: string;
+  /** Icon name from `components/icons.tsx`. Cards look empty without one. */
+  icon?: string;
   /**
    * Never guess. Leave it out, or write 'Call for pricing'. A wrong price in a
    * demo reads as carelessness to the one person you can't look careless in
@@ -120,7 +122,36 @@ export interface DemoProduct {
 
 export interface DemoProductGroup {
   group: string;
+  /** Icon name from `components/icons.tsx`. */
+  icon?: string;
   items: DemoProduct[];
+}
+
+/**
+ * A short, hard number: years open, jobs finished, chairs, whatever the
+ * business is actually proud of.
+ *
+ * Never invent one for a real business. An owner knows how long they have been
+ * there and will spot a wrong number instantly.
+ */
+export interface DemoStat {
+  value: string;
+  label: string;
+  icon?: string;
+}
+
+/**
+ * A customer quote.
+ *
+ * Only ever populated for the fictional gallery samples. Putting words in a
+ * real customer's mouth on a preview for a real business is not a shortcut
+ * worth taking, so the real configs leave this out and the templates simply
+ * do not render the section.
+ */
+export interface DemoTestimonial {
+  quote: string;
+  name: string;
+  detail?: string;
 }
 
 export interface DemoConfig {
@@ -144,6 +175,12 @@ export interface DemoConfig {
   products?: DemoProductGroup[];
   team?: DemoTeamMember[];
   faq?: DemoFaq[];
+  /** Three or four numbers worth stating plainly. */
+  stats?: DemoStat[];
+
+  /** Gallery samples only. See DemoTestimonial. */
+  testimonials?: DemoTestimonial[];
+
   /** Trades: the towns served, listed for local search. */
   serviceAreas?: string[];
   /** Trades and professional: short trust signals like 'AAA Approved'. */

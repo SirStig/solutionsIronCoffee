@@ -48,6 +48,7 @@ const test: DemoConfig = {
   products: [
     {
       group: 'Livestock feed',
+      icon: 'sack',
       items: [
         {
           name: 'Layer pellet, 50lb',
@@ -79,6 +80,7 @@ const test: DemoConfig = {
     },
     {
       group: 'Live birds',
+      icon: 'chick',
       items: [
         {
           name: 'Barred Rock pullets',
@@ -102,6 +104,7 @@ const test: DemoConfig = {
     },
     {
       group: 'Around the place',
+      icon: 'basket',
       items: [
         { name: 'T-posts and clips', availability: 'In stock' },
         { name: 'Barbed and field wire', availability: 'In stock' },
@@ -116,14 +119,17 @@ const test: DemoConfig = {
   services: [
     {
       title: 'We load it for you',
+      icon: 'truck',
       body: 'Pull round the back, tell us what you need and it goes in the truck. Nobody here expects you to carry a fifty pound sack across the lot.',
     },
     {
       title: 'Special orders',
+      icon: 'box',
       body: 'If we do not carry it and you need it regularly, we will put it on the order and keep it in for you.',
     },
     {
       title: 'Delivery inside twenty miles',
+      icon: 'route',
       body: 'Bulk feed and tanks, most weeks on a Thursday run.',
       price: 'Call for pricing',
     },

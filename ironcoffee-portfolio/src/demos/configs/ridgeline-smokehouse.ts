@@ -41,15 +41,18 @@ const ridgelineSmokehouse: DemoConfig = {
   services: [
     {
       title: 'Pickup orders',
+      icon: 'box',
       body: 'Order by phone or online and we will have it boxed, wrapped and hot on the counter at your pickup time.',
     },
     {
       title: 'Catering by the pound',
+      icon: 'truck',
       body: 'Brisket, pulled pork, ribs and sides for crews, weddings and graduation parties. Two days notice is plenty.',
       price: 'From $18/lb',
     },
     {
       title: 'Whole smoked birds',
+      icon: 'drumstick',
       body: 'Order a bird for the holidays and pick it up the morning of. We sell out in November, so call early.',
       price: '$62 each',
     },
@@ -106,6 +109,31 @@ const ridgelineSmokehouse: DemoConfig = {
         { name: 'Pit beans', desc: 'Cooked under the brisket.', price: '$5' },
         { name: 'Cornbread', desc: 'Honey butter.', price: '$4' },
       ],
+    },
+  ],
+
+  stats: [
+    { value: '2014', label: 'Smoking since', icon: 'flame' },
+    { value: '12 hrs', label: 'On every brisket', icon: 'clock' },
+    { value: 'Oak', label: 'Colorado, never gas', icon: 'smoker' },
+    { value: 'One', label: 'Location, always', icon: 'pin' },
+  ],
+
+  testimonials: [
+    {
+      quote: 'Drove out from Castle Rock on a friend saying it was worth it. It was worth it. The bark on that brisket is something else.',
+      name: 'Marcus T.',
+      detail: 'Castle Rock',
+    },
+    {
+      quote: 'Ordered forty pounds for my daughter\u2019s graduation. It turned up hot, on time, and there was nothing left by four.',
+      name: 'Dana R.',
+      detail: 'Catering, June',
+    },
+    {
+      quote: 'They told me straight that they were out of ribs rather than selling me something else. That is why I keep going back.',
+      name: 'Bill K.',
+      detail: 'Elizabeth',
     },
   ],
 

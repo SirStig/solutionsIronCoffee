@@ -61,6 +61,7 @@ const mkLiquors: DemoConfig = {
   products: [
     {
       group: 'What we stock',
+      icon: 'bottle',
       items: [
         { name: 'Beer, domestic and craft' },
         { name: 'Wine' },
@@ -73,10 +74,12 @@ const mkLiquors: DemoConfig = {
   services: [
     {
       title: 'Call ahead',
+      icon: 'phone',
       body: 'Ring and we will set aside what you need before you drive over.',
     },
     {
       title: 'Special orders',
+      icon: 'box',
       body: 'Ask for something we do not carry and we will look into getting it in.',
     },
   ],

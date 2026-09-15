@@ -44,28 +44,58 @@ const summitRidge: DemoConfig = {
   services: [
     {
       title: 'Roof replacement',
+      icon: 'roof',
       body: 'Full tear-off and replacement, asphalt or metal. We pull the permit, we haul the debris, we run a magnet over your yard twice before we leave.',
       price: 'Free estimate',
     },
     {
       title: 'Storm & hail repair',
+      icon: 'storm',
       body: 'We document the damage properly so the adjuster cannot wave it off, and we meet them at your house when they come out.',
       price: 'Free inspection',
     },
     {
       title: 'Gutters & downspouts',
+      icon: 'gutter',
       body: 'Seamless aluminum run on site in your color, plus guards if the pines are winning.',
       price: 'Call for pricing',
     },
     {
       title: 'Siding & trim',
+      icon: 'hammer',
       body: 'Fiber cement and engineered wood. Usually the same claim as the roof, and worth checking before you sign anything.',
       price: 'Call for pricing',
     },
     {
       title: 'Emergency tarping',
+      icon: 'shield',
       body: 'Something opened up overnight. Call and we will get it covered before the next storm, then deal with the rest in daylight.',
       price: '24/7',
+    },
+  ],
+
+  stats: [
+    { value: '10 yr', label: 'Workmanship warranty', icon: 'shield' },
+    { value: '1 day', label: 'Most roofs finished', icon: 'clock' },
+    { value: 'Free', label: 'Inspection and estimate', icon: 'roof' },
+    { value: '8', label: 'Towns we cover', icon: 'route' },
+  ],
+
+  testimonials: [
+    {
+      quote: 'The adjuster tried to call it wear and tear. Summit Ridge had photographs of every bruised shingle and the claim went through the same week.',
+      name: 'Rachel D.',
+      detail: 'Elizabeth',
+    },
+    {
+      quote: 'Tore off and finished in a day, then ran a magnet over the yard twice. I have two kids and a dog, so that mattered more than the price.',
+      name: 'Tom W.',
+      detail: 'Franktown',
+    },
+    {
+      quote: 'Storm chasers were knocking on doors the morning after. These are the ones still answering the phone two years later.',
+      name: 'Greg H.',
+      detail: 'Kiowa',
     },
   ],
 

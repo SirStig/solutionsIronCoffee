@@ -58,21 +58,25 @@ const familyLawnCare: DemoConfig = {
   services: [
     {
       title: 'Mowing and trimming',
+      icon: 'mower',
       body: 'Regular cuts through the season, edges and walks blown clean.',
       price: 'Free quote',
     },
     {
       title: 'Aeration',
+      icon: 'route',
       body: 'Spring and fall, to get water and air into Front Range clay.',
       price: 'Free quote',
     },
     {
       title: 'Fertilizing and weed control',
+      icon: 'leaf',
       body: 'Scheduled through the growing season.',
       price: 'Free quote',
     },
     {
       title: 'Spring and fall cleanup',
+      icon: 'basket',
       body: 'Leaves, dead growth and beds tidied either side of winter.',
       price: 'Free quote',
     },

@@ -48,29 +48,55 @@ const franktownDental: DemoConfig = {
   services: [
     {
       title: 'Cleanings & exams',
+      icon: 'sparkle',
       body: 'Twice-yearly hygiene, digital x-rays and an oral cancer screening at every visit.',
     },
     {
       title: 'Fillings & crowns',
+      icon: 'tooth',
       body: 'Tooth-colored composite, and same-day crowns milled in our office so you are not wearing a temporary for three weeks.',
     },
     {
       title: 'Emergency care',
+      icon: 'heart',
       body: 'Cracked tooth, lost crown, abscess. Call before noon and we will see you the same day.',
     },
     {
       title: 'Kids & teens',
+      icon: 'child',
       body: 'First visits from age one, sealants, and a hygienist who is genuinely good with nervous children.',
     },
     {
       title: 'Clear aligners',
+      icon: 'scan',
       body: 'Scanned in-office, no impressions. Free consultation to see whether you are a candidate.',
       price: 'Free consultation',
     },
     {
       title: 'Implants & bridges',
+      icon: 'shield',
       body: 'Planned and placed here, start to finish, with financing available over twelve or twenty-four months.',
       price: 'Call for pricing',
+    },
+  ],
+
+  stats: [
+    { value: '$89', label: 'New patient visit', icon: 'card' },
+    { value: 'Same day', label: 'Emergency appointments', icon: 'calendarCheck' },
+    { value: '2', label: 'Dentists, never a locum', icon: 'heart' },
+    { value: '< 1 hr', label: 'Most first visits', icon: 'clock' },
+  ],
+
+  testimonials: [
+    {
+      quote: 'I had not been to a dentist in nine years and had worked myself up about it. Nobody lectured me. We made a plan and got on with it.',
+      name: 'Sam P.',
+      detail: 'New patient',
+    },
+    {
+      quote: 'Both kids and me in one morning, in and out, same hygienist every time. That is the whole reason we switched.',
+      name: 'Laura B.',
+      detail: 'Franktown',
     },
   ],
 

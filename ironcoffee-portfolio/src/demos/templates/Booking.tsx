@@ -7,7 +7,9 @@ import {
   FaqList,
   GalleryGrid,
   ServiceRows,
+  StatsBand,
   TeamGrid,
+  Testimonials,
   VisitBlock,
 } from '../components/blocks';
 import { Section, SectionHead } from '../components/primitives';
@@ -39,6 +41,12 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
         <ServiceRows items={config.services} />
       </Section>
 
+      {config.stats?.length ? (
+        <Section tone="alt">
+          <StatsBand stats={config.stats} />
+        </Section>
+      ) : null}
+
       {config.team?.length ? (
         <Section id="team" tone="alt">
           <SectionHead
@@ -47,6 +55,13 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
             centered
           />
           <TeamGrid members={config.team} />
+        </Section>
+      ) : null}
+
+      {config.testimonials?.length ? (
+        <Section tone="alt">
+          <SectionHead eyebrow="In their words" title="What clients say" centered />
+          <Testimonials items={config.testimonials} />
         </Section>
       ) : null}
 

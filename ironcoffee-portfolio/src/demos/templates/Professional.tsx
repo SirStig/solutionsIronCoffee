@@ -11,7 +11,9 @@ import {
   HoursList,
   InsuranceList,
   ServiceList,
+  StatsBand,
   TeamGrid,
+  Testimonials,
 } from '../components/blocks';
 import { BusinessForm } from '../components/forms';
 import { Section, SectionHead } from '../components/primitives';
@@ -41,6 +43,12 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
 
       {config.badges?.length ? <BadgeBar items={config.badges} /> : null}
 
+      {config.stats?.length ? (
+        <Section tone="alt">
+          <StatsBand stats={config.stats} />
+        </Section>
+      ) : null}
+
       <Section id="services">
         <SectionHead eyebrow="Care" title="What we treat" centered />
         <ServiceList items={config.services} />
@@ -66,6 +74,13 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
             centered
           />
           <InsuranceList plans={config.insurance} />
+        </Section>
+      ) : null}
+
+      {config.testimonials?.length ? (
+        <Section tone="alt">
+          <SectionHead eyebrow="In their words" title="What patients say" centered />
+          <Testimonials items={config.testimonials} />
         </Section>
       ) : null}
 

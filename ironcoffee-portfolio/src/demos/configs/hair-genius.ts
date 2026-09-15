@@ -55,10 +55,10 @@ const hairGenius: DemoConfig = {
 
   // TODO: pull the real list and prices from their Booksy page before sending.
   services: [
-    { title: 'Haircut', body: 'Scissor or clipper, finished how you want it.', price: 'Call for pricing' },
-    { title: 'Fade', body: 'Skin, low, mid or high.', price: 'Call for pricing' },
-    { title: 'Beard trim', body: 'Line up and shape.', price: 'Call for pricing' },
-    { title: 'Color', body: 'Ask at the chair.', price: 'Call for pricing' },
+    { title: 'Haircut', icon: 'scissors', body: 'Scissor or clipper, finished how you want it.', price: 'Call for pricing' },
+    { title: 'Fade', icon: 'razor', body: 'Skin, low, mid or high.', price: 'Call for pricing' },
+    { title: 'Beard trim', icon: 'comb', body: 'Line up and shape.', price: 'Call for pricing' },
+    { title: 'Color', icon: 'brush', body: 'Ask at the chair.', price: 'Call for pricing' },
   ],
 
   hours: [

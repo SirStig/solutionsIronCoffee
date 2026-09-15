@@ -580,22 +580,66 @@
 }
 
 .serviceCard {
+  position: relative;
   color: var(--d-text);
   background: var(--d-surface);
   border: 1px solid var(--d-border);
   border-radius: var(--d-radius-lg);
-  padding: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  padding: clamp(1.75rem, 1.3rem + 1.4vw, 2.25rem);
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
+  overflow: hidden;
+  transition: border-color 200ms ease, transform 200ms ease,
+    box-shadow 200ms ease;
 }
 
-.serviceCard.bordered {
-  border-top: 3px solid var(--brand);
+/* A hairline of brand along the top edge, drawn in on hover. */
+.serviceCard::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.serviceCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--d-shadow);
+}
+
+.serviceCard:hover::after,
+.serviceCard.bordered::after {
+  transform: scaleX(1);
+}
+
+.serviceIcon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  margin-bottom: 0.35rem;
+  color: var(--brand-ink);
+  background: color-mix(in srgb, var(--brand) 9%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .serviceCard,
+  .serviceCard::after {
+    transition: none;
+  }
+
+  .serviceCard:hover {
+    transform: none;
+  }
 }
 
 .serviceTitle {
-  font-size: 1.1875rem;
+  font-size: 1.25rem;
 }
 
 .serviceBody {
@@ -620,6 +664,10 @@
 }
 
 .menuSectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--d-text);
   font-size: 1.375rem;
   padding-bottom: 0.75rem;
   border-bottom: 2px solid var(--brand);
@@ -1725,7 +1773,7 @@
 
 @media (min-width: 900px) {
   .galleryBand {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(var(--band-cols, 4), 1fr);
   }
 }
 
@@ -1859,4 +1907,202 @@
   align-items: baseline;
   gap: 0.35rem;
   flex-wrap: wrap;
+}
+
+/* ============================================================================
+   Proof blocks and texture.
+
+   A page built only from headings and paragraphs reads as a template no matter
+   how good the copy is. These give each page something with weight in it: hard
+   numbers, a customer in their own words, and enough surface texture that the
+   sections stop looking like stacked white rectangles.
+   ========================================================================= */
+
+/* --- Stats ---------------------------------------------------------------- */
+.stats {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--d-border);
+  border: 1px solid var(--d-border);
+  border-radius: var(--d-radius-lg);
+  overflow: hidden;
+}
+
+@media (min-width: 860px) {
+  .stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.stat {
+  background: var(--d-surface);
+  color: var(--d-text);
+  padding: clamp(1.5rem, 1.2rem + 1vw, 2.25rem) 1.25rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.statIcon {
+  color: var(--brand-ink);
+  margin-bottom: 0.35rem;
+}
+
+.statValue {
+  font-family: var(--d-display);
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-ink);
+}
+
+.statLabel {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--d-muted);
+  max-width: 14ch;
+}
+
+/* On a dark section the tiles invert rather than punching white holes. */
+.sectionDark .stats {
+  background: rgb(255 255 255 / 0.16);
+  border-color: rgb(255 255 255 / 0.16);
+}
+
+.sectionDark .stat {
+  background: var(--brand-deep);
+  color: #fff;
+}
+
+.sectionDark .statValue,
+.sectionDark .statIcon {
+  color: #fff;
+}
+
+.sectionDark .statLabel {
+  color: rgb(255 255 255 / 0.62);
+}
+
+/* --- Testimonials --------------------------------------------------------- */
+.quotes {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+}
+
+.quoteCard {
+  margin: 0;
+  position: relative;
+  color: var(--d-text);
+  background: var(--d-surface);
+  border: 1px solid var(--d-border);
+  border-radius: var(--d-radius-lg);
+  padding: clamp(1.75rem, 1.3rem + 1.4vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.quoteMark {
+  color: var(--brand);
+  opacity: 0.32;
+}
+
+.quoteText {
+  margin: 0;
+  font-family: var(--d-display);
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.1875rem);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.quoteBy {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--d-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.quoteName {
+  font-weight: 650;
+  font-size: 0.9375rem;
+}
+
+.quoteDetail {
+  font-size: 0.8125rem;
+  color: var(--d-muted);
+}
+
+/* --- Texture --------------------------------------------------------------
+   A barely-there wash of the brand colour so alternating sections read as
+   deliberate rather than as the absence of a background. */
+.sectionAlt {
+  position: relative;
+  isolation: isolate;
+}
+
+.sectionAlt::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      60rem 28rem at 15% 0%,
+      color-mix(in srgb, var(--brand) 7%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      44rem 24rem at 100% 100%,
+      color-mix(in srgb, var(--brand-accent) 6%, transparent),
+      transparent 70%
+    );
+}
+
+.sectionDark {
+  position: relative;
+  isolation: isolate;
+}
+
+.sectionDark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    52rem 26rem at 80% 0%,
+    color-mix(in srgb, var(--brand) 26%, transparent),
+    transparent 70%
+  );
+}
+
+/* A hairline rule with a brand-coloured leader, used under section heads that
+   sit left rather than centred. */
+.ruled {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--d-border);
+  position: relative;
+}
+
+.ruled::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 3.5rem;
+  height: 2px;
+  background: var(--brand);
 }

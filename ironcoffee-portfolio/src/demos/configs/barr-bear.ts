@@ -61,16 +61,19 @@ const barrBear: DemoConfig = {
   services: [
     {
       title: 'Haircuts',
+      icon: 'scissors',
       body: 'Cuts for men, women and children.',
       price: 'Call for pricing',
     },
     {
       title: 'Beard trims',
+      icon: 'razor',
       body: 'Shaping and tidying.',
       price: 'Call for pricing',
     },
     {
       title: 'Styling and color',
+      icon: 'brush',
       body: 'Ask in the chair and she will tell you what will work.',
       price: 'Call for pricing',
     },

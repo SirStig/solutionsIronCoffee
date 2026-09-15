@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Check, Clock, MapPin, Navigation, Phone, Mail } from 'lucide-react';
+import { Icon } from './icons';
 import type {
   DemoConfig,
+  DemoStat,
+  DemoTestimonial,
   DemoFaq,
   DemoMenuSection,
   DemoProductGroup,
@@ -58,10 +61,60 @@ export function ServiceCards({
             .filter(Boolean)
             .join(' ')}
         >
+          {service.icon && (
+            <span className={styles.serviceIcon}>
+              <Icon name={service.icon} size={26} />
+            </span>
+          )}
           <h3 className={styles.serviceTitle}>{service.title}</h3>
           <p className={styles.serviceBody}>{service.body}</p>
           {service.price && <p className={styles.servicePrice}>{service.price}</p>}
         </article>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * A band of plain numbers.
+ *
+ * The cheapest-looking thing a small business site can do is talk about itself
+ * in adjectives. Four numerals set large say more than a paragraph, and they
+ * give a page of text blocks something with weight in it.
+ */
+export function StatsBand({ stats }: { stats: DemoStat[] }) {
+  return (
+    <dl className={styles.stats}>
+      {stats.map((stat) => (
+        <div key={stat.label} className={styles.stat}>
+          {stat.icon && (
+            <span className={styles.statIcon}>
+              <Icon name={stat.icon} size={22} />
+            </span>
+          )}
+          <dt className={styles.statValue}>{stat.value}</dt>
+          <dd className={styles.statLabel}>{stat.label}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+/** Customer quotes. Gallery samples only; see DemoTestimonial. */
+export function Testimonials({ items }: { items: DemoTestimonial[] }) {
+  return (
+    <div className={styles.quotes}>
+      {items.map((t) => (
+        <figure key={t.name} className={styles.quoteCard}>
+          <span className={styles.quoteMark} aria-hidden="true">
+            <Icon name="quote" size={28} />
+          </span>
+          <blockquote className={styles.quoteText}>{t.quote}</blockquote>
+          <figcaption className={styles.quoteBy}>
+            <span className={styles.quoteName}>{t.name}</span>
+            {t.detail && <span className={styles.quoteDetail}>{t.detail}</span>}
+          </figcaption>
+        </figure>
       ))}
     </div>
   );
@@ -181,7 +234,10 @@ export function ProductBlock({ groups }: { groups: DemoProductGroup[] }) {
     <div>
       {groups.map((group) => (
         <div key={group.group} className={styles.productGroup}>
-          <h3 className={styles.menuSectionTitle}>{group.group}</h3>
+          <h3 className={styles.menuSectionTitle}>
+            {group.icon && <Icon name={group.icon} size={22} />}
+            {group.group}
+          </h3>
           <div className={styles.productGrid}>
             {group.items.map((item) => (
               <article key={item.name} className={styles.productCard}>
@@ -295,8 +351,14 @@ export function GalleryGrid({
   if (images.length === 0) return null;
 
   if (fullBleed) {
+    // A fixed column count leaves holes whenever the photo count is not a
+    // multiple of it. Pick the widest column count that divides evenly.
+    const cols = [5, 4, 3, 2].find((n) => images.length % n === 0) ?? 3;
     return (
-      <div className={styles.galleryBand}>
+      <div
+        className={styles.galleryBand}
+        style={{ '--band-cols': cols } as React.CSSProperties}
+      >
         {images.map((name, index) => (
           <div key={name} className={styles.galleryBandItem}>
             <DemoImage

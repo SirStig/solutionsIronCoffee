@@ -9,6 +9,8 @@ import {
   GalleryGrid,
   ServiceAreas,
   ServiceSteps,
+  StatsBand,
+  Testimonials,
   VisitBlock,
 } from '../components/blocks';
 import { BusinessForm } from '../components/forms';
@@ -45,6 +47,12 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
 
       {config.badges?.length ? <BadgeBar items={config.badges} /> : null}
 
+      {config.stats?.length ? (
+        <Section tone="alt">
+          <StatsBand stats={config.stats} />
+        </Section>
+      ) : null}
+
       <Section id="services">
         <SectionHead
           eyebrow="What we do"
@@ -63,6 +71,13 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
           <GalleryGrid images={config.gallery} business={config.business.name} />
         </Section>
       )}
+
+      {config.testimonials?.length ? (
+        <Section tone="alt">
+          <SectionHead eyebrow="In their words" title="What homeowners say" centered />
+          <Testimonials items={config.testimonials} />
+        </Section>
+      ) : null}
 
       <Section>
         <AboutBlock config={config} />

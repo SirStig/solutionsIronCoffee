@@ -40,33 +40,59 @@ const copperAndComb: DemoConfig = {
   services: [
     {
       title: 'Cut & style',
+      icon: 'scissors',
       body: 'Consultation, shampoo, cut and finish. Ninety minutes for the first visit so we get it right.',
       price: '$65+',
     },
     {
       title: 'Color',
+      icon: 'brush',
       body: 'Single process, gloss or full highlight. Price depends on length and density, so we quote before we start.',
       price: 'From $120',
     },
     {
       title: 'Balayage',
+      icon: 'sparkle',
       body: 'Hand-painted, lived-in, grows out without a line. Plan three to four hours.',
       price: 'From $185',
     },
     {
       title: 'Extensions',
+      icon: 'comb',
       body: 'Hand-tied wefts, color-matched and cut in. Consultation required first.',
       price: 'Consultation required',
     },
     {
       title: 'Blowout',
+      icon: 'chair',
       body: 'Wash and finish, no cut. Book it the morning of the thing.',
       price: '$45',
     },
     {
       title: 'Bridal & events',
+      icon: 'calendarCheck',
       body: 'On-site or in the chair, trials included. Book the trial at least a month ahead.',
       price: 'Call for pricing',
+    },
+  ],
+
+  stats: [
+    { value: '5', label: 'Chairs, on purpose', icon: 'chair' },
+    { value: '2019', label: 'Open since', icon: 'calendarCheck' },
+    { value: '90 min', label: 'First appointment', icon: 'clock' },
+    { value: 'No', label: 'Double booking', icon: 'sparkle' },
+  ],
+
+  testimonials: [
+    {
+      quote: 'First salon I have been to that starts when it says it will. I get an hour back every six weeks and my hair has never looked better.',
+      name: 'Priya S.',
+      detail: 'Client since 2021',
+    },
+    {
+      quote: 'Dana talked me out of what I asked for and gave me something that actually suits my face. I did not know you were allowed to do that.',
+      name: 'Erin M.',
+      detail: 'Parker',
     },
   ],
 

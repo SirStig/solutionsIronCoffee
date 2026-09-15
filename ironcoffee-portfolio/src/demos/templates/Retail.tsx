@@ -8,6 +8,8 @@ import {
   GalleryGrid,
   ProductBlock,
   ServiceCards,
+  StatsBand,
+  Testimonials,
   VisitBlock,
 } from '../components/blocks';
 import { Section, SectionHead } from '../components/primitives';
@@ -59,6 +61,12 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
         </Section>
       ) : null}
 
+      {config.stats?.length ? (
+        <Section tone="alt">
+          <StatsBand stats={config.stats} />
+        </Section>
+      ) : null}
+
       {config.services.length > 0 && (
         <Section id="services" tone="alt">
           <SectionHead eyebrow="Beyond the shelves" title="What else we do" />
@@ -82,6 +90,13 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
         <SectionHead eyebrow="Find us" title="Stop by" />
         <VisitBlock config={config} />
       </Section>
+
+      {config.testimonials?.length ? (
+        <Section tone="alt">
+          <SectionHead eyebrow="In their words" title="What people say" centered />
+          <Testimonials items={config.testimonials} />
+        </Section>
+      ) : null}
 
       {config.faq?.length ? (
         <Section narrow>

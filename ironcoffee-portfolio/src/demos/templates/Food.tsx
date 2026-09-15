@@ -10,6 +10,8 @@ import {
   HoursStrip,
   MenuBlock,
   ServiceCards,
+  StatsBand,
+  Testimonials,
 } from '../components/blocks';
 import { Cta, Section, SectionHead } from '../components/primitives';
 import { directionsHref } from '../index';
@@ -40,6 +42,12 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
           <HoursStrip hours={config.hours} />
         </div>
       </div>
+
+      {config.stats?.length ? (
+        <Section tone="alt">
+          <StatsBand stats={config.stats} />
+        </Section>
+      ) : null}
 
       {config.menu?.length ? (
         <Section id="menu">
@@ -81,6 +89,13 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
           </Cta>
         </div>
       </Section>
+
+      {config.testimonials?.length ? (
+        <Section tone="alt">
+          <SectionHead eyebrow="In their words" title="What people say" centered />
+          <Testimonials items={config.testimonials} />
+        </Section>
+      ) : null}
 
       {config.faq?.length ? (
         <Section tone="alt">

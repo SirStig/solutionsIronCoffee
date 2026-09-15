@@ -68,6 +68,7 @@ const jillsFeed: DemoConfig = {
   products: [
     {
       group: 'What we carry',
+      icon: 'sack',
       items: [
         { name: 'Livestock and poultry feed' },
         { name: 'Animal health products' },
@@ -82,10 +83,12 @@ const jillsFeed: DemoConfig = {
   services: [
     {
       title: 'Call to check stock',
+      icon: 'phone',
       body: 'Ring the store before you drive out and we will tell you what is on hand.',
     },
     {
       title: 'Propane tank exchange',
+      icon: 'bottle',
       body: 'Swap an empty cylinder for a full one while you are picking up feed.',
     },
   ],
