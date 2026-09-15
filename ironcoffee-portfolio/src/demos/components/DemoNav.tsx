@@ -16,6 +16,29 @@ export function initials(name: string): string {
     .join('');
 }
 
+/**
+ * Nav links for a page of a multi-page demo.
+ *
+ * On the home page the extra pages come first and the in-page anchors follow;
+ * on an interior page the anchors would point at sections that are not there,
+ * so only real page links are offered.
+ */
+export function pageNavLinks(
+  config: DemoConfig,
+  currentPageSlug?: string
+): NavLink[] {
+  const base = config.showcase
+    ? `/templates/${config.slug}`
+    : `/demo/${config.slug}`;
+
+  return [
+    { label: 'Home', href: base },
+    ...(config.pages ?? [])
+      .filter((page) => page.slug !== currentPageSlug)
+      .map((page) => ({ label: page.label, href: `${base}/${page.slug}` })),
+  ];
+}
+
 export interface NavLink {
   label: string;
   href: string;

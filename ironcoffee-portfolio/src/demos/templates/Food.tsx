@@ -1,3 +1,4 @@
+import { Clock } from 'lucide-react';
 import type { DemoConfig } from '../types';
 import DemoShell from '../components/DemoShell';
 import DemoHero from '../components/DemoHero';
@@ -7,6 +8,7 @@ import {
   ContactDetails,
   FaqList,
   GalleryGrid,
+  HoursList,
   HoursStrip,
   MenuBlock,
   ServiceCards,
@@ -82,11 +84,20 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
 
       <Section id="visit" tone="dark">
         <SectionHead eyebrow="Find us" title="Come and eat" centered />
-        <div className={styles.visitCentered}>
-          <ContactDetails config={config} />
-          <Cta href={directionsHref(config)} variant="onDark">
-            Get directions
-          </Cta>
+        <div className={styles.visitGrid}>
+          <div>
+            <ContactDetails config={config} />
+            <Cta href={directionsHref(config)} variant="onDark">
+              Get directions
+            </Cta>
+          </div>
+          <div>
+            <h3 className={styles.blockTitle}>
+              <Clock size={18} aria-hidden="true" />
+              Hours
+            </h3>
+            <HoursList hours={config.hours} />
+          </div>
         </div>
       </Section>
 

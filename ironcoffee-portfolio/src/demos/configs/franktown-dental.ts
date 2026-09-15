@@ -10,6 +10,26 @@ const franktownDental: DemoConfig = {
   createdAt: '2026-09-15',
   template: 'professional',
   showcase: true,
+  tier: 'standard',
+
+  pages: [
+    { slug: 'services', label: 'Treatments', kind: 'services', title: 'What we treat' },
+    { slug: 'team', label: 'Our team', kind: 'team', title: 'The people you will actually see' },
+    {
+      slug: 'insurance',
+      label: 'Insurance',
+      kind: 'insurance',
+      intro: 'Do not see yours? Call us. We work with most PPO plans and can check your benefits before you come in.',
+    },
+    { slug: 'questions', label: 'Questions', kind: 'faq', title: 'Common questions' },
+    {
+      slug: 'new-patients',
+      label: 'New patients',
+      kind: 'contact',
+      title: 'Request an appointment',
+      intro: 'Exam, x-rays and a cleaning for $89, with no insurance required.',
+    },
+  ],
 
   business: {
     name: 'Franktown Family Dental',

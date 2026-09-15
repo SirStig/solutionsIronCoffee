@@ -9,6 +9,32 @@ const summitRidge: DemoConfig = {
   createdAt: '2026-09-15',
   template: 'trades',
   showcase: true,
+  tier: 'standard',
+
+  pages: [
+    { slug: 'services', label: 'Services', kind: 'services' },
+    {
+      slug: 'areas',
+      label: 'Service area',
+      kind: 'areas',
+      title: 'Where we work',
+      intro: 'Elbert and Douglas County, and the towns in between.',
+    },
+    {
+      slug: 'work',
+      label: 'Recent work',
+      kind: 'gallery',
+      title: 'Recent jobs',
+      intro: 'Real roofs in this county, photographed the day we finished.',
+    },
+    {
+      slug: 'quote',
+      label: 'Free quote',
+      kind: 'contact',
+      title: 'Get a free quote',
+      intro: 'Tell us what is going on and we will get you on the schedule for a free inspection.',
+    },
+  ],
 
   business: {
     name: 'Summit Ridge Services',

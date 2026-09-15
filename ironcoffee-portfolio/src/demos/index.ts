@@ -119,6 +119,23 @@ export function fullAddress(demo: DemoConfig): string {
   return [address, `${city}, ${state}`].filter(Boolean).join(', ');
 }
 
+/**
+ * Where this demo lives.
+ *
+ * Gallery samples are public at /templates/<slug>; previews are noindexed at
+ * /demo/<slug>. Every internal link is built from this, so a config never has
+ * to know which of the two it is.
+ */
+export function demoBase(demo: DemoConfig): string {
+  return demo.showcase ? `/templates/${demo.slug}` : `/demo/${demo.slug}`;
+}
+
+/** Every URL this demo owns, home page first. Used by the prerenderer. */
+export function demoRoutes(demo: DemoConfig): string[] {
+  const base = demoBase(demo);
+  return [base, ...(demo.pages ?? []).map((page) => `${base}/${page.slug}`)];
+}
+
 /** Google Maps link: a place search by name and address, or by coordinates. */
 export function directionsHref(demo: DemoConfig): string {
   const query = demo.map

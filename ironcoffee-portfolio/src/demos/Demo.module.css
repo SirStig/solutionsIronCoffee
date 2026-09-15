@@ -935,7 +935,12 @@
 
 @media (min-width: 860px) {
   .aboutGrid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 5fr 7fr;
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  }
+
+  .aboutGrid.reversed {
+    grid-template-columns: 7fr 5fr;
   }
 
   .aboutGrid.reversed .aboutMedia {
@@ -943,11 +948,20 @@
   }
 }
 
+.aboutGrid .sectionTitle::after {
+  content: '';
+  display: block;
+  width: 3.5rem;
+  height: 2px;
+  margin-top: 1.1rem;
+  background: var(--brand);
+}
+
 .aboutMedia {
   border-radius: var(--d-radius-lg);
   overflow: hidden;
-  aspect-ratio: 4 / 3;
-  box-shadow: var(--d-shadow);
+  aspect-ratio: 5 / 4;
+  box-shadow: var(--d-shadow-lg);
 }
 
 .aboutMedia > * {
@@ -974,19 +988,39 @@
   color: var(--d-text);
   background: var(--d-surface);
   border: 1px solid var(--d-border);
+  border-left: 3px solid color-mix(in srgb, var(--brand) 55%, transparent);
   border-radius: var(--d-radius);
-  padding: 1.1rem 1.35rem;
+  padding: 1.35rem 1.6rem;
 }
 
 .faqQ {
+  display: flex;
+  gap: 0.6rem;
   font-size: 1.0625rem;
   font-weight: 650;
   font-family: var(--d-display);
   letter-spacing: -0.01em;
 }
 
+.faqQ::before {
+  content: '?';
+  flex: none;
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-top: 0.1rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--d-font);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: var(--brand-ink);
+  background: color-mix(in srgb, var(--brand) 12%, transparent);
+}
+
 .faqA {
-  margin-top: 0.5rem;
+  margin-top: 0.6rem;
+  margin-left: 2rem;
   color: var(--d-muted);
   font-size: 0.9375rem;
 }
@@ -2045,7 +2079,7 @@
 }
 
 /* --- Texture --------------------------------------------------------------
-   A barely-there wash of the brand colour so alternating sections read as
+   A barely-there wash of the brand color so alternating sections read as
    deliberate rather than as the absence of a background. */
 .sectionAlt {
   position: relative;
@@ -2090,7 +2124,7 @@
 }
 
 /* A hairline rule with a brand-coloured leader, used under section heads that
-   sit left rather than centred. */
+   sit left rather than centered. */
 .ruled {
   padding-bottom: 1.25rem;
   border-bottom: 1px solid var(--d-border);
@@ -2105,4 +2139,300 @@
   width: 3.5rem;
   height: 2px;
   background: var(--brand);
+}
+
+/* --- Interior page header ------------------------------------------------- */
+.pageHead {
+  position: relative;
+  isolation: isolate;
+  background: var(--d-bg-alt);
+  padding-block: clamp(2.5rem, 1.8rem + 4vw, 4.5rem);
+  border-bottom: 1px solid var(--d-border);
+}
+
+.pageHead::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    50rem 22rem at 12% 0%,
+    color-mix(in srgb, var(--brand) 9%, transparent),
+    transparent 70%
+  );
+}
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--d-muted);
+  margin-bottom: 1rem;
+}
+
+.crumbs a {
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.crumbs a:hover {
+  color: var(--brand-ink);
+}
+
+.pageTitle {
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+  letter-spacing: -0.03em;
+  color: var(--d-text);
+}
+
+.pageIntro {
+  margin-top: 1rem;
+  max-width: 44rem;
+  font-size: clamp(1rem, 0.96rem + 0.3vw, 1.125rem);
+  color: var(--d-muted);
+}
+
+/* --- Onward links --------------------------------------------------------- */
+.pageLinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.pageLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--d-radius);
+  border: 1px solid var(--d-border);
+  background: var(--d-surface);
+  color: var(--d-text);
+  font-weight: 650;
+  text-decoration: none;
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.pageLink:hover {
+  border-color: var(--brand);
+  color: var(--brand-ink);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pageLink:hover {
+    transform: none;
+  }
+}
+
+/* ============================================================================
+   Order flow.
+
+   The one piece here that is a working application rather than a page, which
+   is exactly what the top pricing tier is meant to demonstrate.
+   ========================================================================= */
+.orderGrid {
+  display: grid;
+  gap: clamp(2rem, 1.5rem + 2vw, 3rem);
+  align-items: start;
+}
+
+@media (min-width: 940px) {
+  .orderGrid {
+    grid-template-columns: minmax(0, 1fr) 22rem;
+  }
+}
+
+.orderMenu {
+  min-width: 0;
+}
+
+.orderSection + .orderSection {
+  margin-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+}
+
+.orderItems {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.orderItem {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--d-border);
+}
+
+.orderItemText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+  flex: 1 1 14rem;
+}
+
+.orderItemName {
+  font-weight: 650;
+  font-size: 1.0625rem;
+}
+
+.orderItemDesc {
+  font-size: 0.875rem;
+  color: var(--d-muted);
+}
+
+.orderCall {
+  font-size: 0.875rem;
+  font-weight: 650;
+  color: var(--d-muted);
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.orderPrice {
+  font-weight: 700;
+  color: var(--brand-ink);
+  font-variant-numeric: tabular-nums;
+  margin-right: 0.35rem;
+}
+
+.stepBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--d-border);
+  background: var(--d-surface);
+  color: var(--d-text);
+  font-size: 1.125rem;
+  line-height: 1;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.stepBtn:hover:not(:disabled) {
+  border-color: var(--brand);
+  color: var(--brand-ink);
+}
+
+.stepBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.stepQty {
+  min-width: 1.75rem;
+  text-align: center;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Cart ----------------------------------------------------------------- */
+.orderCart {
+  min-width: 0;
+}
+
+@media (min-width: 940px) {
+  .orderCart {
+    position: sticky;
+    top: 6.5rem;
+  }
+}
+
+.orderCartInner {
+  background: var(--d-surface);
+  border: 1px solid var(--d-border);
+  border-radius: var(--d-radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--d-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: var(--d-text);
+}
+
+.orderEmpty {
+  font-size: 0.9375rem;
+  color: var(--d-muted);
+}
+
+.orderLines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.orderLine {
+  display: flex;
+  gap: 0.6rem;
+  font-size: 0.9375rem;
+  align-items: baseline;
+}
+
+.orderLineQty {
+  font-weight: 700;
+  color: var(--brand-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.orderLineName {
+  flex: 1;
+  min-width: 0;
+}
+
+.orderLineTotal {
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.orderTotals {
+  margin: 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--d-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9375rem;
+}
+
+.orderTotals > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.orderTotals dt,
+.orderTotals dd {
+  margin: 0;
+}
+
+.orderTotals dd {
+  font-variant-numeric: tabular-nums;
+}
+
+.orderTotalRow {
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--d-border);
+  font-weight: 700;
+  font-size: 1.0625rem;
+}
+
+.orderNote {
+  font-size: 0.75rem;
+  color: var(--d-faint);
 }

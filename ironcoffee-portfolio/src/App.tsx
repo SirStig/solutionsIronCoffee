@@ -82,7 +82,9 @@ export default function App() {
 
         <Route path="/templates" element={<Templates />} />
         <Route path="/templates/:slug" element={<TemplateShowcase />} />
+        <Route path="/templates/:slug/:page" element={<TemplateShowcase />} />
         <Route path="/demo/:slug" element={<Demo />} />
+        <Route path="/demo/:slug/:page" element={<Demo />} />
         <Route path="/preview-expired" element={<PreviewExpired />} />
 
         {/* Old URLs from the previous site. .htaccess serves the real 301s;

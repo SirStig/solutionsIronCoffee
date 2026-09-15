@@ -12,6 +12,25 @@ const ridgelineSmokehouse: DemoConfig = {
   createdAt: '2026-09-15',
   template: 'food',
   showcase: true,
+  tier: 'custom',
+
+  pages: [
+    { slug: 'order', label: 'Order', kind: 'order' },
+    {
+      slug: 'catering',
+      label: 'Catering',
+      kind: 'services',
+      title: 'Feeding a crowd',
+      intro: 'Brisket, pulled pork, ribs and sides by the pound, for anything from a crew lunch to a wedding.',
+    },
+    {
+      slug: 'story',
+      label: 'Our story',
+      kind: 'about',
+      title: 'Two brothers and a five-hundred gallon offset',
+    },
+    { slug: 'visit', label: 'Visit', kind: 'contact', title: 'Come and eat' },
+  ],
 
   business: {
     name: 'Ridgeline Smokehouse',
@@ -35,7 +54,7 @@ const ridgelineSmokehouse: DemoConfig = {
     sub: 'Oak-smoked overnight, sliced to order, sold until it runs out, which on Saturdays is usually by two.',
     image: 'demos/ridgeline-smokehouse/hero',
     ctaLabel: 'Order Pickup',
-    ctaHref: '#menu',
+    ctaHref: '/templates/ridgeline-smokehouse/order',
   },
 
   services: [

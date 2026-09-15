@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Seo from '../components/Seo';
 import { getDemo, isExpired } from '../demos';
 import { TEMPLATES } from '../demos/templates';
+import DemoSubPage from '../demos/components/DemoSubPage';
 import NotFound from './NotFound';
 import PreviewExpired from './PreviewExpired';
 
@@ -15,8 +16,12 @@ import PreviewExpired from './PreviewExpired';
  * agree on: a tab left open across the boundary.
  */
 export default function Demo() {
-  const { slug = '' } = useParams<{ slug: string }>();
+  const { slug = '', page: pageSlug } = useParams<{
+    slug: string;
+    page?: string;
+  }>();
   const demo = getDemo(slug);
+  const page = demo?.pages?.find((p) => p.slug === pageSlug);
 
   const [lapsed, setLapsed] = useState(false);
 
@@ -25,6 +30,9 @@ export default function Demo() {
   }, [demo]);
 
   if (!demo) return <NotFound />;
+  // A page segment that is not one of this demo's pages is a 404, not a
+  // silent fall back to the home page.
+  if (pageSlug && !page) return <NotFound />;
 
   if (lapsed || isExpired(demo)) {
     return <PreviewExpired business={demo.business.name} />;
@@ -35,13 +43,21 @@ export default function Demo() {
   return (
     <>
       <Seo
-        title={`${demo.business.name} website preview`}
+        title={
+          page
+            ? `${page.label} | ${demo.business.name} preview`
+            : `${demo.business.name} website preview`
+        }
         description={`A working website preview for ${demo.business.name} in ${demo.business.city}, ${demo.business.state}, built by Joshua Kac.`}
-        path={`/demo/${demo.slug}`}
+        path={page ? `/demo/${demo.slug}/${page.slug}` : `/demo/${demo.slug}`}
         noindex
         nofollow
       />
-      <Template config={demo} />
+      {page ? (
+        <DemoSubPage config={demo} page={page} />
+      ) : (
+        <Template config={demo} />
+      )}
     </>
   );
 }

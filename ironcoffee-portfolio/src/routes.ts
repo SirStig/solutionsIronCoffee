@@ -66,7 +66,8 @@ export const NotFound = route(() => import('./pages/NotFound'));
 
 /** First match wins, so more specific patterns come first. */
 const matchers: [RegExp, RouteComponent][] = [
-  [/^\/demo\/[^/]+$/, Demo],
+  [/^\/demo\/[^/]+(\/[^/]+)?$/, Demo],
+  [/^\/templates\/[^/]+\/[^/]+$/, TemplateShowcase],
   [/^\/templates\/[^/]+$/, TemplateShowcase],
   [/^\/templates\/?$/, Templates],
   [/^\/preview-expired\/?$/, PreviewExpired],

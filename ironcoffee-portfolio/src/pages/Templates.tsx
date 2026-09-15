@@ -6,6 +6,13 @@ import DemoImage from '../demos/components/DemoImage';
 import { initials } from '../demos/components/DemoNav';
 import styles from './Templates.module.css';
 
+/** What each sample is demonstrating, so the gallery reads as a price ladder. */
+const TIER_LABEL: Record<string, string> = {
+  starter: 'One page \u00b7 $500',
+  standard: 'Full site \u00b7 $1,800',
+  custom: 'With online ordering \u00b7 from $3,200',
+};
+
 const KIND_LABEL: Record<string, string> = {
   food: 'Restaurant and food',
   retail: 'Shop and retail',
@@ -65,7 +72,16 @@ export default function Templates() {
                 <p className={styles.blurb}>
                   {TEMPLATE_BLURBS[demo.template]}
                 </p>
-                <span className={styles.view}>Open the sample</span>
+
+                {demo.tier && (
+                  <span className={styles.tier}>{TIER_LABEL[demo.tier]}</span>
+                )}
+
+                <span className={styles.view}>
+                  {demo.pages?.length
+                    ? `Open the sample \u00b7 ${demo.pages.length + 1} pages`
+                    : 'Open the sample'}
+                </span>
               </div>
             </Link>
           ))}

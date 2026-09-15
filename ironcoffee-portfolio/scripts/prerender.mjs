@@ -78,6 +78,7 @@ async function loadChunkHints(alreadyLinked = new Set()) {
     if (url.startsWith('/blog/')) return 'src/pages/BlogPost.tsx';
     if (url.startsWith('/templates/')) return 'src/pages/TemplateShowcase.tsx';
     if (url.startsWith('/demo/')) return 'src/pages/Demo.tsx';
+    if (url === '/templates') return 'src/pages/Templates.tsx';
     return null;
   };
 
@@ -133,7 +134,7 @@ async function loadChunkHints(alreadyLinked = new Set()) {
   };
 }
 
-function buildRoutes({ projects, posts, previews, showcases }) {
+function buildRoutes({ projects, posts, previews, showcases, demoRoutes }) {
   const staticRoutes = [
     { url: '/', priority: '1.0', changefreq: 'weekly' },
     { url: '/work', priority: '0.9', changefreq: 'weekly' },
@@ -161,17 +162,22 @@ function buildRoutes({ projects, posts, previews, showcases }) {
       lastmod: p.date,
     })),
     // The gallery samples are public and indexed. They are the sales
-    // collateral, so they belong in search results.
-    ...showcases.map((d) => ({
-      url: `/templates/${d.slug}`,
-      priority: '0.7',
-      changefreq: 'monthly',
-    })),
+    // collateral, so they belong in search results. Multi-page samples
+    // contribute every one of their pages.
+    ...showcases.flatMap((d) =>
+      demoRoutes(d).map((url, i) => ({
+        url,
+        priority: i === 0 ? '0.7' : '0.5',
+        changefreq: 'monthly',
+      }))
+    ),
     // Previews built for a named business are the opposite: served, but never
     // listed. The page carries a noindex tag as well, and robots.txt disallows
     // the whole directory. Three layers, because only one of them is under my
     // control once a link has been sent.
-    ...previews.map((d) => ({ url: `/demo/${d.slug}`, skipSitemap: true })),
+    ...previews.flatMap((d) =>
+      demoRoutes(d).map((url) => ({ url, skipSitemap: true }))
+    ),
     { url: '/preview-expired', skipSitemap: true },
     // Rendered so the host can serve a styled 404 instead of a blank shell.
     { url: '/404', skipSitemap: true },
@@ -313,8 +319,16 @@ async function main() {
     );
   }
 
-  const { render, projects, posts, previews, showcases, isExpired, formatExpiry } =
-    await loadServerBundle();
+  const {
+    render,
+    projects,
+    posts,
+    previews,
+    showcases,
+    isExpired,
+    formatExpiry,
+    demoRoutes,
+  } = await loadServerBundle();
 
   // A lapsed preview still gets built: the URL was texted to somebody and it
   // should land on the page that offers to put it back, not on a 404. Say so
@@ -327,7 +341,7 @@ async function main() {
     );
   }
 
-  const content = { projects, posts, previews, showcases };
+  const content = { projects, posts, previews, showcases, demoRoutes };
   const routes = buildRoutes(content);
   const shellStyles = new Set(
     [...template.matchAll(/<link rel="stylesheet"[^>]*href="\/([^"]+)"/g)].map(

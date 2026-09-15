@@ -154,6 +154,40 @@ export interface DemoTestimonial {
   detail?: string;
 }
 
+/**
+ * The page layouts a template can serve beyond its home page.
+ *
+ * Deliberately a fixed vocabulary rather than a section builder. Each kind
+ * renders from data the config already carries, so giving a business a five
+ * page site is a list of three-word entries, not a CMS and not a new
+ * component. That is the whole difference between the one-page tier and the
+ * full-site tier, expressed as data.
+ */
+export type PageKind =
+  | 'menu'
+  | 'services'
+  | 'about'
+  | 'gallery'
+  | 'team'
+  | 'faq'
+  | 'contact'
+  | 'areas'
+  | 'insurance'
+  | 'stock'
+  | 'order';
+
+export interface DemoPage {
+  /** URL segment, e.g. 'menu'. Must be unique within the demo. */
+  slug: string;
+  /** Nav label. Two words at most. */
+  label: string;
+  kind: PageKind;
+  /** Overrides the default heading for that kind. */
+  title?: string;
+  /** One line under the heading. */
+  intro?: string;
+}
+
 export interface DemoConfig {
   /** URL segment and subdomain label: `/demo/<slug>`, `<slug>.ironcoffee.com`. */
   slug: string;
@@ -180,6 +214,17 @@ export interface DemoConfig {
 
   /** Gallery samples only. See DemoTestimonial. */
   testimonials?: DemoTestimonial[];
+
+  /**
+   * Extra pages. Absent means a single page site, which is the entry tier.
+   *
+   * The home page keeps a condensed version of anything that moves onto its
+   * own page, so a visitor who never clicks still sees it.
+   */
+  pages?: DemoPage[];
+
+  /** Which price this sample is demonstrating. Gallery samples only. */
+  tier?: 'starter' | 'standard' | 'custom';
 
   /** Trades: the towns served, listed for local search. */
   serviceAreas?: string[];

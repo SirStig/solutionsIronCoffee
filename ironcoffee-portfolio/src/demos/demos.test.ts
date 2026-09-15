@@ -12,6 +12,7 @@ import {
   todayName,
 } from './index';
 import { TEMPLATES, TEMPLATE_BLURBS } from './templates';
+import { iconNames } from './components/icons';
 
 const all = Object.values(demos);
 
@@ -114,6 +115,34 @@ describe('demo configs', () => {
           acceptable
         );
       }
+    }
+  });
+
+  it('never puts words in a real customer\u2019s mouth', () => {
+    // Testimonials are invented copy. On a fictional sample that is fine and
+    // labeled; on a preview carrying a real business\u2019s name it is not.
+    for (const demo of all) {
+      if (demo.showcase) continue;
+      expect(demo.testimonials ?? [], demo.slug).toHaveLength(0);
+    }
+  });
+
+  it('only claims numbers for businesses that are invented', () => {
+    for (const demo of all) {
+      if (demo.showcase) continue;
+      expect(demo.stats ?? [], demo.slug).toHaveLength(0);
+    }
+  });
+
+  it('names an icon that exists', () => {
+    const named = all.flatMap((d) => [
+      ...d.services.map((x) => x.icon),
+      ...(d.products ?? []).map((g) => g.icon),
+      ...(d.stats ?? []).map((x) => x.icon),
+    ]);
+    for (const icon of named) {
+      if (!icon) continue;
+      expect(iconNames, `unknown icon "${icon}"`).toContain(icon);
     }
   });
 

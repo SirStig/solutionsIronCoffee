@@ -63,4 +63,10 @@ export function render(url: string): Promise<Rendered> {
    from, without having to guess at generated chunk filenames. */
 export { projects } from './content/projects';
 export { posts } from './content/blog';
-export { previews, showcases, isExpired, formatExpiry } from './demos';
+export {
+  previews,
+  showcases,
+  isExpired,
+  formatExpiry,
+  demoRoutes,
+} from './demos';

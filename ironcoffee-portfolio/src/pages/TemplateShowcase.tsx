@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import Seo from '../components/Seo';
 import { getDemo } from '../demos';
 import { TEMPLATES } from '../demos/templates';
+import DemoSubPage from '../demos/components/DemoSubPage';
 import NotFound from './NotFound';
 
 /**
@@ -16,21 +17,38 @@ import NotFound from './NotFound';
  * thing from labelling a page as a sample in plain English.
  */
 export default function TemplateShowcase() {
-  const { slug = '' } = useParams<{ slug: string }>();
+  const { slug = '', page: pageSlug } = useParams<{
+    slug: string;
+    page?: string;
+  }>();
   const demo = getDemo(slug);
+  const page = demo?.pages?.find((p) => p.slug === pageSlug);
 
   if (!demo?.showcase) return <NotFound />;
+  if (pageSlug && !page) return <NotFound />;
 
   const Template = TEMPLATES[demo.template];
 
   return (
     <>
       <Seo
-        title={`${demo.business.name} sample site`}
+        title={
+          page
+            ? `${page.label} | ${demo.business.name} sample`
+            : `${demo.business.name} sample site`
+        }
         description={`A complete sample website for a ${demo.template} business, built by Joshua Kac. ${demo.business.tagline}`}
-        path={`/templates/${demo.slug}`}
+        path={
+          page
+            ? `/templates/${demo.slug}/${page.slug}`
+            : `/templates/${demo.slug}`
+        }
       />
-      <Template config={demo} />
+      {page ? (
+        <DemoSubPage config={demo} page={page} />
+      ) : (
+        <Template config={demo} />
+      )}
     </>
   );
 }

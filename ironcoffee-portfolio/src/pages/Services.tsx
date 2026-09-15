@@ -1,4 +1,6 @@
 import { Check } from 'lucide-react';
+import CostCompare from '../components/CostCompare';
+import SpeedPanel from '../components/SpeedPanel';
 import { Link } from 'react-router-dom';
 import Seo from '../components/Seo';
 import { site } from '../content/site';
@@ -105,6 +107,29 @@ export default function Services() {
               </li>
             ))}
           </ol>
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>
+            Why not just use Wix or Squarespace?
+          </h2>
+          <p className={styles.sectionIntro}>
+            Sometimes you should, and I will say so. But two things are worth
+            knowing before you decide, and both of them you can check yourself
+            rather than take my word for.
+          </p>
+
+          <h3 className={styles.subTitle}>One. It is yours, and it adds up</h3>
+          <CostCompare />
+
+          <h3 className={styles.subTitle}>Two. It is fast, and that is checkable</h3>
+          <p className={styles.sectionIntro}>
+            Most drag-and-drop platforms ship a few megabytes of JavaScript
+            before anyone sees a word. On a phone, on rural Colorado signal,
+            that is the difference between a customer waiting and a customer
+            going back to the search results. Here is this page:
+          </p>
+          <SpeedPanel />
         </section>
 
         <section className={styles.section}>
