@@ -18,6 +18,7 @@ cd ironcoffee-portfolio
 npm run dev             # Vite dev server (5173)
 npm run build           # optimize media → client build → SSR build → prerender
 npm run serve           # serve build/ the way Apache does, NOT vite preview
+npm run deploy          # build, diff against Dreamhost, confirm, rsync over SSH, verify
 npm test                # Vitest
 npm run typecheck       # tsc --noEmit
 npm run optimize:media  # rebuild public/img from assets/images (cached)
@@ -101,6 +102,16 @@ admitting the photography is generic, which is what you set on a preview for a
 real business until they hand over their own pictures. Never generate a
 storefront, an exterior or anything with signage for a real business: a generic
 interior reads as a layout, a building reads as a claim about their premises.
+
+**Checking the demos.** `npm run build` then `npm run serve`, never `vite
+preview`. The browser audit in the scratchpad drives Chromium and WebKit across
+eight viewports and checks five things: horizontal overflow, tap target size,
+duplicate ids and dead in-page anchors, console and hydration errors, and text
+contrast against its computed backdrop. The contrast check exists because a
+component that paints a light surface but leaves `color` to inheritance renders
+white on white inside a dark section, and every other check passes while it
+does. Set `PRERENDER_DRAFTS=1` to build the drafts so they get audited too; a
+page that is never built is a page nobody ever checks.
 
 Three separate things keep previews out of search: the `noindex, nofollow` tag
 the page renders, the `Disallow: /demo/` in `public/robots.txt`, and the

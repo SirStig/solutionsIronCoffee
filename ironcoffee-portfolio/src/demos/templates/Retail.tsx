@@ -11,12 +11,16 @@ import {
   VisitBlock,
 } from '../components/blocks';
 import { Section, SectionHead } from '../components/primitives';
+import { todayName } from '../index';
 import type { NavLink } from '../components/DemoNav';
+import styles from '../Demo.module.css';
 
 /**
- * Feed stores, hardware, boutiques, liquor. Structurally this is the food
- * template with a products grid in place of a menu, because the question these
- * visitors arrive with is whether a thing is in stock, not what it costs.
+ * Retail. A short image band with a running note under it, then stock.
+ *
+ * The question that brings someone to a feed store's website is whether a
+ * thing is on the shelf today, so the hero is deliberately shallow and the
+ * note under it carries today's hours. Everything else can wait.
  */
 export default function RetailTemplate({ config }: { config: DemoConfig }) {
   const links: NavLink[] = [
@@ -26,9 +30,23 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
     { label: 'Visit', href: '#visit' },
   ];
 
+  const today = config.hours.find((h) => h.day === todayName());
+
   return (
     <DemoShell config={config} links={links}>
-      <DemoHero config={config} />
+      <DemoHero
+        config={config}
+        variant="strip"
+        note={
+          <div className={styles.heroNoteInner}>
+            <span>Stock updated most mornings.</span>
+            {today && <span>Today: {today.open}</span>}
+            {config.business.phone && (
+              <span>Call {config.business.phone} to check before you drive out.</span>
+            )}
+          </div>
+        }
+      />
 
       {config.products?.length ? (
         <Section id="stock">
@@ -36,7 +54,6 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
             eyebrow="On the shelves"
             title="What we carry"
             sub="Call to confirm before you drive out. Stock moves fast and this page is only as current as our last update."
-            centered
           />
           <ProductBlock groups={config.products} />
         </Section>
@@ -45,7 +62,7 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
       {config.services.length > 0 && (
         <Section id="services" tone="alt">
           <SectionHead eyebrow="Beyond the shelves" title="What else we do" />
-          <ServiceCards items={config.services} />
+          <ServiceCards items={config.services} bordered />
         </Section>
       )}
 
@@ -54,19 +71,20 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
       </Section>
 
       {config.gallery.length > 0 && (
-        <Section tone="alt">
-          <SectionHead title="Around the store" centered />
-          <GalleryGrid images={config.gallery} business={config.business.name} />
-        </Section>
+        <GalleryGrid
+          images={config.gallery}
+          business={config.business.name}
+          fullBleed
+        />
       )}
 
-      <Section id="visit">
+      <Section id="visit" tone="alt">
         <SectionHead eyebrow="Find us" title="Stop by" />
         <VisitBlock config={config} />
       </Section>
 
       {config.faq?.length ? (
-        <Section tone="alt">
+        <Section narrow>
           <SectionHead title="Good to know" centered />
           <FaqList items={config.faq} />
         </Section>

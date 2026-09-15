@@ -4,19 +4,24 @@ import DemoHero from '../components/DemoHero';
 import DemoOutro from '../components/DemoOutro';
 import {
   AboutBlock,
+  ContactDetails,
   FaqList,
   GalleryGrid,
+  HoursStrip,
   MenuBlock,
   ServiceCards,
-  VisitBlock,
 } from '../components/blocks';
-import { Section, SectionHead } from '../components/primitives';
+import { Cta, Section, SectionHead } from '../components/primitives';
+import { directionsHref } from '../index';
 import type { NavLink } from '../components/DemoNav';
+import styles from '../Demo.module.css';
 
 /**
- * Restaurants, smokehouses, bakeries, anywhere the menu is the reason someone
- * came to the site. The menu sits directly under the hero because that is the
- * first thing every visitor scrolls looking for.
+ * Food. The photograph fills the screen, then the hours, then the menu.
+ *
+ * Hours come second on purpose: for a place that smokes a fixed amount and
+ * closes when it is gone, "are they open" beats "what do they serve", and a
+ * compact strip answers it without a table.
  */
 export default function FoodTemplate({ config }: { config: DemoConfig }) {
   const links: NavLink[] = [
@@ -28,7 +33,13 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
 
   return (
     <DemoShell config={config} links={links}>
-      <DemoHero config={config} />
+      <DemoHero config={config} variant="full" />
+
+      <div className={styles.badgeBar}>
+        <div className={styles.container}>
+          <HoursStrip hours={config.hours} />
+        </div>
+      </div>
 
       {config.menu?.length ? (
         <Section id="menu">
@@ -42,27 +53,33 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
         </Section>
       ) : null}
 
+      {config.gallery.length > 0 && (
+        <GalleryGrid
+          images={config.gallery}
+          business={config.business.name}
+          fullBleed
+        />
+      )}
+
+      <Section id="about" tone="alt">
+        <AboutBlock config={config} />
+      </Section>
+
       {config.services.length > 0 && (
-        <Section id="services" tone="alt">
-          <SectionHead eyebrow="Also available" title="Feeding a crowd" />
+        <Section id="services">
+          <SectionHead eyebrow="Also available" title="Feeding a crowd" centered />
           <ServiceCards items={config.services} />
         </Section>
       )}
 
-      <Section id="about">
-        <AboutBlock config={config} />
-      </Section>
-
-      {config.gallery.length > 0 && (
-        <Section tone="alt">
-          <SectionHead title="A look inside" centered />
-          <GalleryGrid images={config.gallery} business={config.business.name} />
-        </Section>
-      )}
-
-      <Section id="visit">
-        <SectionHead eyebrow="Find us" title="Come and eat" />
-        <VisitBlock config={config} />
+      <Section id="visit" tone="dark">
+        <SectionHead eyebrow="Find us" title="Come and eat" centered />
+        <div className={styles.visitCentered}>
+          <ContactDetails config={config} />
+          <Cta href={directionsHref(config)} variant="onDark">
+            Get directions
+          </Cta>
+        </div>
       </Section>
 
       {config.faq?.length ? (

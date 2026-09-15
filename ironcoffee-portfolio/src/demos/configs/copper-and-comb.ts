@@ -32,7 +32,9 @@ const copperAndComb: DemoConfig = {
     sub: 'Five chairs, no double-booking, and a stylist who actually has time to talk about what you want before they start cutting.',
     image: 'demos/copper-and-comb/hero',
     ctaLabel: 'Book Online',
-    ctaHref: '#book',
+    // Points at the priced service list, which is where someone actually
+    // decides. A real salon would send this to its booking system.
+    ctaHref: '#services',
   },
 
   services: [

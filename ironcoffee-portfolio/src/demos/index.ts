@@ -38,6 +38,17 @@ export const demos: Record<string, DemoConfig> = Object.fromEntries(
   all.map((demo) => [demo.slug, demo])
 );
 
+/**
+ * Set PRERENDER_DRAFTS=1 to build the drafts too.
+ *
+ * Only ever used to point the browser audit at them, since a page that is
+ * never built is a page that never gets checked for overflow or contrast.
+ * Unset, which is every real build, drafts stay out of the output entirely.
+ */
+// eslint-disable-next-line no-undef
+const INCLUDE_DRAFTS =
+  typeof process !== 'undefined' && process.env?.PRERENDER_DRAFTS === '1';
+
 /** Fictional businesses in the public gallery. Indexed, permanent. */
 export const showcases: DemoConfig[] = all.filter((d) => d.showcase);
 
@@ -49,7 +60,7 @@ export const showcases: DemoConfig[] = all.filter((d) => d.showcase);
  * pasted into a message to the business it names.
  */
 export const previews: DemoConfig[] = all.filter(
-  (d) => !d.showcase && !d.draft
+  (d) => !d.showcase && (!d.draft || INCLUDE_DRAFTS)
 );
 
 /** Configs still being filled in. In the repo, never on the deployed site. */

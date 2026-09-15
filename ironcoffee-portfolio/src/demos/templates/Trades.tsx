@@ -8,18 +8,20 @@ import {
   FaqList,
   GalleryGrid,
   ServiceAreas,
-  ServiceCards,
+  ServiceSteps,
   VisitBlock,
 } from '../components/blocks';
 import { BusinessForm } from '../components/forms';
 import { Section, SectionHead } from '../components/primitives';
 import type { NavLink } from '../components/DemoNav';
-import styles from '../Demo.module.css';
 
 /**
- * Roofers, plumbers, electricians, landscapers. Nobody browses a trades site.
- * They arrive with a problem, so the page leads with proof the business is real
- * and licensed, then puts a quote form where the scroll naturally stops.
+ * Trades. The quote form sits inside the hero.
+ *
+ * Nobody browses a roofer. They arrive with water coming through a ceiling,
+ * and every scroll between arriving and being able to ask for help costs a
+ * lead, so the form is above the fold and the rest of the page exists to
+ * reassure whoever did not fill it in immediately.
  */
 export default function TradesTemplate({ config }: { config: DemoConfig }) {
   const links: NavLink[] = [
@@ -31,7 +33,15 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
 
   return (
     <DemoShell config={config} links={links}>
-      <DemoHero config={config} />
+      <DemoHero
+        config={config}
+        variant="panel"
+        aside={
+          <div id="quote">
+            <BusinessForm config={config} variant="quote" compact />
+          </div>
+        }
+      />
 
       {config.badges?.length ? <BadgeBar items={config.badges} /> : null}
 
@@ -40,13 +50,26 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
           eyebrow="What we do"
           title="Services"
           sub="Every job starts with someone coming out to look at it properly, at no cost to you."
-          centered
         />
-        <ServiceCards items={config.services} bordered />
+        <ServiceSteps items={config.services} />
+      </Section>
+
+      {config.gallery.length > 0 && (
+        <Section id="work" tone="alt">
+          <SectionHead
+            title="Recent jobs"
+            sub="Real roofs in this county, photographed the day we finished."
+          />
+          <GalleryGrid images={config.gallery} business={config.business.name} />
+        </Section>
+      )}
+
+      <Section>
+        <AboutBlock config={config} />
       </Section>
 
       {config.serviceAreas?.length ? (
-        <Section id="areas" tone="alt" narrow>
+        <Section id="areas" tone="dark" narrow>
           <SectionHead
             eyebrow="Service area"
             title={`Working across ${config.business.city} and the towns around it`}
@@ -56,37 +79,13 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
         </Section>
       ) : null}
 
-      {config.gallery.length > 0 && (
-        <Section id="work">
-          <SectionHead
-            title="Recent jobs"
-            sub="Real roofs in this county, photographed the day we finished."
-            centered
-          />
-          <GalleryGrid images={config.gallery} business={config.business.name} />
-        </Section>
-      )}
-
-      <Section tone="alt">
-        <AboutBlock config={config} />
-      </Section>
-
-      <Section id="quote">
-        <SectionHead
-          eyebrow="Free estimate"
-          title="Tell us what is going on"
-          sub="Send this and we will call to arrange a look, usually within a day."
-        />
-        <div className={styles.visitGrid}>
-          <BusinessForm config={config} variant="quote" />
-          <div>
-            <VisitBlock config={config} />
-          </div>
-        </div>
+      <Section id="visit" tone="alt">
+        <SectionHead eyebrow="Get in touch" title="Where to find us" />
+        <VisitBlock config={config} />
       </Section>
 
       {config.faq?.length ? (
-        <Section tone="alt">
+        <Section narrow>
           <SectionHead title="Questions we get" centered />
           <FaqList items={config.faq} />
         </Section>

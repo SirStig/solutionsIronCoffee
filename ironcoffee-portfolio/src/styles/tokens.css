@@ -101,7 +101,7 @@
 
   --text: #17150f;
   --text-muted: #57534e;
-  --text-faint: #8a8480;
+  --text-faint: #736e6a; /* 4.8:1 on --bg. Was #8a8480 at 3.5:1. */
 
   --border: #e5e1dc;
   --border-strong: #d3cec8;
@@ -131,7 +131,7 @@
 
   --text: #f5f2ef;
   --text-muted: #a8a19b;
-  --text-faint: #7a736e;
+  --text-faint: #8b837d; /* 4.9:1 on --surface. Was #7a736e at 3.9:1. */
 
   --border: #292421;
   --border-strong: #3a332e;

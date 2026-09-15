@@ -6,19 +6,17 @@ import {
   AboutBlock,
   FaqList,
   GalleryGrid,
-  ServiceCards,
+  ServiceRows,
   TeamGrid,
   VisitBlock,
 } from '../components/blocks';
-import { Cta, Section, SectionHead } from '../components/primitives';
+import { Section, SectionHead } from '../components/primitives';
 import type { NavLink } from '../components/DemoNav';
-import styles from '../Demo.module.css';
 
 /**
- * Salons, barbers, spas, anywhere the whole job of the site is to turn a
- * visitor into an appointment. The priced service list comes first, the people
- * come second, and the booking call to action is repeated at the bottom so
- * nobody has to scroll back up to act on it.
+ * Booking. A split hero, then the service list as a priced column rather than
+ * a grid, because that is how a salon writes its own menu of services and it
+ * makes the page scan like a price list instead of a brochure.
  */
 export default function BookingTemplate({ config }: { config: DemoConfig }) {
   const links: NavLink[] = [
@@ -29,17 +27,16 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
   ];
 
   return (
-    <DemoShell config={config} links={links}>
-      <DemoHero config={config} />
+    <DemoShell config={config} links={links} navVariant="centered">
+      <DemoHero config={config} variant="split" />
 
       <Section id="services">
         <SectionHead
           eyebrow="Services"
           title="What we do, and what it costs"
           sub="Prices start where they start. Anything that depends on length or condition gets quoted in the chair before we begin."
-          centered
         />
-        <ServiceCards items={config.services} bordered />
+        <ServiceRows items={config.services} />
       </Section>
 
       {config.team?.length ? (
@@ -58,32 +55,20 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
       </Section>
 
       {config.gallery.length > 0 && (
-        <Section tone="alt">
-          <SectionHead title="Recent work" centered />
-          <GalleryGrid images={config.gallery} business={config.business.name} />
-        </Section>
+        <GalleryGrid
+          images={config.gallery}
+          business={config.business.name}
+          fullBleed
+        />
       )}
 
-      <Section id="book" tone="dark" narrow>
-        <SectionHead
-          title="Book your chair"
-          sub="Pick a time that works and you are done. No phone tag, no waiting on a callback."
-          centered
-        />
-        <div className={styles.heroActions} style={{ justifyContent: 'center', marginTop: 0 }}>
-          <Cta href={config.hero.ctaHref} variant="onDark">
-            {config.hero.ctaLabel}
-          </Cta>
-        </div>
-      </Section>
-
-      <Section id="visit">
+      <Section id="visit" tone="alt">
         <SectionHead eyebrow="Find us" title="Where to come" />
         <VisitBlock config={config} />
       </Section>
 
       {config.faq?.length ? (
-        <Section tone="alt">
+        <Section narrow>
           <SectionHead title="Good to know" centered />
           <FaqList items={config.faq} />
         </Section>

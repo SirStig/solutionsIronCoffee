@@ -46,6 +46,7 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "pretypecheck": "npm run optimize:media",
+    "deploy": "node scripts/deploy.mjs",
     "verify": "node scripts/verify-deploy.js"
   }
 }

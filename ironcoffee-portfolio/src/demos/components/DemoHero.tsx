@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Phone } from 'lucide-react';
 import type { DemoConfig } from '../types';
 import { telHref } from '../index';
@@ -6,43 +7,167 @@ import { Cta } from './primitives';
 import styles from '../Demo.module.css';
 
 /**
- * Full-bleed hero. The photo is the only image on the page marked `priority`,
- * so it is the largest contentful paint and nothing else competes with it.
+ * Hero layouts.
+ *
+ * The point of having five is that five businesses should not open the same
+ * way. A smokehouse wants the food filling the screen; a salon wants calm and
+ * a booking button; a roofer wants a quote form before you have scrolled; a
+ * dental practice wants the offer and the reassurance up front; a feed store
+ * wants to tell you what is in stock today.
  */
-export default function DemoHero({ config }: { config: DemoConfig }) {
+export type HeroVariant = 'full' | 'split' | 'panel' | 'centered' | 'strip';
+
+function Actions({
+  config,
+  onDark,
+  center = false,
+}: {
+  config: DemoConfig;
+  onDark: boolean;
+  center?: boolean;
+}) {
   const { hero, business } = config;
 
   return (
-    <section className={styles.hero} id="top">
-      <div className={styles.heroMedia}>
-        {/* No initials here. A mark centered behind the headline reads as a
-            broken image rather than as branding, and the hero already says the
-            name twice. */}
-        <DemoImage
-          name={hero.image}
-          alt={`${business.name} in ${business.city}, ${business.state}`}
-          sizes="100vw"
-          priority
-        />
-      </div>
-      <div className={styles.heroScrim} aria-hidden="true" />
+    <div
+      className={[styles.heroActions, center && styles.heroActionsCenter]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      <Cta href={hero.ctaHref} variant={onDark ? 'onDark' : 'primary'}>
+        {hero.ctaLabel}
+      </Cta>
+      {business.phone && (
+        <Cta href={telHref(business.phone)} variant={onDark ? 'ghost' : 'outline'}>
+          <Phone size={17} aria-hidden="true" />
+          {business.phone}
+        </Cta>
+      )}
+    </div>
+  );
+}
 
-      <div className={styles.heroInner}>
-        <div className={styles.heroCopy}>
-          <h1 className={styles.heroHeadline}>{hero.headline}</h1>
-          <p className={styles.heroSub}>{hero.sub}</p>
+function Media({ config, priority = true }: { config: DemoConfig; priority?: boolean }) {
+  const { hero, business } = config;
+  return (
+    <DemoImage
+      name={hero.image}
+      alt={`${business.name} in ${business.city}, ${business.state}`}
+      sizes="100vw"
+      priority={priority}
+    />
+  );
+}
 
-          <div className={styles.heroActions}>
-            <Cta href={hero.ctaHref}>{hero.ctaLabel}</Cta>
-            {business.phone && (
-              <Cta href={telHref(business.phone)} variant="ghost">
-                <Phone size={17} aria-hidden="true" />
-                {business.phone}
-              </Cta>
-            )}
+export default function DemoHero({
+  config,
+  variant = 'full',
+  aside,
+  note,
+}: {
+  config: DemoConfig;
+  variant?: HeroVariant;
+  /** Panel variant only: the card that sits over the image. */
+  aside?: ReactNode;
+  /** Strip variant only: the running line under the image. */
+  note?: ReactNode;
+}) {
+  const { hero } = config;
+
+  /* --- Full bleed. Photo first, copy over it. ---------------------------- */
+  if (variant === 'full') {
+    return (
+      <section className={styles.hero} id="top">
+        <div className={styles.heroMedia}>
+          <Media config={config} />
+        </div>
+        <div className={styles.heroScrim} aria-hidden="true" />
+        <div className={styles.heroInner}>
+          <div className={styles.heroCopy}>
+            <h1 className={styles.heroHeadline}>{hero.headline}</h1>
+            <p className={styles.heroSub}>{hero.sub}</p>
+            <Actions config={config} onDark />
           </div>
         </div>
+      </section>
+    );
+  }
+
+  /* --- Split. Solid color panel beside the photograph. ------------------ */
+  if (variant === 'split') {
+    return (
+      <section className={styles.heroSplit} id="top">
+        <div className={styles.heroSplitCopy}>
+          <div className={styles.heroSplitInner}>
+            <h1 className={styles.heroHeadline}>{hero.headline}</h1>
+            <p className={styles.heroSub}>{hero.sub}</p>
+            <Actions config={config} onDark />
+          </div>
+        </div>
+        <div className={styles.heroSplitMedia}>
+          <Media config={config} />
+        </div>
+      </section>
+    );
+  }
+
+  /* --- Panel. Photo, copy, and a card of its own over the top. ----------- */
+  if (variant === 'panel') {
+    return (
+      <section className={styles.hero} id="top">
+        <div className={styles.heroMedia}>
+          <Media config={config} />
+        </div>
+        <div className={styles.heroScrim} aria-hidden="true" />
+        <div className={styles.heroInner}>
+          <div className={styles.heroPanelGrid}>
+            <div className={styles.heroCopy}>
+              <h1 className={styles.heroHeadline}>{hero.headline}</h1>
+              <p className={styles.heroSub}>{hero.sub}</p>
+              <Actions config={config} onDark />
+            </div>
+            {aside && <div className={styles.heroAside}>{aside}</div>}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  /* --- Centered. Light, calm, photograph demoted to a band below. -------- */
+  if (variant === 'centered') {
+    return (
+      <section className={styles.heroCentered} id="top">
+        <div className={styles.container}>
+          <div className={styles.heroCenteredCopy}>
+            <h1 className={styles.heroCenteredHeadline}>{hero.headline}</h1>
+            <p className={styles.heroCenteredSub}>{hero.sub}</p>
+            <Actions config={config} onDark={false} center />
+          </div>
+        </div>
+        <div className={styles.heroBand}>
+          <div className={styles.container}>
+            <div className={styles.heroBandMedia}>
+              <Media config={config} />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  /* --- Strip. Short image band with a live note running under it. -------- */
+  return (
+    <section className={styles.heroStrip} id="top">
+      <div className={styles.heroStripMedia}>
+        <Media config={config} />
+        <div className={styles.heroScrim} aria-hidden="true" />
+        <div className={styles.heroStripInner}>
+          <h1 className={styles.heroStripHeadline}>{hero.headline}</h1>
+          <p className={styles.heroSub}>{hero.sub}</p>
+          <Actions config={config} onDark />
+        </div>
       </div>
+      {note && <div className={styles.heroNote}>{note}</div>}
     </section>
   );
 }

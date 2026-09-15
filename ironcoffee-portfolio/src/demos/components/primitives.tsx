@@ -55,12 +55,13 @@ export function SectionHead({
   );
 }
 
-type ButtonVariant = 'primary' | 'accent' | 'ghost' | 'onDark';
+type ButtonVariant = 'primary' | 'accent' | 'ghost' | 'outline' | 'onDark';
 
 const variantClass: Record<ButtonVariant, string> = {
   primary: styles.btnPrimary,
   accent: styles.btnAccent,
   ghost: styles.btnGhost,
+  outline: styles.btnOutline,
   onDark: styles.btnOnDark,
 };
 

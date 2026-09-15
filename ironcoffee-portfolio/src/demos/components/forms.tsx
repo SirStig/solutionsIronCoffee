@@ -25,9 +25,12 @@ const emailjsConfigured = Boolean(
 export function BusinessForm({
   config,
   variant = 'quote',
+  compact = false,
 }: {
   config: DemoConfig;
   variant?: 'quote' | 'appointment';
+  /** Tighter, for the trades hero where the form sits over the photograph. */
+  compact?: boolean;
 }) {
   const [state, setState] = useState<SendState>('idle');
 
@@ -42,7 +45,12 @@ export function BusinessForm({
   }
 
   return (
-    <form className={styles.form} onSubmit={onSubmit} id={isAppointment ? 'appointment' : 'quote'}>
+    <form
+      className={[styles.form, compact && styles.formCompact]
+        .filter(Boolean)
+        .join(' ')}
+      onSubmit={onSubmit}
+    >
       <h3 className={styles.formTitle}>
         {isAppointment ? 'Request an appointment' : 'Get a free quote'}
       </h3>
@@ -86,7 +94,7 @@ export function BusinessForm({
             <input type="text" name="insurance" autoComplete="off" />
           </label>
         </div>
-      ) : (
+      ) : compact ? null : (
         <label className={styles.field}>
           <span>Property address</span>
           <input type="text" name="address" autoComplete="street-address" />
@@ -95,7 +103,7 @@ export function BusinessForm({
 
       <label className={styles.field}>
         <span>{isAppointment ? 'What do you need seen to?' : 'What is going on?'}</span>
-        <textarea name="message" rows={4} required />
+        <textarea name="message" rows={compact ? 3 : 4} required />
       </label>
 
       <button type="submit" className={`${styles.btn} ${styles.btnPrimary}`}>

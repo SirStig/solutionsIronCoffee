@@ -20,6 +20,7 @@ npm run dev          # http://localhost:5173
 | `npm run dev` | Vite dev server. Regenerates images first if needed. |
 | `npm run build` | Optimises media → client build → SSR build → prerender. Output in `build/`. |
 | `npm run serve` | Serves `build/` the way Apache does. **Use this, not `vite preview`**. See below. |
+| `npm run deploy` | Builds, then rsyncs `build/` to Dreamhost over SSH. Previews the diff first. |
 | `npm test` | Vitest. |
 | `npm run typecheck` | `tsc --noEmit`. |
 | `npm run optimize:media` | Rebuilds `public/img/` from `assets/images/`. Cached; only changed files are re-encoded. |
@@ -118,13 +119,42 @@ crop wants the face centered.
 
 ## Deploying
 
-`npm run build`, then upload the contents of `build/` to the Dreamhost web root.
-`.htaccess` must go up too, so enable hidden files in your SFTP client. It handles
-HTTPS, the `www` redirect, `/portfolio/*` → `/work/*` moves from the old site,
-clean URLs, caching (immutable for hashed assets, revalidate for HTML) and the
-security headers.
+```bash
+cp .env.deploy.example .env.deploy   # once: SSH user, host, domain directory
+npm run deploy
+```
 
-`npm run verify` checks the live deployment afterwards.
+That builds, compares `build/` against the server, prints what it would upload
+and delete, asks for a yes, uploads, and then runs `npm run verify` against the
+live site. `.env.deploy` is gitignored.
+
+| Flag | |
+| --- | --- |
+| `npm run deploy -- -n` | Dry run. Shows the diff and changes nothing. |
+| `npm run deploy -- --skip-build` | Ship `build/` as it stands. |
+| `npm run deploy -- --yes` | No confirmation prompt. |
+| `npm run deploy -- --no-prune` | Leave files the build no longer produces. |
+
+The upload is an rsync, so only changed files go over the wire and `.htaccess`
+goes up with everything else. `--delete` is on by default, which is what stops
+old hashed assets and removed routes from accumulating. Paths the server owns
+are excluded from both the upload and the prune: `.well-known/acme-challenge/`
+(cert renewal), `cgi-bin/`, `stats/`, `logs/`, `.htpasswd`. The script refuses
+to run if `DEPLOY_PATH` resolves to the home directory, and warns before a
+prune large enough to suggest the path is wrong.
+
+Password logins work, and only ask once per run because the SSH connection is
+shared. `ssh-copy-id dh_user@host` stops the asking.
+
+macOS ships openrsync rather than GNU rsync. It normally talks to the server
+fine; if a transfer dies with a protocol tag error, `brew install rsync` and the
+script picks the newer binary up on its own. `DEPLOY_RSYNC` forces a specific
+one.
+
+Uploading by hand still works: copy the contents of `build/` to the web root
+with hidden files enabled, since `.htaccess` carries HTTPS, the `www` redirect,
+the `/portfolio/*` → `/work/*` moves from the old site, clean URLs, caching and
+the security headers. `npm run verify` checks a deployment either way.
 
 ## Environment
 

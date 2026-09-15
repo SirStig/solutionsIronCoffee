@@ -25,10 +25,12 @@ export default function DemoShell({
   config,
   links,
   children,
+  navVariant = 'default',
 }: {
   config: DemoConfig;
   links: NavLink[];
   children: ReactNode;
+  navVariant?: 'default' | 'centered';
 }) {
   const { business, brand } = config;
   const showcase = Boolean(config.showcase);
@@ -69,7 +71,7 @@ export default function DemoShell({
         </p>
       </div>
 
-      <DemoNav config={config} links={links} />
+      <DemoNav config={config} links={links} variant={navVariant} />
 
       <main>{children}</main>
 

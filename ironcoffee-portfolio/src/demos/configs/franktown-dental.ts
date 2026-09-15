@@ -29,7 +29,9 @@ const franktownDental: DemoConfig = {
   },
 
   hero: {
-    headline: 'New patient exam, x-rays and cleaning for $89.',
+    // Non-breaking hyphen (U+2011): a plain hyphen let the line break as
+    // "x-" / "rays".
+    headline: 'New patient exam, x\u2011rays and cleaning for $89.',
     sub: 'One visit, no insurance required, no pressure to schedule anything else. Most new patients are in and out in under an hour.',
     image: 'demos/franktown-family-dental/hero',
     ctaLabel: 'Request an Appointment',

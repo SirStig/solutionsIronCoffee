@@ -2,15 +2,16 @@ import type { DemoConfig } from '../types';
 import DemoShell from '../components/DemoShell';
 import DemoHero from '../components/DemoHero';
 import DemoOutro from '../components/DemoOutro';
+import { Clock } from 'lucide-react';
 import {
   AboutBlock,
   BadgeBar,
+  ContactDetails,
   FaqList,
-  GalleryGrid,
+  HoursList,
   InsuranceList,
-  ServiceCards,
+  ServiceList,
   TeamGrid,
-  VisitBlock,
 } from '../components/blocks';
 import { BusinessForm } from '../components/forms';
 import { Section, SectionHead } from '../components/primitives';
@@ -18,9 +19,13 @@ import type { NavLink } from '../components/DemoNav';
 import styles from '../Demo.module.css';
 
 /**
- * Dentists, clinics, law firms, accountants. The visitor is deciding whether to
- * trust the place, so the page puts the practitioners and the money questions
- * up front rather than burying them under stock photography.
+ * Professional. Light, centered and quiet, with the photograph demoted to a
+ * band under the headline.
+ *
+ * A clinic is competing on trust rather than appetite, so the page leads with
+ * the offer and the people instead of a full-bleed image, and the money
+ * questions come before the gallery because they are what stops someone
+ * booking.
  */
 export default function ProfessionalTemplate({ config }: { config: DemoConfig }) {
   const links: NavLink[] = [
@@ -32,13 +37,13 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
 
   return (
     <DemoShell config={config} links={links}>
-      <DemoHero config={config} />
+      <DemoHero config={config} variant="centered" />
 
       {config.badges?.length ? <BadgeBar items={config.badges} /> : null}
 
       <Section id="services">
         <SectionHead eyebrow="Care" title="What we treat" centered />
-        <ServiceCards items={config.services} />
+        <ServiceList items={config.services} />
       </Section>
 
       {config.team?.length ? (
@@ -52,12 +57,8 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
         </Section>
       ) : null}
 
-      <Section>
-        <AboutBlock config={config} reversed />
-      </Section>
-
       {config.insurance?.length ? (
-        <Section id="insurance" tone="alt" narrow>
+        <Section id="insurance" narrow>
           <SectionHead
             eyebrow="Insurance"
             title="Plans we accept"
@@ -68,25 +69,8 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
         </Section>
       ) : null}
 
-      {config.gallery.length > 0 && (
-        <Section>
-          <SectionHead title="The practice" centered />
-          <GalleryGrid images={config.gallery} business={config.business.name} />
-        </Section>
-      )}
-
-      <Section id="appointment" tone="alt">
-        <SectionHead
-          eyebrow="New patients welcome"
-          title="Request an appointment"
-          sub="Fill this in and the front desk will call to confirm a time."
-        />
-        <div className={styles.visitGrid}>
-          <BusinessForm config={config} variant="appointment" />
-          <div>
-            <VisitBlock config={config} />
-          </div>
-        </div>
+      <Section tone="alt">
+        <AboutBlock config={config} reversed />
       </Section>
 
       {config.faq?.length ? (
@@ -95,6 +79,31 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
           <FaqList items={config.faq} />
         </Section>
       ) : null}
+
+      <Section id="appointment" tone="dark">
+        <SectionHead
+          eyebrow="New patients welcome"
+          title="Request an appointment"
+          sub="Fill this in and the front desk will call to confirm a time."
+          centered
+        />
+        {/* Deliberately not <VisitBlock>. That is itself a two-column grid,
+            and nesting it here produced four cramped columns that snapped an
+            email address in half. */}
+        <div className={styles.visitGrid}>
+          <BusinessForm config={config} variant="appointment" />
+          <div className={styles.visitAside}>
+            <ContactDetails config={config} />
+            <div>
+              <h3 className={styles.blockTitle}>
+                <Clock size={18} aria-hidden="true" />
+                Hours
+              </h3>
+              <HoursList hours={config.hours} />
+            </div>
+          </div>
+        </div>
+      </Section>
 
       <DemoOutro config={config} />
     </DemoShell>

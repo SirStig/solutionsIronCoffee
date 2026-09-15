@@ -67,6 +67,75 @@ export function ServiceCards({
   );
 }
 
+/**
+ * Services as a priced list rather than a grid of cards.
+ *
+ * A salon or barber reads its own service list this way, as a column of names
+ * with prices on the right, and it makes the page feel unlike the card grids
+ * every other template uses.
+ */
+export function ServiceRows({ items }: { items: DemoService[] }) {
+  return (
+    <ul className={styles.serviceRows}>
+      {items.map((service) => (
+        <li key={service.title} className={styles.serviceRow}>
+          <div className={styles.serviceRowHead}>
+            <span className={styles.serviceRowTitle}>{service.title}</span>
+            {service.price && (
+              <>
+                <span className={styles.menuLeader} aria-hidden="true" />
+                <span className={styles.menuPrice}>{service.price}</span>
+              </>
+            )}
+          </div>
+          <p className={styles.serviceRowBody}>{service.body}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Services as a numbered sequence. Reads as a process, which suits trades. */
+export function ServiceSteps({ items }: { items: DemoService[] }) {
+  return (
+    <ol className={styles.serviceSteps}>
+      {items.map((service, index) => (
+        <li key={service.title} className={styles.serviceStep}>
+          <span className={styles.serviceStepNum} aria-hidden="true">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <div>
+            <h3 className={styles.serviceTitle}>{service.title}</h3>
+            <p className={styles.serviceBody}>{service.body}</p>
+            {service.price && (
+              <p className={styles.servicePrice}>{service.price}</p>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+/** Services as a two-column definition list, calm and clinical. */
+export function ServiceList({ items }: { items: DemoService[] }) {
+  return (
+    <dl className={styles.serviceDefs}>
+      {items.map((service) => (
+        <div key={service.title} className={styles.serviceDef}>
+          <dt className={styles.serviceDefTitle}>
+            {service.title}
+            {service.price && (
+              <span className={styles.serviceDefPrice}>{service.price}</span>
+            )}
+          </dt>
+          <dd className={styles.serviceDefBody}>{service.body}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 /* --- Menu ---------------------------------------------------------------- */
 
 export function MenuBlock({ sections }: { sections: DemoMenuSection[] }) {
@@ -189,16 +258,58 @@ export function HoursList({ hours }: { hours: DemoConfig['hours'] }) {
   );
 }
 
+/** Hours as a row of chips. Compact enough to sit directly under a hero. */
+export function HoursStrip({ hours }: { hours: DemoConfig['hours'] }) {
+  const [today, setToday] = useState<string | null>(null);
+  useEffect(() => setToday(todayName()), []);
+
+  return (
+    <ul className={styles.hoursStrip}>
+      {hours.map((row) => (
+        <li
+          key={row.day}
+          className={[styles.hoursChip, today === row.day && styles.hoursChipToday]
+            .filter(Boolean)
+            .join(' ')}
+        >
+          <span className={styles.hoursChipDay}>{row.day.slice(0, 3)}</span>
+          <span className={styles.hoursChipOpen}>{row.open}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 /* --- Gallery ------------------------------------------------------------- */
 
 export function GalleryGrid({
   images,
   business,
+  fullBleed = false,
 }: {
   images: string[];
   business: string;
+  /** Edge to edge, with no section padding. Breaks up a page of containers. */
+  fullBleed?: boolean;
 }) {
   if (images.length === 0) return null;
+
+  if (fullBleed) {
+    return (
+      <div className={styles.galleryBand}>
+        {images.map((name, index) => (
+          <div key={name} className={styles.galleryBandItem}>
+            <DemoImage
+              name={name}
+              alt={`${business}, photo ${index + 1}`}
+              mark={initials(business)}
+              sizes="(min-width: 900px) 25vw, 50vw"
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className={styles.gallery}>
@@ -387,12 +498,11 @@ export function VisitBlock({ config }: { config: DemoConfig }) {
       </div>
 
       <div>
-        <h3 className={styles.formTitle}>
-          <Clock size={18} aria-hidden="true" /> Hours
+        <h3 className={styles.blockTitle}>
+          <Clock size={18} aria-hidden="true" />
+          Hours
         </h3>
-        <div style={{ marginTop: '1rem' }}>
-          <HoursList hours={config.hours} />
-        </div>
+        <HoursList hours={config.hours} />
       </div>
     </div>
   );

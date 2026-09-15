@@ -29,14 +29,21 @@ export interface NavLink {
 export default function DemoNav({
   config,
   links,
+  variant = 'default',
 }: {
   config: DemoConfig;
   links: NavLink[];
+  /** 'centered' stacks the name over the links, which reads calmer. */
+  variant?: 'default' | 'centered';
 }) {
   const { business, brand, hero } = config;
 
   return (
-    <header className={styles.nav}>
+    <header
+      className={[styles.nav, variant === 'centered' && styles.navCentered]
+        .filter(Boolean)
+        .join(' ')}
+    >
       <div className={styles.navInner}>
         <a className={styles.navBrand} href="#top">
           {brand.logo ? (
