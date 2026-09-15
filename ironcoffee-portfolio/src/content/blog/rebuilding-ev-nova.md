@@ -6,11 +6,11 @@ excerpt: "I'm rebuilding EV Nova from scratch in Swift because I loved it as a k
 ---
 
 [EV Nova](https://github.com/SirStig/NovaSwift) is a space sim from 2002. I
-played it constantly as a kid — flying around, trading, fighting, and messing
+played it constantly as a kid, flying around, trading, fighting, and messing
 with the mission computer and plugins way more than a normal kid probably
 should have. I've loved this game for a long time.
 
-A while back I saw people using Claude to help rebuild old games — stuff like
+A while back I saw people using Claude to help rebuild old games, stuff like
 Command & Conquer Generals, but for iPad. I thought that was a genuinely cool
 idea, and EV Nova doesn't really run well on anything modern anymore, so I
 figured I'd try the same thing with it.
@@ -24,19 +24,19 @@ Swift. But that's what it turned out to mean, so that's what I'm doing.
 
 I can't reverse-engineer the original game especially well. I don't know how
 its AI works internally, and honestly there's a lot else I'm just as unsure
-about — mission logic, pricing, all of it. Nobody wrote any of this down
+about: mission logic, pricing, all of it. Nobody wrote any of this down
 anywhere I can find. What I have is the EV Bible, the original `.rez` resource
 files, my own memory of how the game behaved, and whatever Wikipedia and old
 forum posts still exist. A lot of this has been reconstructing behavior from
 the outside by watching what the original game actually did and guessing at
 the rest.
 
-That's genuinely the hardest part. Not the flight physics, not the rendering —
+That's genuinely the hardest part. Not the flight physics, not the rendering. It's
 figuring out what the game is even supposed to do when I can't read the source.
 
 > Because I'm working from data I don't have any rights to, NovaSwift doesn't
 > ship any of the original game's files. You bring your own legally-owned copy
-> of EV Nova and the engine reads it at runtime — the same model OpenMW and
+> of EV Nova and the engine reads it at runtime, the same model OpenMW and
 > OpenRA use for Morrowind and Command & Conquer. It felt like the only honest
 > way to put this out there.
 
@@ -49,7 +49,7 @@ that alone fixed most of it.
 
 While I was in there fixing performance, I also built out a pretty extensive
 set of debug and profiling tools. As a side effect, those same tools let you
-fully control the game and cheat as much as you want — something the original
+fully control the game and cheat as much as you want, something the original
 EV Nova never had. That wasn't really the plan, it just fell out of needing
 good instrumentation.
 
@@ -59,7 +59,7 @@ It runs natively on Mac, iPad, iPhone, and Apple TV, with controller support.
 
 ![The galaxy map, showing the full system layout](projects/novaswift/galaxy-map)
 
-I've got full multiplayer working, though "working" is generous — it's still
+I've got full multiplayer working, though "working" is generous. It's still
 kind of buggy and finicky and I wouldn't trust it for anything serious yet.
 
 ![Two ships in a multiplayer session](projects/novaswift/multiplayer)
@@ -77,6 +77,6 @@ through resource formats behind it, was built working alongside Claude Code.
 I'd rather say that outright than have someone assume otherwise.
 
 Honestly, the whole thing has just been really fun to build. It's also very
-clearly not done — the biggest gap right now is getting it to actually *feel*
+clearly not done. The biggest gap right now is getting it to actually *feel*
 like the original game, not just run like it. AI behavior especially still has
 a long way to go.

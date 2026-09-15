@@ -1,0 +1,152 @@
+.header {
+  max-width: 44rem;
+  padding-block: clamp(3rem, 2rem + 4vw, 5rem) 0;
+}
+
+.lede {
+  margin-top: var(--space-5);
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+}
+
+/* There are four samples, so two columns gives a square block rather than a row
+   of three and a straggler. */
+.grid {
+  margin-top: clamp(2.5rem, 1.5rem + 4vw, 4rem);
+  display: grid;
+  gap: clamp(1.25rem, 1rem + 1vw, 2rem);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform var(--dur) var(--ease),
+    border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-lg);
+  color: inherit;
+}
+
+/* Brand swatch standing in for a screenshot, painted from the sample's own
+   palette so the gallery previews what the page actually looks like. */
+.swatch {
+  aspect-ratio: 16 / 10;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.swatchMark {
+  position: relative;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 1.2rem + 2.5vw, 2.75rem);
+  letter-spacing: -0.03em;
+  color: rgb(255 255 255 / 0.92);
+}
+
+.swatchGlow {
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+  background-image: radial-gradient(circle at 22% 24%, #fff 0, transparent 44%),
+    radial-gradient(circle at 80% 76%, #fff 0, transparent 40%);
+}
+
+.body {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.kind {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.name {
+  font-size: var(--text-xl);
+}
+
+.blurb {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.view {
+  margin-top: auto;
+  padding-top: var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 650;
+  color: var(--accent);
+}
+
+.note {
+  margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+  padding: var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-subtle);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  max-width: 44rem;
+}
+
+.cta {
+  margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+  margin-bottom: var(--space-8);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.ctaBtn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.ctaBtn:hover {
+  background: var(--accent-hover);
+  color: var(--accent-contrast);
+}
+
+.ctaNote {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none;
+  }
+}

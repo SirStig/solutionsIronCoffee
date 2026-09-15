@@ -179,7 +179,7 @@ hr {
 }
 
 /* --- Reduced motion -----------------------------------------------------
-   Honour the OS setting everywhere, including the scroll behaviour above. */
+   Respect the OS setting everywhere, including the scroll behavior above. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

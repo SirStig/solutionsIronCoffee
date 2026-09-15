@@ -35,12 +35,17 @@
 .links {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-3) var(--space-5);
+  gap: 0 var(--space-5);
   align-content: start;
   font-size: var(--text-sm);
 }
 
+/* These stack in a grid, so they are controls rather than links inside a run of
+   prose. Give them a target a thumb can find. */
 .links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
   color: var(--text-muted);
   text-decoration: none;
   width: fit-content;

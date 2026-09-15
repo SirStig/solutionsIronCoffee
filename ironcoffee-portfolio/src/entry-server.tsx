@@ -12,7 +12,7 @@ export interface Rendered {
 /**
  * Renders one route to a complete HTML string.
  *
- * Uses the streaming renderer specifically because it waits on Suspense — the
+ * Uses the streaming renderer specifically because it waits on Suspense. The
  * route components are React.lazy, and onAllReady only fires once every one of
  * them has resolved. renderToString would emit the empty fallback instead.
  */
@@ -63,3 +63,4 @@ export function render(url: string): Promise<Rendered> {
    from, without having to guess at generated chunk filenames. */
 export { projects } from './content/projects';
 export { posts } from './content/blog';
+export { previews, showcases, isExpired, formatExpiry } from './demos';

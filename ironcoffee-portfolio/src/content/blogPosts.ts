@@ -1,7 +1,7 @@
 /**
  * Full post bodies, including rendered HTML.
  *
- * Imported only by the BlogPost route, which is lazy — so Rollup keeps every
+ * Imported only by the BlogPost route, which is lazy, so Rollup keeps every
  * post body out of the entry chunk and ships it with the post page instead.
  * The prerenderer resolves that lazy route, so the HTML still lands in the
  * static file crawlers read.

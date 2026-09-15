@@ -39,7 +39,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     try {
       localStorage.setItem(STORAGE_KEY, mode);
     } catch {
-      // Private browsing or blocked storage — the theme just won't persist.
+      // Private browsing or blocked storage. The theme just won't persist.
     }
   }, [mode]);
 

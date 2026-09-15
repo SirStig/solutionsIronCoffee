@@ -3,7 +3,7 @@
  *
  * `vite preview` treats the build as a single-page app and rewrites every
  * unknown path to /index.html, so it serves the home page's markup for
- * /about — which then looks like a hydration bug that does not exist on the
+ * /about, which then looks like a hydration bug that does not exist on the
  * real host. This resolves /about to /about/index.html the way Apache does,
  * so what you test is what ships.
  *
@@ -41,7 +41,6 @@ const TYPES = {
 const redirects = [
   [/^\/portfolio\/(.+)$/, (m) => `/work/${m[1]}`],
   [/^\/portfolio$/, () => '/work'],
-  [/^\/services$/, () => '/about'],
 ];
 
 const exists = async (file) => {

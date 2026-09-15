@@ -154,7 +154,7 @@ async function main() {
 
   const mb = (n) => (n / 1024 / 1024).toFixed(1) + 'MB';
   console.log(
-    `\n${files.length} images — ${built} built, ${reused} cached.\n` +
+    `\n${files.length} images: ${built} built, ${reused} cached.\n` +
       `${mb(bytesIn)} source → ${mb(bytesOut)} shipped ` +
       `(${(100 - (bytesOut / bytesIn) * 100).toFixed(0)}% smaller)`
   );

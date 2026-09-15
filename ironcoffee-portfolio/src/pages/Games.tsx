@@ -6,7 +6,7 @@ export default function Games() {
     <CollectionPage
       title="Games"
       intro="Where I started, and where I keep going back. Currently rebuilding a 2002 space sim from scratch in Swift."
-      description="Game projects by Joshua Kac, including NovaSwift — a from-scratch Swift rebuild of EV Nova."
+      description="Game projects by Joshua Kac, including NovaSwift, a from-scratch Swift rebuild of EV Nova."
       path="/games"
       projects={projectsIn('games')}
       archiveAfter={1}

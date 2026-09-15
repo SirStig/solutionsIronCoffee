@@ -2,7 +2,7 @@
  * GA4, loaded lazily and only in production.
  *
  * `react-ga4` is imported dynamically so the tag never lands in the entry
- * chunk. Page views fired before init are dropped rather than queued — losing
+ * chunk. Page views fired before init are dropped rather than queued. Losing
  * the first hit is a better trade than holding a buffer forever.
  */
 
@@ -22,7 +22,7 @@ export async function initAnalytics(): Promise<void> {
       page: window.location.pathname + window.location.search,
     });
   } catch {
-    // Blocked by an extension or offline — analytics is never load-bearing.
+    // Blocked by an extension or offline. Analytics is never load-bearing.
   }
 }
 

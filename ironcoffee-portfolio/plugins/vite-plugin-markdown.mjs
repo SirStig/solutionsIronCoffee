@@ -4,7 +4,7 @@
  * `import post from './hello.md'` yields:
  *   { slug, html, readingTime, excerpt, ...frontmatter }
  *
- * Markdown parsing and syntax highlighting happen here, in Node — the browser
+ * Markdown parsing and syntax highlighting happen here, in Node, so the browser
  * never downloads `marked` or `shiki`. Highlighted code uses CSS variables so a
  * single stylesheet themes both light and dark without re-highlighting.
  */
@@ -200,13 +200,13 @@ export default function markdownPlugin() {
           image({ href, title, text }) {
             // A manifest key (no scheme, no leading slash) gets the same
             // responsive <picture> the project pages render via <Img>. Anything
-            // else — an absolute path, an http(s) URL — passes through as-is.
+            // else, an absolute path or an http(s) URL, passes through as-is.
             const isManifestKey = !/^([a-z]+:)?\//i.test(href);
             const entry = isManifestKey ? readManifest()[href] : undefined;
 
             if (isManifestKey && !entry) {
               console.warn(
-                `[markdown] image "${href}" has no entry in images.json — run \`npm run optimize:media\`.`,
+                `[markdown] image "${href}" has no entry in images.json. Run \`npm run optimize:media\`.`,
               );
             }
 

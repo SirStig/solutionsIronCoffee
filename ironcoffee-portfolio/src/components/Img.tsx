@@ -55,7 +55,7 @@ export default function Img({
   const entry = images[name];
 
   // Pages are prerendered, so an image can finish decoding before React
-  // hydrates — in which case the load event already fired and onLoad never
+  // hydrates, in which case the load event already fired and onLoad never
   // runs, leaving the picture stuck at opacity 0 behind its blur placeholder.
   useEffect(() => {
     if (ref.current?.complete) setLoaded(true);

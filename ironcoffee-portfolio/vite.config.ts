@@ -34,7 +34,7 @@ export default defineConfig({
   },
 
   // The prerender bundle is executed directly by Node as ESM, so everything it
-  // touches has to be bundled in — several dependencies still ship CommonJS and
+  // touches has to be bundled in. Several dependencies still ship CommonJS and
   // would fail on a named import otherwise. This output is temporary and gets
   // deleted once prerendering finishes.
   ssr: {

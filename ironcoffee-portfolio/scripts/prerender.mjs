@@ -45,10 +45,10 @@ async function loadServerBundle() {
  * Maps each route to its lazily-loaded page chunk, plus that chunk's CSS.
  *
  * Without this the browser only discovers a route's chunk after the entry
- * bundle has parsed and React has begun rendering — an extra round trip on
+ * bundle has parsed and React has begun rendering, costing an extra round trip on
  * every page that isn't the home page.
  */
-async function loadChunkHints() {
+async function loadChunkHints(alreadyLinked = new Set()) {
   let manifest;
   try {
     manifest = JSON.parse(
@@ -66,6 +66,9 @@ async function loadChunkHints() {
     '/blog': 'src/pages/Blog.tsx',
     '/about': 'src/pages/About.tsx',
     '/contact': 'src/pages/Contact.tsx',
+    '/services': 'src/pages/Services.tsx',
+    '/templates': 'src/pages/Templates.tsx',
+    '/preview-expired': 'src/pages/PreviewExpired.tsx',
     '/404': 'src/pages/NotFound.tsx',
   };
 
@@ -73,7 +76,40 @@ async function loadChunkHints() {
     if (pageFor[url]) return pageFor[url];
     if (url.startsWith('/work/')) return 'src/pages/ProjectPage.tsx';
     if (url.startsWith('/blog/')) return 'src/pages/BlogPost.tsx';
+    if (url.startsWith('/templates/')) return 'src/pages/TemplateShowcase.tsx';
+    if (url.startsWith('/demo/')) return 'src/pages/Demo.tsx';
     return null;
+  };
+
+  /**
+   * Every stylesheet a chunk needs, including the ones its imports pull in.
+   *
+   * Only walking `chunk.css` misses anything Rollup hoisted into a shared
+   * chunk. The demo templates are exactly that case: their styles are imported
+   * by components under src/demos, which Rollup factors out of the page chunk,
+   * so the page shipped with no stylesheet link at all. The browser then had to
+   * wait for JavaScript to discover the CSS, which meant the page rendered
+   * unstyled first and shifted violently when the styles landed, and rendered
+   * unstyled forever with JavaScript off.
+   */
+  const collect = (key, seen = new Set()) => {
+    if (!key || seen.has(key)) return { css: [], js: [] };
+    seen.add(key);
+
+    const chunk = manifest[key];
+    if (!chunk) return { css: [], js: [] };
+
+    const css = [...(chunk.css ?? [])];
+    const js = [];
+
+    for (const imported of chunk.imports ?? []) {
+      const nested = collect(imported, seen);
+      css.push(...nested.css);
+      if (manifest[imported]?.file) js.push(manifest[imported].file);
+      js.push(...nested.js);
+    }
+
+    return { css, js };
   };
 
   return (url) => {
@@ -81,15 +117,23 @@ async function loadChunkHints() {
     const chunk = key && manifest[key];
     if (!chunk) return '';
 
+    const { css, js } = collect(key);
     const tags = [`<link rel="modulepreload" crossorigin href="/${chunk.file}">`];
-    for (const css of chunk.css ?? []) {
-      tags.push(`<link rel="stylesheet" crossorigin href="/${css}">`);
+
+    for (const file of [...new Set(js)]) {
+      tags.push(`<link rel="modulepreload" crossorigin href="/${file}">`);
+    }
+    for (const file of [...new Set(css)]) {
+      // The shell already links the entry stylesheet; repeating it here would
+      // put the same <link> on every page twice.
+      if (alreadyLinked.has(file)) continue;
+      tags.push(`<link rel="stylesheet" crossorigin href="/${file}">`);
     }
     return tags.join('\n    ');
   };
 }
 
-function buildRoutes({ projects, posts }) {
+function buildRoutes({ projects, posts, previews, showcases }) {
   const staticRoutes = [
     { url: '/', priority: '1.0', changefreq: 'weekly' },
     { url: '/work', priority: '0.9', changefreq: 'weekly' },
@@ -98,6 +142,8 @@ function buildRoutes({ projects, posts }) {
     { url: '/games', priority: '0.7', changefreq: 'monthly' },
     { url: '/blog', priority: '0.8', changefreq: 'weekly' },
     { url: '/about', priority: '0.8', changefreq: 'monthly' },
+    { url: '/services', priority: '0.9', changefreq: 'monthly' },
+    { url: '/templates', priority: '0.9', changefreq: 'monthly' },
     { url: '/contact', priority: '0.6', changefreq: 'yearly' },
   ];
 
@@ -114,6 +160,19 @@ function buildRoutes({ projects, posts }) {
       changefreq: 'yearly',
       lastmod: p.date,
     })),
+    // The gallery samples are public and indexed. They are the sales
+    // collateral, so they belong in search results.
+    ...showcases.map((d) => ({
+      url: `/templates/${d.slug}`,
+      priority: '0.7',
+      changefreq: 'monthly',
+    })),
+    // Previews built for a named business are the opposite: served, but never
+    // listed. The page carries a noindex tag as well, and robots.txt disallows
+    // the whole directory. Three layers, because only one of them is under my
+    // control once a link has been sent.
+    ...previews.map((d) => ({ url: `/demo/${d.slug}`, skipSitemap: true })),
+    { url: '/preview-expired', skipSitemap: true },
     // Rendered so the host can serve a styled 404 instead of a blank shell.
     { url: '/404', skipSitemap: true },
   ];
@@ -180,9 +239,9 @@ function renderRss(posts) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Joshua Kac — Writing</title>
+    <title>Writing by Joshua Kac</title>
     <link>${ORIGIN}/blog</link>
-    <description>Notes on shipping software — mobile, backend, games and the things that went wrong.</description>
+    <description>Notes on shipping software: mobile, backend, games and the things that went wrong.</description>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${ORIGIN}/rss.xml" rel="self" type="application/rss+xml" />
@@ -190,6 +249,55 @@ ${items}
   </channel>
 </rss>
 `;
+}
+
+/**
+ * Checks that every CSS-module class a page renders is actually defined in a
+ * stylesheet that page links.
+ *
+ * This exists because it silently was not. Rollup hoists styles imported by
+ * shared components into a shared chunk, and the hint builder only looked at
+ * the page chunk's own `css` array, so demo pages shipped with no link to their
+ * stylesheet at all. Everything still looked right in a browser, because the
+ * JavaScript eventually pulled the CSS in. The only symptoms were an unstyled
+ * page for anyone without JavaScript and a large layout shift for everyone
+ * else, neither of which any other check here would have caught.
+ */
+async function verifyStyles(pages) {
+  const cache = new Map();
+
+  const cssFor = async (href) => {
+    if (!cache.has(href)) {
+      cache.set(href, await readFile(path.join(OUT, href), 'utf8').catch(() => ''));
+    }
+    return cache.get(href);
+  };
+
+  for (const { url, html } of pages) {
+    const linked = [...html.matchAll(/<link rel="stylesheet"[^>]*href="\/([^"]+)"/g)].map(
+      (m) => m[1]
+    );
+    const sheets = (await Promise.all(linked.map(cssFor))).join('\n');
+
+    // One representative class per module hash is enough; they share a sheet.
+    const used = new Set(
+      [...html.matchAll(/class="([^"]*)"/g)]
+        .flatMap((m) => m[1].split(/\s+/))
+        .filter((c) => /^_[A-Za-z0-9]+_[a-z0-9]{5,}_\d+$/.test(c))
+    );
+
+    const byHash = new Map();
+    for (const cls of used) byHash.set(cls.split('_').at(-2), cls);
+
+    for (const cls of byHash.values()) {
+      if (!sheets.includes(`.${cls}`)) {
+        throw new Error(
+          `${url} renders ${cls} but links no stylesheet defining it. ` +
+            `A shared chunk's CSS is probably missing from the page hints.`
+        );
+      }
+    }
+  }
 }
 
 async function main() {
@@ -205,15 +313,35 @@ async function main() {
     );
   }
 
-  const { render, projects, posts } = await loadServerBundle();
-  const content = { projects, posts };
-  const routes = buildRoutes(content);
-  const hintsFor = await loadChunkHints();
+  const { render, projects, posts, previews, showcases, isExpired, formatExpiry } =
+    await loadServerBundle();
 
+  // A lapsed preview still gets built: the URL was texted to somebody and it
+  // should land on the page that offers to put it back, not on a 404. Say so
+  // out loud though, because a config that has aged out is usually one that
+  // should be deleted along with the photos it borrowed.
+  const lapsed = previews.filter((d) => isExpired(d));
+  for (const demo of lapsed) {
+    console.log(
+      `  note: /demo/${demo.slug} expired on ${formatExpiry(demo)} and now serves the retired-preview page.`
+    );
+  }
+
+  const content = { projects, posts, previews, showcases };
+  const routes = buildRoutes(content);
+  const shellStyles = new Set(
+    [...template.matchAll(/<link rel="stylesheet"[^>]*href="\/([^"]+)"/g)].map(
+      (m) => m[1]
+    )
+  );
+  const hintsFor = await loadChunkHints(shellStyles);
+
+  const written = [];
   let count = 0;
   for (const route of routes) {
     const rendered = await render(route.url);
     const page = composePage(template, rendered, hintsFor(route.url));
+    written.push({ url: route.url, html: page });
 
     // `/work/beyond25` → build/work/beyond25/index.html, so the host serves it
     // at the clean URL with no rewrite rule.
@@ -230,6 +358,8 @@ async function main() {
     await readFile(path.join(OUT, '404/index.html'), 'utf8')
   );
 
+  await verifyStyles(written);
+
   await writeFile(path.join(OUT, 'sitemap.xml'), renderSitemap(routes));
   await writeFile(path.join(OUT, 'rss.xml'), renderRss(content.posts));
 
@@ -238,7 +368,9 @@ async function main() {
   await rm(path.join(OUT, '.vite'), { recursive: true, force: true });
 
   console.log(
-    `Prerendered ${count} routes, ${content.posts.length} posts in the feed.`
+    `Prerendered ${count} routes, ${content.posts.length} posts in the feed, ` +
+      `${showcases.length} gallery samples and ${previews.length} previews ` +
+      `(${lapsed.length} expired).`
   );
 }
 

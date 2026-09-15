@@ -10,7 +10,7 @@
 
 /* <picture> is an inline box by default, so `height: 100%` on the <img> would
    resolve against nothing and the image would overflow the frame and simply be
-   clipped — object-fit never getting a constrained box to work with. */
+   clipped, with object-fit never getting a constrained box to work with. */
 .frame picture {
   display: block;
   width: 100%;
@@ -23,7 +23,7 @@
   object-fit: cover;
 }
 
-/* Letterboxed: the whole image is visible, centred over a blurred enlargement
+/* Letterboxed: the whole image is visible, centered over a blurred enlargement
    of itself. Used for tall phone screenshots, which a wide card would
    otherwise crop to an unreadable sliver. */
 .contain {

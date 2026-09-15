@@ -14,9 +14,9 @@ import {
  * DOM away to re-render the whole route on the client.
  *
  * Whether that happens is a race. On a cold load the modulepreload the
- * prerenderer injects usually wins, and it looks fine. On a warm cache — the
- * common case, where the entry bundle is cached but this route's chunk isn't —
- * React reaches hydration first and the page is rebuilt from scratch.
+ * prerenderer injects usually wins, and it looks fine. On a warm cache, which
+ * is the common case, the entry bundle is cached but this route's chunk is not,
+ * React reaches hydration first, and the page is rebuilt from scratch.
  *
  * `route()` removes the race: after `preload()` resolves, the wrapper renders
  * the real component synchronously and never suspends. `lazy` still backs
@@ -55,10 +55,21 @@ export const Blog = route(() => import('./pages/Blog'));
 export const BlogPost = route(() => import('./pages/BlogPost'));
 export const About = route(() => import('./pages/About'));
 export const Contact = route(() => import('./pages/Contact'));
+export const Services = route(() => import('./pages/Services'));
+export const Templates = route(() => import('./pages/Templates'));
+export const TemplateShowcase = route(
+  () => import('./pages/TemplateShowcase')
+);
+export const Demo = route(() => import('./pages/Demo'));
+export const PreviewExpired = route(() => import('./pages/PreviewExpired'));
 export const NotFound = route(() => import('./pages/NotFound'));
 
 /** First match wins, so more specific patterns come first. */
 const matchers: [RegExp, RouteComponent][] = [
+  [/^\/demo\/[^/]+$/, Demo],
+  [/^\/templates\/[^/]+$/, TemplateShowcase],
+  [/^\/templates\/?$/, Templates],
+  [/^\/preview-expired\/?$/, PreviewExpired],
   [/^\/work\/[^/]+$/, ProjectPage],
   [/^\/portfolio\/[^/]+$/, ProjectPage],
   [/^\/work\/?$/, Work],
@@ -69,7 +80,7 @@ const matchers: [RegExp, RouteComponent][] = [
   [/^\/blog\/[^/]+$/, BlogPost],
   [/^\/blog\/?$/, Blog],
   [/^\/about\/?$/, About],
-  [/^\/services\/?$/, About],
+  [/^\/services\/?$/, Services],
   [/^\/contact\/?$/, Contact],
 ];
 
@@ -82,6 +93,6 @@ export function preloadRoute(pathname: string): Promise<unknown> {
 
   const match = matchers.find(([pattern]) => pattern.test(pathname));
   return (match ? match[1] : NotFound).preload().catch(() => {
-    // A failed preload isn't fatal — Suspense retries during render.
+    // A failed preload isn't fatal. Suspense retries during render.
   });
 }

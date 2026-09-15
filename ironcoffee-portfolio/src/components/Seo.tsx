@@ -16,6 +16,11 @@ export interface SeoProps {
   tags?: readonly string[];
   /** Keeps a page out of the index (404, thank-you pages). */
   noindex?: boolean;
+  /**
+   * Also tells crawlers not to follow links off the page. Demo previews set
+   * this so a business photo album never becomes a path into anything else.
+   */
+  nofollow?: boolean;
   /** Extra schema.org graph nodes merged into the page's JSON-LD. */
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
@@ -32,9 +37,10 @@ export default function Seo({
   modifiedTime,
   tags,
   noindex = false,
+  nofollow = false,
   jsonLd,
 }: SeoProps) {
-  const fullTitle = title ? `${title} — ${site.name}` : site.title;
+  const fullTitle = title ? `${title} | ${site.name}` : site.title;
   const url = abs(path);
   const imageUrl = abs(image);
 
@@ -46,7 +52,10 @@ export default function Seo({
       <meta name="description" content={description} />
       <link rel="canonical" href={url} />
       {noindex ? (
-        <meta name="robots" content="noindex, follow" />
+        <meta
+          name="robots"
+          content={`noindex, ${nofollow ? 'nofollow' : 'follow'}, noarchive`}
+        />
       ) : (
         <meta
           name="robots"

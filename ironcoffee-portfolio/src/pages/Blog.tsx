@@ -7,7 +7,7 @@ import styles from './Blog.module.css';
 export default function Blog() {
   const schema = {
     '@type': 'Blog',
-    name: `${site.name} — Writing`,
+    name: `Writing by ${site.name}`,
     url: `${site.url}/blog`,
     author: { '@type': 'Person', name: site.name, url: site.url },
     blogPost: posts.map((p) => ({
@@ -22,7 +22,7 @@ export default function Blog() {
     <>
       <Seo
         title="Writing"
-        description="Notes on shipping software — mobile, backend, games and the things that went wrong."
+        description="Notes on shipping software: mobile, backend, games and the things that went wrong."
         path="/blog"
         jsonLd={schema}
       />

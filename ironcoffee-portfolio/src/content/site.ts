@@ -9,7 +9,7 @@ export const site = {
   company: 'IronCoffee LLC',
 
   /** Used verbatim as the <title> suffix and in structured data. */
-  title: 'Joshua Kac — Software Engineer',
+  title: 'Joshua Kac, Software Engineer',
   role: 'Software engineer',
 
   /** One sentence. Shows up in search results, link previews and the footer. */

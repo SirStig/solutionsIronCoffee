@@ -1,5 +1,5 @@
 /* ============================================================================
-   Design tokens. One source of truth for colour, type, space and motion.
+   Design tokens. One source of truth for color, type, space and motion.
    Light is the base; dark overrides only what changes.
    ========================================================================= */
 
@@ -14,10 +14,29 @@
     U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Metric-matched stand-in for Inter, used for the handful of milliseconds
+   before the real font arrives.
+ *
+ * Without it, text first paints in the system sans, then reflows when Inter
+ * swaps in. A block of small text near the top of the page can change line
+ * count doing that and shove the whole document down, which is a large layout
+ * shift measured against a mostly-empty viewport. The overrides below scale a
+ * local face to Inter's own metrics so the wrap points match and the swap is
+ * invisible.
+ */
+@font-face {
+  font-family: 'Inter fallback';
+  src: local('Helvetica Neue'), local('Helvetica'), local('Arial');
+  size-adjust: 107%;
+  ascent-override: 90%;
+  descent-override: 22.43%;
+  line-gap-override: 0%;
+}
+
 :root {
   /* --- Type ------------------------------------------------------------- */
-  --font-sans: 'Inter var', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: 'Inter var', 'Inter fallback', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas,
     'Liberation Mono', monospace;
 
@@ -72,7 +91,7 @@
   --dur: 220ms;
   --dur-slow: 420ms;
 
-  /* --- Colour: light ---------------------------------------------------- */
+  /* --- Color: light ---------------------------------------------------- */
   color-scheme: light;
 
   --bg: #fbfaf9;
@@ -87,7 +106,7 @@
   --border: #e5e1dc;
   --border-strong: #d3cec8;
 
-  /* Copper — the IronCoffee accent. */
+  /* Copper, the IronCoffee accent. */
   --accent: #b4530a;
   --accent-hover: #8f4108;
   --accent-contrast: #ffffff;

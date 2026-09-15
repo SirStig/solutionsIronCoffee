@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
+# Previews are built for one business to look at, not for the open web. The
+# pages carry a noindex tag as well; this is the layer that stops a crawler
+# fetching them in the first place.
+Disallow: /demo/
+Disallow: /preview-expired
+
 Sitemap: https://solutions.ironcoffee.com/sitemap.xml

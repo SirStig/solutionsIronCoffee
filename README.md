@@ -1,6 +1,6 @@
 # solutions.ironcoffee.com
 
-Personal site for Joshua Kac — work, writing, and a way to get in touch.
+Personal site for Joshua Kac: work, writing, and a way to get in touch.
 
 React 18 + TypeScript, built with Vite, prerendered to static HTML, deployed to
 Dreamhost as plain files.
@@ -19,7 +19,7 @@ npm run dev          # http://localhost:5173
 | --- | --- |
 | `npm run dev` | Vite dev server. Regenerates images first if needed. |
 | `npm run build` | Optimises media → client build → SSR build → prerender. Output in `build/`. |
-| `npm run serve` | Serves `build/` the way Apache does. **Use this, not `vite preview`** — see below. |
+| `npm run serve` | Serves `build/` the way Apache does. **Use this, not `vite preview`**. See below. |
 | `npm test` | Vitest. |
 | `npm run typecheck` | `tsc --noEmit`. |
 | `npm run optimize:media` | Rebuilds `public/img/` from `assets/images/`. Cached; only changed files are re-encoded. |
@@ -35,16 +35,16 @@ npm run dev          # http://localhost:5173
 
 **Content is data.** Three files, and nothing else needs touching to publish:
 
-- `src/content/site.ts` — name, bio, socials, nav.
-- `src/content/projects.ts` — every project. Copy rules are documented at the
+- `src/content/site.ts` holds name, bio, socials and nav.
+- `src/content/projects.ts` holds every project. Copy rules are documented at the
   top of the file; they exist to stop it bloating again.
-- `src/content/blog/*.md` — one file per post. Drop it in and it appears in the
+- `src/content/blog/*.md` is one file per post. Drop it in and it appears in the
   index, the sitemap and the RSS feed.
 
 **Markdown is compiled at build time.** `plugins/vite-plugin-markdown.mjs` turns
 each `.md` into a plain object, running Marked and Shiki in Node so neither
 reaches the browser. Importing `./post.md?meta` gives everything except the
-rendered HTML — index pages use that variant so post bodies ship with the post's
+rendered HTML, and index pages use that variant so post bodies ship with the post's
 own chunk instead of the entry bundle.
 
 **Every route is prerendered.** `scripts/prerender.mjs` renders each URL to real
@@ -69,7 +69,7 @@ only what changes. There is no CSS-in-JS and no component library.
 
 ## Adding things
 
-**A blog post** — create `src/content/blog/my-post.md`:
+**A blog post.** Create `src/content/blog/my-post.md`:
 
 ```markdown
 ---
@@ -84,21 +84,37 @@ Body goes here.
 
 Drafts are visible in dev and excluded from production builds.
 
-**A project** — add an entry to `src/content/projects.ts`, put its screenshots in
+**A project.** Add an entry to `src/content/projects.ts`, put its screenshots in
 `assets/images/projects/<slug>/`, and run `npm run optimize:media`. Set
 `categories` to control which hub pages it appears on, and `weight` to control
 ordering. Tests will fail if an image key doesn't resolve or the copy limits are
 exceeded.
 
-**Photos of Joshua** — replace `assets/images/profile.JPEG` and re-run
+**A client demo.** Write `ironcoffee-portfolio/src/demos/configs/<slug>.ts`,
+import it in `src/demos/index.ts`, drop photos in
+`assets/images/demos/<slug>/`, and build. That is the whole job; no component
+should need touching. The page appears at `/demo/<slug>`, is noindexed, and
+retires itself 60 days after `createdAt`.
+
+To serve it at `<slug>.ironcoffee.com`, add the subdomain in the Dreamhost panel
+pointing at the same directory and issue its certificate. `.htaccess` already
+maps any non-reserved subdomain to `/demo/<label>/` and returns 404 for a
+subdomain with no demo behind it, so an unknown name never falls through to the
+portfolio.
+
+Photos are optional to start with. Any image key the optimizer has not seen
+renders a gradient built from the business's own brand colors, so the config
+can be written and reviewed first.
+
+**Photos of Joshua.** Replace `assets/images/profile.JPEG` and re-run
 `npm run optimize:media`. Anything roughly square at 1200px or wider works; it is
 rendered as a circle at 112px on the home page and 88–112px on About, so the
-crop wants the face centred.
+crop wants the face centered.
 
 ## Deploying
 
 `npm run build`, then upload the contents of `build/` to the Dreamhost web root.
-`.htaccess` must go up too — enable hidden files in your SFTP client. It handles
+`.htaccess` must go up too, so enable hidden files in your SFTP client. It handles
 HTTPS, the `www` redirect, `/portfolio/*` → `/work/*` moves from the old site,
 clean URLs, caching (immutable for hashed assets, revalidate for HTML) and the
 security headers.
@@ -107,7 +123,7 @@ security headers.
 
 ## Environment
 
-All optional — the site builds and runs without any of them.
+All optional. The site builds and runs without any of them.
 
 | Variable | Used for |
 | --- | --- |

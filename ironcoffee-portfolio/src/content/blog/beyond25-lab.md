@@ -18,22 +18,22 @@ playlist, see if it felt better. That works right up until it doesn't, which is
 roughly the point where you have a dozen steps and no idea which one is eating
 your time.
 
-So I built the Lab. It's admin-only — nobody else sees it, and it isn't a
+So I built the Lab. It's admin-only. Nobody else sees it, and it isn't a
 product feature. It's a test harness.
 
 ## What it actually does
 
 The Lab lets me create profiles, and a profile can override *every single*
 model slot in the pipeline independently. Chat naming, research synthesis,
-image generation, voice, cover art, the NSFW check, curation — all of it,
-per profile. They run through Gemini and OpenRouter, so in practice I can point
+image generation, voice, cover art, the NSFW check, curation, all of
+it, per profile. They run through Gemini and OpenRouter, so in practice I can point
 any slot at almost any model I want.
 
 Then it instruments the whole run. Every tool call, every credit charged, every
 fraction of a cent of provider cost, every step's duration. A run comes out as
 a report I can actually read instead of a vibe, and the spend gets attributed
 two ways: by model, and by job. By model tells me what I paid each provider.
-By job tells me *which part of the pipeline* caused it — curation, chat title,
+By job tells me *which part of the pipeline* caused it: curation, chat title,
 liner notes, research synthesis. Those two views disagree more often than you'd
 think, and the disagreement is usually the interesting part. A model that looks
 expensive by model is frequently just one that ran seven times instead of four.
@@ -58,7 +58,7 @@ that round of work, three hundred queries finish in about five seconds, and a
 normal-sized research pass is close to instant.
 
 There was also a cap in synthesis quietly dropping research before the model
-ever saw it — so I was paying to gather information and then throwing part of
+ever saw it, so I was paying to gather information and then throwing part of
 it away. That one only showed up because the Lab counts what goes in against
 what comes out.
 
@@ -68,7 +68,7 @@ keyword check that drops articles containing blocked words before they reach
 synthesis.
 
 My favorite failure was a language one. Someone asked for songs in Arabic, and
-somewhere in the chain the query collapsed to "essentials" — which duly
+somewhere in the chain the query collapsed to "essentials", which duly
 returned essential oils and the Essential Phone. No music anywhere. It's a
 funny bug, but the only reason I found it is that the Lab shows me the actual
 queries that went out, not just the playlist that came back.
@@ -82,12 +82,12 @@ and it often does worse for reasons that have nothing to do with the model. So
 a lot of this has been rewriting prompts to be less dependent on one model's
 habits, then re-running the comparison.
 
-It's worth doing because of what it costs. Right now a normal-sized playlist —
-research, synthesis, resolution, artwork, everything from start to finish —
+It's worth doing because of what it costs. Right now a normal-sized playlist, counting
+research, synthesis, resolution and artwork from start to finish,
 costs me about two cents in AI. There's a model I'm testing that does the same
 work for around a quarter of a cent. That's roughly eight times cheaper.
 
-Here's one pair from a recent head-to-head, both given the same brief — forty
+Here's one pair from a recent head-to-head, both given the same brief of forty
 songs, pop:
 
 | Profile | Time | Cost |
@@ -105,7 +105,7 @@ The by-job breakdown is where it gets interesting:
 | Curation | 4 model calls | 7 model calls |
 
 Research synthesis is the model call that reads what the search pass
-gathered, not the gathering itself — nearly 10x faster on the candidate.
+gathered, not the gathering itself, and nearly 10x faster on the candidate.
 Curation went the other way, with the candidate making more calls than live,
 and it was *still* far cheaper overall.
 
@@ -119,7 +119,7 @@ purpose.
 
 The honest number from the last thirty days: 65 runs across 9 profiles and 13
 different prompts, and only 68% of them produced a playlist at all. Just two
-of those actually errored — the rest completed and simply never delivered,
+of those actually errored. The rest completed and simply never delivered,
 usually because I'd pointed a slot at a model that couldn't hold the tool
 contract. Most configurations you try are bad. That's fine. That is precisely the
 failure I want happening in the Lab rather than in someone's app, and the
@@ -130,7 +130,7 @@ entire month of finding out cost me about twenty-seven cents in API spend.
 ## Why cost is a user-facing feature
 
 None of this is cost-cutting for its own sake. Every user gets some free usage
-each month, and free usage is a real bill I pay — so a cheaper chain means I
+each month, and free usage is a real bill I pay, so a cheaper chain means I
 can be more generous without it hurting, and I keep more of what paying users
 spend. It only works in the other direction if the app stays fast and the
 playlists stay good. Cheap and slow, or cheap and mediocre, just loses people.
@@ -143,20 +143,20 @@ visible next to each other instead of one at a time.
 Alongside all of that, most of my recent work has been on retention. The last
 update stripped a lot out of onboarding, rebuilt a good chunk of the UI, and
 shipped a native macOS version, which I think is the nicest the app has ever
-looked. Canvas got simplified too — it used to take some explaining, and now it
+looked. Canvas got simplified too. It used to take some explaining, and now it
 mostly doesn't.
 
 The billing side is changing with the next update. Free used to be fifty
 credits once and then nothing; it's now a recurring monthly allowance, so
 someone who just wants to build the occasional playlist can keep doing that
 indefinitely. There's a new Plus tier, cheaper than the existing subscription
-with fewer credits, and some things are now gated that weren't before —
+with fewer credits, and some things are now gated that weren't before:
 research mode, voice chat, and heavy mode. Those are the expensive ones,
 particularly voice, and they're also the ones you can happily never touch and
 still get the thing you came for.
 
 I've tried to keep the paywalls quiet about it. An upgrade button where it's
-relevant, a nudge, and that's it — no interruptions, no modal every third tap.
+relevant, a nudge, and that's it. No interruptions, no modal every third tap.
 I'd rather someone use the free tier for a year and like the app than get
 squeezed in week one. It does have to make money. It doesn't have to be
 annoying about it.

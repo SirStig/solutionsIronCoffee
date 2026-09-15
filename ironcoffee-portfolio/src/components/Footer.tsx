@@ -21,6 +21,10 @@ export default function Footer() {
               </Link>
             ))}
             <Link to="/contact">Contact</Link>
+            {/* Small business work. Reachable, but not competing with the
+                engineering story in the main navigation. */}
+            <Link to="/templates">Sample sites</Link>
+            <Link to="/services">Pricing</Link>
             <a href="/rss.xml">RSS</a>
           </nav>
         </div>

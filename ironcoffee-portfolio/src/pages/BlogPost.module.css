@@ -54,7 +54,7 @@
 }
 
 /* ==========================================================================
-   Prose — styles for the HTML the markdown plugin emits.
+   Prose: styles for the HTML the markdown plugin emits.
    ======================================================================== */
 .prose {
   font-size: var(--text-lg);
@@ -147,7 +147,7 @@
   overflow: hidden;
   background-size: cover;
   background-position: center;
-  /* max-width is set inline per image, to the source's native pixel width —
+  /* max-width is set inline per image, to the source's native pixel width,
      stops a narrow screenshot from being upscaled past its real resolution. */
   margin-inline: auto;
 }
@@ -217,7 +217,7 @@
   font-size: var(--text-sm);
   line-height: 1.65;
   /* Shiki only writes custom properties inline (--s-light / --s-dark per
-     token), never a colour, so plain declarations here are enough. */
+     token), never a color, so plain declarations here are enough. */
   background: var(--bg-subtle);
   color: var(--s-light);
 }

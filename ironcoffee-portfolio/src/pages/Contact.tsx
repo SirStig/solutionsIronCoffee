@@ -55,7 +55,7 @@ export default function Contact() {
     <>
       <Seo
         title="Contact"
-        description={`Get in touch with Joshua Kac — available for contract work and engineering roles. ${site.email}`}
+        description={`Get in touch with Joshua Kac, available for contract work and engineering roles. ${site.email}`}
         path="/contact"
       />
 
@@ -97,7 +97,7 @@ export default function Contact() {
               <textarea name="message" rows={6} required />
             </label>
 
-            {/* Honeypot — hidden from people, irresistible to bots. */}
+            {/* Honeypot: hidden from people, irresistible to bots. */}
             <label className={styles.honeypot} aria-hidden="true">
               Company
               <input type="text" name="company" tabIndex={-1} autoComplete="off" />
@@ -118,7 +118,7 @@ export default function Contact() {
                 aria-live="polite"
                 data-state={state}
               >
-                {state === 'sent' && 'Thanks — I’ll get back to you shortly.'}
+                {state === 'sent' && 'Thanks, I’ll get back to you shortly.'}
                 {state === 'error' && error}
               </p>
             </div>

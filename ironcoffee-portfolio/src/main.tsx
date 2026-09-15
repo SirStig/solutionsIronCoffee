@@ -23,7 +23,7 @@ const tree = (
 //
 // Hydration waits for the current route's chunk. If React reaches the Suspense
 // boundary before the chunk lands it renders the fallback, finds markup that
-// doesn't match the prerendered HTML, and rebuilds the page from scratch — which
+// doesn't match the prerendered HTML, and rebuilds the page from scratch. That
 // happens reliably on a warm cache. The modulepreload the prerenderer injects
 // means this wait is usually already over by the time we get here.
 if (container.hasChildNodes()) {

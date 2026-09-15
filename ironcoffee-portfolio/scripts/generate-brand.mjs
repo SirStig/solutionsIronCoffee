@@ -1,7 +1,7 @@
 /**
  * Generates the favicon set and the Open Graph share image from vector source.
  *
- * The previous favicon.svg was a 1080px PNG base64'd inside an <svg> wrapper —
+ * The previous favicon.svg was a 1080px PNG base64'd inside an <svg> wrapper,
  * 836KB for a 16px icon. Everything here is real vector, rasterised only where
  * a format demands it.
  *
@@ -49,7 +49,7 @@ const ogImage = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="63
         font-size="36" font-weight="500" fill="${COPPER}">Software engineer</text>
 
   <text x="96" y="470" font-family="Inter, Helvetica, Arial, sans-serif"
-        font-size="28" font-weight="400" fill="${MUTED}">Backend, mobile, web — shipped end to end.</text>
+        font-size="28" font-weight="400" fill="${MUTED}">Backend, mobile, web. Shipped end to end.</text>
 
   <text x="96" y="556" font-family="Inter, Helvetica, Arial, sans-serif"
         font-size="24" font-weight="500" fill="#7a736e">solutions.ironcoffee.com</text>
@@ -82,7 +82,7 @@ async function main() {
     .toFile(path.join(PUBLIC, 'favicon.ico'));
 
   // Rendered at 2x then downsampled so the type edges stay crisp, and
-  // palettised because the image is a handful of flat colours.
+  // palettized because the image is a handful of flat colors.
   await sharp(Buffer.from(ogImage), { density: 144 })
     .resize(1200, 630)
     .png({ compressionLevel: 9, palette: true, quality: 90 })

@@ -29,7 +29,7 @@ function resolve(source: LiveVersion): {
 /**
  * Shows the current published version, fetched client-side.
  *
- * Renders nothing until the request succeeds — a hardcoded version number on a
+ * Renders nothing until the request succeeds. A hardcoded version number on a
  * portfolio goes stale and quietly starts lying. If the registry is down,
  * rate-limited or blocked, the badge simply does not appear.
  */
@@ -47,7 +47,7 @@ export default function LiveVersionBadge({ source }: { source: LiveVersion }) {
         if (found) setVersion(found.replace(/^v/, ''));
       })
       .catch(() => {
-        /* Offline or rate-limited — leave the badge off. */
+        /* Offline or rate-limited. Leave the badge off. */
       });
 
     return () => controller.abort();

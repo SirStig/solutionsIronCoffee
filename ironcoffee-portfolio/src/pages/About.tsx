@@ -14,7 +14,7 @@ export default function About() {
     <>
       <Seo
         title="About"
-        description="Joshua Kac — self-taught software engineer, founder of IronCoffee LLC. Builds apps end to end across backend, mobile, web and infrastructure."
+        description="Joshua Kac is a self-taught software engineer and the founder of IronCoffee LLC, building apps end to end across backend, mobile, web and infrastructure."
         path="/about"
       />
 

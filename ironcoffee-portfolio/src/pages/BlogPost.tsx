@@ -65,7 +65,7 @@ export default function BlogPost() {
         </header>
 
         {/* Markdown is compiled and sanitised at build time from files in this
-            repo — there is no user-supplied content path into this. */}
+            repo, so there is no user-supplied content path into this. */}
         <div
           className={styles.prose}
           dangerouslySetInnerHTML={{ __html: post.html }}

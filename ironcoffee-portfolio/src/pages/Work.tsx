@@ -6,7 +6,7 @@ import { allProjects, type Category } from '../content/projects';
 import styles from './Work.module.css';
 
 /**
- * Work is the union of every category, so it groups rather than listing flat —
+ * Work is the union of every category, so it groups rather than listing flat.
  * otherwise a library sitting next to an app reads as miscategorised.
  *
  * A project's first category is its primary one, which keeps anything tagged
@@ -30,7 +30,7 @@ export default function Work() {
     <>
       <Seo
         title="Work"
-        description="Projects by Joshua Kac — apps, open-source libraries, games and client work."
+        description="Projects by Joshua Kac: apps, open-source libraries, games and client work."
         path="/work"
       />
 

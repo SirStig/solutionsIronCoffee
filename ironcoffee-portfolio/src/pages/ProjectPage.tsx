@@ -77,7 +77,7 @@ export default function ProjectPage() {
 
         <Img
           name={project.image}
-          alt={`${project.name} — ${project.tagline}`}
+          alt={`${project.name}: ${project.tagline}`}
           className={styles.hero}
           aspectRatio="16 / 10"
           sizes="(min-width: 800px) 46rem, 100vw"

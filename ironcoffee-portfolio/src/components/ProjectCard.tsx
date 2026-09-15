@@ -37,7 +37,7 @@ export default function ProjectCard({
       <Link to={to} className={styles.link}>
         <Img
           name={project.image}
-          alt={`${project.name} — ${project.tagline}`}
+          alt={`${project.name}: ${project.tagline}`}
           className={styles.image}
           aspectRatio="16 / 10"
           sizes="(min-width: 900px) 34rem, 100vw"
