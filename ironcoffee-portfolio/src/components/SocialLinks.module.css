@@ -30,13 +30,13 @@
   transform: translateY(-2px);
 }
 
-/* --- Labelled cards ----------------------------------------------------- */
-.labelled {
+/* --- Labeled cards ----------------------------------------------------- */
+.labeled {
   flex-direction: column;
   gap: var(--space-2);
 }
 
-.labelled .link {
+.labeled .link {
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -51,7 +51,7 @@
     color var(--dur-fast) var(--ease);
 }
 
-.labelled .link:hover {
+.labeled .link:hover {
   border-color: var(--border-strong);
   background: var(--surface-hover);
   color: var(--text);
@@ -78,12 +78,12 @@
 }
 
 @media (min-width: 640px) {
-  .labelled {
+  .labeled {
     flex-direction: row;
     flex-wrap: wrap;
   }
 
-  .labelled > li {
+  .labeled > li {
     flex: 1 1 14rem;
   }
 }

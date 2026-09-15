@@ -68,7 +68,7 @@ export default function Contact() {
           </p>
         </header>
 
-        <SocialLinks variant="labelled" className={styles.socials} />
+        <SocialLinks variant="labeled" className={styles.socials} />
 
         {emailjsConfigured ? (
           <form className={styles.form} onSubmit={onSubmit} noValidate={false}>

@@ -137,7 +137,7 @@ export default function About() {
             Open to contract work and engineering roles. The fastest way to
             reach me is email.
           </p>
-          <SocialLinks variant="labelled" />
+          <SocialLinks variant="labeled" />
           <p className={styles.resume}>
             <a href={`mailto:${site.email}`}>{site.email}</a>
           </p>

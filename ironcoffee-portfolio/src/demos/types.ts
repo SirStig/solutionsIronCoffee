@@ -150,7 +150,7 @@ export interface DemoConfig {
 
   /**
    * Set on the fictional businesses in the public gallery. A showcase renders
-   * at `/templates/<slug>`, is indexed, never expires, and is labelled as a
+   * at `/templates/<slug>`, is indexed, never expires, and is labeled as a
    * demonstration rather than as a preview built for a real owner.
    */
   showcase?: boolean;

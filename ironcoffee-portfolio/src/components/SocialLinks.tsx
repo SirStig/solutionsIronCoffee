@@ -5,8 +5,8 @@ import styles from './SocialLinks.module.css';
 const icons = { github: Github, linkedin: Linkedin, mail: Mail } as const;
 
 interface Props {
-  /** `icons` is a compact row; `labelled` shows the handle beside each icon. */
-  variant?: 'icons' | 'labelled';
+  /** `icons` is a compact row; `labeled` shows the handle beside each icon. */
+  variant?: 'icons' | 'labeled';
   className?: string;
 }
 
@@ -31,8 +31,8 @@ export default function SocialLinks({ variant = 'icons', className }: Props) {
                 ? { target: '_blank', rel: 'me noopener noreferrer' }
                 : {})}
             >
-              <Icon size={variant === 'labelled' ? 18 : 20} aria-hidden />
-              {variant === 'labelled' && (
+              <Icon size={variant === 'labeled' ? 18 : 20} aria-hidden />
+              {variant === 'labeled' && (
                 <span className={styles.text}>
                   <span className={styles.label}>{social.label}</span>
                   <span className={styles.handle}>{social.handle}</span>

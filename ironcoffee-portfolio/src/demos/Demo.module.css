@@ -822,12 +822,15 @@
   text-align: center;
 }
 
+/* A circle reads as a portrait frame whether it holds a photograph or a set of
+   initials, which keeps a team section from looking unfinished on a business
+   that has not sent headshots yet. */
 .teamPhoto {
-  width: 100%;
+  width: min(160px, 60%);
   aspect-ratio: 1;
-  border-radius: var(--d-radius-lg);
+  border-radius: 50%;
   overflow: hidden;
-  margin-bottom: 1rem;
+  margin: 0 auto 1.1rem;
   background: var(--d-bg-alt);
 }
 

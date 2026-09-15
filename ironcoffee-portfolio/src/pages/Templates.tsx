@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import Seo from '../components/Seo';
 import { showcases } from '../demos';
 import { TEMPLATE_BLURBS } from '../demos/templates';
+import DemoImage from '../demos/components/DemoImage';
 import { initials } from '../demos/components/DemoNav';
 import styles from './Templates.module.css';
 
@@ -43,16 +44,17 @@ export default function Templates() {
               to={`/templates/${demo.slug}`}
               className={styles.card}
             >
-              <div
-                className={styles.swatch}
-                style={{
-                  background: `linear-gradient(135deg, ${demo.brand.secondary} 0%, ${demo.brand.primary} 65%, ${demo.brand.accent} 140%)`,
-                }}
-              >
-                <span className={styles.swatchGlow} aria-hidden="true" />
-                <span className={styles.swatchMark}>
-                  {initials(demo.business.name)}
-                </span>
+              {/* The sample's own hero shot. <DemoImage> falls back to a
+                  gradient built from the brand colours for any sample whose
+                  photography has not been gathered yet, so a new card never
+                  lands in the gallery as a broken frame. */}
+              <div className={styles.swatch}>
+                <DemoImage
+                  name={demo.hero.image}
+                  alt={`${demo.business.name} sample site`}
+                  mark={initials(demo.business.name)}
+                  sizes="(min-width: 640px) 34vw, 100vw"
+                />
               </div>
 
               <div className={styles.body}>

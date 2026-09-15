@@ -88,7 +88,7 @@ const franktownDental: DemoConfig = {
       name: 'Dr. Alison Park, DDS',
       role: 'General dentist · Owner',
       image: 'demos/franktown-family-dental/dr-park',
-      bio: 'University of Colorado School of Dental Medicine. Practising in Douglas County since 2012, and the person you will actually see at your appointment.',
+      bio: 'University of Colorado School of Dental Medicine. Practicing in Douglas County since 2012, and the person you will actually see at your appointment.',
     },
     {
       name: 'Dr. Ben Whitaker, DMD',
