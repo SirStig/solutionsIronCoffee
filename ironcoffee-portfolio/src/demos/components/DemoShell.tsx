@@ -26,11 +26,14 @@ export default function DemoShell({
   links,
   children,
   navVariant = 'default',
+  subPage = false,
 }: {
   config: DemoConfig;
   links: NavLink[];
   children: ReactNode;
   navVariant?: 'default' | 'centered';
+  /** True on an interior page, where the home page's anchors are absent. */
+  subPage?: boolean;
 }) {
   const { business, brand } = config;
   const showcase = Boolean(config.showcase);
@@ -71,7 +74,12 @@ export default function DemoShell({
         </p>
       </div>
 
-      <DemoNav config={config} links={links} variant={navVariant} />
+      <DemoNav
+        config={config}
+        links={links}
+        variant={navVariant}
+        subPage={subPage}
+      />
 
       <main>{children}</main>
 
@@ -168,7 +176,7 @@ export default function DemoShell({
         </div>
       </div>
 
-      <CallBar config={config} />
+      <CallBar config={config} subPage={subPage} />
     </div>
   );
 }

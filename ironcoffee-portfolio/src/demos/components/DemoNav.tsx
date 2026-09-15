@@ -53,13 +53,28 @@ export default function DemoNav({
   config,
   links,
   variant = 'default',
+  subPage = false,
 }: {
   config: DemoConfig;
   links: NavLink[];
   /** 'centered' stacks the name over the links, which reads calmer. */
   variant?: 'default' | 'centered';
+  /** On an interior page the home page's anchors do not exist here. */
+  subPage?: boolean;
 }) {
   const { business, brand, hero } = config;
+  const base = config.showcase
+    ? `/templates/${config.slug}`
+    : `/demo/${config.slug}`;
+
+  // An interior page has no #menu or #quote to scroll to, so a bare anchor has
+  // to become a link back to the home page that does.
+  const brandHref = subPage ? base : '#top';
+  const ctaHref = hero.ctaHref.startsWith('#')
+    ? subPage
+      ? `${base}${hero.ctaHref}`
+      : hero.ctaHref
+    : hero.ctaHref;
 
   return (
     <header
@@ -68,7 +83,7 @@ export default function DemoNav({
         .join(' ')}
     >
       <div className={styles.navInner}>
-        <a className={styles.navBrand} href="#top">
+        <a className={styles.navBrand} href={brandHref}>
           {brand.logo ? (
             <div className={styles.navLogo}>
               <DemoImage
@@ -115,7 +130,7 @@ export default function DemoNav({
           </a>
         )}
 
-        <Cta href={hero.ctaHref} className={styles.navCta}>
+        <Cta href={ctaHref} className={styles.navCta}>
           {hero.ctaLabel}
         </Cta>
       </div>

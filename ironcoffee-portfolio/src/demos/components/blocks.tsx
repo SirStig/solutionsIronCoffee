@@ -572,8 +572,21 @@ export function VisitBlock({ config }: { config: DemoConfig }) {
 
 /* --- Sticky mobile action bar ------------------------------------------- */
 
-export function CallBar({ config }: { config: DemoConfig }) {
+export function CallBar({
+  config,
+  subPage = false,
+}: {
+  config: DemoConfig;
+  subPage?: boolean;
+}) {
   const { business, hero } = config;
+  const base = config.showcase
+    ? `/templates/${config.slug}`
+    : `/demo/${config.slug}`;
+  const ctaHref =
+    subPage && hero.ctaHref.startsWith('#')
+      ? `${base}${hero.ctaHref}`
+      : hero.ctaHref;
 
   return (
     <div className={styles.callBar}>
@@ -585,7 +598,7 @@ export function CallBar({ config }: { config: DemoConfig }) {
       )}
       <a
         className={`${styles.callBarItem} ${styles.callBarPrimary}`}
-        href={hero.ctaHref}
+        href={ctaHref}
       >
         {hero.ctaLabel}
       </a>

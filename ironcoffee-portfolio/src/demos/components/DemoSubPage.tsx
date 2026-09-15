@@ -59,7 +59,7 @@ export default function DemoSubPage({
   const intro = page.intro ?? fallback.intro;
 
   return (
-    <DemoShell config={config} links={pageNavLinks(config, page.slug)}>
+    <DemoShell config={config} links={pageNavLinks(config, page.slug)} subPage>
       <header className={styles.pageHead}>
         <div className={styles.container}>
           <nav className={styles.crumbs} aria-label="Breadcrumb">
