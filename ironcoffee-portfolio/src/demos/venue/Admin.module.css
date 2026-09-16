@@ -34,6 +34,9 @@
   font-family: var(--d-font);
   font-size: 0.875rem;
   line-height: 1.5;
+  /* Copy in this screen is typed by whoever is using it, so a pasted URL or a
+     long word breaks rather than taking the layout sideways with it. */
+  overflow-wrap: break-word;
 }
 
 @media (min-width: 52rem) {
@@ -772,6 +775,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 0.15rem;
+  min-width: 0;
   min-height: 3rem;
   padding: 0.3rem;
   border: 1px solid var(--d-border);
@@ -1270,6 +1274,7 @@
   font-family: var(--d-font);
   font-size: 0.875rem;
   line-height: 1.5;
+  overflow-wrap: break-word;
 }
 
 .drawer:focus {

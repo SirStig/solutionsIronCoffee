@@ -4303,3 +4303,27 @@
 .torch[data-torch='on'] ~ .torchHint {
   display: inline-flex;
 }
+
+/* --- Hosting the dashboard -----------------------------------------------
+   Every other page kind is reading matter and belongs in a measured column.
+   This one is an application: it wants the width, and it wants the visitor to
+   reach it without scrolling past half a screen of introduction first. */
+.pageHeadSlim {
+  padding-block: clamp(1.5rem, 1rem + 2vw, 2.5rem) 0;
+}
+
+.pageHeadSlim .pageTitle {
+  font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+}
+
+.pageHeadSlim .pageIntro {
+  max-width: 44rem;
+}
+
+.adminHost {
+  width: 100%;
+  max-width: 96rem;
+  margin-inline: auto;
+  padding: clamp(1.25rem, 1rem + 1.5vw, 2rem) var(--d-gutter)
+    clamp(3rem, 2rem + 4vw, 5rem);
+}

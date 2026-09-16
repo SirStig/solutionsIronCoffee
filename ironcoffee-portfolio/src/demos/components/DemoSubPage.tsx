@@ -65,7 +65,11 @@ export default function DemoSubPage({
 
   return (
     <DemoShell config={config} links={pageNavLinks(config, page.slug)} subPage>
-      <header className={styles.pageHead}>
+      <header
+        className={[styles.pageHead, page.kind === 'admin' && styles.pageHeadSlim]
+          .filter(Boolean)
+          .join(' ')}
+      >
         <div className={styles.container}>
           <nav className={styles.crumbs} aria-label="Breadcrumb">
             <a href={base}>{config.business.name}</a>
@@ -90,9 +94,9 @@ export default function DemoSubPage({
       ) : null}
 
       {page.kind === 'admin' ? (
-        <Section>
+        <div className={styles.adminHost}>
           <AdminApp config={config} />
-        </Section>
+        </div>
       ) : null}
 
       {page.kind === 'stock' && config.products?.length ? (
