@@ -285,92 +285,81 @@ registerScenes({
         <rect width="1200" height="900" fill={PAPER} />
 
         {/* Heat lamp: shade, flex, and the cone of light as a flat shape. */}
-        <path d="M600 40 L600 150" stroke={INK} strokeWidth="8" />
-        <path d="M470 258 q130 -130 260 0 Z" fill={INK} />
-        <path
-          d="M470 258 q130 -130 260 0 Z"
-          fill="none"
-          stroke={INK}
-          strokeWidth="6"
-        />
-        <circle cx="600" cy="262" r="34" fill={POP} />
-        <path d="M566 286 L300 900 L900 900 Z" fill={POP} opacity="0.16" />
+        <path d="M600 30 L600 140" stroke={INK} strokeWidth="8" />
+        <path d="M472 250 q128 -128 256 0 Z" fill={INK} />
+        <circle cx="600" cy="254" r="32" fill={POP} />
+        <path d="M568 278 L286 700 L914 700 Z" fill={POP} opacity="0.16" />
 
-        {/* Galvanized brooder ring. */}
-        <ellipse cx="600" cy="690" rx="450" ry="150" fill={WASH} />
-        <ellipse
-          cx="600"
-          cy="690"
-          rx="450"
-          ry="150"
-          fill="none"
-          stroke={INK}
-          strokeWidth="7"
-        />
+        {/*
+         * The ring, drawn as a wall rather than as a rim.
+         *
+         * The first version was an ellipse with a band around it and read,
+         * unmistakably, as a dinner plate. A brooder ring is a corrugated
+         * wall about knee high, so it gets a visible height, a top edge you
+         * can see over, and corrugation lines down it.
+         */}
         <path
-          d="M150 690 a450 150 0 0 0 900 0 l0 62 a450 150 0 0 1 -900 0 Z"
+          d="M160 620 a440 132 0 0 0 880 0 v118 a440 132 0 0 1 -880 0 Z"
           fill={MID}
         />
+        <ellipse cx="600" cy="620" rx="440" ry="132" fill={WASH} />
+        <ellipse cx="600" cy="620" rx="440" ry="132" fill="none" stroke={INK} strokeWidth="8" />
         <path
-          d="M150 690 a450 150 0 0 0 900 0 l0 62 a450 150 0 0 1 -900 0 Z"
+          d="M160 620 v118 a440 132 0 0 0 880 0 v-118"
           fill="none"
           stroke={INK}
-          strokeWidth="7"
+          strokeWidth="8"
         />
-        {/* Shavings. */}
-        <ellipse
-          cx="600"
-          cy="700"
-          rx="404"
-          ry="124"
-          fill={tone(id)}
-          color={POP}
-          opacity="0.4"
-        />
+        {/* Corrugation, only on the near face where it would be visible. */}
+        <g stroke={INK} strokeWidth="4" opacity="0.4">
+          {Array.from({ length: 15 }, (_, i) => {
+            const a = Math.PI * (0.06 + (i / 14) * 0.88);
+            const x = 600 - Math.cos(a) * 440;
+            const y = 620 + Math.sin(a) * 132;
+            return <path key={i} d={`M${x} ${y} v112`} />;
+          })}
+        </g>
 
-        {/* Chicks. Two ovals and a beak is genuinely all a chick is at this
-          size, and adding legs made them read as ducks. */}
+        {/* Litter inside. */}
+        <ellipse cx="600" cy="628" rx="392" ry="108" fill={POP} opacity="0.32" />
+        <ellipse cx="600" cy="628" rx="392" ry="108" fill={tone(id)} color={POP} opacity="0.4" />
+
+        {/* A feeder, because a ring of birds with nothing in it is a bowl. */}
+        <g transform="translate(872 588)">
+          <path d="M-74 0 h148 l-16 56 h-116 Z" fill={MID} />
+          <path d="M-74 0 h148 l-16 56 h-116 Z" fill="none" stroke={INK} strokeWidth="6" />
+          <ellipse cx="0" cy="0" rx="74" ry="20" fill={WASH} stroke={INK} strokeWidth="6" />
+          <path d="M-38 -2 v-34 M0 -2 v-40 M38 -2 v-34" stroke={INK} strokeWidth="5" />
+        </g>
+
+        {/*
+         * Chicks, with legs.
+         *
+         * Two ovals and a beak was enough at thumbnail size and nothing like
+         * enough here: without legs they sat in the litter like eggs. Legs are
+         * also what fixes the scale, because a bird standing on the floor of a
+         * ring is obviously small and a shape floating in a dish is not.
+         */}
         {[
-          { x: 396, y: 636, s: 1, f: 1 },
-          { x: 530, y: 700, s: 1.18, f: 1 },
-          { x: 690, y: 660, s: 1.04, f: -1 },
-          { x: 826, y: 706, s: 0.92, f: -1 },
-          { x: 600, y: 600, s: 0.82, f: 1 },
-          { x: 470, y: 570, s: 0.7, f: -1 },
-          { x: 762, y: 578, s: 0.74, f: 1 },
+          { x: 336, y: 640, s: 1.05, f: 1 },
+          { x: 470, y: 690, s: 1.2, f: 1 },
+          { x: 636, y: 664, s: 1.1, f: -1 },
+          { x: 760, y: 704, s: 1, f: -1 },
+          { x: 560, y: 596, s: 0.86, f: 1 },
+          { x: 408, y: 578, s: 0.76, f: -1 },
+          { x: 706, y: 582, s: 0.8, f: 1 },
+          { x: 262, y: 700, s: 0.94, f: 1 },
         ].map((c, i) => (
-          <g
-            key={i}
-            transform={`translate(${c.x} ${c.y}) scale(${c.s * c.f} ${c.s})`}
-          >
-            <ellipse cx="0" cy="0" rx="52" ry="42" fill={POP} />
-            <ellipse
-              cx="0"
-              cy="0"
-              rx="52"
-              ry="42"
-              fill="none"
-              stroke={INK}
-              strokeWidth="5"
-            />
-            <circle cx="38" cy="-34" r="27" fill={POP} />
-            <circle
-              cx="38"
-              cy="-34"
-              r="27"
-              fill="none"
-              stroke={INK}
-              strokeWidth="5"
-            />
-            <circle cx="46" cy="-40" r="4.6" fill={INK} />
-            <path d="M62 -32 L78 -26 L62 -20 Z" fill={INK} />
-            <path
-              d="M-14 -4 q26 16 0 32"
-              fill="none"
-              stroke={INK}
-              strokeWidth="4"
-              opacity="0.65"
-            />
+          <g key={i} transform={`translate(${c.x} ${c.y}) scale(${c.s * c.f} ${c.s})`}>
+            <path d="M-16 34 v18 M14 34 v18" stroke={INK} strokeWidth="5" strokeLinecap="round" />
+            <path d="M-24 52 h16 M6 52 h16" stroke={INK} strokeWidth="5" strokeLinecap="round" />
+            <ellipse cx="0" cy="4" rx="46" ry="38" fill={POP} />
+            <ellipse cx="0" cy="4" rx="46" ry="38" fill="none" stroke={INK} strokeWidth="5" />
+            <path d="M-12 0 q24 14 0 30" fill="none" stroke={INK} strokeWidth="4" opacity="0.6" />
+            <circle cx="34" cy="-30" r="25" fill={POP} />
+            <circle cx="34" cy="-30" r="25" fill="none" stroke={INK} strokeWidth="5" />
+            <circle cx="42" cy="-36" r="4.4" fill={INK} />
+            <path d="M56 -28 L72 -23 L56 -18 Z" fill={INK} />
           </g>
         ))}
       </>
@@ -385,12 +374,21 @@ registerScenes({
         <rect width="1200" height="900" fill={PAPER} />
         <rect y="0" width="1200" height="300" fill={WASH} opacity="0.5" />
         {/* Barn wall behind, boarded. */}
-        <g stroke={INK} strokeWidth="4" opacity="0.28">
+        <g stroke={INK} strokeWidth="4" opacity="0.22">
           <path d="M60 0 L60 900 M220 0 L220 900 M380 0 L380 900 M540 0 L540 900 M700 0 L700 900 M860 0 L860 900 M1020 0 L1020 900 M1180 0 L1180 900" />
         </g>
+        <rect y="824" width="1200" height="76" fill={hatch(id)} color={MID} opacity="0.18" />
 
-        {/* Square bales, stacked with the courses crossed the way they are
-          stacked so the stack does not fall over. */}
+        {/*
+         * Square bales, courses crossed the way they are actually stacked so
+         * the stack does not fall over.
+         *
+         * Corners are square and there is no halftone on them. Rounded corners
+         * plus a dot field is basketwork, and the first version of this came
+         * out as a stack of wicker hampers. What a bale actually looks like is
+         * a hard rectangle full of horizontal stems, so that is all it is: a
+         * rectangle, two strings, and a lot of short irregular strokes.
+         */}
         {[
           { x: 120, y: 620 },
           { x: 452, y: 620 },
@@ -405,43 +403,46 @@ registerScenes({
               y={b.y}
               width="308"
               height="204"
-              rx="12"
+              rx="3"
               fill={POP}
-              opacity="0.5"
+              opacity={i % 2 ? 0.48 : 0.4}
             />
+
+            {/* Straw. Irregular lengths and starts, or it reads as ruled
+                paper. Deterministic so the build and the browser agree. */}
+            <g stroke={INK} strokeWidth="3" opacity="0.4" strokeLinecap="round">
+              {Array.from({ length: 22 }, (_, k) => {
+                const y = b.y + 12 + k * 8.7;
+                const x0 = b.x + 12 + ((k * 61 + i * 29) % 52);
+                const len = 96 + ((k * 97 + i * 43) % 176);
+                return <path key={k} d={`M${x0} ${y} h${len}`} />;
+              })}
+              {Array.from({ length: 18 }, (_, k) => {
+                const y = b.y + 18 + k * 10.6;
+                const x1 = b.x + 296 - ((k * 53 + i * 37) % 44);
+                const len = 78 + ((k * 89 + i * 31) % 150);
+                return <path key={`r${k}`} d={`M${x1} ${y} h-${len}`} />;
+              })}
+            </g>
+
             <rect
               x={b.x}
               y={b.y}
               width="308"
               height="204"
-              rx="12"
-              fill={tone(id)}
-              color={MID}
-              opacity="0.5"
-            />
-            <rect
-              x={b.x}
-              y={b.y}
-              width="308"
-              height="204"
-              rx="12"
+              rx="3"
               fill="none"
               stroke={INK}
               strokeWidth="6"
             />
-            {/* Baling twine. */}
+
+            {/* Baling twine, sitting proud of the straw. */}
             <path
-              d={`M${b.x + 76} ${b.y} L${b.x + 76} ${b.y + 204} M${b.x + 232} ${b.y} L${b.x + 232} ${b.y + 204}`}
+              d={`M${b.x + 78} ${b.y} v204 M${b.x + 230} ${b.y} v204`}
               stroke={INK}
-              strokeWidth="5"
-              opacity="0.8"
+              strokeWidth="6"
+              opacity="0.85"
             />
-            {/* Cut ends of the stems. */}
-            <g stroke={INK} strokeWidth="3" opacity="0.35">
-              <path
-                d={`M${b.x + 20} ${b.y + 40} h268 M${b.x + 20} ${b.y + 96} h268 M${b.x + 20} ${b.y + 152} h268`}
-              />
-            </g>
           </g>
         ))}
       </>
@@ -454,60 +455,75 @@ registerScenes({
     draw: (id) => (
       <>
         <rect width="1200" height="900" fill={PAPER} />
-        <rect y="620" width="1200" height="280" fill={MID} opacity="0.14" />
+        <rect y="640" width="1200" height="260" fill={MID} opacity="0.16" />
+        <rect y="640" width="1200" height="260" fill={hatch(id)} color={MID} opacity="0.1" />
 
         {/* Cage. */}
-        <rect
-          x="150"
-          y="250"
-          width="900"
-          height="470"
-          fill="none"
-          stroke={INK}
-          strokeWidth="9"
-        />
-        <g stroke={INK} strokeWidth="4" opacity="0.4">
-          <path d="M150 370 h900 M150 490 h900 M150 610 h900 M330 250 v470 M510 250 v470 M690 250 v470 M870 250 v470" />
+        <rect x="140" y="230" width="920" height="450" fill="none" stroke={INK} strokeWidth="10" />
+        <g stroke={INK} strokeWidth="4" opacity="0.32">
+          <path d="M140 350 h920 M140 470 h920 M140 590 h920 M324 230 v450 M508 230 v450 M692 230 v450 M876 230 v450" />
         </g>
 
-        {/* Cylinders. */}
-        {[240, 460, 680, 900].map((x, i) => (
+        {/*
+         * Cylinders.
+         *
+         * What makes one read as propane rather than as a flask is the collar:
+         * a raised ring around the valve with a handhold cut in it. Without it
+         * these came out as a row of water bottles in a crate.
+         */}
+        {[268, 468, 668, 868].map((x, i) => (
           <g key={x}>
+            {/* Foot ring. */}
+            <rect x={x - 66} y="632" width="132" height="24" rx="6" fill={INK} />
+            {/* Body. */}
             <rect
-              x={x - 62}
-              y="400"
-              width="124"
-              height="250"
-              rx="22"
+              x={x - 66}
+              y="392"
+              width="132"
+              height="246"
+              rx="26"
               fill={i % 2 ? MID : POP}
             />
             <rect
-              x={x - 62}
-              y="400"
-              width="124"
-              height="250"
-              rx="22"
+              x={x - 66}
+              y="392"
+              width="132"
+              height="246"
+              rx="26"
               fill="none"
               stroke={INK}
-              strokeWidth="6"
+              strokeWidth="7"
             />
+            {/* Printed band. */}
+            <rect x={x - 66} y="464" width="132" height="52" fill={PAPER} opacity="0.5" />
             <rect
-              x={x - 62}
-              y="470"
-              width="124"
-              height="46"
+              x={x - 66}
+              y="464"
+              width="132"
+              height="52"
               fill={tone(id)}
               color={INK}
-              opacity="0.4"
+              opacity="0.3"
             />
-            {/* Collar and valve. */}
+
+            {/* Collar: a ring with a handhold, drawn open at the front. */}
             <path
-              d={`M${x - 42} 400 q0 -46 42 -46 q42 0 42 46`}
+              d="M-54 0 v-46 a54 54 0 0 1 108 0 v46"
+              transform={`translate(${x} 398)`}
               fill="none"
               stroke={INK}
-              strokeWidth="8"
+              strokeWidth="14"
+              strokeLinecap="round"
             />
-            <rect x={x - 14} y="362" width="28" height="26" rx="6" fill={INK} />
+            <path
+              d={`M${x - 30} 352 h60`}
+              stroke={INK}
+              strokeWidth="11"
+              strokeLinecap="round"
+            />
+            {/* Valve and handwheel. */}
+            <rect x={x - 13} y="336" width="26" height="30" fill={INK} />
+            <ellipse cx={x} cy="332" rx="26" ry="10" fill={INK} />
           </g>
         ))}
       </>

@@ -221,6 +221,25 @@ const paths: Record<string, React.ReactNode> = {
       <path d="M7.8 13h8.4" />
     </>
   ),
+  /* The beer half of a bottle shop. A can rather than a glass, because what
+     people actually carry out of one is a twelve pack. */
+  can: (
+    <>
+      <path d="M7.4 5.2h9.2v13a2.8 2.8 0 0 1-2.8 2.8h-3.6a2.8 2.8 0 0 1-2.8-2.8Z" />
+      <path d="M7.4 5.2a2 1.4 0 0 1 9.2 0" />
+      <path d="M7.4 9h9.2" />
+      <path d="M10.6 12.4v5M13.4 12.4v5" />
+    </>
+  ),
+  /* And the wine half. */
+  grapes: (
+    <>
+      <path d="M12 8.6c2 0 2 3 0 3s-2-3 0-3Z" />
+      <path d="M9 11.6c2 0 2 3 0 3s-2-3 0-3ZM15 11.6c2 0 2 3 0 3s-2-3 0-3ZM12 14.6c2 0 2 3 0 3s-2-3 0-3Z" />
+      <path d="M12 8.6V5.4c0-1.4 1.3-2.4 3-2.4" />
+      <path d="M12 5.8c1.6-1 3.4-.8 4.4.2" />
+    </>
+  ),
   basket: (
     <>
       <path d="M3 9h18l-1.8 9.2a2.4 2.4 0 0 1-2.4 1.9H7.2a2.4 2.4 0 0 1-2.4-1.9Z" />

@@ -156,9 +156,13 @@ registerScenes({
 
         <Chair x={492} y={452} s={0.94} />
 
-        {/* Floor. */}
-        <rect y="760" width="1200" height="140" fill={INK} opacity="0.5" />
-        <rect y="760" width="1200" height="140" fill={hatch(id)} color={INK} opacity="0.18" />
+        {/* Floor.
+            Nearly solid rather than a half-opacity wash. At 0.5 over paper it
+            came out as a gray smear along the bottom of the frame that read as
+            a rug somebody had forgotten to draw. */}
+        <rect y="762" width="1200" height="138" fill={INK} opacity="0.88" />
+        <rect y="762" width="1200" height="10" fill={INK} />
+        <rect y="772" width="1200" height="128" fill={hatch(id)} color={PAPER} opacity="0.07" />
       </>
     ),
   },
@@ -397,7 +401,7 @@ registerScenes({
 
         {/* Cylinder. */}
         <rect x="506" y="180" width="188" height="540" rx="94" fill={WASH} />
-        <g clipPath="none">
+        <g>
           {Array.from({ length: 9 }, (_, i) => (
             <path
               key={i}
@@ -407,9 +411,9 @@ registerScenes({
             />
           ))}
         </g>
-        <rect x="506" y="180" width="188" height="540" rx="94" fill={PAPER} opacity="0" />
-        {/* The glass over it: the cylinder's own edge, redrawn on top so the
-            stripes stop where the tube does. */}
+        {/* The glass over it: the cylinder's own rounded ends, repainted on
+            top so the stripes stop where the tube does. Cheaper than a
+            clipPath and it cannot collide with another scene's ids. */}
         <path
           d="M506 274 V180 a94 94 0 0 1 188 0 v94 M506 626 v94 a94 94 0 0 0 188 0 v-94"
           fill={PAPER}

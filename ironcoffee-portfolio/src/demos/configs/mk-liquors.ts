@@ -84,7 +84,7 @@ const mkLiquors: DemoConfig = {
   business: {
     // Confirmed against the state liquor license, not against a directory.
     name: 'MK Liquors',
-    tagline: 'The bottle shop in Kiowa, and the reason you do not drive to Parker.',
+    tagline: 'Family owned, and we will order in whatever you ask for.',
     city: 'Kiowa',
     state: 'CO',
     address: '240 Comanche St',
@@ -118,14 +118,27 @@ const mkLiquors: DemoConfig = {
    */
   products: [
     {
-      group: 'What we carry',
+      group: 'Beer',
+      icon: 'can',
+      items: [
+        { name: 'By the six pack' },
+        { name: 'By the case' },
+        { name: 'Seltzers and ciders' },
+      ],
+    },
+    {
+      group: 'Wine',
+      icon: 'grapes',
+      items: [{ name: 'Red' }, { name: 'White' }, { name: 'Sparkling' }],
+    },
+    {
+      group: 'Spirits',
       icon: 'bottle',
       items: [
-        { name: 'Beer, by the six pack and the case' },
-        { name: 'Red and white wine' },
         { name: 'Whiskey, bourbon and rye' },
-        { name: 'Vodka, gin, rum and tequila' },
-        { name: 'Mixers and ice' },
+        { name: 'Vodka and gin' },
+        { name: 'Rum and tequila' },
+        { name: 'Mixers' },
       ],
     },
   ],
@@ -142,18 +155,18 @@ const mkLiquors: DemoConfig = {
       body: 'Tell us the meal or the budget and you will get a straight answer rather than a shrug at the shelf.',
     },
     {
-      title: 'Put something aside',
-      icon: 'phone',
-      body: 'Ring ahead and it will be behind the counter with your name on it when you get here.',
+      title: 'Owner operated',
+      icon: 'star',
+      body: 'The people behind the counter own the place. That is why you get an answer rather than a shrug toward the shelf.',
     },
   ],
 
   marquee: [
     'Family owned',
+    'Owner operated',
     'Special orders welcome',
     'Beer, wine and spirits',
     'On Comanche Street',
-    'Cash and card',
   ],
 
   /*
@@ -180,22 +193,22 @@ const mkLiquors: DemoConfig = {
 
   about: {
     heading: 'The one on Comanche Street.',
-    body: 'MK Liquors has been the bottle shop in Kiowa for years, run by the family that owns it rather than by a chain. The selection is bigger than a town this size has any right to, and anything that is not on the shelf can be ordered in. The nearest alternative is a long way down the highway, and we would rather you did not have to find that out.',
+    body: 'MK Liquors is on Comanche Street in Kiowa, run by the family that owns it rather than by a chain. If what you want is not on the shelf, ask and it can be ordered in. The next store is a long way down the highway, which is the whole reason this one is worth keeping.',
     image: 'art:bottle-glasses',
   },
 
   faq: [
     {
       q: 'Can you order something in for me?',
-      a: 'Yes. Ring or call in and tell us what you are after. Special orders are a normal part of the week here, not a favor.',
+      a: 'Yes. Ring or come in and tell us what you are after. Special orders are a normal part of the week here, not a favor.',
     },
     {
-      q: 'Do you take cards?',
-      a: 'Yes.',
+      q: 'Can you help me pick a wine?',
+      a: 'Ask. Tell us the meal or the budget and you will get a straight answer rather than being pointed at a shelf.',
     },
     {
-      q: 'Can I have something put by?',
-      a: 'Call ahead and it will be waiting behind the counter rather than gone off the shelf when you arrive.',
+      q: 'Who runs the store?',
+      a: 'The family that owns it. The same people are behind the counter, which is the whole difference between here and a chain down the highway.',
     },
   ],
 };

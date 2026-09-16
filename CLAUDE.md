@@ -221,6 +221,13 @@ anything: CSS Color 4 serializes as `color(srgb r g b / a)` with channels in
 rather than the full brand color. Getting either of those wrong produced several
 hundred contrast failures that were not real, twice.
 
+`npm run audit:ui` binds port 4200. Two of them at once, or one alongside
+`npm run serve`, and the loser silently uses the winner's server until the
+winner exits and kills it: the survivor then reports several hundred `nav`
+findings that look like a site which broke everywhere at once. Set `PORT` to
+run a second one. The script now says so rather than letting you hunt for the
+layout bug that does not exist.
+
 Firefox is not covered. Playwright's bundled build will not launch on this
 machine in any mode, so the script runs two engines rather than pretending to
 run three. Chromium covers Chrome and Edge; WebKit covers Safari and every

@@ -21,7 +21,17 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const ORIGIN = 'http://127.0.0.1:4200';
+
+/* Set PORT to run two audits at once, or alongside `npm run serve`.
+ *
+ * This used to be hardcoded, and the failure it caused was worth a fix. Two
+ * audits running together each spawn a server on 4200; the second one loses
+ * the bind, silently uses the first one's server, and then the first one
+ * finishes and kills it. The survivor reports a thousand `nav` findings that
+ * look exactly like a site that has broken everywhere, and the page that
+ * finally explains it is the one that says ERR_CONNECTION_REFUSED. */
+const PORT = Number(process.env.PORT ?? 4200);
+const ORIGIN = `http://127.0.0.1:${PORT}`;
 
 /* The two on the ends matter more than the middle.
  *
@@ -268,7 +278,16 @@ function collect(vw) {
 }
 
 /* --- Run ------------------------------------------------------------------- */
-const server = spawn('node', [resolve(root, 'scripts/serve.mjs')], { stdio: 'ignore' });
+const server = spawn('node', [resolve(root, 'scripts/serve.mjs')], {
+  stdio: 'ignore',
+  env: { ...process.env, PORT: String(PORT) },
+});
+// A server that dies mid-run turns every remaining route into a `nav` finding.
+// Knowing it happened is the difference between a real report and a scary one.
+let serverDied = false;
+server.on('exit', () => {
+  serverDied = true;
+});
 const stop = () => server.kill();
 process.on('exit', stop);
 
@@ -380,6 +399,20 @@ for (const p of problems) (byKind[p.kind] ||= []).push(p);
 console.log(
   `\n${routes.length} routes x 2 engines x ${VIEWPORTS.length} viewports = ${routes.length * 2 * VIEWPORTS.length} page loads`
 );
+
+/* Infrastructure before findings.
+ *
+ * If the server went away the run is void, and saying so is far more use than
+ * printing several hundred navigation errors and letting somebody spend twenty
+ * minutes looking for the layout bug that broke every page at once. */
+if (serverDied && problems.some((p) => p.kind === 'nav')) {
+  console.error(
+    `\nThe server on ${PORT} exited during the run, so these results are void.` +
+      '\nUsually that is a second audit, or `npm run serve`, competing for the' +
+      '\nsame port. Re-run it on its own, or with PORT set to something free.'
+  );
+  process.exitCode = 1;
+}
 
 if (!problems.length) {
   console.log('\nNo problems.');

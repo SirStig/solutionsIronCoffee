@@ -1,11 +1,14 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import Seo from '../components/Seo';
 import Img from '../components/Img';
 import LiveVersionBadge from '../components/LiveVersionBadge';
-import { getProject, statusLabels } from '../content/projects';
+import { adjacentProjects, getProject, statusLabels } from '../content/projects';
 import { site } from '../content/site';
+import manifest from '../generated/images.json';
 import styles from './ProjectPage.module.css';
+
+const ratios = manifest as Record<string, { aspectRatio: number }>;
 
 export default function ProjectPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -15,6 +18,15 @@ export default function ProjectPage() {
 
   const path = `/work/${project.slug}`;
   const primary = project.links.find((l) => l.primary) ?? project.links[0];
+  const { prev, next } = adjacentProjects(project.slug);
+
+  /**
+   * A phone screenshot forced into a 16/9 hero is two thirds empty letterbox,
+   * which is the widest, most visible dead space on the page. Portrait covers
+   * keep their own ratio and sit centered at about a phone's width instead.
+   * 0.9 is the same threshold `Img` uses to decide whether to letterbox.
+   */
+  const tallHero = (ratios[project.image]?.aspectRatio ?? 1.6) < 0.9;
 
   /* Shipped apps get the type Google actually associates with apps. No
      `aggregateRating`, deliberately: that is the half of the rich result that
@@ -45,13 +57,13 @@ export default function ProjectPage() {
         keywords: project.tech.join(', '),
       };
 
-/**
- * Breadcrumbs.
- *
- * Worth the few lines: this is one of the handful of schema types that still
- * produces a visible result in Google, the path line under the blue link, and
- * every one of these pages genuinely sits under a parent.
- */
+  /**
+   * Breadcrumbs.
+   *
+   * Worth the few lines: this is one of the handful of schema types that still
+   * produces a visible result in Google, the path line under the blue link, and
+   * every one of these pages genuinely sits under a parent.
+   */
   const breadcrumbs = {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -101,9 +113,7 @@ export default function ProjectPage() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={
-                    link === primary ? styles.linkPrimary : styles.link
-                  }
+                  className={link === primary ? styles.linkPrimary : styles.link}
                 >
                   {link.label}
                   <ExternalLink size={14} aria-hidden />
@@ -113,21 +123,46 @@ export default function ProjectPage() {
           )}
         </header>
 
+        {/* The hero runs the full wide container rather than the reading
+            column. Four blocks all clamped to 46rem, in the same order, was the
+            single biggest reason every one of these pages read as the same
+            page with different words in it. */}
         <Img
           name={project.image}
           alt={`${project.name}: ${project.tagline}`}
-          className={styles.hero}
-          aspectRatio="16 / 10"
-          sizes="(min-width: 800px) 46rem, 100vw"
+          className={`${styles.hero} ${tallHero ? styles.heroTall : ''}`}
+          aspectRatio={tallHero ? undefined : '16 / 9'}
+          sizes={
+            tallHero
+              ? '(min-width: 40rem) 22rem, 70vw'
+              : '(min-width: 1100px) 68rem, 100vw'
+          }
           priority
         />
 
-        <div className={styles.body}>
-          <p className={styles.summary}>{project.summary}</p>
+        {/* Prose on the left, facts in a rail beside it. The rail is what stops
+            "Built with" being a third list stacked under two other lists. It
+            collapses under the prose below 60rem, where a rail is just a
+            narrow column of chips. */}
+        <div className={styles.split}>
+          <div className={styles.body}>
+            <p className={styles.summary}>{project.summary}</p>
 
-          {project.story
-            ?.split('\n\n')
-            .map((para) => <p key={para.slice(0, 40)}>{para}</p>)}
+            {project.story
+              ?.split('\n\n')
+              .map((para) => <p key={para.slice(0, 40)}>{para}</p>)}
+          </div>
+
+          <aside className={styles.rail}>
+            <h2 className={styles.railTitle}>Built with</h2>
+            <ul className={styles.tech}>
+              {project.tech.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+
+            {project.note && <p className={styles.note}>{project.note}</p>}
+          </aside>
         </div>
 
         {project.highlights.length > 0 && (
@@ -141,17 +176,8 @@ export default function ProjectPage() {
           </section>
         )}
 
-        <section className={styles.block}>
-          <h2 className={styles.blockTitle}>Built with</h2>
-          <ul className={styles.tech}>
-            {project.tech.map((t) => (
-              <li key={t}>{t}</li>
-            ))}
-          </ul>
-        </section>
-
         {project.gallery && project.gallery.length > 0 && (
-          <section className={styles.block}>
+          <section className={styles.blockWide}>
             <h2 className={styles.blockTitle}>Screens</h2>
             <div className={styles.gallery}>
               {project.gallery.map((shot) => (
@@ -160,14 +186,41 @@ export default function ProjectPage() {
                   name={shot.name}
                   alt={shot.alt}
                   className={styles.shot}
-                  sizes="(min-width: 700px) 22rem, 100vw"
+                  sizes="(min-width: 1100px) 21rem, (min-width: 700px) 45vw, 100vw"
                 />
               ))}
             </div>
           </section>
         )}
 
-        {project.note && <p className={styles.note}>{project.note}</p>}
+        {(prev || next) && (
+          <nav className={styles.pager} aria-label="More work">
+            {prev ? (
+              <Link to={`/work/${prev.slug}`} className={styles.pagerLink}>
+                <span className={styles.pagerLabel}>
+                  <ArrowLeft size={13} aria-hidden /> Previous
+                </span>
+                <span className={styles.pagerName}>{prev.name}</span>
+                <span className={styles.pagerTagline}>{prev.tagline}</span>
+              </Link>
+            ) : (
+              <span />
+            )}
+
+            {next && (
+              <Link
+                to={`/work/${next.slug}`}
+                className={`${styles.pagerLink} ${styles.pagerNext}`}
+              >
+                <span className={styles.pagerLabel}>
+                  Next <ArrowRight size={13} aria-hidden />
+                </span>
+                <span className={styles.pagerName}>{next.name}</span>
+                <span className={styles.pagerTagline}>{next.tagline}</span>
+              </Link>
+            )}
+          </nav>
+        )}
       </article>
     </>
   );

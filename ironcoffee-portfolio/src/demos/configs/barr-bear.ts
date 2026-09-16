@@ -86,7 +86,7 @@ const barrBear: DemoConfig = {
 
   business: {
     name: 'Barr Bear Country Cuts',
-    tagline: 'One chair in Kiowa, and the same hands in it since 2007.',
+    tagline: 'Cutting hair on Comanche Street since 2007.',
     city: 'Kiowa',
     state: 'CO',
     address: '312 Comanche St',
@@ -117,8 +117,8 @@ const barrBear: DemoConfig = {
   },
 
   hero: {
-    headline: 'The only chair in Kiowa you have to book ahead for.',
-    sub: 'Le Ann has cut hair on Comanche Street since 2007. Call her and she will tell you when she can fit you in, usually sooner than you think.',
+    headline: 'Ring Le Ann, and she will fit you in.',
+    sub: 'Barr Bear Country Cuts has been on Comanche Street in Kiowa since 2007. Times and prices are quickest to get by picking up the phone.',
     image: 'art:salon-station',
     ctaLabel: 'Call the Shop',
     ctaHref: 'tel:+13036212420',
@@ -133,7 +133,7 @@ const barrBear: DemoConfig = {
     {
       title: 'Haircuts',
       icon: 'scissors',
-      body: 'Men, women and children, in a town where the alternative is a forty minute drive.',
+      body: 'Men, women and children, all in the same chair, without leaving town for it.',
       price: 'Call for pricing',
     },
     {
@@ -151,7 +151,7 @@ const barrBear: DemoConfig = {
     {
       title: 'Textured and loc work',
       icon: 'sparkle',
-      body: 'Not something every small town shop takes on, and she has regulars who drive in for it.',
+      body: 'Not something every small town shop takes on. Worth asking about when you ring.',
       price: 'Call for pricing',
     },
   ],
@@ -181,14 +181,14 @@ const barrBear: DemoConfig = {
 
   about: {
     heading: 'Nineteen years, one chair, one town.',
-    body: 'Barr Bear Country Cuts has been on Comanche Street since February 2007, owned and run the whole time by Le Ann Goetz. She is a native Coloradan, she lives in Kiowa, and she is the person who answers the phone, cuts the hair and locks up. There is no rota and no second chair: if you booked with Barr Bear, you booked with her.',
+    body: 'Barr Bear Country Cuts has been on Comanche Street since February 2007, owned and run the whole time by Le Ann Goetz. She is a native Coloradan and she lives in Kiowa, which means the person who answers the phone is the person who cuts your hair and the person whose name is over the door. Nineteen years in a town this size is not a business plan, it is a reputation.',
     image: 'art:salon-pines',
   },
 
   faq: [
     {
       q: 'Do I need an appointment?',
-      a: 'It is one chair, so yes, ringing ahead is the difference between being seen and being turned around at the door. Saturdays go first.',
+      a: 'Ringing ahead is the surest way to get seen. Call and she will tell you what she has free.',
     },
     {
       q: 'What does "and MORE" mean?',

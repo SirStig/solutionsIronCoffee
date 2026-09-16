@@ -1,10 +1,10 @@
-/* The page spans the wide container so its left edge matches the header, but
-   the content column stays a readable width. */
+/* The page spans the wide container so its left edge matches the header. The
+   reading column stays narrow; the hero, the gallery and the pager do not.
+   Everything being clamped to one width was what made these pages feel
+   interchangeable. */
 .header,
-.hero,
-.body,
 .block,
-.note {
+.highlights {
   max-width: 46rem;
 }
 
@@ -111,8 +111,29 @@
   border: 1px solid var(--border);
 }
 
+/* Portrait cover: keep the source ratio and sit at roughly a phone's width,
+   rather than painting a 16/9 band that is mostly empty on both sides. */
+.heroTall {
+  max-width: 22rem;
+  margin-inline: auto;
+}
+
+/* --- Prose and the facts rail ------------------------------------------- */
+
+.split {
+  margin-top: var(--space-7);
+  display: grid;
+  gap: var(--space-6);
+}
+
+@media (min-width: 60rem) {
+  .split {
+    grid-template-columns: minmax(0, 38rem) minmax(14rem, 1fr);
+    align-items: start;
+  }
+}
+
 .body {
-  margin-top: var(--space-6);
   font-size: var(--text-lg);
   color: var(--text-muted);
   max-width: 38rem;
@@ -127,43 +148,30 @@
   font-weight: 450;
 }
 
-.block {
-  margin-top: var(--section-y);
+.rail {
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-4);
 }
 
-.blockTitle {
-  font-size: var(--text-sm);
+@media (min-width: 60rem) {
+  .rail {
+    position: sticky;
+    /* Clears the sticky site header. */
+    top: 5.5rem;
+    border-top: 0;
+    border-inline-start: 1px solid var(--border);
+    padding-top: 0.35rem;
+    padding-inline-start: var(--space-5);
+  }
+}
+
+.railTitle {
+  font-size: var(--text-xs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-faint);
-  margin-bottom: var(--space-4);
-}
-
-.highlights {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: var(--space-3);
-  max-width: 38rem;
-}
-
-.highlights li {
-  position: relative;
-  padding-inline-start: var(--space-5);
-  color: var(--text-muted);
-}
-
-.highlights li::before {
-  content: '';
-  position: absolute;
-  inset-inline-start: 0;
-  top: 0.6em;
-  width: 6px;
-  height: 6px;
-  border-radius: var(--radius-full);
-  background: var(--accent);
+  margin-bottom: var(--space-3);
 }
 
 .tech {
@@ -184,10 +192,76 @@
   background: var(--surface);
 }
 
+.note {
+  margin-top: var(--space-5);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--text-faint);
+}
+
+/* --- Blocks -------------------------------------------------------------- */
+
+.block {
+  margin-top: var(--section-y);
+}
+
+.blockTitle {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  margin-bottom: var(--space-4);
+}
+
+.highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+/* Two columns once there is room. Five short phrases down one long column is
+   a lot of vertical space for very little text. */
+@media (min-width: 46rem) {
+  .highlights {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3) var(--space-6);
+  }
+}
+
+.highlights li {
+  position: relative;
+  padding-inline-start: var(--space-5);
+  color: var(--text-muted);
+}
+
+.highlights li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+}
+
+/* Screens get their own section width. `.block` clamps to the reading column,
+   which is right for a heading and a list and wrong for screenshots: nested
+   inside it, a three-up gallery lands at about 14rem a tile, which is a
+   thumbnail of a rumour rather than a screenshot of anything. */
+.blockWide {
+  margin-top: var(--section-y);
+  max-width: none;
+}
+
 .gallery {
   display: grid;
   gap: var(--space-4);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  align-items: start;
 }
 
 .shot {
@@ -195,10 +269,67 @@
   border: 1px solid var(--border);
 }
 
-.note {
-  margin-top: var(--space-7);
-  padding-top: var(--space-4);
+/* --- Previous / next ----------------------------------------------------- */
+
+.pager {
+  margin-top: var(--section-y);
+  padding-top: var(--space-5);
   border-top: 1px solid var(--border);
-  font-size: var(--text-sm);
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (min-width: 46rem) {
+  .pager {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+}
+
+.pagerLink {
+  display: grid;
+  gap: var(--space-1);
+  align-content: start;
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+
+.pagerLink:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+
+.pagerNext {
+  text-align: end;
+}
+
+.pagerLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--text-faint);
+}
+
+.pagerNext .pagerLabel {
+  justify-content: flex-end;
+}
+
+.pagerName {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pagerTagline {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
 }

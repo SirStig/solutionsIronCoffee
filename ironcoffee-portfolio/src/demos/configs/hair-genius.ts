@@ -90,7 +90,10 @@ const hairGenius: DemoConfig = {
   // Correct for a barbershop and deliberately nothing like the country salon
   // in Kiowa, which is the same trade and wants the opposite page.
   brand: {
-    primary: '#1C1C1E',
+    // Charcoal rather than the near-black this was, because primary and
+    // secondary sitting two steps apart left the illustrations with no mid
+    // tone and everything in them came out the same gray.
+    primary: '#2B2B31',
     secondary: '#0E0E10',
     accent: '#C0462F',
     font: 'craft',
@@ -100,8 +103,8 @@ const hairGenius: DemoConfig = {
   hero: {
     // No "book online" and no "open seven days". One is broken and the other
     // is disputed by half the listings that mention it.
-    headline: 'A skin fade in Parker, and a barber who has done yours before.',
-    sub: 'One call gets you a chair. Walk in if there is one free, ring ahead if you would rather not find out.',
+    headline: 'A proper skin fade, in a suite off Dransfeldt Road.',
+    sub: 'Walk in if there is a chair free. Ring first if you would rather not find out the hard way.',
     image: 'art:barber-room',
     ctaLabel: 'Call the Shop',
     ctaHref: 'tel:+13038055348',
