@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import type { DemoConfig } from './types';
 import { daysRemaining, demos, drafts, formatExpiry, fullAddress, isExpired, previews, showcases, telHref, todayName, getDemo, getAnyDemo } from './index';
 import { TEMPLATES, TEMPLATE_BLURBS } from './templates';
 import { iconNames } from './components/icons';
@@ -203,11 +204,29 @@ describe('formatting helpers', () => {
    * Vitest runs with DEV false and no PRERENDER_DRAFTS, which is exactly the
    * condition a deployed build has. */
   it('never hands a draft to a route in a deployed build', () => {
-    expect(drafts.length).toBeGreaterThan(0);
+    /*
+     * Tested with a fixture rather than with whatever business happens to be
+     * half-written today.
+     *
+     * This used to assert `drafts.length > 0` first, so that it could not pass
+     * vacuously. That guard was right about the danger and wrong about the
+     * mechanism: the day the last real draft went live the test failed, and
+     * the only ways to fix it are to leave a business permanently unfinished
+     * or to delete the check. The gate deserves its own subject.
+     */
+    const fixture: DemoConfig = { ...all[0], slug: '__draft_fixture__', draft: true };
+    demos[fixture.slug] = fixture;
+    try {
+      expect(getDemo(fixture.slug)).toBeUndefined();
+      // Still in the registry, still typechecked, still testable.
+      expect(getAnyDemo(fixture.slug)).toBeDefined();
+    } finally {
+      delete demos[fixture.slug];
+    }
 
+    // And any real draft in the repo is held by the same gate.
     for (const draft of drafts) {
       expect(getDemo(draft.slug)).toBeUndefined();
-      // Still in the registry, still typechecked, still testable.
       expect(getAnyDemo(draft.slug)).toBeDefined();
     }
   });

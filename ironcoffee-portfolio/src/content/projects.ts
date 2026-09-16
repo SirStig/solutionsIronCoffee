@@ -618,9 +618,9 @@ export const projects: Project[] = [
     summary:
       'A native video editing engine for Expo. Multi-track timeline, waveforms, filters, transitions and a real-time preview renderer, running over AVFoundation on iOS and MediaCodec on Android, with no proprietary SDK behind it.',
     story:
-      "Project Yoked needed real editing, closer to CapCut than to a trim tool. Every option for React Native was one of three bad ones: FFmpeg running on-device, which is buggy, enormous and has since been deprecated for this kind of use; a handful of open-source libraries with almost no features; or a proprietary SDK that costs thousands a year to license. None of it fit, so I wrote the engine myself in native code.\n\nThe goal was the whole picture in one package. Multi-track composition, waveforms, audio mixing, overlays, filters, transitions, and its own real-time renderer for preview, export and compression, all behind a single Expo module over AVFoundation on iOS and MediaCodec with OpenGL ES on Android.\n\nIt's been on hiatus since Project Yoked shut down. The core still mostly works, last time I looked. It doesn't make any money, so it gets whatever time is left over, which lately has been none. Ourlee still has it installed.",
+      "Project Yoked needed real editing, closer to CapCut than to a trim tool. Every option for React Native was one of three bad ones: FFmpeg running on-device, which is buggy, enormous and has since been deprecated for this kind of use; a handful of open-source libraries with almost no features; or a proprietary SDK that costs thousands a year to license. None of it fit, so I wrote the engine myself in native code.\n\nThe goal was the whole picture in one package. Multi-track composition, waveforms, audio mixing, overlays, filters, transitions, and its own real-time renderer for preview, export and compression, all behind a single Expo module over AVFoundation on iOS and MediaCodec with OpenGL ES on Android.\n\nIt outlived the project it was written for. It's on npm with docs, and Ourlee has it installed. The 1.0.0 line is still on an alpha tag because there are things I want settled before I call it finished, and it moves when I have time for it rather than on any schedule.",
     year: '2026',
-    status: 'archived',
+    status: 'live',
     categories: ['open-source'],
     highlights: [
       'Multi-track composition with real-time preview',
@@ -651,7 +651,7 @@ export const projects: Project[] = [
     image: 'projects/expo-media-engine',
     weight: 11,
     liveVersion: { kind: 'npm', package: '@projectyoked/expo-media-engine' },
-    note: 'MIT licensed. Needs a dev build, not Expo Go. On hiatus, and the current release is an alpha.',
+    note: 'MIT licensed. Needs a dev build, not Expo Go. The current release on npm is a 1.0.0 alpha.',
   },
 
   {

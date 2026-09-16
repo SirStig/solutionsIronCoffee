@@ -69,8 +69,19 @@ const familyLawnCare: DemoConfig = {
   slug: 'family-lawn-care',
   createdAt: '2026-09-15',
   template: 'trades',
-  // Blocking: confirm they are still operating.
-  draft: true,
+
+  /*
+   * Live, but the quietest prospect in the folder by a distance.
+   *
+   * The only visible Facebook post is from May 2020, there are seventy four
+   * followers and no reviews anywhere, and there is no state registration.
+   * None of that is evidence they have stopped; there is simply almost no
+   * evidence of anything.
+   *
+   * The opening line writes itself and does not depend on any of that:
+   * familylawncareco.com, the website their own Facebook page links to, is
+   * unregistered, and info@ on that domain has been bouncing ever since.
+   */
 
   business: {
     name: 'Family Lawn Care',

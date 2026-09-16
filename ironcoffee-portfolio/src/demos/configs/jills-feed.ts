@@ -60,8 +60,18 @@ const jillsFeed: DemoConfig = {
   slug: 'jills-feed',
   createdAt: '2026-09-15',
   template: 'retail',
-  // Clear this once the hours, photos and real details are in.
-  draft: true,
+
+  /*
+   * Live, and the one page in this folder to phone before you send.
+   *
+   * The header sets out the evidence that this shop closed around September
+   * 2025, and it is strong: a dated neighbor on Nextdoor, a "closing after ten
+   * years" post on their own page, and a Secretary of State registration that
+   * went delinquent. Everything saying otherwise is a scraped listing.
+   *
+   * One call to (303) 646-4730 settles it. A disconnected number is the
+   * answer. If it is answered, this page is ready.
+   */
 
   business: {
     name: "Jill's Feed & Country Supply",

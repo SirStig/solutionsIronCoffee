@@ -73,8 +73,19 @@ const hairGenius: DemoConfig = {
   slug: 'hair-genius',
   createdAt: '2026-09-15',
   template: 'booking',
-  // Blocking: confirm the shop is still trading and under whose name.
-  draft: true,
+
+  /*
+   * Live, but read the header before sending it.
+   *
+   * Nothing on the page is wrong. What is unsettled is who owns the shop: a
+   * new LLC in September 2024, a new trade name in February 2025, the shop's
+   * Booksy profile now resolving to Orlando, and both barbers named in the
+   * reviews trading under their own names since. It may well be the same
+   * business. It may be under a name that is no longer this one.
+   *
+   * The page is noindexed and comes down same day on request, so having it
+   * live costs nothing. Addressing an email to the wrong owner does.
+   */
 
   business: {
     name: 'Hair Genius Barbershop',
