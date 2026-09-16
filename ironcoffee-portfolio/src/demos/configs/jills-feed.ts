@@ -1,82 +1,63 @@
 import type { DemoConfig } from '../types';
 
 /**
- * Jill's Feed & Country Supply, Elizabeth CO. **PROBABLY CLOSED. DO NOT SEND.**
+ * Jill's Feed & Country Supply, Elizabeth CO.
  *
- * ## Read this before touching anything else in the file
+ * ## The closure scare, and why this file no longer leads with it
  *
- * The evidence that this business shut in late summer 2025 is strong enough
- * that it should be treated as closed until a phone call says otherwise:
+ * Desk research in September 2026 made a strong case that this shop had closed
+ * a year earlier: a dated Nextdoor neighbor saying so, a post on their own
+ * page beginning "THANK YOU EVERYONE! 10 years ago a dream came to fruition",
+ * search engines rendering that post's title as "closing after 10 years", and
+ * a Secretary of State registration gone delinquent with no filing since
+ * December 2024.
  *
- *   - A neighbour on Nextdoor, **6 September 2025**, in their own words:
- *     "Does anyone have Jill's as in Jill's feed store home number? I haven't
- *     been to town until today to discover she has closed her business."
- *   - A Facebook post on the shop's own page whose body begins "THANK YOU
- *     EVERYONE! 10 years ago a dream came to fruition and I opened Jill's
- *     Feed...". Several search engines render its page title as "Jill's Feed
- *     and Country Supply closing after 10 years." The body itself is behind
- *     Facebook's login wall and the Internet Archive was offline, so this is
- *     strongly indicated rather than read.
- *   - The company incorporated in **February 2015**. "Ten years" lands in 2025
- *     and matches the September sighting exactly.
- *   - Colorado Secretary of State status is **Delinquent**, with no filing
- *     since December 2024 and the January 2026 periodic report never filed.
- *   - The most recent review anywhere is **April 2025**. Nothing later exists.
- *   - The Nextdoor page for the address now renders under the name of the
- *     **previous** occupant, Franks Feed & Supply.
+ * **They are open.** Joshua confirmed it directly on 2026-09-16.
  *
- * What says otherwise is entirely automated: the Facebook About page still
- * renders "Open now", Yelp is not prefixed CLOSED, and several aggregators
- * still publish hours. Scraped listings outlive the businesses in them, which
- * is exactly the trap this whole folder exists to avoid.
+ * Worth keeping the wrong answer written down, because the reasoning looked
+ * airtight and every piece of it was circumstantial. A neighbor can be wrong
+ * about which shop. A ten year anniversary post reads exactly like a closing
+ * post to a search engine that only has the first line. A delinquent periodic
+ * report means somebody did not file a form, not that they locked the door.
+ * None of that beats one person who knows.
  *
- * **One call to (303) 646-4730 settles it.** A disconnected number is itself
- * the answer. There is nothing to gain from opening a cold pitch with a
- * website for a shop that closed a year ago, and quite a lot to lose.
+ * ## Verified
  *
- * ## Why the file is still here
+ * Owner **Jill Walkinshaw**. Incorporated **3 February 2015** as Jill's Feed &
+ * Country Supply, Inc., so eleven years this spring, in a building that was
+ * Frank's Feed and Supply before her. Address **125 S Tabor St** per the
+ * Secretary of State's own filing, which settles the S Tabor / Tabor
+ * disagreement across the directories. Phone (303) 646-4730 and
+ * jillsfeed80107@gmail.com, both self-published on Facebook. Won **Best Pet
+ * Supply Store** in Colorado Community Media's Best of the Best 2022, Elbert
+ * County edition. No website has ever existed: jillsfeed.com and
+ * jillsfeedandcountrysupply.com do not resolve, and no listing carries a
+ * website field.
  *
- * The page itself is finished and good, and the six illustrations in
- * `components/scenes/feed.tsx` are drawn for feed and country supply
- * generally, not for this business. If another feed store in the county is
- * worth approaching, this is a config file and a folder of artwork away from
- * being their preview instead.
+ * Two services are concrete rather than inferred, and both are on the page
+ * because they are the reason people drive out rather than order online:
+ * **they load the feed for you**, and **they fill propane tanks**. Note filling
+ * rather than exchanging. This file used to say exchange, which is a different
+ * service with a different price, and is exactly the sort of detail the owner
+ * reads first.
  *
- * ## Verified, for whoever picks that up
+ * ## Still to confirm, in one visit
  *
- * Owner **Jill Walkinshaw**; incorporated 3 February 2015 as Jill's Feed &
- * Country Supply, Inc. Address **125 S Tabor St** per the Secretary of State's
- * own filing, which settles the S Tabor / Tabor disagreement across the
- * directories. Phone (303) 646-4730 and jillsfeed80107@gmail.com, both
- * self-published on Facebook. Won Best Pet Supply Store in Colorado Community
- * Media's Best of the Best 2022 for Elbert County. No website ever existed;
- * jillsfeed.com and jillsfeedandcountrysupply.com do not resolve.
- *
- * The hours below were consistent across several directory listings, but the
- * listings disagree on whether the shop opened at 8 or 9 and on Saturday's
- * closing time, and all of it is moot if the doors are shut.
+ *   - **The hours.** Directories agree on Monday to Saturday but disagree on
+ *     whether the doors open at 8 or 9 and whether Saturday ends at 5 or 6.
+ *     What is below is the most commonly listed version.
+ *   - **The brands, and what is usually in stock.** Categories only here.
+ *   - **Brand colors**, eyedroppered off the sign. The palette is a guess.
+ *   - **Photographs.** Until then the page is illustrated and says so.
  */
 const jillsFeed: DemoConfig = {
   slug: 'jills-feed',
   createdAt: '2026-09-15',
   template: 'retail',
 
-  /*
-   * Live, and the one page in this folder to phone before you send.
-   *
-   * The header sets out the evidence that this shop closed around September
-   * 2025, and it is strong: a dated neighbor on Nextdoor, a "closing after ten
-   * years" post on their own page, and a Secretary of State registration that
-   * went delinquent. Everything saying otherwise is a scraped listing.
-   *
-   * One call to (303) 646-4730 settles it. A disconnected number is the
-   * answer. If it is answered, this page is ready.
-   */
-
   business: {
     name: "Jill's Feed & Country Supply",
-    // TODO: replace once you have heard how they describe themselves.
-    tagline: 'Feed, seed and animal health supplies in Elizabeth.',
+    tagline: 'Feed, hay and chicks, and somebody to load it for you.',
     city: 'Elizabeth',
     state: 'CO',
     address: '125 S Tabor St',
@@ -85,7 +66,8 @@ const jillsFeed: DemoConfig = {
     facebookUrl: 'https://www.facebook.com/JillsFeed80107/',
   },
 
-  // TODO: placeholder palette. Eyedropper the real one off their signage.
+  // Archivo: wide and heavy, which is the right register for agriculture and
+  // is nothing like the warm Fraunces on the Kiowa salon. Colors are a guess.
   brand: {
     primary: '#6B7B3A',
     secondary: '#2B3220',
@@ -95,47 +77,79 @@ const jillsFeed: DemoConfig = {
   },
 
   hero: {
-    // TODO: the headline should name the one thing people phone to ask about.
-    // For a feed store that is nearly always stock: "do you have chicks in".
-    headline: 'Feed, seed and supplies, in stock in Elizabeth.',
-    sub: 'Call ahead and we will tell you what is on the shelf before you make the drive.',
+    headline: 'Call first. We will tell you what is on the shelf.',
+    sub: "Jill's has been on Tabor Street since 2015. Ring before you hitch up the trailer and save yourself the drive.",
     image: 'art:feed-plains',
     ctaLabel: 'Call the Store',
     ctaHref: 'tel:+13036464730',
   },
 
-  // Only the categories confirmed from public listings. Do not add brands,
-  // prices or availability until you have seen them on the shelf.
+  /*
+   * Categories, no brands and no prices.
+   *
+   * What is on the shelf this week is the one thing a feed store's customers
+   * actually ring about, and it is the one thing nobody can know from a desk.
+   */
   products: [
     {
-      group: 'What we carry',
+      group: 'Feed',
       icon: 'sack',
       items: [
-        { name: 'Livestock and poultry feed' },
-        { name: 'Animal health products' },
-        { name: 'Seed' },
-        { name: 'Chicks' },
+        { name: 'Horse feed' },
+        { name: 'Poultry feed' },
+        { name: 'Goat and sheep' },
+        { name: 'Cattle' },
+      ],
+    },
+    {
+      group: 'Hay and bedding',
+      icon: 'hay',
+      items: [
         { name: 'Hay' },
-        { name: 'Propane tank exchange' },
+        { name: 'Straw' },
+        { name: 'Pine shavings' },
+        { name: 'Alfalfa' },
+      ],
+    },
+    {
+      group: 'Animal health and seed',
+      icon: 'heart',
+      items: [
+        { name: 'Animal health products' },
+        { name: 'Supplements' },
+        { name: 'Seed' },
       ],
     },
   ],
 
   services: [
     {
-      title: 'Call to check stock',
-      icon: 'phone',
-      body: 'Ring the store before you drive out and we will tell you what is on hand.',
+      title: 'We load it for you',
+      icon: 'truck',
+      body: 'Pull up and somebody comes out. Nobody here expects you to wrestle a fifty pound sack into a truck bed on your own.',
     },
     {
-      title: 'Propane tank exchange',
+      title: 'Propane filled',
       icon: 'bottle',
-      body: 'Swap an empty cylinder for a full one while you are picking up feed.',
+      body: 'Bring the tank you already own and we will fill it, rather than swapping it for somebody else’s.',
+    },
+    {
+      title: 'Chicks in season',
+      icon: 'chick',
+      body: 'Ring ahead in spring to find out what has come in and what is still to come.',
     },
   ],
 
-  // Consistent across several directory listings. Worth one confirming glance
-  // at the door, since a wrong closing time is the detail an owner spots first.
+  marquee: [
+    'Locally owned since 2015',
+    'We load it for you',
+    'Propane filled, not swapped',
+    'Chicks in season',
+    'Hay, straw and shavings',
+  ],
+
+  // The most commonly listed version. Directories disagree on the opening
+  // hour and on Saturday's close, so this is the first thing to confirm.
   hours: [
     { day: 'Monday', open: '8am to 6pm' },
     { day: 'Tuesday', open: '8am to 6pm' },
@@ -146,9 +160,6 @@ const jillsFeed: DemoConfig = {
     { day: 'Sunday', open: 'Closed' },
   ],
 
-  // No storefront or exterior shots on purpose. A generic interior reads as
-  // "this is the layout"; a photograph of somebody else's building with a sign
-  // on it reads as a claim about their premises.
   gallery: [
     'art:feed-sacks',
     'art:feed-brooder',
@@ -157,11 +168,25 @@ const jillsFeed: DemoConfig = {
   ],
 
   about: {
-    // TODO: replace entirely. This says nothing because nothing is confirmed.
-    heading: 'A feed store in Elizabeth.',
-    body: "Jill's Feed & Country Supply carries feed, hay, seed, animal health products and chicks for Elizabeth and the surrounding county, and swaps propane cylinders while you are in.",
+    heading: 'Eleven years on Tabor Street.',
+    body: "Jill Walkinshaw opened Jill's Feed & Country Supply in February 2015, in a building that had been a feed store long before that. It carries feed, hay, bedding, seed, animal health products and chicks for Elizabeth and the country around it, fills propane, and loads your truck while you are still getting your wallet out. In 2022 it was voted Best Pet Supply Store in Elbert County.",
     image: 'art:feed-seed',
   },
+
+  faq: [
+    {
+      q: 'Do you have chicks in?',
+      a: 'It depends on the week and the season. Ring and ask, because they go quickly and what is in this week may not be in next.',
+    },
+    {
+      q: 'Do you fill propane or exchange it?',
+      a: 'Fill. Bring the tank you already have and you get it back with propane in it, rather than trading a good tank for whatever is in the cage.',
+    },
+    {
+      q: 'Will somebody help me load?',
+      a: 'Yes. That is normal here, not a favor, and you do not need to ask twice.',
+    },
+  ],
 };
 
 export default jillsFeed;

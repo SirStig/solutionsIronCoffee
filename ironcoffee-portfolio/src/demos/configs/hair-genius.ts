@@ -1,95 +1,72 @@
 import type { DemoConfig } from '../types';
 
 /**
- * Hair Genius Barbershop, Parker CO. NOT READY TO SEND, and the reason is not
- * the page.
+ * Hair Genius Barbershop, Parker CO.
  *
- * ## Confirm the shop is still trading before this goes anywhere
+ * ## The ownership question is answered: same family, still theirs
  *
- * Four separate signals say something changed in late 2024 or 2025:
+ * Desk research raised a real scare, and it is worth keeping written down
+ * because every signal pointed the same wrong way. A new entity, Hair Genius 1
+ * LLC, filed September 2024 while the 2017 one went delinquent. A fresh trade
+ * name filing in February 2025. The shop's Booksy profile resolving to a Hair
+ * Genius in Orlando. Both barbers named in the reviews trading under their own
+ * names. No review anywhere dated 2026. Read together that is a business that
+ * changed hands.
  *
- *   - A new entity, **Hair Genius 1 LLC**, filed 02 September 2024 and in good
- *     standing at 11211 Dransfeldt Rd Ste 128. The older Hair Genius LLC, from
- *     2017, is delinquent. A fresh trade name filing followed in Feb 2025.
- *   - The shop's Booksy profile, id 401161, **now resolves to a Hair Genius in
- *     Orlando, Florida**, 8121 Vineland Ave. A Booksy search of Parker returns
- *     no shop-level Hair Genius at all.
- *   - Both barbers named in the reviews have rebranded off the name. Carlos is
- *     now "Carlos @ Lofi Barber" and has moved to 19571 E Mainstreet. Eduardo
- *     still works at Ste 128 but under "Eduardo B&B Barber Shop".
- *   - No review anywhere is dated 2026. The most recent is June 2025.
+ * **It did not. It is family run and operated, confirmed by Joshua on
+ * 2026-09-16.** An LLC refiling is paperwork, and paperwork is not a story.
  *
- * None of that proves they are shut. It does mean a preview addressed to a
- * business that has changed hands is worse than no preview, so this stays a
- * draft until somebody answers the phone.
- *
- * ## The Booksy link is gone, and it had to be
+ * ## The Booksy link is gone, and that is the thing to tell them
  *
  * This config used to open with a "Book Online" button pointing at Booksy
- * business 401161. **That link now sends a customer in Parker to a barbershop
- * in Orlando.** It was the single most prominent element on the page. The CTA
- * is their phone number now, which is the one contact detail every source
- * agrees on.
+ * business 401161. **That link sends a customer in Parker to a barbershop in
+ * Orlando, Florida.** It was the single most prominent element on the page,
+ * and it is still live on every directory that lists them.
  *
- * ## The pitch also changes, and gets much better
+ * There is a second one just as checkable. **Their own Facebook page lists
+ * their website as Wefixcheaphaircuts.com. That domain lapsed, was
+ * re-registered by a domain flipper in October 2024, and today serves a page
+ * offering it for sale at $395.** Everyone who has clicked "Website" on their
+ * Facebook since then has landed on somebody selling their old address back to
+ * them.
  *
- * The old angle was "you are on a free wsite.top subdomain". Weak, and
- * possibly wrong: hair-genius.wsite.top is live and has no title tag at all,
- * but it is an auto-generated scrape of their Yelp page, right down to a baked
- * in "YELP (28)" badge, and it is probably not theirs. Opening with "your
- * website is bad" about a page they never made loses the meeting in one line.
+ * Two broken links out in the world, both demonstrable in ten seconds in front
+ * of them, neither of which is their fault. That is the conversation.
  *
- * The real angle is checkable in ten seconds in front of them. **Their own
- * Facebook page lists their website as Wefixcheaphaircuts.com. That domain
- * lapsed, was re-registered by a domain flipper in October 2024, and today
- * serves a page offering it for sale at $395.** Every customer who has clicked
- * "Website" on their Facebook since then has landed on somebody selling their
- * old address back to them.
+ * (There is also hair-genius.wsite.top, live and with no title tag at all. Do
+ * not lead with it. It is an auto-generated scrape of their Yelp page, right
+ * down to a baked in "YELP (28)" badge, and it is almost certainly not theirs.
+ * Opening with "your website is bad" about a page they never made would lose
+ * the meeting in one line.)
  *
- * ## Verified 2026-09-16
+ * ## Verified
  *
  * Address 11211 Dransfeldt Rd Ste 128, self-published and matching the SOS
- * principal office. Phone (303) 805-5348, self-published and consistent on
- * every source with no conflict. Facebook page with 507 followers. No real
- * website. The SOS mailing address on Pony Express Dr is a mailbox; do not
- * print it.
+ * principal office. Phone (303) 805-5348, self-published and consistent
+ * everywhere with no conflict. Facebook page, 507 followers. Family owned and
+ * operated. No real website. The SOS mailing address on Pony Express Dr is a
+ * mailbox; do not print it.
  *
  * ## Still to confirm
  *
- *   - **Who owns it and who cuts there now.** No owner name is published
- *     anywhere. Carlos, George, Wes, Tami, Nolan and Keesha all come from old
- *     reviews.
  *   - **The hours.** Sources split cleanly in two. Three Google-derived
  *     listings say open seven days with Sunday 9 to 5 and late Wednesday and
  *     Thursday; the wsite.top page and Fresha say closed Sunday and a flat 10
- *     to 6. The shop publishes none. Below is the Google version, because that
- *     is what a customer searching today acts on, but it is a coin toss.
- *   - **Prices.** The shop publishes none. Eduardo's Booksy menu runs $34.99
- *     to $74.99, but that is his chair rate and not the shop's, and printing
- *     it as theirs would be wrong in a way that is hard to walk back.
- *   - **Brand colors.** The near-black and rust below is a guess.
+ *     to 6. The shop publishes none itself. Below is the Google version,
+ *     because that is what a customer searching today acts on, but it is a
+ *     coin toss and it is the first question worth asking.
+ *   - **Prices.** The shop publishes none. One barber's own Booksy menu runs
+ *     $34.99 to $74.99, but that is his chair rate and not the shop's.
+ *   - **Brand colors.** The charcoal and rust below is a guess.
  */
 const hairGenius: DemoConfig = {
   slug: 'hair-genius',
   createdAt: '2026-09-15',
   template: 'booking',
 
-  /*
-   * Live, but read the header before sending it.
-   *
-   * Nothing on the page is wrong. What is unsettled is who owns the shop: a
-   * new LLC in September 2024, a new trade name in February 2025, the shop's
-   * Booksy profile now resolving to Orlando, and both barbers named in the
-   * reviews trading under their own names since. It may well be the same
-   * business. It may be under a name that is no longer this one.
-   *
-   * The page is noindexed and comes down same day on request, so having it
-   * live costs nothing. Addressing an email to the wrong owner does.
-   */
-
   business: {
     name: 'Hair Genius Barbershop',
-    tagline: 'Fades, beard work and a chair on Dransfeldt Road.',
+    tagline: 'A family barbershop in Parker, off Dransfeldt Road.',
     city: 'Parker',
     state: 'CO',
     address: '11211 Dransfeldt Rd #128',
@@ -145,7 +122,7 @@ const hairGenius: DemoConfig = {
     {
       title: 'Kids',
       icon: 'child',
-      body: 'First haircuts included, patiently, which is not every shop.',
+      body: 'First haircuts included, and nobody here is in a hurry about it.',
       price: 'Call for pricing',
     },
   ],
@@ -170,8 +147,8 @@ const hairGenius: DemoConfig = {
   ],
 
   about: {
-    heading: 'Suite 128, and worth the walk around the back.',
-    body: 'Hair Genius is a barbershop in a suite set back off Dransfeldt Road. It takes a minute to find the first time, which is why the directions link is on this page and the address is not left to do the work on its own. Inside it is classic and modern in equal measure, walk-in when there is a chair and booked when there is not.',
+    heading: 'Family run, in Suite 128.',
+    body: 'Hair Genius is a family owned and operated barbershop in a suite set back off Dransfeldt Road. It takes a minute to find the first time, which is why the directions link is on this page and the address is not left to do the work on its own. Inside it is classic and modern in equal measure: walk in when there is a chair, ring ahead when there is not.',
     image: 'art:barber-pole',
   },
 
@@ -186,7 +163,7 @@ const hairGenius: DemoConfig = {
     },
     {
       q: 'Do you cut kids’ hair?',
-      a: 'Yes, including first haircuts, and the shop has a reputation for not rushing them.',
+      a: 'Yes, first haircuts included. Say it is their first when you ring and there will be time set aside for it.',
     },
   ],
 };

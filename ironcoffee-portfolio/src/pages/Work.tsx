@@ -4,7 +4,11 @@ import { ArrowRight, Archive } from 'lucide-react';
 import Seo from '../components/Seo';
 import ProjectCard from '../components/ProjectCard';
 import { CategoryField, CategoryMark } from '../components/CategoryMark';
-import { allProjects, type Category } from '../content/projects';
+import {
+  ARCHIVE_WEIGHT,
+  allProjects,
+  type Category,
+} from '../content/projects';
 import styles from './Work.module.css';
 
 /**
@@ -45,9 +49,6 @@ const groups: {
     blurb: 'Built to a brief, for a business that is not mine.',
   },
 ];
-
-/** Everything at or past this weight drops to the compact list at the bottom. */
-const ARCHIVE_WEIGHT = 20;
 
 const primary = (key: Category) =>
   allProjects.filter((p) => p.categories[0] === key);
