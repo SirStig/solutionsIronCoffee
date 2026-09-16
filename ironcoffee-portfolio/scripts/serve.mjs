@@ -44,11 +44,30 @@ const redirects = [
   [/^\/portfolio$/, () => '/work'],
 ];
 
+/**
+ * Whether the path is a file we can serve.
+ *
+ * The distinction between "not there" and "could not tell" is the whole point,
+ * and this used to swallow both.
+ *
+ * ENOENT and ENOTDIR mean the file genuinely does not exist, which is a 404.
+ * Every other errno means the lookup failed for a reason that has nothing to
+ * do with the file: EMFILE when the process runs out of descriptors, EACCES,
+ * EIO. Answering "no" to those is how a static server ends up reporting 404
+ * for a file sitting right there on disk.
+ *
+ * That is not hypothetical. Running two UI audits at once, four browser
+ * engines against two of these servers, produced a scatter of 404s at about
+ * one in a hundred page loads, on a different page every run, none of them
+ * reproducible afterwards. Two sessions each spent a while hunting for a
+ * missing asset that was never missing.
+ */
 const exists = async (file) => {
   try {
     return (await stat(file)).isFile();
-  } catch {
-    return false;
+  } catch (err) {
+    if (err.code === 'ENOENT' || err.code === 'ENOTDIR') return false;
+    throw err;
   }
 };
 
@@ -84,7 +103,19 @@ createServer(async (req, res) => {
     }
   }
 
-  const match = await resolve(req.url ?? '/');
+  let match;
+  try {
+    match = await resolve(req.url ?? '/');
+  } catch (err) {
+    /* Say so loudly rather than quietly serving a 404.
+     *
+     * A 503 with the errno in it is something a person can act on. A 404 for a
+     * file that exists is a ghost, and it costs whoever finds it an hour. */
+    console.error(`serve: ${url} lookup failed: ${err.code ?? err.message}`);
+    res.writeHead(503, { 'content-type': 'text/plain' });
+    res.end(`Lookup failed: ${err.code ?? 'unknown'}`);
+    return;
+  }
 
   if (!match) {
     res.writeHead(404, { 'content-type': 'text/plain' });

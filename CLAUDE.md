@@ -221,6 +221,15 @@ anything: CSS Color 4 serializes as `color(srgb r g b / a)` with channels in
 rather than the full brand color. Getting either of those wrong produced several
 hundred contrast failures that were not real, twice.
 
+A clean audit means something now, which it did not before. `scripts/serve.mjs`
+answered "file not found" to every error `stat()` could raise, so under load,
+when the process ran out of file descriptors, it served 404s for files sitting
+on disk. Two audits at once produced about one phantom 404 per hundred page
+loads, on a different page every run and never reproducible afterwards. It now
+distinguishes ENOENT from everything else and returns 503 with the errno for
+the rest. **If the audit reports a 404 you cannot reproduce, look at the load
+on the machine before you look at the page.**
+
 `npm run audit:ui` binds port 4200. Two of them at once, or one alongside
 `npm run serve`, and the loser silently uses the winner's server until the
 winner exits and kills it: the survivor then reports several hundred `nav`
