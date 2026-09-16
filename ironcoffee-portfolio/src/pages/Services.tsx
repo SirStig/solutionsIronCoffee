@@ -9,6 +9,7 @@ import {
   care,
   compare,
   ladderNote,
+  priceLine,
   pricingFaq,
   steps,
   tiers,
@@ -113,7 +114,7 @@ export default function Services() {
     <>
       <Seo
         title="Small business website design, priced up front"
-        description="Fixed prices for small business websites. One page $500, a full site $1,800. I build it first, you look at it, then you decide."
+        description="Small business websites from $200. I build it first, you look at it, then you decide. Bookings, orders and a dashboard when you need software behind it."
         path="/services"
         image="/og-services.png"
         jsonLd={[serviceSchema, faqSchema, breadcrumbSchema]}
@@ -137,10 +138,7 @@ export default function Services() {
               Email me
             </a>
           </div>
-          <p className={styles.heroNote}>
-            $500 to $1,800. Fixed. No retainer, no contract, yours the day it
-            goes live.
-          </p>
+          <p className={styles.heroNote}>{priceLine()}</p>
         </header>
 
         {/* --- The objection, before the prices ---------------------------- */}

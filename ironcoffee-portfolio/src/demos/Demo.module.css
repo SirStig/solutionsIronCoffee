@@ -40,7 +40,14 @@
 
   --d-gutter: clamp(1.25rem, 0.9rem + 1.8vw, 2.5rem);
   --d-section: clamp(3.5rem, 2.2rem + 6vw, 6.5rem);
-  --d-wide: 72rem;
+  /* Grows a little on a big monitor instead of stopping dead at 1152px.
+   *
+   * A fixed cap is right for prose and wrong for a page of photographs and
+   * panels: at 2560 it left a third of the screen empty on each side and the
+   * content read as stranded in the middle. Every block of text inside still
+   * sets its own measure in `ch`, so nothing here makes a line too long to
+   * read, it only lets the pictures and the panels use the room. */
+  --d-wide: clamp(72rem, 60rem + 14vw, 90rem);
   --d-narrow: 44rem;
 
   --d-font: var(--font-sans);
@@ -2629,10 +2636,10 @@
   font-weight: var(--d-display-weight);
   font-variation-settings: var(--d-display-settings);
   letter-spacing: var(--d-display-tracking);
-  font-size: clamp(1.75rem, 1.1rem + 3.2vw, 3.5rem);
-  line-height: 1.12;
+  font-size: clamp(1.75rem, 1.1rem + 3.2vw, 4.25rem);
+  line-height: 1.1;
   text-wrap: balance;
-  max-width: 22ch;
+  max-width: 20ch;
   hanging-punctuation: first;
 }
 
@@ -4059,13 +4066,19 @@
    needing a drawing, and it stays crisp at any size. */
 .planFloor {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 4;
   touch-action: none;
   background-color: color-mix(in srgb, var(--brand-deep) 4%, #fff);
   background-image:
     linear-gradient(to right, color-mix(in srgb, var(--brand-deep) 8%, transparent) 1px, transparent 1px),
     linear-gradient(to bottom, color-mix(in srgb, var(--brand-deep) 8%, transparent) 1px, transparent 1px);
   background-size: 6.25% 8.333%;
+}
+
+@media (min-width: 40rem) {
+  .planFloor {
+    aspect-ratio: 4 / 3;
+  }
 }
 
 .planStage,
@@ -4094,6 +4107,11 @@
 .planItem {
   position: absolute;
   translate: -50% -50%;
+  /* A sweetheart table is small by nature, but at 320px it came out 25 by 23
+     and was genuinely hard to get hold of. The floor grows instead: the plan
+     is taller on a narrow screen, so every table on it is bigger. */
+  min-width: 28px;
+  min-height: 28px;
   display: grid;
   place-items: center;
   border-radius: 6px;
@@ -4283,7 +4301,7 @@
   gap: 0.5rem;
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
-  background: rgb(12 14 16 / 0.55);
+  background: rgb(12 14 16 / 0.72);
   backdrop-filter: blur(6px);
   font-size: 0.75rem;
   letter-spacing: 0.12em;
@@ -4326,4 +4344,27 @@
   margin-inline: auto;
   padding: clamp(1.25rem, 1rem + 1.5vw, 2rem) var(--d-gutter)
     clamp(3rem, 2rem + 4vw, 5rem);
+}
+
+/* --- Venue enquiry -------------------------------------------------------
+   The booking flow carries the width; the practical details sit beside it on
+   a wide screen and underneath it on a narrow one. */
+.vEnquire {
+  display: grid;
+  gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+  align-items: start;
+}
+
+@media (min-width: 64rem) {
+  .vEnquire {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 17rem);
+  }
+}
+
+.vEnquire > * {
+  min-width: 0;
+}
+
+.vEnquireAside {
+  padding-top: 0.5rem;
 }

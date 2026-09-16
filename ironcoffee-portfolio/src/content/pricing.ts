@@ -35,6 +35,15 @@ export interface Tier {
   /** What actually gets built. This is what the price is for. */
   built: string[];
   timeline: string;
+  /**
+   * The short form, for the chip on a gallery card.
+   *
+   * Lives here rather than in the gallery because the two used to be separate
+   * lists keyed by tier id, and when the ids changed the gallery kept its old
+   * keys, matched nothing, and quietly rendered six empty chips. One list
+   * cannot fall out of step with itself.
+   */
+  chip: string;
   /** Which sample on the gallery page is this tier. */
   seeIt?: { label: string; slug: string };
   featured?: boolean;
@@ -64,6 +73,7 @@ export const tiers: Tier[] = [
     id: 'site',
     name: 'A site',
     price: '$200 to $500',
+    chip: 'A site \u00b7 $200 to $500',
     summary: 'One page, or the whole thing. Words, photos, a phone number.',
     login: 'Nothing to log into',
     built: [
@@ -79,6 +89,7 @@ export const tiers: Tier[] = [
     id: 'software',
     name: 'A site with software behind it',
     price: 'From $1,800',
+    chip: 'With software \u00b7 from $1,800',
     summary: 'A database. Things that change, and a screen where you see them.',
     login: 'You log in',
     built: [
@@ -94,6 +105,7 @@ export const tiers: Tier[] = [
     id: 'system',
     name: 'A system',
     price: 'From $3,200',
+    chip: 'A system \u00b7 from $3,200',
     summary: 'The whole thing, and you run it without calling me.',
     login: 'You and your staff log in',
     built: [
@@ -247,6 +259,10 @@ export const pricingFaq: PricingFaq[] = [
     a: 'Photos, your hours, and about an hour on the phone.',
   },
 ];
+
+/** The price range, spoken. Built from the tiers so it cannot go stale. */
+export const priceLine = () =>
+  `${tiers[0].price}, and up from there when there is software behind it. Fixed either way. No retainer, no contract, yours the day it goes live.`;
 
 /** What happens after you say yes. Four steps, one line each. */
 export const steps = [

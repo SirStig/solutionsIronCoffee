@@ -3,16 +3,16 @@ import { Link } from 'react-router-dom';
 import Seo from '../components/Seo';
 import Img from '../components/Img';
 import { site } from '../content/site';
+import { tiers } from '../content/pricing';
 import { sampleFeatures, showcases } from '../demos';
 import { TEMPLATE_BLURBS } from '../demos/templates';
 import styles from './Templates.module.css';
 
-/** What each sample is demonstrating, so the gallery reads as a price ladder. */
-const TIER_LABEL: Record<string, string> = {
-  starter: 'One page · $500',
-  standard: 'Full site · $1,800',
-  custom: 'Wired in · from $3,200',
-};
+/* The chip text comes from the pricing page's own tier list. Two lists keyed
+   by the same ids is how the gallery ended up rendering six empty chips. */
+const TIER_LABEL: Record<string, string> = Object.fromEntries(
+  tiers.map((t) => [t.id, t.chip])
+);
 
 const KIND_LABEL: Record<string, string> = {
   food: 'Restaurant and food',

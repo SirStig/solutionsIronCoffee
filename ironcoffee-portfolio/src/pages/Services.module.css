@@ -573,7 +573,10 @@
 }
 
 .seeIt {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  /* Its own line under the timeline, so WCAG 2.5.8 wants 24px on it. */
+  min-height: 24px;
   margin-top: var(--space-2);
   color: var(--accent);
   font-weight: 600;

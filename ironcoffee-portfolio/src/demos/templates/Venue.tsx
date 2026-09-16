@@ -4,7 +4,6 @@ import DemoShell from '../components/DemoShell';
 import DemoImage from '../components/DemoImage';
 import DemoOutro from '../components/DemoOutro';
 import { FaqList, PullQuote, StatementBand } from '../components/blocks';
-import { BusinessForm } from '../components/forms';
 import { Parallax, Reveal, Rise } from '../components/motion';
 import SeatingPlanner from '../components/SeatingPlanner';
 import Torch from '../components/Torch';
@@ -303,18 +302,23 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
         </Section>
       ) : null}
 
-      {/* --- Enquiry. ----------------------------------------------------- */}
+      {/* --- Enquiry. -----------------------------------------------------
+          The booking flow is the form. There used to be a second, generic
+          quote form underneath it, which was wrong twice over: it overlapped
+          the booking card at wide widths, and it carried the trades template's
+          copy, so a wedding venue was asking for a property address and
+          offering a free roof inspection. */}
       <Section id="enquire" tone="dark">
         <SectionHead
           eyebrow="Dates"
           title="Tell us when"
           sub="We hold a date for seven days with no deposit while you think about it."
         />
-        <AvailabilityBooking config={config} />
 
-        <div className={styles.visitGrid}>
-          <BusinessForm config={config} variant="quote" />
-          <div className={styles.visitAside}>
+        <div className={styles.vEnquire}>
+          <AvailabilityBooking config={config} />
+
+          <aside className={styles.vEnquireAside}>
             <ul className={styles.vMeta}>
               <li>
                 <MapPin size={17} aria-hidden="true" />
@@ -340,7 +344,7 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
             <Cta href={directionsHref(config)} variant="onDark">
               Get directions
             </Cta>
-          </div>
+          </aside>
         </div>
       </Section>
 
