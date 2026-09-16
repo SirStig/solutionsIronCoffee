@@ -20,9 +20,11 @@ import mkLiquors from './configs/mk-liquors';
 import ninebarkGarden from './configs/ninebark-garden';
 import ridgelineSmokehouse from './configs/ridgeline-smokehouse';
 import summitRidge from './configs/summit-ridge';
+import wrenHollow from './configs/wren-hollow';
 import test from './configs/test';
 
 const all: DemoConfig[] = [
+  wrenHollow,
   ridgelineSmokehouse,
   copperAndComb,
   summitRidge,

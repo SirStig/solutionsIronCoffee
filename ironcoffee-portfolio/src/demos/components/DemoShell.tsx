@@ -12,6 +12,7 @@ const fontClass: Record<BrandFont, string> = {
   industrial: styles.fontIndustrial,
   modern: styles.fontModern,
   craft: styles.fontCraft,
+  estate: styles.fontEstate,
 };
 
 /**

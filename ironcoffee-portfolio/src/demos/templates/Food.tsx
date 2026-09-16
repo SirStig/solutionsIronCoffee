@@ -13,6 +13,7 @@ import {
   Marquee,
   MenuBlock,
   PullQuote,
+  StatementBand,
   ServiceCards,
   StatsBand,
 } from '../components/blocks';
@@ -92,7 +93,14 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
         <Bleed tone="deep">
           <PullQuote items={config.testimonials} />
         </Bleed>
-      ) : null}
+      ) : (
+        <StatementBand
+          image={config.gallery[0] ?? config.hero.image}
+          line={config.business.tagline}
+          business={config.business.name}
+          kicker={`${config.business.city}, ${config.business.state}`}
+        />
+      )}
 
       <Section id="visit" tone="dark">
         <SectionHead eyebrow="Find us" title="Come and eat" />

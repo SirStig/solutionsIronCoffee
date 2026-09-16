@@ -149,6 +149,51 @@ export function PullQuote({ items }: { items: DemoTestimonial[] }) {
 }
 
 /**
+ * A photograph across the full width with the business's own line over it.
+ *
+ * Exists because of an asymmetry between the two kinds of page here. A gallery
+ * sample has invented testimonials and can hand one to <PullQuote> to be the
+ * loud moment on the page. A preview for a real business has none, and must
+ * not: putting words in a real customer's mouth to decorate a page you are
+ * about to send that customer's boss is not a shortcut worth taking.
+ *
+ * So the real previews get this instead. It is the same treatment and the same
+ * weight in the layout, and every word in it is the business's own line, which
+ * makes it the rare piece of design that costs nothing in honesty.
+ */
+export function StatementBand({
+  image,
+  line,
+  business,
+  kicker,
+}: {
+  image: string;
+  line: string;
+  business: string;
+  kicker?: string;
+}) {
+  return (
+    <section className={styles.statement}>
+      <div className={styles.statementMedia}>
+        <DemoImage
+          name={image}
+          alt=""
+          mark={initials(business)}
+          sizes="100vw"
+        />
+      </div>
+      <div className={styles.statementScrim} aria-hidden="true" />
+      <div className={styles.container}>
+        <div className={styles.statementCopy}>
+          {kicker && <span className={styles.statementKicker}>{kicker}</span>}
+          <p className={styles.statementLine}>{line}</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
  * A band of short claims sliding past.
  *
  * The list is duplicated so the second copy is arriving as the first leaves,
@@ -334,14 +379,37 @@ function availTone(text: string): string {
 }
 
 export function ProductBlock({ groups }: { groups: DemoProductGroup[] }) {
+  // One group means the group name is doing the same job as the section
+  // heading directly above it, and the page says "What we carry" twice.
+  const showHeadings = groups.length > 1;
+
   return (
     <div>
-      {groups.map((group) => (
+      {groups.map((group) => {
+        // A group where nothing has a price, a description or a stock note is
+        // a list of category names. Six of those rendered as cards is six
+        // mostly-empty boxes, which is exactly what a preview for a business
+        // that has not sent its details through looks like. A dense row of
+        // tags says the same thing and looks deliberate.
+        const bare = group.items.every(
+          (item) => !item.desc && !item.price && !item.availability
+        );
+
+        return (
         <div key={group.group} className={styles.productGroup}>
-          <h3 className={styles.menuSectionTitle}>
-            {group.icon && <Icon name={group.icon} size={22} />}
-            {group.group}
-          </h3>
+          {showHeadings && (
+            <h3 className={styles.menuSectionTitle}>
+              {group.icon && <Icon name={group.icon} size={22} />}
+              {group.group}
+            </h3>
+          )}
+          {bare ? (
+            <ul className={styles.productTags}>
+              {group.items.map((item) => (
+                <li key={item.name}>{item.name}</li>
+              ))}
+            </ul>
+          ) : (
           <div className={styles.productGrid}>
             {group.items.map((item) => (
               <article key={item.name} className={styles.productCard}>
@@ -366,8 +434,10 @@ export function ProductBlock({ groups }: { groups: DemoProductGroup[] }) {
               </article>
             ))}
           </div>
+          )}
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
@@ -442,6 +512,22 @@ export function HoursStrip({ hours }: { hours: DemoConfig['hours'] }) {
 
 /* --- Gallery ------------------------------------------------------------- */
 
+/**
+ * Column count and whether the first tile takes a double-width span.
+ *
+ * The rule is only "leave no holes". A trailing gap in a photo grid is the
+ * single most common way a page that is otherwise fine starts looking
+ * unfinished, and the photo count is config data, so it will keep changing.
+ */
+function layout(count: number): { cols: number; lead: boolean } {
+  const plain = [3, 2].find((n) => count % n === 0);
+  if (plain && count > 2) return { cols: plain, lead: false };
+  // One extra cell from the lead tile's span, then the same question again.
+  const spanned = [3, 2].find((n) => (count + 1) % n === 0);
+  if (spanned && count > 2) return { cols: spanned, lead: true };
+  return { cols: Math.max(count, 1), lead: false };
+}
+
 export function GalleryGrid({
   images,
   business,
@@ -454,17 +540,32 @@ export function GalleryGrid({
 }) {
   if (images.length === 0) return null;
 
+  // Three columns at most. Four across a 1440 frame makes every tile a narrow
+  // portrait slot, which is how a photograph of somebody getting a haircut ends
+  // up cropped through the head.
+  //
+  // `lead` is the escape hatch for a count that divides by nothing: giving the
+  // first tile a double-width span adds one cell, and a count that was awkward
+  // becomes one that is not. Five photos is the common case and the result is
+  // a better layout than five equal squares would have been anyway.
+  const { cols, lead } = layout(images.length);
+
   if (fullBleed) {
-    // A fixed column count leaves holes whenever the photo count is not a
-    // multiple of it. Pick the widest column count that divides evenly.
-    const cols = [5, 4, 3, 2].find((n) => images.length % n === 0) ?? 3;
     return (
       <div
         className={styles.galleryBand}
         style={{ '--band-cols': cols } as React.CSSProperties}
       >
         {images.map((name, index) => (
-          <div key={name} className={styles.galleryBandItem}>
+          <div
+            key={name}
+            className={[
+              styles.galleryBandItem,
+              lead && index === 0 && styles.galleryLead,
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
             <DemoImage
               name={name}
               alt={`${business}, photo ${index + 1}`}
@@ -478,9 +579,20 @@ export function GalleryGrid({
   }
 
   return (
-    <div className={styles.gallery}>
+    <div
+      className={styles.gallery}
+      style={{ '--band-cols': cols } as React.CSSProperties}
+    >
       {images.map((name, index) => (
-        <div key={name} className={styles.galleryItem}>
+        <div
+          key={name}
+          className={[
+            styles.galleryItem,
+            lead && index === 0 && styles.galleryLead,
+          ]
+            .filter(Boolean)
+            .join(' ')}
+        >
           <DemoImage
             name={name}
             alt={`${business}, photo ${index + 1}`}

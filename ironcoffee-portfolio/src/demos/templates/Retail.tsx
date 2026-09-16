@@ -10,6 +10,7 @@ import {
   ServiceCards,
   Marquee,
   PullQuote,
+  StatementBand,
   StatsBand,
   VisitBlock,
 } from '../components/blocks';
@@ -93,7 +94,14 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
         <Bleed tone="deep">
           <PullQuote items={config.testimonials} />
         </Bleed>
-      ) : null}
+      ) : (
+        <StatementBand
+          image={config.gallery[0] ?? config.hero.image}
+          line={config.business.tagline}
+          business={config.business.name}
+          kicker={`${config.business.city}, ${config.business.state}`}
+        />
+      )}
 
       {config.faq?.length ? (
         <Section narrow>

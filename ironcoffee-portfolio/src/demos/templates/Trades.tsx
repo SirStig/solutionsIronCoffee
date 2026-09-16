@@ -8,6 +8,7 @@ import {
   FaqList,
   GalleryGrid,
   PullQuote,
+  StatementBand,
   ServiceAreas,
   ServiceSteps,
   StatsBand,
@@ -66,9 +67,12 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
 
       {config.gallery.length > 0 && (
         <Section id="work" tone="alt">
+          {/* Trade-neutral on purpose. This template serves roofers, lawn
+              care, HVAC and fencing, and the line here used to read "real
+              roofs in this county", which it printed on all of them. */}
           <SectionHead
             title="Recent jobs"
-            sub="Real roofs in this county, photographed the day we finished."
+            sub="Photographed the day we finished."
           />
           <GalleryGrid images={config.gallery} business={config.business.name} />
         </Section>
@@ -78,7 +82,14 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
         <Bleed tone="brand">
           <PullQuote items={config.testimonials} />
         </Bleed>
-      ) : null}
+      ) : (
+        <StatementBand
+          image={config.gallery[1] ?? config.gallery[0] ?? config.hero.image}
+          line={config.business.tagline}
+          business={config.business.name}
+          kicker={`${config.business.city}, ${config.business.state}`}
+        />
+      )}
 
       <Section>
         <AboutBlock config={config} />

@@ -113,28 +113,66 @@ async function loadChunkHints(alreadyLinked = new Set()) {
     return { css, js };
   };
 
-  return (url) => {
+  return (url, lcp) => {
     const key = entryFor(url);
     const chunk = key && manifest[key];
     if (!chunk) return '';
 
     const { css, js } = collect(key);
-    const tags = [`<link rel="modulepreload" crossorigin href="/${chunk.file}">`];
 
-    for (const file of [...new Set(js)]) {
-      tags.push(`<link rel="modulepreload" crossorigin href="/${file}">`);
+    /* Order in the head is order on the wire, and on a slow link that is the
+       whole ballgame.
+     *
+     * These pages used to emit nine modulepreloads and three stylesheets
+     * ahead of anything else. On a 400 kbit link that is several seconds of
+     * bandwidth spent on React before the browser asks for the photograph
+     * that is the largest thing on the screen, and the measured LCP for a
+     * sample site was eighteen seconds.
+     *
+     * So: the image and the fonts first, then the stylesheets the page cannot
+     * paint without, then the JavaScript. Nothing is removed, it is only
+     * reordered and re-prioritised, and the page still hydrates exactly as it
+     * did. */
+    const tags = [];
+
+    if (lcp) {
+      // The preload scanner finds the <img> eventually. Saying it here means
+      // the request goes out with the HTML rather than after it, and
+      // imagesrcset lets the browser pick the same candidate it would have
+      // picked from the <picture>, so this costs no extra bytes.
+      tags.push(
+        `<link rel="preload" as="image" fetchpriority="high"` +
+          ` imagesrcset="${lcp.srcset}" imagesizes="${lcp.sizes}"${
+            lcp.type ? ` type="${lcp.type}"` : ''
+          }>`
+      );
     }
+
+    if (lcp?.font) {
+      // One face, the one this page's headings actually use. Every other
+      // display face stays unrequested.
+      tags.push(
+        `<link rel="preload" href="${lcp.font}" as="font" type="font/woff2" crossorigin>`
+      );
+    }
+
     for (const file of [...new Set(css)]) {
       // The shell already links the entry stylesheet; repeating it here would
       // put the same <link> on every page twice.
       if (alreadyLinked.has(file)) continue;
       tags.push(`<link rel="stylesheet" crossorigin href="/${file}">`);
     }
+
+    tags.push(`<link rel="modulepreload" crossorigin href="/${chunk.file}">`);
+    for (const file of [...new Set(js)]) {
+      tags.push(`<link rel="modulepreload" crossorigin href="/${file}">`);
+    }
+
     return tags.join('\n    ');
   };
 }
 
-function buildRoutes({ projects, posts, previews, showcases, demoRoutes }) {
+function buildRoutes({ projects, posts, previews, showcases, demoRoutes, images }) {
   const staticRoutes = [
     { url: '/', priority: '1.0', changefreq: 'weekly' },
     { url: '/work', priority: '0.9', changefreq: 'weekly' },
@@ -169,6 +207,10 @@ function buildRoutes({ projects, posts, previews, showcases, demoRoutes }) {
         url,
         priority: i === 0 ? '0.7' : '0.5',
         changefreq: 'monthly',
+        // Only the home page. An interior page's hero is a heading, not a
+        // photograph, and preloading one there would be bandwidth spent on
+        // something that is not the largest element.
+        lcp: i === 0 ? lcpFor(images, d.hero.image, { font: d.brand.font }) : undefined,
       }))
     ),
     // Previews built for a named business are the opposite: served, but never
@@ -176,12 +218,50 @@ function buildRoutes({ projects, posts, previews, showcases, demoRoutes }) {
     // the whole directory. Three layers, because only one of them is under my
     // control once a link has been sent.
     ...previews.flatMap((d) =>
-      demoRoutes(d).map((url) => ({ url, skipSitemap: true }))
+      demoRoutes(d).map((url, i) => ({
+        url,
+        skipSitemap: true,
+        lcp: i === 0 ? lcpFor(images, d.hero.image, { font: d.brand.font }) : undefined,
+      }))
     ),
     { url: '/preview-expired', skipSitemap: true },
     // Rendered so the host can serve a styled 404 instead of a blank shell.
     { url: '/404', skipSitemap: true },
   ];
+}
+
+/**
+ * What to preload for a page whose biggest element is a photograph.
+ *
+ * Reads the same manifest `<Img>` renders from, so the candidate the browser
+ * picks off this preload is byte for byte the one it would have picked off the
+ * <picture>. Getting that wrong downloads the image twice, which is worse than
+ * not preloading at all.
+ *
+ * AVIF only. Every browser that supports preloading with `imagesrcset` also
+ * supports AVIF, and offering the WebP fallback here would just invite a
+ * second download on the browsers that take it.
+ */
+const DISPLAY_FONTS = {
+  editorial: '/fonts/fraunces-latin-var.woff2',
+  luxe: '/fonts/playfair-latin-var.woff2',
+  industrial: '/fonts/archivo-latin-var.woff2',
+  modern: '/fonts/outfit-latin-var.woff2',
+  craft: '/fonts/bricolage-latin-var.woff2',
+  estate: '/fonts/cormorant-latin-var.woff2',
+};
+
+function lcpFor(images, key, { sizes = '100vw', font } = {}) {
+  const entry = images[key];
+  if (!entry) return undefined;
+  const avif = entry.sources.find((s) => s.type === 'image/avif');
+  if (!avif) return undefined;
+  return {
+    srcset: avif.srcset.map((s) => `${s.url} ${s.width}w`).join(', '),
+    sizes,
+    type: 'image/avif',
+    font: font ? DISPLAY_FONTS[font] : undefined,
+  };
 }
 
 /** Splices rendered markup, head tags and chunk hints into the built shell. */
@@ -341,7 +421,13 @@ async function main() {
     );
   }
 
-  const content = { projects, posts, previews, showcases, demoRoutes };
+  // The same manifest <Img> renders from, so a preload and the <picture> that
+  // follows it can never disagree about which file to fetch.
+  const images = JSON.parse(
+    await readFile(path.join(root, 'src/generated/images.json'), 'utf8')
+  );
+
+  const content = { projects, posts, previews, showcases, demoRoutes, images };
   const routes = buildRoutes(content);
   const shellStyles = new Set(
     [...template.matchAll(/<link rel="stylesheet"[^>]*href="\/([^"]+)"/g)].map(
@@ -354,7 +440,7 @@ async function main() {
   let count = 0;
   for (const route of routes) {
     const rendered = await render(route.url);
-    const page = composePage(template, rendered, hintsFor(route.url));
+    const page = composePage(template, rendered, hintsFor(route.url, route.lcp));
     written.push({ url: route.url, html: page });
 
     // `/work/beyond25` → build/work/beyond25/index.html, so the host serves it

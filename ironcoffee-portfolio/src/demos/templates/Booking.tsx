@@ -7,6 +7,7 @@ import {
   FaqList,
   GalleryGrid,
   PullQuote,
+  StatementBand,
   ServiceRows,
   StatsBand,
   TeamGrid,
@@ -67,7 +68,14 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
         <Bleed tone="deep">
           <PullQuote items={config.testimonials} />
         </Bleed>
-      ) : null}
+      ) : (
+        <StatementBand
+          image={config.gallery[1] ?? config.gallery[0] ?? config.hero.image}
+          line={config.business.tagline}
+          business={config.business.name}
+          kicker={`${config.business.city}, ${config.business.state}`}
+        />
+      )}
 
       <Section id="about">
         <AboutBlock config={config} reversed />

@@ -24,6 +24,7 @@ npm run typecheck       # tsc --noEmit
 npm run optimize:media  # rebuild public/img from assets/images (cached)
 npm run generate:brand  # rebuild favicons + share cards from vector source
 npm run capture:samples # screenshot the gallery samples (needs a build first)
+npm run audit:ui        # drive the build across 2 engines x 8 viewports
 ```
 
 `capture:samples` is deliberately not part of `npm run build`: it photographs
@@ -151,14 +152,26 @@ subscription. And keep every line short. A pricing page that has to be read
 twice has already lost.
 
 **Checking the demos.** `npm run build` then `npm run serve`, never `vite
-preview`. The browser audit in the scratchpad drives Chromium and WebKit across
-eight viewports and checks five things: horizontal overflow, tap target size,
-duplicate ids and dead in-page anchors, console and hydration errors, and text
-contrast against its computed backdrop. The contrast check exists because a
-component that paints a light surface but leaves `color` to inheritance renders
-white on white inside a dark section, and every other check passes while it
-does. Set `PRERENDER_DRAFTS=1` to build the drafts so they get audited too; a
-page that is never built is a page nobody ever checks.
+preview`. `npm run audit:ui` drives Chromium and WebKit across eight viewports
+and checks five things: horizontal overflow, tap target size, duplicate ids and
+dead in-page anchors, console and hydration errors, and text contrast against
+its computed backdrop. It exits non-zero on any finding. Set
+`PRERENDER_DRAFTS=1` on the build to include the drafts, since a page that is
+never built is a page nobody ever checks.
+
+Two things about that script are worth knowing before trusting or changing it.
+The contrast check exists because a component that paints a light surface but
+leaves `color` to inheritance renders white on white inside a dark section, and
+every other check passes while it does. And it flattens alpha before measuring
+anything: CSS Color 4 serializes as `color(srgb r g b / a)` with channels in
+0..1 rather than 0..255, and a 7% brand tint on a white card is a pale pink
+rather than the full brand color. Getting either of those wrong produced several
+hundred contrast failures that were not real, twice.
+
+Firefox is not covered. Playwright's bundled build will not launch on this
+machine in any mode, so the script runs two engines rather than pretending to
+run three. Chromium covers Chrome and Edge; WebKit covers Safari and every
+browser on iOS.
 
 Three separate things keep previews out of search: the `noindex, nofollow` tag
 the page renders, the `Disallow: /demo/` in `public/robots.txt`, and the

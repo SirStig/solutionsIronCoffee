@@ -101,6 +101,17 @@
   --d-display-settings: normal;
 }
 
+/* Cormorant is drawn for display sizes and looks thin and weedy below about
+   32px, which is exactly the trade-off a venue page wants: enormous, light,
+   and almost nothing else on the screen. */
+.fontEstate {
+  --d-display: 'Cormorant var', 'Cormorant Garamond', Garamond, Georgia, serif;
+  --d-display-weight: 500;
+  --d-display-tracking: -0.005em;
+  --d-display-case: none;
+  --d-display-settings: normal;
+}
+
 .fontCraft {
   --d-display: 'Bricolage var', 'Helvetica Neue', Arial, sans-serif;
   --d-display-weight: 700;
@@ -626,6 +637,17 @@
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
 }
 
+/* auto-fit stretches whatever is there to fill the row, so a business with
+   two services got two cards a third of a metre wide holding one sentence
+   each. Cap the track instead and let them sit at a readable size. */
+.serviceGrid:has(> :last-child:nth-child(2)) {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 24rem));
+}
+
+.serviceGrid:has(> :last-child:nth-child(1)) {
+  grid-template-columns: minmax(0, 28rem);
+}
+
 .serviceCard {
   position: relative;
   color: var(--d-text);
@@ -774,6 +796,26 @@
   margin-top: clamp(2.5rem, 1.5rem + 3vw, 3.5rem);
 }
 
+/* A group with no prices and no descriptions. See <ProductBlock>. */
+.productTags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.productTags li {
+  color: var(--d-text);
+  background: var(--d-surface);
+  border: 1px solid var(--d-border);
+  border-radius: var(--d-radius-full, 999px);
+  padding: 0.6rem 1.1rem;
+  font-size: 0.9375rem;
+  font-weight: 550;
+}
+
 .productGrid {
   display: grid;
   gap: 1rem;
@@ -905,14 +947,19 @@
 
 @media (min-width: 720px) {
   .gallery {
-    grid-template-columns: repeat(3, 1fr);
+    /* Set by <GalleryGrid>, which picks the count that leaves no trailing
+       hole. Hardcoding three here was what produced the ragged last row on
+       any business with four or five photographs. */
+    grid-template-columns: repeat(var(--band-cols, 3), 1fr);
     gap: 1rem;
   }
 
-  /* First tile spans two up, so the grid does not read as a contact sheet. */
-  .gallery > :first-child {
+  /* Two columns wide and one row tall, which is exactly the one extra cell
+     <GalleryGrid> counts on. A 2x2 lead looks better but eats four cells, and
+     then the arithmetic that stops the last row going ragged is wrong. */
+  .galleryLead {
     grid-column: span 2;
-    grid-row: span 2;
+    aspect-ratio: 2 / 1;
   }
 }
 
@@ -1686,9 +1733,17 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  max-width: 44rem;
+  display: grid;
+  gap: 0 clamp(2rem, 1rem + 4vw, 5rem);
+}
+
+/* Four services in a single 44rem column inside a 72rem section is half a
+   screen of nothing, which is what a barbershop with four services looked
+   like. Two columns from the point where a second one fits. */
+@media (min-width: 62rem) {
+  .serviceRows {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .serviceRow {
@@ -2777,5 +2832,687 @@
   .featureRow.reversed .featureMedia {
     order: 2;
     margin-inline: 0 calc(var(--d-gutter) * -1);
+  }
+}
+
+/* --- Statement band ------------------------------------------------------
+   The real-business counterpart to the pull quote. Same job in the layout,
+   nothing in it that anybody has to have said. */
+.statement {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: end;
+  min-height: clamp(20rem, 14rem + 22vw, 34rem);
+  padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  color: #fff;
+  overflow: hidden;
+}
+
+.statement > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.statementMedia {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.statementMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Dark at the bottom where the type sits, clear at the top where the
+   photograph is doing the work. A flat overlay across the whole frame mutes
+   the picture for no reason. */
+.statementScrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    rgb(12 14 16 / 0.78) 0%,
+    rgb(12 14 16 / 0.42) 34%,
+    rgb(12 14 16 / 0.08) 66%,
+    rgb(12 14 16 / 0) 100%
+  );
+}
+
+/* The measure belongs on the line, not on this wrapper. `ch` resolves against
+   the element's own font-size, and this one inherits 16px body text, so 28ch
+   came out at 282px and squeezed a 52px display line into four words a row. */
+.statementCopy {
+  max-width: 46rem;
+}
+
+.statementKicker {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.85);
+  margin-bottom: 1rem;
+}
+
+.statementLine {
+  font-family: var(--d-display);
+  font-weight: var(--d-display-weight);
+  font-variation-settings: var(--d-display-settings);
+  letter-spacing: var(--d-display-tracking);
+  text-transform: var(--d-display-case);
+  font-size: clamp(1.75rem, 1.1rem + 3vw, 3.25rem);
+  line-height: 1.1;
+  max-width: 17ch;
+  text-wrap: balance;
+  /* Not a decorative shadow. The scrim handles a dark photograph; this is what
+     keeps the line legible if a business sends in a blown-out one. */
+  text-shadow: 0 1px 24px rgb(12 14 16 / 0.5);
+}
+
+/* ==========================================================================
+   The venue template
+   ==========================================================================
+   Scroll-driven presentation, in CSS only. No IntersectionObserver, no scroll
+   listener, no JavaScript at all: `animation-timeline` runs off the scroller
+   itself, so none of it can jank and none of it touches the main thread.
+
+   The rule that makes it safe is the one that is easy to get wrong. Every
+   starting state lives inside `@supports (animation-timeline: view())`. Put
+   `opacity: 0` outside that block and a browser without support applies it,
+   then waits forever for an animation that will never run, and the page is
+   blank. Inside it, no support means no starting state, which means the
+   finished state, which is the page.
+
+   Nothing here animates anything but transform and opacity, so none of it can
+   contribute to layout shift, and all of it stops for anyone who has asked
+   their system to stop moving things.
+   ========================================================================= */
+
+/* --- Scroll progress ----------------------------------------------------- */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.progressBar {
+  height: 100%;
+  background: var(--brand);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+/* --- Hero ---------------------------------------------------------------- */
+.vHero {
+  position: relative;
+  isolation: isolate;
+  min-height: min(92svh, 56rem);
+  display: grid;
+  align-content: center;
+  padding-block: clamp(5rem, 3rem + 8vw, 9rem);
+  color: #fff;
+  overflow: hidden;
+}
+
+.vHeroMedia {
+  position: absolute;
+  inset: -6% 0;
+  z-index: -2;
+}
+
+.vHeroMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vHeroScrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to top, rgb(10 12 12 / 0.72), rgb(10 12 12 / 0.1) 55%),
+    linear-gradient(to right, rgb(10 12 12 / 0.45), rgb(10 12 12 / 0) 60%);
+}
+
+.vHeroInner {
+  width: 100%;
+  max-width: var(--d-wide);
+  margin-inline: auto;
+  padding-inline: var(--d-gutter);
+}
+
+.vHeroHeadline {
+  font-size: clamp(2.75rem, 1.2rem + 7vw, 7rem);
+  line-height: 0.98;
+  font-weight: 400;
+  max-width: 14ch;
+}
+
+/* Each line is a window; the span inside it is what slides up. Without the
+   window the letters would simply appear, which is a different and much
+   cheaper looking effect. */
+.revealLine {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.06em;
+}
+
+.revealInner {
+  display: block;
+}
+
+.vHeroSub {
+  margin-top: clamp(1.25rem, 1rem + 1vw, 2rem);
+  max-width: 34rem;
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
+  color: rgb(255 255 255 / 0.88);
+}
+
+.vHeroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+}
+
+/* A line that draws itself downward, forever. The only thing on this page
+   that animates without being asked, and it is two pixels wide. */
+.vScrollHint {
+  position: absolute;
+  left: 50%;
+  bottom: 2rem;
+  width: 1px;
+  height: 3.5rem;
+  background: rgb(255 255 255 / 0.3);
+  overflow: hidden;
+}
+
+.vScrollHint::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  animation: vHint 2.4s ease-in-out infinite;
+}
+
+@keyframes vHint {
+  0% { transform: translateY(-100%); }
+  60%, 100% { transform: translateY(100%); }
+}
+
+/* --- Facts strip --------------------------------------------------------- */
+.vFacts {
+  background: var(--brand-deep);
+  color: #fff;
+  padding-block: 1.25rem;
+}
+
+.vFactList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+  color: rgb(255 255 255 / 0.9);
+}
+
+/* --- Big statement ------------------------------------------------------- */
+.vStatement {
+  font-family: var(--d-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 0.9rem + 2.6vw, 2.75rem);
+  line-height: 1.28;
+  letter-spacing: -0.005em;
+  max-width: 24ch;
+  text-wrap: pretty;
+}
+
+/* --- Pinned horizontal gallery -------------------------------------------
+   The outer element is tall; that height is the scroll distance. The sticky
+   child holds still inside it while the track translates sideways. */
+.vTrackOuter {
+  background: var(--brand-deep);
+  color: #fff;
+}
+
+.vTrackSticky {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  min-height: 60svh;
+  padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+}
+
+.vTrack {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+  padding-inline: var(--d-gutter);
+}
+
+.vTrackLead {
+  flex: none;
+  width: min(24rem, 72vw);
+}
+
+.vTrackTitle {
+  margin-top: 1rem;
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
+  font-weight: 400;
+}
+
+.vTrackSub {
+  margin-top: 1rem;
+  color: rgb(255 255 255 / 0.66);
+  font-size: 0.9375rem;
+}
+
+.vTrackItem {
+  flex: none;
+  width: min(34rem, 78vw);
+  margin: 0;
+}
+
+.vTrackItem img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--d-radius-lg);
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.vTrackItem figcaption {
+  margin-top: 0.875rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.6);
+}
+
+/* Without support for scroll timelines the track is simply a row that
+   scrolls with a finger or a trackpad, which is a perfectly good gallery. */
+.vTrackSticky {
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+}
+
+.vTrackItem {
+  scroll-snap-align: center;
+}
+
+/* --- Seasons. Radio inputs and :has(), no script. ------------------------ */
+.seasons {
+  position: relative;
+}
+
+.seasonInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.seasonTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.seasonTabs label {
+  cursor: pointer;
+  border: 1px solid var(--d-border);
+  background: var(--d-surface);
+  color: var(--d-text);
+  border-radius: 999px;
+  /* 24px minimum target, with room for a thumb. */
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  padding-inline: 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 550;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.seasonTabs label:hover {
+  border-color: var(--brand);
+}
+
+.seasonStage {
+  position: relative;
+  border-radius: var(--d-radius-lg);
+  overflow: hidden;
+  background: var(--d-bg-alt);
+  aspect-ratio: 16 / 9;
+}
+
+.seasonPane {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.55s ease;
+}
+
+.seasonPane img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.seasonPane figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: clamp(1.25rem, 1rem + 2vw, 2.25rem);
+  background: linear-gradient(to top, rgb(10 12 12 / 0.8), rgb(10 12 12 / 0));
+  color: #fff;
+  font-size: clamp(0.9375rem, 0.9rem + 0.3vw, 1.0625rem);
+}
+
+/* The first pane is visible by default, which is what a browser with no
+   :has() support keeps showing. One season instead of four is a smaller loss
+   than an empty box. */
+.seasonPane:first-of-type {
+  opacity: 1;
+}
+
+.seasons:has(#season-spring:checked) .seasonPane:nth-of-type(1),
+.seasons:has(#season-summer:checked) .seasonPane:nth-of-type(2),
+.seasons:has(#season-autumn:checked) .seasonPane:nth-of-type(3),
+.seasons:has(#season-winter:checked) .seasonPane:nth-of-type(4) {
+  opacity: 1;
+}
+
+.seasons:has(#season-summer:checked) .seasonPane:nth-of-type(1),
+.seasons:has(#season-autumn:checked) .seasonPane:nth-of-type(1),
+.seasons:has(#season-winter:checked) .seasonPane:nth-of-type(1) {
+  opacity: 0;
+}
+
+.seasons:has(#season-spring:checked) .seasonTabs label:nth-of-type(1),
+.seasons:has(#season-summer:checked) .seasonTabs label:nth-of-type(2),
+.seasons:has(#season-autumn:checked) .seasonTabs label:nth-of-type(3),
+.seasons:has(#season-winter:checked) .seasonTabs label:nth-of-type(4) {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+/* Keyboard focus lands on the hidden radio, so the ring has to be drawn on
+   the label that stands in for it. */
+.seasonInput:focus-visible + .seasonTabs label,
+.seasons:has(.seasonInput:focus-visible) .seasonTabs label:hover {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* --- Parallax features --------------------------------------------------- */
+.vFeatures {
+  display: grid;
+  gap: clamp(3.5rem, 2rem + 7vw, 8rem);
+}
+
+.vFeature {
+  display: grid;
+  gap: clamp(1.5rem, 1rem + 2vw, 3.5rem);
+  align-items: center;
+}
+
+.vFeature > * {
+  min-width: 0;
+}
+
+@media (min-width: 60rem) {
+  .vFeature {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .vFeature.reversed .vFeatureMedia {
+    order: 2;
+  }
+}
+
+.parallax {
+  border-radius: var(--d-radius-lg);
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--d-bg-alt);
+}
+
+/* Taller than the frame on purpose. The overscan is what the parallax moves
+   through; without it the drift would pull a blank edge into view. */
+.parallaxInner {
+  height: 118%;
+  margin-top: -9%;
+}
+
+.parallaxInner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vFeatureIndex {
+  display: block;
+  font-size: 0.875rem;
+  letter-spacing: 0.18em;
+  color: var(--brand-ink);
+  margin-bottom: 1rem;
+}
+
+.vFeatureTitle {
+  font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem);
+  font-weight: 400;
+}
+
+.vFeatureBody {
+  margin-top: 1.25rem;
+  color: var(--d-muted);
+  font-size: var(--text-lg);
+  max-width: 34rem;
+}
+
+.vFeaturePrice {
+  margin-top: 1.25rem;
+  font-weight: 650;
+  color: var(--brand-ink);
+}
+
+/* --- Packages ------------------------------------------------------------ */
+.vPackages {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  align-items: start;
+}
+
+.vPackage {
+  color: var(--d-text);
+  background: var(--d-surface);
+  border: 1px solid var(--d-border);
+  border-radius: var(--d-radius-lg);
+  padding: clamp(1.75rem, 1.3rem + 1.4vw, 2.25rem);
+  height: 100%;
+}
+
+.vPackageName {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.vPackagePrice {
+  margin-top: 0.75rem;
+  font-family: var(--d-display);
+  font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
+  line-height: 1;
+  color: var(--brand-ink);
+}
+
+.vPackageBody {
+  margin-top: 1rem;
+  color: var(--d-muted);
+  font-size: 0.9375rem;
+}
+
+.vPackageNote {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--d-border);
+  font-size: 0.875rem;
+  color: var(--d-faint);
+}
+
+/* --- Enquiry meta -------------------------------------------------------- */
+.vMeta {
+  list-style: none;
+  margin: 0 0 1.75rem;
+  padding: 0;
+  display: grid;
+  gap: 1.125rem;
+}
+
+.vMeta li {
+  display: flex;
+  gap: 0.875rem;
+  align-items: start;
+  color: rgb(255 255 255 / 0.85);
+  font-size: 0.9375rem;
+}
+
+.vMeta svg {
+  flex: none;
+  margin-top: 0.15em;
+  color: var(--brand-accent);
+}
+
+/* ==========================================================================
+   Motion. Everything below is additive: remove this block and the page still
+   reads correctly, it just stops moving.
+   ========================================================================= */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rise {
+      opacity: 0;
+      transform: translateY(2rem);
+      animation: vRise linear both;
+      animation-timeline: view();
+      /* Finished well before the element reaches the middle of the screen.
+         Anything later and the reader is waiting on the page. */
+      animation-range: entry 10% cover 28%;
+    }
+
+    .riseDelay1 { animation-range: entry 12% cover 30%; }
+    .riseDelay2 { animation-range: entry 16% cover 34%; }
+    .riseDelay3 { animation-range: entry 20% cover 38%; }
+
+    @keyframes vRise {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .progressBar {
+      animation: vProgress linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    @keyframes vProgress {
+      to { transform: scaleX(1); }
+    }
+
+    /* The hero photograph pulls back and dims as it leaves. */
+    .vHeroMedia {
+      animation: vHeroOut linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+
+    @keyframes vHeroOut {
+      to {
+        transform: scale(1.12) translateY(3%);
+        opacity: 0.55;
+      }
+    }
+
+    .revealInner {
+      opacity: 0;
+      transform: translateY(102%);
+      animation: vLine 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes vLine {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .parallaxInner {
+      animation: vDrift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+
+    @keyframes vDrift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-8%); }
+    }
+
+    /* The pinned gallery. The sticky child holds still while the track
+       translates by its own overflow, which is what turns vertical scroll
+       into horizontal movement. */
+    .vTrackOuter {
+      height: 320svh;
+    }
+
+    .vTrackSticky {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      min-height: 0;
+      overflow-x: hidden;
+    }
+
+    .vTrack {
+      animation: vSlide linear both;
+      animation-timeline: scroll(nearest block);
+      will-change: transform;
+    }
+
+    /* 100% of the track's own width, less one viewport, is exactly the
+       distance from "first item at the left edge" to "last item at the
+       right edge". */
+    @keyframes vSlide {
+      to { transform: translateX(calc(-100% + 100vw)); }
+    }
+  }
+}
+
+/* Anyone who has asked for less movement gets the page with none of it. The
+   pinned gallery becomes an ordinary sideways scroller. */
+@media (prefers-reduced-motion: reduce) {
+  .vScrollHint::after {
+    animation: none;
+  }
+
+  .seasonPane {
+    transition: none;
   }
 }

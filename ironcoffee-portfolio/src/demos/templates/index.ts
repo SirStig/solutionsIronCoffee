@@ -5,6 +5,7 @@ import Food from './Food';
 import Professional from './Professional';
 import Retail from './Retail';
 import Trades from './Trades';
+import Venue from './Venue';
 
 /**
  * The only place a template name turns into a component.
@@ -21,6 +22,7 @@ export const TEMPLATES: Record<
   booking: Booking,
   professional: Professional,
   trades: Trades,
+  venue: Venue,
 };
 
 /** Shown on the gallery index so each card can say what it is for. */
@@ -30,4 +32,5 @@ export const TEMPLATE_BLURBS: Record<TemplateName, string> = {
   booking: 'A priced service list, staff bios and a booking button that never scrolls away.',
   professional: 'New client offer, insurance list, team credentials and the questions people hesitate over.',
   trades: 'Service areas, trust badges, finished-job photos and a quote form.',
+  venue: 'Scroll-driven animation, a pinned sideways gallery and a season switcher that runs without a line of JavaScript.',
 };

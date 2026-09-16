@@ -14,6 +14,7 @@ import {
   StatsBand,
   TeamGrid,
   PullQuote,
+  StatementBand,
 } from '../components/blocks';
 import { BusinessForm } from '../components/forms';
 import { Bleed, Section, SectionHead } from '../components/primitives';
@@ -81,7 +82,14 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
         <Bleed tone="brand">
           <PullQuote items={config.testimonials} />
         </Bleed>
-      ) : null}
+      ) : (
+        <StatementBand
+          image={config.gallery[0] ?? config.hero.image}
+          line={config.business.tagline}
+          business={config.business.name}
+          kicker={`${config.business.city}, ${config.business.state}`}
+        />
+      )}
 
       <Section tone="alt">
         <AboutBlock config={config} reversed />

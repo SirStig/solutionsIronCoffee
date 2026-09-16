@@ -20,7 +20,17 @@ export type TemplateName =
   | 'retail'
   | 'booking'
   | 'professional'
-  | 'trades';
+  | 'trades'
+  /**
+   * The one that is showing off.
+   *
+   * Scroll-driven animation, a pinned horizontal gallery, a season switcher
+   * that runs without JavaScript. It exists because a gallery of five
+   * competent small business sites answers "can you build me a website" and
+   * does not answer "are you any good", and the second question is the one
+   * that makes somebody pick a person over a subscription.
+   */
+  | 'venue';
 
 /**
  * Which display face sets the headings.
@@ -43,7 +53,9 @@ export type BrandFont =
   /** Outfit. Geometric and calm. Clinics, dentists, family practices. */
   | 'modern'
   /** Bricolage Grotesque. Drawn by hand. Barbers, record shops, bottle shops. */
-  | 'craft';
+  | 'craft'
+  /** Cormorant, very light at very large sizes. Venues, galleries, florists. */
+  | 'estate';
 
 export interface DemoBusiness {
   name: string;

@@ -48,6 +48,7 @@
     "pretypecheck": "npm run optimize:media",
     "deploy": "node scripts/deploy.mjs",
     "verify": "node scripts/verify-deploy.js",
-    "capture:samples": "node scripts/capture-samples.mjs"
+    "capture:samples": "node scripts/capture-samples.mjs",
+    "audit:ui": "node scripts/audit-ui.mjs"
   }
 }
