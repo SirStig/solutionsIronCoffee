@@ -125,6 +125,23 @@ never prerendered, so a half-written business cannot become a link that gets
 sent by accident. Clear the flag when the content is actually gathered. Drafts
 still render on the dev server, so `npm run dev` is how you look at one.
 
+**Not prerendering a draft is not the same as it being unreachable, and for a
+while this repo confused the two.** The prerenderer correctly skipped drafts,
+so `/demo/jills-feed` had no file and Apache answered 404. But the 404 body is
+the app shell: React hydrated over it, the client router matched the route, and
+`getDemo` handed back the draft config from the bundle. The result was a
+complete, unverified preview of a real business, live at a URL anybody could
+send, under a status code claiming it was gone. `curl -o /dev/null -w
+"%{http_code}"` reported 404 and the page rendered perfectly in a browser.
+
+So the gate lives in `getDemo`, which is the only way a route reaches a config,
+and two tests hold it there. The lesson generalizes: **a status code is not a
+verification.** Open the page.
+
+The gate reads `import.meta.env.MODE === 'development'`, not `DEV`. Vitest sets
+`DEV` to true, so using it opens the gate during tests and the regression test
+for this hole passes by rendering the thing it forbids.
+
 Two rules that exist because of how these get used. `business.phone` is
 optional, since some businesses publish only a Facebook page and a booking
 link, and every template degrades to the next best action rather than letting

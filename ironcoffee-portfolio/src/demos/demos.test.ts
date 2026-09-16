@@ -1,16 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  daysRemaining,
-  demos,
-  drafts,
-  formatExpiry,
-  fullAddress,
-  isExpired,
-  previews,
-  showcases,
-  telHref,
-  todayName,
-} from './index';
+import { daysRemaining, demos, drafts, formatExpiry, fullAddress, isExpired, previews, showcases, telHref, todayName, getDemo, getAnyDemo } from './index';
 import { TEMPLATES, TEMPLATE_BLURBS } from './templates';
 import { iconNames } from './components/icons';
 
@@ -197,5 +186,31 @@ describe('formatting helpers', () => {
 
   it('names the current day the way the hours rows do', () => {
     expect(todayName(new Date('2026-09-15T12:00:00Z'))).toBe('Tuesday');
+  });
+
+  /* Regression test for a hole that shipped.
+   *
+   * The prerenderer refused to build drafts, so `/demo/<draft>` had no file and
+   * the server answered 404. The 404 body is the app shell though, so React
+   * hydrated over it, the client router matched, and `getDemo` handed back the
+   * draft: a full preview of a real business, live at a URL anybody could
+   * send, under a status code that claimed it was gone.
+   *
+   * Vitest runs with DEV false and no PRERENDER_DRAFTS, which is exactly the
+   * condition a deployed build has. */
+  it('never hands a draft to a route in a deployed build', () => {
+    expect(drafts.length).toBeGreaterThan(0);
+
+    for (const draft of drafts) {
+      expect(getDemo(draft.slug)).toBeUndefined();
+      // Still in the registry, still typechecked, still testable.
+      expect(getAnyDemo(draft.slug)).toBeDefined();
+    }
+  });
+
+  it('still serves everything that is not a draft', () => {
+    for (const demo of [...showcases, ...previews]) {
+      expect(getDemo(demo.slug)).toBeDefined();
+    }
   });
 });

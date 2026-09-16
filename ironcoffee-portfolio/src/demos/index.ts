@@ -49,9 +49,25 @@ export const demos: Record<string, DemoConfig> = Object.fromEntries(
  * never built is a page that never gets checked for overflow or contrast.
  * Unset, which is every real build, drafts stay out of the output entirely.
  */
+/**
+ * Whether a draft config is reachable at all.
+ *
+ * True while developing, and in the one build that exists so the browser audit
+ * can see the drafts. False in every build that gets deployed.
+ *
+ * The mode check is what keeps `npm run dev` useful: drafts are meant to render
+ * there, because looking at one is the whole reason to write it before the
+ * details are confirmed.
+ *
+ * `MODE`, not `DEV`. Vitest sets `DEV` to true, so using it here opened the
+ * gate during tests and the regression test for this very hole passed by
+ * rendering the thing it was meant to forbid. `MODE` is 'development' only
+ * under the dev server: 'test' under Vitest, 'production' in a real build.
+ */
 // eslint-disable-next-line no-undef
 const INCLUDE_DRAFTS =
-  typeof process !== 'undefined' && process.env?.PRERENDER_DRAFTS === '1';
+  (typeof process !== 'undefined' && process.env?.PRERENDER_DRAFTS === '1') ||
+  import.meta.env?.MODE === 'development';
 
 /** Fictional businesses in the public gallery. Indexed, permanent. */
 export const showcases: DemoConfig[] = all.filter((d) => d.showcase);
@@ -67,10 +83,34 @@ export const previews: DemoConfig[] = all.filter(
   (d) => !d.showcase && (!d.draft || INCLUDE_DRAFTS)
 );
 
-/** Configs still being filled in. In the repo, never on the deployed site. */
+/** Configs still being filled in. In the repo, never reachable once deployed. */
 export const drafts: DemoConfig[] = all.filter((d) => d.draft);
 
-export const getDemo = (slug: string): DemoConfig | undefined => demos[slug];
+/**
+ * A demo by slug, or nothing.
+ *
+ * The draft check lives here rather than in the page, and it is the whole
+ * point of this function.
+ *
+ * Leaving it out was a real hole, and it hid well. The prerenderer correctly
+ * refused to build a draft, so `/demo/jills-feed` had no file and the server
+ * answered 404. But the 404 body is the app shell, React hydrated over it, the
+ * client router matched the route, and this function cheerfully handed back
+ * the draft config from the bundle: a complete, unverified preview of a real
+ * business, rendered under a 404 status, at a URL anybody could send.
+ *
+ * Checking the status code says the page is gone. Opening it in a browser says
+ * otherwise. Only one of those is the truth.
+ */
+export const getDemo = (slug: string): DemoConfig | undefined => {
+  const demo = demos[slug];
+  if (!demo) return undefined;
+  if (demo.draft && !INCLUDE_DRAFTS) return undefined;
+  return demo;
+};
+
+/** Ignores the draft gate. For tests and tooling, never for a route. */
+export const getAnyDemo = (slug: string): DemoConfig | undefined => demos[slug];
 
 /** Outreach previews go stale after this long. Showcases never do. */
 export const PREVIEW_DAYS = 60;
