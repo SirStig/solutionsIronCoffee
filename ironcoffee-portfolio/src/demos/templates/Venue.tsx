@@ -260,6 +260,7 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
         </Bleed>
       ) : (
         <StatementBand
+          motif={config.brand.motif}
           image={g5 ?? g0}
           line={config.business.tagline}
           business={config.business.name}

@@ -38,6 +38,17 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
   // Anchors on a one-page sample, real page links on a multi-page one.
   const links = homeNavLinks(config, anchors);
 
+  /*
+   * A shop that has not given us its prices gets a different heading.
+   *
+   * "What we do, and what it costs" over four rows all reading "Call for
+   * pricing" is a page arguing with itself, and it is the kind of small
+   * carelessness an owner reads as "they did not look at this".
+   */
+  const priced = config.services.some(
+    (service) => service.price && !/^call/i.test(service.price)
+  );
+
   return (
     <DemoShell config={config} links={links} navVariant="centered">
       <DemoHero config={config} variant="split" />
@@ -45,8 +56,12 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
       <Section id="services">
         <SectionHead
           eyebrow="Services"
-          title="What we do, and what it costs"
-          sub="Prices start where they start. Anything that depends on length or condition gets quoted in the chair before we begin."
+          title={priced ? 'What we do, and what it costs' : 'What we do'}
+          sub={
+            priced
+              ? 'Prices start where they start. Anything that depends on length or condition gets quoted in the chair before we begin.'
+              : 'Every job depends on length, condition and how long it takes, so you get a number in the chair before anything starts rather than a surprise at the counter.'
+          }
           align="center"
         />
         <ServiceRows items={config.services} />
@@ -70,6 +85,7 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
         </Bleed>
       ) : (
         <StatementBand
+          motif={config.brand.motif}
           image={config.gallery[1] ?? config.gallery[0] ?? config.hero.image}
           line={config.business.tagline}
           business={config.business.name}

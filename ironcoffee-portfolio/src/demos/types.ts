@@ -87,6 +87,14 @@ export interface DemoBrand {
   font: BrandFont;
   /** Manifest key, e.g. `demos/sammieds/logo`. */
   logo?: string;
+  /**
+   * The business's signature mark, tiled behind deep bands.
+   *
+   * A name from `components/motifs.tsx`: 'wheat', 'blades', 'shears',
+   * 'bottles', 'pines'. Leave it out and the bands paint flat, which is the
+   * right answer when nothing in the trade draws down to one small shape.
+   */
+  motif?: string;
 }
 
 export interface DemoHero {

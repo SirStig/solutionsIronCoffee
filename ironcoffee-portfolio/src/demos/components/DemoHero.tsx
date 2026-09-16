@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Phone } from 'lucide-react';
 import type { DemoConfig } from '../types';
-import { telHref } from '../index';
+import { artName, telHref } from '../index';
 import DemoImage from './DemoImage';
 import { Cta } from './primitives';
 import styles from '../Demo.module.css';
@@ -47,7 +47,23 @@ function Actions({
   );
 }
 
-function Media({ config, priority = true }: { config: DemoConfig; priority?: boolean }) {
+/**
+ * `over` means the headline sits on top of the media rather than beside it.
+ *
+ * It decides two things at once. A drawing switches to its light-on-deep
+ * colorway so the copy has a known ground, and the scrim over it drops to
+ * almost nothing, because a scrim heavy enough to rescue white text from a
+ * bright photograph flattens an illustration into a silhouette.
+ */
+function Media({
+  config,
+  priority = true,
+  over = false,
+}: {
+  config: DemoConfig;
+  priority?: boolean;
+  over?: boolean;
+}) {
   const { hero, business } = config;
   return (
     <DemoImage
@@ -55,6 +71,7 @@ function Media({ config, priority = true }: { config: DemoConfig; priority?: boo
       alt={`${business.name} in ${business.city}, ${business.state}`}
       sizes="100vw"
       priority={priority}
+      artTone={over ? 'dark' : 'light'}
     />
   );
 }
@@ -74,14 +91,19 @@ export default function DemoHero({
 }) {
   const { hero } = config;
 
+  // A drawing needs a far lighter scrim than a photograph does. See <Media>.
+  const scrimClass = [styles.heroScrim, artName(hero.image) && styles.heroScrimArt]
+    .filter(Boolean)
+    .join(' ');
+
   /* --- Full bleed. Photo first, copy over it. ---------------------------- */
   if (variant === 'full') {
     return (
       <section className={styles.hero} id="top">
         <div className={styles.heroMedia}>
-          <Media config={config} />
+          <Media config={config} over />
         </div>
-        <div className={styles.heroScrim} aria-hidden="true" />
+        <div className={scrimClass} aria-hidden="true" />
         <div className={styles.heroInner}>
           <div className={styles.heroCopy}>
             <h1 className={styles.heroHeadline}>{hero.headline}</h1>
@@ -116,9 +138,9 @@ export default function DemoHero({
     return (
       <section className={styles.hero} id="top">
         <div className={styles.heroMedia}>
-          <Media config={config} />
+          <Media config={config} over />
         </div>
-        <div className={styles.heroScrim} aria-hidden="true" />
+        <div className={scrimClass} aria-hidden="true" />
         <div className={styles.heroInner}>
           <div className={styles.heroPanelGrid}>
             <div className={styles.heroCopy}>
@@ -159,8 +181,8 @@ export default function DemoHero({
   return (
     <section className={styles.heroStrip} id="top">
       <div className={styles.heroStripMedia}>
-        <Media config={config} />
-        <div className={styles.heroScrim} aria-hidden="true" />
+        <Media config={config} over />
+        <div className={scrimClass} aria-hidden="true" />
         <div className={styles.heroStripInner}>
           <h1 className={styles.heroStripHeadline}>{hero.headline}</h1>
           <p className={styles.heroSub}>{hero.sub}</p>

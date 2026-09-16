@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { daysRemaining, demos, drafts, formatExpiry, fullAddress, isExpired, previews, showcases, telHref, todayName, getDemo, getAnyDemo } from './index';
 import { TEMPLATES, TEMPLATE_BLURBS } from './templates';
 import { iconNames } from './components/icons';
+import { artName } from './index';
+import { hasScene } from './components/artwork';
+import { hasMotif } from './components/motifs';
+import './components/scenes';
 
 const all = Object.values(demos);
 
@@ -211,6 +215,50 @@ describe('formatting helpers', () => {
   it('still serves everything that is not a draft', () => {
     for (const demo of [...showcases, ...previews]) {
       expect(getDemo(demo.slug)).toBeDefined();
+    }
+  });
+
+  /* --- Drawings ---------------------------------------------------------- *
+
+   * An `art:` key naming a scene that does not exist does not throw. It falls
+   * through to the gradient stand-in, so the page still renders, still passes
+   * the browser audit, and quietly shows a colored rectangle where a drawing
+   * was meant to be. A typo in a scene name is therefore invisible until
+   * somebody looks at the page, which is exactly the class of mistake worth
+   * spending a test on. */
+  it('names a scene that exists for every art: key', () => {
+    for (const demo of all) {
+      const keys = [demo.hero.image, ...demo.gallery, demo.about.image];
+      for (const key of keys) {
+        const scene = artName(key);
+        if (!scene) continue;
+        expect(hasScene(scene), `${demo.slug} -> ${key}`).toBe(true);
+      }
+    }
+  });
+
+  it('names a motif that exists, when it names one at all', () => {
+    for (const demo of all) {
+      const { motif } = demo.brand;
+      if (!motif) continue;
+      expect(hasMotif(motif), `${demo.slug} -> ${motif}`).toBe(true);
+    }
+  });
+
+  /* A preview for a real business is either drawn or photographed, never the
+   * two at once. Mixing them is the one combination that looks like a mistake
+   * rather than like a decision, and it also makes the disclosure at the foot
+   * of the page wrong whichever sentence it picks. */
+  it('does not mix drawings and photographs in one demo', () => {
+    for (const demo of all) {
+      const keys = [demo.hero.image, ...demo.gallery, demo.about.image].filter(
+        (key): key is string => Boolean(key)
+      );
+      const drawn = keys.filter((key) => artName(key));
+      expect(
+        drawn.length === 0 || drawn.length === keys.length,
+        `${demo.slug} mixes ${drawn.length} drawings with ${keys.length - drawn.length} photos`
+      ).toBe(true);
     }
   });
 });

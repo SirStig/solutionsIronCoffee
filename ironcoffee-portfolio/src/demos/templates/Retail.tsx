@@ -46,10 +46,11 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
         variant="strip"
         note={
           <div className={styles.heroNoteInner}>
-            <span>Stock updated most mornings.</span>
             {today && <span>Today: {today.open}</span>}
             {config.business.phone && (
-              <span>Call {config.business.phone} to check before you drive out.</span>
+              <span>
+                Call {config.business.phone} and we will check the shelf for you.
+              </span>
             )}
           </div>
         } />
@@ -61,7 +62,7 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
           <SectionHead
             eyebrow="On the shelves"
             title="What we carry"
-            sub="Call to confirm before you drive out. Stock moves fast and this page is only as current as our last update." />
+            sub="Call before you drive out and we will tell you what is on the shelf. This page is only ever as current as our last update." />
           <ProductBlock groups={config.products} />
         </Section>
       ) : null}
@@ -96,6 +97,7 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
         </Bleed>
       ) : (
         <StatementBand
+          motif={config.brand.motif}
           image={config.gallery[0] ?? config.hero.image}
           line={config.business.tagline}
           business={config.business.name}

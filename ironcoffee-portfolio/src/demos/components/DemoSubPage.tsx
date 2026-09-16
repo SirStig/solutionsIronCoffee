@@ -27,7 +27,7 @@ const defaults: Record<DemoPage['kind'], { title: string; intro?: string }> = {
   menu: { title: 'The menu', intro: 'Everything is made here, every day.' },
   services: { title: 'What we do' },
   about: { title: 'About us' },
-  gallery: { title: 'Photographs' },
+  gallery: { title: 'A look around' },
   team: { title: 'The team' },
   faq: { title: 'Questions' },
   contact: { title: 'Get in touch' },

@@ -1,29 +1,60 @@
 import type { DemoConfig } from '../types';
 
 /**
- * Jill's Feed & Country Supply, Elizabeth CO. NOT READY TO SEND.
+ * Jill's Feed & Country Supply, Elizabeth CO. **PROBABLY CLOSED. DO NOT SEND.**
  *
- * Every field below is either verified from a public listing or marked as
- * needing you. Nothing here is guessed, because a wrong price or a wrong
- * opening time in a preview is the one mistake you cannot walk back in front
- * of a stranger.
+ * ## Read this before touching anything else in the file
  *
- * Verified 2026-09-15 from public directory listings:
- *   name, address, phone, email, Facebook page, and that they carry feed,
- *   animal health products, seed and chicks. No website found, so the pitch
- *   premise holds.
+ * The evidence that this business shut in late summer 2025 is strong enough
+ * that it should be treated as closed until a phone call says otherwise:
  *
- * Still needed, all of it from a visit or a phone call:
- *   - The brands they actually carry, and what is usually in stock.
- *   - Brand colors, eyedroppered from their sign or their logo.
- *   - One real detail for the About section: how long they have been there,
- *     who runs it, what they are proud of.
- *   - Photos into assets/images/demos/jills-feed/. Until then every image
- *     slot renders a branded gradient, which is why this still looks like
- *     something rather than a page of broken frames.
+ *   - A neighbour on Nextdoor, **6 September 2025**, in their own words:
+ *     "Does anyone have Jill's as in Jill's feed store home number? I haven't
+ *     been to town until today to discover she has closed her business."
+ *   - A Facebook post on the shop's own page whose body begins "THANK YOU
+ *     EVERYONE! 10 years ago a dream came to fruition and I opened Jill's
+ *     Feed...". Several search engines render its page title as "Jill's Feed
+ *     and Country Supply closing after 10 years." The body itself is behind
+ *     Facebook's login wall and the Internet Archive was offline, so this is
+ *     strongly indicated rather than read.
+ *   - The company incorporated in **February 2015**. "Ten years" lands in 2025
+ *     and matches the September sighting exactly.
+ *   - Colorado Secretary of State status is **Delinquent**, with no filing
+ *     since December 2024 and the January 2026 periodic report never filed.
+ *   - The most recent review anywhere is **April 2025**. Nothing later exists.
+ *   - The Nextdoor page for the address now renders under the name of the
+ *     **previous** occupant, Franks Feed & Supply.
  *
- * Confirm the street address on arrival too. Yelp says 125 S Tabor St and
- * several aggregators say 125 Tabor St.
+ * What says otherwise is entirely automated: the Facebook About page still
+ * renders "Open now", Yelp is not prefixed CLOSED, and several aggregators
+ * still publish hours. Scraped listings outlive the businesses in them, which
+ * is exactly the trap this whole folder exists to avoid.
+ *
+ * **One call to (303) 646-4730 settles it.** A disconnected number is itself
+ * the answer. There is nothing to gain from opening a cold pitch with a
+ * website for a shop that closed a year ago, and quite a lot to lose.
+ *
+ * ## Why the file is still here
+ *
+ * The page itself is finished and good, and the six illustrations in
+ * `components/scenes/feed.tsx` are drawn for feed and country supply
+ * generally, not for this business. If another feed store in the county is
+ * worth approaching, this is a config file and a folder of artwork away from
+ * being their preview instead.
+ *
+ * ## Verified, for whoever picks that up
+ *
+ * Owner **Jill Walkinshaw**; incorporated 3 February 2015 as Jill's Feed &
+ * Country Supply, Inc. Address **125 S Tabor St** per the Secretary of State's
+ * own filing, which settles the S Tabor / Tabor disagreement across the
+ * directories. Phone (303) 646-4730 and jillsfeed80107@gmail.com, both
+ * self-published on Facebook. Won Best Pet Supply Store in Colorado Community
+ * Media's Best of the Best 2022 for Elbert County. No website ever existed;
+ * jillsfeed.com and jillsfeedandcountrysupply.com do not resolve.
+ *
+ * The hours below were consistent across several directory listings, but the
+ * listings disagree on whether the shop opened at 8 or 9 and on Saturday's
+ * closing time, and all of it is moot if the doors are shut.
  */
 const jillsFeed: DemoConfig = {
   slug: 'jills-feed',
@@ -31,7 +62,6 @@ const jillsFeed: DemoConfig = {
   template: 'retail',
   // Clear this once the hours, photos and real details are in.
   draft: true,
-  placeholderPhotos: true,
 
   business: {
     name: "Jill's Feed & Country Supply",
@@ -51,6 +81,7 @@ const jillsFeed: DemoConfig = {
     secondary: '#2B3220',
     accent: '#C2892F',
     font: 'industrial',
+    motif: 'wheat',
   },
 
   hero: {
@@ -58,7 +89,7 @@ const jillsFeed: DemoConfig = {
     // For a feed store that is nearly always stock: "do you have chicks in".
     headline: 'Feed, seed and supplies, in stock in Elizabeth.',
     sub: 'Call ahead and we will tell you what is on the shelf before you make the drive.',
-    image: 'demos/jills-feed/hero',
+    image: 'art:feed-plains',
     ctaLabel: 'Call the Store',
     ctaHref: 'tel:+13036464730',
   },
@@ -109,17 +140,17 @@ const jillsFeed: DemoConfig = {
   // "this is the layout"; a photograph of somebody else's building with a sign
   // on it reads as a claim about their premises.
   gallery: [
-    'demos/jills-feed/feed',
-    'demos/jills-feed/chicks',
-    'demos/jills-feed/hay',
-    'demos/jills-feed/tack',
+    'art:feed-sacks',
+    'art:feed-brooder',
+    'art:feed-hay',
+    'art:feed-propane',
   ],
 
   about: {
     // TODO: replace entirely. This says nothing because nothing is confirmed.
     heading: 'A feed store in Elizabeth.',
     body: "Jill's Feed & Country Supply carries feed, hay, seed, animal health products and chicks for Elizabeth and the surrounding county, and swaps propane cylinders while you are in.",
-    image: 'demos/jills-feed/about',
+    image: 'art:feed-seed',
   },
 };
 

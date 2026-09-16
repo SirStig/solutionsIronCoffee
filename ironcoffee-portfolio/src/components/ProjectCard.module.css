@@ -96,6 +96,61 @@
   margin-left: var(--space-2);
 }
 
+/* --- Wide card ----------------------------------------------------------
+   The lead card of a section. Spans the grid it sits in and gets the summary
+   as well as the tagline, since there is finally somewhere to put it. */
+.wide {
+  grid-column: 1 / -1;
+}
+
+.wideBody {
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+.wideName {
+  font-size: var(--text-2xl);
+}
+
+.wideTagline {
+  font-size: var(--text-lg);
+  color: var(--text);
+  line-height: var(--leading-snug);
+}
+
+/* Summaries run to three sentences by design and one of them is long. Clamped
+   so a single wordy project cannot set the height of the whole row. */
+.summary {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: var(--leading-normal);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+
+@media (min-width: 800px) {
+  .wideLink {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  /* Both dimensions are definite here, so the inline aspect-ratio Img sets is
+     ignored and the frame simply fills its grid cell. The minimum stops a
+     short body from collapsing the picture into a letterbox strip. */
+  .wideImage {
+    height: 100%;
+    min-height: 17rem;
+  }
+
+  .wideBody {
+    padding: var(--space-6);
+  }
+}
+
 /* --- Compact row -------------------------------------------------------- */
 .compact {
   list-style: none;

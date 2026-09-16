@@ -17,6 +17,7 @@ import {
 import { BusinessForm } from '../components/forms';
 import { Bleed, Section, SectionHead } from '../components/primitives';
 import { homeNavLinks, type NavLink } from '../components/DemoNav';
+import { isDrawn } from '../index';
 
 /**
  * Trades. The quote form sits inside the hero.
@@ -72,7 +73,11 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
               roofs in this county", which it printed on all of them. */}
           <SectionHead
             title="Recent jobs"
-            sub="Photographed the day we finished."
+            sub={
+              isDrawn(config)
+                ? 'Drawn for this preview. The finished site shows your own work.'
+                : 'Photographed the day we finished.'
+            }
           />
           <GalleryGrid images={config.gallery} business={config.business.name} />
         </Section>
@@ -84,6 +89,7 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
         </Bleed>
       ) : (
         <StatementBand
+          motif={config.brand.motif}
           image={config.gallery[1] ?? config.gallery[0] ?? config.hero.image}
           line={config.business.tagline}
           business={config.business.name}

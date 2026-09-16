@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { BrandFont, DemoConfig } from '../types';
-import { formatExpiry, fullAddress, telHref } from '../index';
+import { formatExpiry, fullAddress, isDrawn, telHref } from '../index';
 import { site } from '../../content/site';
 import DemoNav, { type NavLink } from './DemoNav';
 import { CallBar } from './blocks';
@@ -40,6 +40,7 @@ export default function DemoShell({
 }) {
   const { business, brand } = config;
   const showcase = Boolean(config.showcase);
+  const drawn = isDrawn(config);
   const address = fullAddress(config);
 
   return (
@@ -170,9 +171,11 @@ export default function DemoShell({
               <p className={styles.disclosureMeta}>
                 Not affiliated with {business.name}. This page comes down on
                 request, same day.
-                {config.placeholderPhotos
-                  ? ' The photographs are stand-ins to show the layout; the real site would use your own.'
-                  : ' Photos belong to the business.'}
+                {drawn
+                  ? ' The pictures are drawings made for this preview rather than photographs of your place, so nothing here is claiming to be somewhere it is not. The finished site would use your own.'
+                  : config.placeholderPhotos
+                    ? ' The photographs are stand-ins to show the layout; the real site would use your own.'
+                    : ' Photos belong to the business.'}
               </p>
             </>
           )}

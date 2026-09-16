@@ -95,6 +95,7 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
         </Bleed>
       ) : (
         <StatementBand
+          motif={config.brand.motif}
           image={config.gallery[0] ?? config.hero.image}
           line={config.business.tagline}
           business={config.business.name}

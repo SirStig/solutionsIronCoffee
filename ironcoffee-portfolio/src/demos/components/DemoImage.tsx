@@ -1,5 +1,8 @@
 import manifest from '../../generated/images.json';
 import Img from '../../components/Img';
+import { artName } from '../index';
+import Artwork, { hasScene, sceneAlt } from './artwork';
+import './scenes';
 import styles from '../Demo.module.css';
 
 const images = manifest as Record<string, unknown>;
@@ -13,6 +16,13 @@ export interface DemoImageProps {
   sizes?: string;
   priority?: boolean;
   className?: string;
+  /**
+   * Which colorway a drawing prints in. Photographs ignore it.
+   *
+   * `dark` is for frames that carry copy over the media, where the
+   * light-on-deep version of the scene is what the text is legible against.
+   */
+  artTone?: 'light' | 'dark';
 }
 
 /**
@@ -26,6 +36,11 @@ export interface DemoImageProps {
  *
  * Drop the sources into `assets/images/demos/<slug>/` and the real photo
  * appears on the next build with no code change.
+ *
+ * A key written as `art:<scene>` asks for a drawing instead, which is the
+ * right answer for a preview built before anyone has been out with a camera.
+ * The gradient was honest about having no photograph and said nothing else;
+ * six of them down a page reads as a wireframe. See `artwork.tsx`.
  */
 export default function DemoImage({
   name,
@@ -34,7 +49,29 @@ export default function DemoImage({
   sizes = '100vw',
   priority = false,
   className,
+  artTone = 'light',
 }: DemoImageProps) {
+  const scene = artName(name);
+  if (scene && hasScene(scene)) {
+    const drawn = sceneAlt(scene);
+    return (
+      <Artwork
+        name={scene}
+        // The scene says what is in it; the caller says what it stands for.
+        // Neither alone is a description, and "photo 3" is worse than both.
+        alt={drawn ? `Illustration: ${drawn}.` : alt}
+        className={[
+          styles.imgFill,
+          styles.artFill,
+          artTone === 'dark' && styles.artDark,
+          className,
+        ]
+          .filter(Boolean)
+          .join(' ')}
+      />
+    );
+  }
+
   const hasImage = Boolean(name && name in images);
 
   if (hasImage) {

@@ -13,6 +13,7 @@ import type {
 } from '../types';
 import { directionsHref, fullAddress, telHref, todayName } from '../index';
 import DemoImage from './DemoImage';
+import MotifField, { hasMotif } from './motifs';
 import { initials } from './DemoNav';
 import { Cta } from './primitives';
 import styles from '../Demo.module.css';
@@ -161,28 +162,51 @@ export function PullQuote({ items }: { items: DemoTestimonial[] }) {
  * weight in the layout, and every word in it is the business's own line, which
  * makes it the rare piece of design that costs nothing in honesty.
  */
+/**
+ * One line of the business's own words, the full width of the screen.
+ *
+ * `motif` is the drawn version and is not a downgrade. The band runs at about
+ * 4:1, and a scene composed for a 4:3 frame arrives here cropped to a detail
+ * of itself: the lawn sample showed nine inches of the middle of a mower,
+ * which reads as a beige lump behind the type. A tiled mark is what this band
+ * always wanted, because the band is a surface rather than a picture.
+ */
 export function StatementBand({
   image,
+  motif,
   line,
   business,
   kicker,
 }: {
   image: string;
+  /** Motif name. Takes the place of the image when the demo is drawn. */
+  motif?: string;
   line: string;
   business: string;
   kicker?: string;
 }) {
+  const surface = hasMotif(motif);
+
   return (
-    <section className={styles.statement}>
-      <div className={styles.statementMedia}>
-        <DemoImage
-          name={image}
-          alt=""
-          mark={initials(business)}
-          sizes="100vw"
-        />
-      </div>
-      <div className={styles.statementScrim} aria-hidden="true" />
+    <section
+      className={[styles.statement, surface && styles.statementSurface]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      {surface ? (
+        <MotifField name={motif} className={styles.statementMotif} />
+      ) : (
+        <div className={styles.statementMedia}>
+          <DemoImage
+            name={image}
+            alt=""
+            mark={initials(business)}
+            sizes="100vw"
+            artTone="dark"
+          />
+        </div>
+      )}
+      {!surface && <div className={styles.statementScrim} aria-hidden="true" />}
       <div className={styles.container}>
         <div className={styles.statementCopy}>
           {kicker && <span className={styles.statementKicker}>{kicker}</span>}
@@ -568,7 +592,7 @@ export function GalleryGrid({
           >
             <DemoImage
               name={name}
-              alt={`${business}, photo ${index + 1}`}
+              alt={`${business}, photograph ${index + 1} of ${images.length}`}
               mark={initials(business)}
               sizes="(min-width: 900px) 25vw, 50vw"
             />
@@ -595,7 +619,7 @@ export function GalleryGrid({
         >
           <DemoImage
             name={name}
-            alt={`${business}, photo ${index + 1}`}
+            alt={`${business}, photograph ${index + 1} of ${images.length}`}
             mark={initials(business)}
             sizes="(min-width: 720px) 33vw, 50vw"
           />

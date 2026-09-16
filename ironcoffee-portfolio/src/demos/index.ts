@@ -149,6 +149,39 @@ export function isExpired(demo: DemoConfig, now = Date.now()): boolean {
   return daysRemaining(demo, now) <= 0;
 }
 
+/* --- Drawings ------------------------------------------------------------ */
+
+/**
+ * The prefix that asks an image slot for a drawing instead of a photograph.
+ *
+ * `art:feed-sacks` resolves to a scene in `components/artwork.tsx`; anything
+ * else is a manifest key and resolves to a photograph. Kept here rather than
+ * with the drawings because it is a fact about the shape of a config, and
+ * because templates need to ask the question without importing any SVG.
+ */
+export const ART_PREFIX = 'art:';
+
+/** The scene name inside an `art:` key, or nothing for a photo key. */
+export function artName(key: string | undefined): string | undefined {
+  if (!key || !key.startsWith(ART_PREFIX)) return undefined;
+  return key.slice(ART_PREFIX.length);
+}
+
+/**
+ * Whether this demo is illustrated rather than photographed.
+ *
+ * Templates ask because several of them had a sentence like "photographed the
+ * day we finished" sitting over a set of drawings. Small, and exactly the kind
+ * of wrong detail that costs a sale: an owner who catches the page describing
+ * its own pictures inaccurately has no reason to trust the opening times.
+ */
+export function isDrawn(demo: DemoConfig): boolean {
+  return (
+    Boolean(artName(demo.hero.image)) ||
+    demo.gallery.some((key) => Boolean(artName(key)))
+  );
+}
+
 /* --- Formatting helpers shared by every template ------------------------ */
 
 /** '303-555-0142' → 'tel:+13035550142'. Assumes US. */

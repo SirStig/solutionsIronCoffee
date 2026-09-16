@@ -44,11 +44,21 @@ export const socials = [
   },
 ] as const;
 
+/**
+ * Four links, one per question a visitor actually arrives with.
+ *
+ * Apps, Open source and Games used to sit here beside Work, which made the bar
+ * look like four categories when it was really one list and three filters of
+ * it: /work already groups by exactly those headings. Ten projects do not need
+ * four doors. The filter now lives on the page, where the reader can see what
+ * they are filtering before they commit to it.
+ *
+ * Those three routes still exist and are still indexed. They are just not the
+ * first thing asked of somebody who has not seen a single project yet.
+ */
 export const nav = [
   { label: 'Work', href: '/work' },
-  { label: 'Apps', href: '/apps' },
-  { label: 'Open source', href: '/open-source' },
-  { label: 'Games', href: '/games' },
+  { label: 'Websites', href: '/services' },
   { label: 'Blog', href: '/blog' },
   { label: 'About', href: '/about' },
 ] as const;

@@ -6,8 +6,11 @@ import styles from './ProjectCard.module.css';
 
 interface Props {
   project: Project;
-  /** `feature` gives the card an image; `compact` is a text-only row. */
-  variant?: 'feature' | 'compact';
+  /**
+   * `feature` gives the card an image, `wide` gives it the image and the room
+   * for a summary beside it, `compact` is a text-only row.
+   */
+  variant?: 'feature' | 'wide' | 'compact';
   /** Set on the first card of the first screen so its image loads eagerly. */
   priority?: boolean;
 }
@@ -27,6 +30,43 @@ export default function ProjectCard({
           <span className={styles.compactTagline}>{project.tagline}</span>
           <span className={styles.compactYear}>{project.year}</span>
           <ArrowUpRight size={16} className={styles.arrow} aria-hidden />
+        </Link>
+      </li>
+    );
+  }
+
+  if (variant === 'wide') {
+    return (
+      <li className={`${styles.card} ${styles.wide}`}>
+        <Link to={to} className={`${styles.link} ${styles.wideLink}`}>
+          <Img
+            name={project.image}
+            alt={`${project.name}: ${project.tagline}`}
+            className={`${styles.image} ${styles.wideImage}`}
+            aspectRatio="16 / 10"
+            sizes="(min-width: 800px) 36rem, 100vw"
+            priority={priority}
+          />
+
+          <div className={`${styles.body} ${styles.wideBody}`}>
+            <div className={styles.head}>
+              <h3 className={`${styles.name} ${styles.wideName}`}>
+                {project.name}
+              </h3>
+              <span className={styles.status} data-status={project.status}>
+                {statusLabels[project.status]}
+              </span>
+            </div>
+
+            <p className={styles.wideTagline}>{project.tagline}</p>
+            <p className={styles.summary}>{project.summary}</p>
+
+            <ul className={styles.tech}>
+              {project.tech.slice(0, 6).map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          </div>
         </Link>
       </li>
     );

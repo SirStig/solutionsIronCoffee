@@ -556,6 +556,18 @@
   );
 }
 
+/* Over a drawing in the dark colorway, most of that scrim is redundant and
+   all of it is destructive. Enough is kept to hold the copy steady where a
+   pale shape in the illustration runs under it. */
+.heroScrimArt {
+  background: linear-gradient(
+    180deg,
+    rgb(8 10 12 / 0.06) 0%,
+    rgb(8 10 12 / 0.26) 52%,
+    rgb(8 10 12 / 0.6) 100%
+  );
+}
+
 .heroInner {
   max-width: var(--d-wide);
   margin-inline: auto;
@@ -1533,6 +1545,48 @@
   border-radius: inherit;
 }
 
+/* An <Artwork> scene standing in for a photograph.
+ *
+ * `slice` inside the SVG crops it the way `object-fit: cover` crops a photo,
+ * so a drawing and a photograph behave identically in the same frame and a
+ * template never has to know which it got. `display: block` matters: an inline
+ * SVG sits on the text baseline and leaves four pixels of the frame's own
+ * background showing under it, which reads as a misaligned image. */
+.artFill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+
+  /* Daylight colorway. Every scene paints with these five and no literal
+     colors, so one drawing serves an olive feed store and a wine-red bottle
+     shop without a second version of it existing.
+
+     The paper is warmed by the accent rather than left a neutral gray,
+     because a true gray behind a warm palette looks like a printing fault. */
+  --art-ink: var(--brand-deep);
+  --art-mid: var(--brand);
+  --art-pop: var(--brand-accent);
+  --art-paper: color-mix(in srgb, var(--brand-accent) 10%, #faf7f1);
+  --art-wash: color-mix(in srgb, var(--brand) 22%, #ffffff);
+}
+
+/* The same drawing printed light on dark.
+ *
+ * Used wherever copy sits over the art: the hero, the statement band. The
+ * alternative was a black scrim, which turns a drawing into a silhouette and
+ * still leaves each line of white text taking its contrast from whatever
+ * happens to be behind it. Flipping the inks fixes both: the art reads at full
+ * strength and the ground is one known color, so the copy over it is legible
+ * by construction rather than by luck. */
+.artDark {
+  --art-ink: color-mix(in srgb, var(--brand-accent) 22%, #f6f2ea);
+  --art-mid: color-mix(in srgb, var(--brand) 62%, #ffffff);
+  --art-pop: var(--brand-accent);
+  --art-paper: color-mix(in srgb, var(--brand-deep) 88%, #05070a);
+  --art-wash: color-mix(in srgb, var(--brand) 48%, var(--brand-deep));
+}
+
 /* ============================================================================
    Hero variants.
 
@@ -1999,7 +2053,7 @@
 /* --- Dark section overrides ----------------------------------------------
    The contact block, the area chips and the hours list are all built for a
    light surface. On a dark section they need their own treatment rather than
-   inheriting muted greys that vanish into the background. */
+   inheriting muted grays that vanish into the background. */
 .sectionDark .contactLabel {
   color: rgb(255 255 255 / 0.55);
 }
@@ -2887,6 +2941,34 @@
     rgb(12 14 16 / 0.08) 66%,
     rgb(12 14 16 / 0) 100%
   );
+}
+
+/* The drawn version: a deep ground with the business's own mark printed on it.
+ *
+ * No scrim, because there is no photograph whose brightness has to be guessed
+ * at. The ground is one known color and the type over it is white, so the
+ * contrast is a fact rather than a hope. */
+.statementSurface {
+  background:
+    radial-gradient(
+      120% 90% at 82% 8%,
+      color-mix(in srgb, var(--brand) 40%, transparent) 0%,
+      transparent 62%
+    ),
+    var(--brand-deep);
+}
+
+.statementMotif {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  /* Low enough to read as texture rather than as pattern. Above about 0.12 it
+     starts competing with the sentence, which is the only thing this band is
+     for. */
+  opacity: 0.09;
 }
 
 /* The measure belongs on the line, not on this wrapper. `ch` resolves against
