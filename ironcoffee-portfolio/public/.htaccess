@@ -126,6 +126,17 @@ ErrorDocument 404 /404.html
   AddOutputFilterByType DEFLATE application/xml application/xhtml+xml
   AddOutputFilterByType DEFLATE application/rss+xml application/javascript
   AddOutputFilterByType DEFLATE application/json image/svg+xml
+
+  # text/javascript, not just application/javascript. Modern Apache serves .js
+  # as text/javascript, so the line above matched nothing and every script on
+  # the site went out uncompressed: about 440 KB where 130 KB would do. The old
+  # type stays listed because some hosts still use it.
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE application/manifest+json
+  AddOutputFilterByType DEFLATE image/x-icon
+
+  # woff2 and AVIF are compressed formats already. Running deflate over them
+  # spends CPU to make them very slightly larger.
 </IfModule>
 
 # AVIF and WebP need explicit types on some Dreamhost configs.

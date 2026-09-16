@@ -151,8 +151,14 @@ async function loadChunkHints(alreadyLinked = new Set()) {
     if (lcp?.font) {
       // One face, the one this page's headings actually use. Every other
       // display face stays unrequested.
+      // Low, deliberately. A font preload defaults to the same high priority
+      // as the image, and 66 KB of Fraunces arriving before a 30 KB
+      // photograph is a second of a bad connection spent on the wrong one.
+      // The heading still swaps in well before anybody has finished reading
+      // the first paragraph.
       tags.push(
-        `<link rel="preload" href="${lcp.font}" as="font" type="font/woff2" crossorigin>`
+        `<link rel="preload" href="${lcp.font}" as="font" type="font/woff2"` +
+          ` fetchpriority="low" crossorigin>`
       );
     }
 
@@ -163,9 +169,23 @@ async function loadChunkHints(alreadyLinked = new Set()) {
       tags.push(`<link rel="stylesheet" crossorigin href="/${file}">`);
     }
 
-    tags.push(`<link rel="modulepreload" crossorigin href="/${chunk.file}">`);
-    for (const file of [...new Set(js)]) {
-      tags.push(`<link rel="modulepreload" crossorigin href="/${file}">`);
+    /* A page whose largest element is a photograph does not preload its
+       JavaScript.
+     *
+     * `modulepreload` fetches at high priority, which is right for a page that
+     * cannot show anything until React has run and wrong for one that is
+     * already complete in the HTML. On a demo the scripts were winning the
+     * bandwidth and the hero image, the actual largest contentful paint, was
+     * arriving seconds later behind them.
+     *
+     * The scripts still load. They are `type="module"`, so they were never
+     * render-blocking; dropping the hint only moves them behind the image in
+     * the queue, which is the order a visitor experiences as "fast". */
+    if (!lcp) {
+      tags.push(`<link rel="modulepreload" crossorigin href="/${chunk.file}">`);
+      for (const file of [...new Set(js)]) {
+        tags.push(`<link rel="modulepreload" crossorigin href="/${file}">`);
+      }
     }
 
     return tags.join('\n    ');
@@ -265,7 +285,7 @@ function lcpFor(images, key, { sizes = '100vw', font } = {}) {
 }
 
 /** Splices rendered markup, head tags and chunk hints into the built shell. */
-function composePage(template, { html, helmet }, hints = '') {
+function composePage(template, { html, helmet }, hints = '', imageLed = false) {
   // `prioritizeSeoTags` on <Helmet> moves title, description, canonical and the
   // og:* tags into `priority`; without it they never reach the static HTML.
   const head = [
@@ -283,6 +303,15 @@ function composePage(template, { html, helmet }, hints = '') {
       // The shell's defaults are replaced by the route's own tags.
       .replace(/<title>[\s\S]*?<\/title>\s*/, '')
       .replace(/<meta name="description"[^>]*>\s*/, '')
+      /* Vite writes its own modulepreloads for react and the router into the
+         shell, which lands them ahead of everything this script adds. On a
+         page whose largest element is a photograph that is the wrong order,
+         for the reason spelled out in loadChunkHints, so they come out. The
+         scripts themselves are untouched and still load. */
+      .replace(
+        /^\s*<link rel="modulepreload"[^>]*>\n?/gm,
+        imageLed ? '' : '$&'
+      )
       .replace('</head>', `  ${[head, hints].filter(Boolean).join('\n    ')}\n  </head>`)
       .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
   );
@@ -440,7 +469,12 @@ async function main() {
   let count = 0;
   for (const route of routes) {
     const rendered = await render(route.url);
-    const page = composePage(template, rendered, hintsFor(route.url, route.lcp));
+    const page = composePage(
+      template,
+      rendered,
+      hintsFor(route.url, route.lcp),
+      Boolean(route.lcp)
+    );
     written.push({ url: route.url, html: page });
 
     // `/work/beyond25` → build/work/beyond25/index.html, so the host serves it

@@ -9,7 +9,7 @@ const summitRidge: DemoConfig = {
   createdAt: '2026-09-15',
   template: 'trades',
   showcase: true,
-  tier: 'standard',
+  tier: 'site',
 
   pages: [
     { slug: 'services', label: 'Services', kind: 'services' },

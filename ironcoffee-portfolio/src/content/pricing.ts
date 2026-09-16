@@ -28,60 +28,95 @@ export interface Tier {
   id: string;
   name: string;
   price: string;
-  /** One line. What this actually is. */
+  /** The one-line answer to "what is this". */
   summary: string;
-  /** Four at most, seven words each. Longer lists read as filler. */
-  features: string[];
+  /** The question that separates the tiers, answered. */
+  login: string;
+  /** What actually gets built. This is what the price is for. */
+  built: string[];
   timeline: string;
+  /** Which sample on the gallery page is this tier. */
+  seeIt?: { label: string; slug: string };
   featured?: boolean;
 }
 
+/**
+ * Three tiers, and the difference between them is not page count.
+ *
+ * This is the version that took the longest to get right, because the obvious
+ * way to write it is wrong. A ladder that reads "one page / five pages / more
+ * pages" makes the second step look like a 260% markup for four more pages,
+ * and any reader doing that arithmetic concludes they are being had.
+ *
+ * What actually changes is whether there is software behind the page. The
+ * first tier is a website: words, pictures, a phone number, and nothing that
+ * can break. The second is an application that happens to have a website on
+ * the front, with a database, rules about who may change what, and a screen
+ * the owner logs into. The third adds the owner running it themselves.
+ *
+ * So every tier answers the same question, `login`, and the answers are "no",
+ * "you do" and "you and your staff do". Two hundred dollars to thirty-two
+ * hundred stops looking like a markup and starts looking like three different
+ * jobs, which is what it is.
+ */
 export const tiers: Tier[] = [
   {
-    id: 'starter',
-    name: 'One page',
-    price: '$500',
-    summary: 'Hours, phone, what you do, why you.',
-    features: [
-      'Everything on one scrolling page',
+    id: 'site',
+    name: 'A site',
+    price: '$200 to $500',
+    summary: 'One page, or the whole thing. Words, photos, a phone number.',
+    login: 'Nothing to log into',
+    built: [
+      'Pages written for you, not a blank template',
       'Your photos, colors and logo',
       'Tap to call, tap for directions',
-      'Listed on Google',
+      'Set up so you turn up in Google',
     ],
-    timeline: 'About a week',
+    timeline: 'A week, maybe two',
+    seeIt: { label: 'All five samples are this', slug: 'ridgeline-smokehouse' },
   },
   {
-    id: 'standard',
-    name: 'Full site',
-    price: '$1,800',
-    summary: 'Five to seven pages. What most businesses need.',
-    features: [
-      'Menu, services or product pages',
-      'Forms that reach your inbox',
-      'Photo galleries and staff pages',
-      'Google Business Profile sorted out',
+    id: 'software',
+    name: 'A site with software behind it',
+    price: 'From $1,800',
+    summary: 'A database. Things that change, and a screen where you see them.',
+    login: 'You log in',
+    built: [
+      'Real bookings, orders or stock, not a form',
+      'A database, and rules about what can change it',
+      'A screen where you see it and change it',
+      'It emails or texts you when something happens',
     ],
-    timeline: 'Two to three weeks',
+    timeline: 'Quoted once we know what it keeps track of',
     featured: true,
   },
   {
-    id: 'custom',
-    name: 'Wired in',
+    id: 'system',
+    name: 'A system',
     price: 'From $3,200',
-    /* Deliberately not "we build you online ordering". A restaurant does not
-       want a bespoke cart with no card processing and no kitchen printer, and
-       quoting one is how you lose the room. What they want is the thing they
-       already pay for, working properly on their own site. */
-    summary: 'Your booking or ordering system, on your own site.',
-    features: [
-      'Toast, Square, Booksy, Calendly, Shopify',
-      'Online store and card payments',
-      'A page per location',
-      'Priced once we know what you run',
+    summary: 'The whole thing, and you run it without calling me.',
+    login: 'You and your staff log in',
+    built: [
+      'Edit your own pages, prices and photos',
+      'Staff accounts, each seeing only their part',
+      'Card payments and the money side',
+      'Toast, Square, Booksy, Shopify wired in',
     ],
     timeline: 'Quoted after we talk',
+    seeIt: { label: 'Wren Hollow is this one', slug: 'wren-hollow' },
   },
 ];
+
+/**
+ * The sentence that does the most work on the whole page.
+ *
+ * Someone who has just seen five good-looking sample sites and then a price of
+ * $3,200 needs to be told, before they ask, that the samples are the cheap
+ * tier. Otherwise the only conclusion available is that the expensive tier is
+ * the same thing with a bigger number on it.
+ */
+export const ladderNote =
+  'Every sample in the gallery is the first tier. That is what five hundred dollars looks like. The difference higher up is not more pages, it is software: a database, a login, and a screen only you can see.';
 
 /**
  * The comparison that is worth making.
@@ -101,6 +136,11 @@ export const compare: CompareRow[] = [
     question: 'Who builds it?',
     diy: 'You do, on a weekend you do not have',
     mine: 'I do, and you see it finished first',
+  },
+  {
+    question: 'Want a booking system?',
+    diy: 'An app that rents you one, monthly, forever',
+    mine: 'Built into your site, and it is yours',
   },
   {
     question: 'Who writes the words?',

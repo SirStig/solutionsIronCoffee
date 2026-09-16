@@ -17,6 +17,7 @@ import {
 } from './blocks';
 import { BusinessForm } from './forms';
 import OrderFlow from './OrderFlow';
+import AdminView from './AdminView';
 import { Cta, Section, SectionHead } from './primitives';
 import { pageNavLinks } from './DemoNav';
 import styles from '../Demo.module.css';
@@ -36,6 +37,10 @@ const defaults: Record<DemoPage['kind'], { title: string; intro?: string }> = {
   order: {
     title: 'Order for pickup',
     intro: 'Choose what you want, pick a time, and it will be boxed and waiting. No app, no third party taking a cut.',
+  },
+  admin: {
+    title: 'What the owner sees',
+    intro: 'The other side of the same site. This is the part a subscription cannot sell you, and the part the price above the first tier is actually paying for.',
   },
 };
 
@@ -81,6 +86,12 @@ export default function DemoSubPage({
       {page.kind === 'order' && config.menu?.length ? (
         <Section>
           <OrderFlow config={config} />
+        </Section>
+      ) : null}
+
+      {page.kind === 'admin' ? (
+        <Section>
+          <AdminView config={config} />
         </Section>
       ) : null}
 

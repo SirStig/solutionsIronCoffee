@@ -22,7 +22,18 @@ const wrenHollow: DemoConfig = {
   createdAt: '2026-09-16',
   template: 'venue',
   showcase: true,
-  tier: 'custom',
+  tier: 'system',
+
+  /* The admin page is the argument for the price ladder, so it is a real
+     route rather than a screenshot. See PageKind['admin']. */
+  pages: [
+    {
+      slug: 'admin',
+      label: 'Owner view',
+      kind: 'admin',
+      title: 'What the owner sees',
+    },
+  ],
 
   business: {
     name: 'Wren Hollow',

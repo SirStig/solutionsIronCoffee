@@ -206,7 +206,19 @@ export type PageKind =
   | 'areas'
   | 'insurance'
   | 'stock'
-  | 'order';
+  | 'order'
+  /**
+   * The owner's side of the same site.
+   *
+   * Exists because the two expensive tiers are invisible otherwise. A visitor
+   * looking at a booking form cannot tell whether it writes to a database or
+   * sends an email, and "from $1,800" against "$500" reads as a markup until
+   * you can see the screen the owner gets. This is that screen.
+   *
+   * It is rendered from the config like every other page kind, and it is
+   * labelled on the page as a demonstration, because it is one.
+   */
+  | 'admin';
 
 export interface DemoPage {
   /** URL segment, e.g. 'menu'. Must be unique within the demo. */
@@ -266,8 +278,15 @@ export interface DemoConfig {
    */
   pages?: DemoPage[];
 
-  /** Which price this sample is demonstrating. Gallery samples only. */
-  tier?: 'starter' | 'standard' | 'custom';
+  /**
+   * Which rung of the price ladder this sample demonstrates. Gallery only.
+   *
+   * Named after what gets built, not how many pages it has, because that is
+   * the distinction the pricing page is built around: 'site' is words and
+   * pictures, 'software' has a database and a login behind it, 'system' adds
+   * the owner running it themselves.
+   */
+  tier?: 'site' | 'software' | 'system';
 
   /** Trades: the towns served, listed for local search. */
   serviceAreas?: string[];

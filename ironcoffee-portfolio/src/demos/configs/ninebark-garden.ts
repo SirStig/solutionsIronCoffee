@@ -20,7 +20,7 @@ const ninebarkGarden: DemoConfig = {
   createdAt: '2026-09-16',
   template: 'retail',
   showcase: true,
-  tier: 'standard',
+  tier: 'site',
 
   pages: [
     { slug: 'stock', label: 'In stock', kind: 'stock', title: 'What is on the benches' },

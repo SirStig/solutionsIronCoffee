@@ -12,7 +12,7 @@ const ridgelineSmokehouse: DemoConfig = {
   createdAt: '2026-09-15',
   template: 'food',
   showcase: true,
-  tier: 'custom',
+  tier: 'site',
 
   pages: [
     { slug: 'order', label: 'Order', kind: 'order' },

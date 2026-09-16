@@ -35,12 +35,19 @@
   padding: var(--space-3) var(--space-3) 0;
 }
 
-/* Cross-fade from the blur placeholder rather than popping in. */
-.loading {
-  opacity: 0;
-}
-
+/* The image is visible from the moment it has pixels. It used to start at
+   `opacity: 0` and be revealed by React, which cost more than it bought:
+ *
+ *  - Every image on the site was invisible without JavaScript. These pages are
+ *    prerendered specifically so they work without it.
+ *  - Largest contentful paint stopped measuring the image and started
+ *    measuring hydration. On a throttled connection that put LCP at twelve
+ *    seconds on a page whose hero photograph had finished downloading in two.
+ *
+ * The blur placeholder is painted by the frame underneath, so there is no
+ * empty box to cover up and nothing to fade from. `aspect-ratio` on the frame
+ * reserves the space either way, so none of this can shift the layout. */
+.loading,
 .loaded {
   opacity: 1;
-  transition: opacity var(--dur-slow) var(--ease);
 }

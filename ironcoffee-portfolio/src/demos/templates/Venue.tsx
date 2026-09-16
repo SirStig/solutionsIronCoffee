@@ -6,9 +6,11 @@ import DemoOutro from '../components/DemoOutro';
 import { FaqList, PullQuote, StatementBand } from '../components/blocks';
 import { BusinessForm } from '../components/forms';
 import { Parallax, Reveal, Rise } from '../components/motion';
+import SeatingPlanner from '../components/SeatingPlanner';
+import Torch from '../components/Torch';
 import { Bleed, Cta, Section, SectionHead } from '../components/primitives';
 import { directionsHref, telHref } from '../index';
-import { homeNavLinks, type NavLink } from '../components/DemoNav';
+import { type NavLink } from '../components/DemoNav';
 import styles from '../Demo.module.css';
 
 /**
@@ -30,12 +32,25 @@ import styles from '../Demo.module.css';
  */
 export default function VenueTemplate({ config }: { config: DemoConfig }) {
   const anchors: NavLink[] = [
-    { label: 'The barn', href: '#spaces' },
+    { label: 'Barn', href: '#spaces' },
+    { label: 'Plan', href: '#plan' },
     { label: 'Seasons', href: '#seasons' },
-    { label: 'Packages', href: '#packages' },
+    { label: 'Prices', href: '#packages' },
     { label: 'Visit', href: '#enquire' },
   ];
-  const links = homeNavLinks(config, anchors);
+  /* Anchors *and* the owner view, rather than one or the other.
+   *
+   * `homeNavLinks` swaps anchors for page links as soon as a config has
+   * pages, which is right for a multi-page site where the sections moved onto
+   * their own pages. Here the single extra page is a supplement to a long home
+   * page, and taking the anchors away left this template with a one-item nav. */
+  const links: NavLink[] = [
+    ...anchors,
+    ...(config.pages ?? []).map((page) => ({
+      label: page.label,
+      href: `/templates/${config.slug}/${page.slug}`,
+    })),
+  ];
 
   const [g0, g1, g2, g3, g4, g5] = config.gallery;
   const headline = config.hero.headline.split(' / ');
@@ -51,14 +66,25 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
 
       {/* --- Hero. The photograph drifts and dims as it leaves. ----------- */}
       <section className={styles.vHero} id="top">
-        <div className={styles.vHeroMedia}>
-          <DemoImage
-            name={config.hero.image}
-            alt={`${config.business.name}, ${config.business.city}`}
-            sizes="100vw"
-            priority
-          />
-        </div>
+        {/* Golden hour on top, blue hour underneath, revealed under the
+            pointer. See <Torch>: it arms itself only where there is a real
+            pointer, so this is just the daylight photograph everywhere else. */}
+        <Torch>
+          <div className={styles.vHeroMedia}>
+            <DemoImage
+              name={config.hero.image}
+              alt={`${config.business.name}, ${config.business.city}`}
+              sizes="100vw"
+              priority
+            />
+          </div>
+          <div className={`${styles.vHeroMedia} ${styles.torchNight}`}>
+            <DemoImage name={NIGHT} alt="" sizes="100vw" />
+          </div>
+        </Torch>
+        <span className={styles.torchHint} aria-hidden="true">
+          Move the cursor
+        </span>
         <div className={styles.vHeroScrim} aria-hidden="true" />
         <div className={styles.vHeroInner}>
           <h1 className={styles.vHeroHeadline}>
@@ -129,6 +155,19 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
         </div>
       </section>
 
+      {/* --- The showpiece. ------------------------------------------------
+          Placed here, immediately after the pinned gallery, because a visitor
+          who has come this far is convinced the page looks good and is not yet
+          convinced anybody built anything. */}
+      <Section id="plan">
+        <SectionHead
+          eyebrow="Try it"
+          title="Will a hundred and twenty people fit?"
+          sub="Drag the tables around. Every venue in the country answers this question with a phone call."
+        />
+        <SeatingPlanner />
+      </Section>
+
       {/* --- Seasons. Radio inputs and :has(), no script. ------------------ */}
       <Section id="seasons" tone="alt">
         <SectionHead
@@ -155,13 +194,12 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
             ))}
           </div>
           <div className={styles.seasonStage}>
-            {SEASONS.map((season, i) => (
+            {SEASONS.map((season) => (
               <figure key={season.id} className={styles.seasonPane}>
                 <DemoImage
                   name={config.gallery[season.image] ?? g0}
                   alt={`${config.business.name} in ${season.label.toLowerCase()}`}
                   sizes="(min-width: 60rem) 66vw, 100vw"
-                  priority={i === 0}
                 />
                 <figcaption>{season.note}</figcaption>
               </figure>
@@ -293,6 +331,13 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
     </DemoShell>
   );
 }
+
+/**
+ * The same barn after dark. Same framing, same camera position, same trees, so
+ * the torch reveals a moment rather than a different photograph. A second shot
+ * from somewhere else on the property reads as a mistake.
+ */
+const NIGHT = 'demos/wren-hollow/hero-night';
 
 const SPACE_LABELS = [
   'The meadow',

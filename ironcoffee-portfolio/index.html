@@ -18,14 +18,21 @@
     <link rel="manifest" href="/manifest.json" />
     <link rel="alternate" type="application/rss+xml" title="Writing by Joshua Kac" href="/rss.xml" />
 
-    <!-- Self-hosted, so no third-party connection is needed before text paints. -->
-    <link
-      rel="preload"
-      href="/fonts/inter-latin-var.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <!--
+      Self-hosted, so no third-party connection is needed before text paints.
+
+      Warmed rather than preloaded. Inter is 71 KB, which is a second and a half
+      of a bad cellular connection, and a preload puts that ahead of the image
+      or the heading that is usually the largest element on the page. It does
+      not need to be: `Inter fallback` in tokens.css is metric-matched to it, so
+      text paints immediately in a local face at the right size and swaps with
+      no reflow and no layout shift.
+
+      The demo pages preload their own display face instead, from
+      scripts/prerender.mjs. Those are not metric-matched to anything, so a
+      late swap there really would move the page about.
+    -->
+    <link rel="preconnect" href="/" />
 
     <script>
       // Resolves the theme before first paint so a dark-mode load never

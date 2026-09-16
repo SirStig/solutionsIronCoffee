@@ -9,7 +9,7 @@ const copperAndComb: DemoConfig = {
   createdAt: '2026-09-15',
   template: 'booking',
   showcase: true,
-  tier: 'starter',
+  tier: 'site',
 
   business: {
     name: 'Copper & Comb',

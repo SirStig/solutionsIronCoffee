@@ -3477,9 +3477,23 @@
 
     /* The pinned gallery. The sticky child holds still while the track
        translates by its own overflow, which is what turns vertical scroll
-       into horizontal movement. */
+       into horizontal movement.
+     *
+     * The timeline is named rather than anonymous, and that is the whole
+     * bug fix. `scroll(nearest)` looks for the nearest scroll container, and
+     * the sticky element is one, because it carries `overflow-x: hidden` to
+     * clip the track. So the timeline attached itself to an element that
+     * never scrolls, progress sat at zero forever, and the track simply did
+     * not move. A named view-timeline on the tall outer section resolves by
+     * DOM ancestry instead, which is unambiguous.
+     *
+     * `contain` is the range where the subject covers the whole viewport,
+     * which for a section three viewports tall is exactly the stretch where
+     * it is pinned. */
     .vTrackOuter {
       height: 320svh;
+      view-timeline-name: --pinned-track;
+      view-timeline-axis: block;
     }
 
     .vTrackSticky {
@@ -3492,7 +3506,8 @@
 
     .vTrack {
       animation: vSlide linear both;
-      animation-timeline: scroll(nearest block);
+      animation-timeline: --pinned-track;
+      animation-range: contain 0% contain 100%;
       will-change: transform;
     }
 
@@ -3515,4 +3530,672 @@
   .seasonPane {
     transition: none;
   }
+}
+
+/* --- The owner's side ----------------------------------------------------
+   Deliberately not styled like the rest of the site. A visitor arriving here
+   should be able to tell in half a second that they have crossed from the
+   shop floor into the back office, because that crossing is the entire point
+   of the page. Denser, squarer, cooler, and no display face anywhere. */
+.admin {
+  --a-line: color-mix(in srgb, var(--brand-deep) 14%, #fff);
+  --a-surface: #fff;
+  --a-ink: #1a1d1c;
+  --a-muted: #5b6360;
+  font-family: var(--d-font);
+  color: var(--a-ink);
+}
+
+.adminNote {
+  max-width: 46rem;
+  margin-bottom: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  padding: 1rem 1.25rem;
+  border-radius: var(--d-radius);
+  background: color-mix(in srgb, var(--brand) 8%, #fff);
+  border: 1px solid color-mix(in srgb, var(--brand) 28%, #fff);
+  color: var(--a-ink);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.adminGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  align-items: start;
+}
+
+.adminCard {
+  background: var(--a-surface);
+  border: 1px solid var(--a-line);
+  border-radius: var(--d-radius);
+  padding: 1.25rem;
+  min-width: 0;
+}
+
+.adminWide {
+  grid-column: 1 / -1;
+}
+
+.adminCardHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.875rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--a-line);
+}
+
+.adminCardHead h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* Body face on purpose. A back office does not have a display font. */
+  font-family: var(--d-font);
+  font-size: 0.9375rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--a-ink);
+}
+
+.adminCardHead p {
+  font-size: 0.8125rem;
+  color: var(--a-muted);
+}
+
+/* --- Calendar ------------------------------------------------------------ */
+.adminCal {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.3rem;
+}
+
+.adminDay {
+  aspect-ratio: 1;
+  min-height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid var(--a-line);
+  background: #fff;
+  color: var(--a-muted);
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.adminDay:hover {
+  transform: scale(1.08);
+}
+
+.day_free {
+  background: #fff;
+}
+
+.day_held {
+  background: color-mix(in srgb, var(--brand-accent) 30%, #fff);
+  border-color: color-mix(in srgb, var(--brand-accent) 55%, #fff);
+  color: #3d3320;
+}
+
+.day_booked {
+  background: var(--brand-deep);
+  border-color: var(--brand-deep);
+  color: #fff;
+}
+
+.adminKey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.75rem;
+  color: var(--a-muted);
+}
+
+.adminKey li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.adminKey span {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  border: 1px solid var(--a-line);
+}
+
+/* --- Enquiries ----------------------------------------------------------- */
+.adminList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.adminRow {
+  display: grid;
+  gap: 0.3rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 0.875rem;
+  border-radius: 8px;
+  border: 1px solid var(--a-line);
+  background: #fff;
+  font: inherit;
+  color: var(--a-ink);
+  cursor: pointer;
+}
+
+.adminRow:hover {
+  border-color: color-mix(in srgb, var(--brand) 45%, #fff);
+}
+
+/* A left edge in the brand color, which is how every inbox on earth says
+   "you have not read this one". */
+.adminUnread {
+  border-left: 3px solid var(--brand);
+  background: color-mix(in srgb, var(--brand) 5%, #fff);
+}
+
+.adminRowTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+}
+
+.adminRowTop span {
+  color: var(--a-muted);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.adminRowNote {
+  font-size: 0.8125rem;
+  color: var(--a-muted);
+  line-height: 1.45;
+}
+
+/* --- Editor -------------------------------------------------------------- */
+.adminLabel {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--a-muted);
+  margin-bottom: 0.5rem;
+}
+
+.adminInput {
+  width: 100%;
+  padding: 0.7rem 0.875rem;
+  border-radius: 8px;
+  border: 1px solid var(--a-line);
+  background: #fff;
+  color: var(--a-ink);
+  font: inherit;
+  font-size: 0.9375rem;
+}
+
+.adminInput:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 1px;
+}
+
+.adminPreview {
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--brand-deep) 5%, #fff);
+  border: 1px dashed var(--a-line);
+}
+
+/* The one place on this page the display face appears, because this is the
+   bit of the shop floor being previewed from the back office. */
+.adminPreviewLine {
+  font-family: var(--d-display);
+  font-weight: var(--d-display-weight);
+  font-variation-settings: var(--d-display-settings);
+  letter-spacing: var(--d-display-tracking);
+  font-size: clamp(1.375rem, 1.1rem + 1.2vw, 2rem);
+  line-height: 1.1;
+  min-height: 1.1em;
+  color: var(--a-ink);
+}
+
+.adminSave {
+  margin-top: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  padding: 0.7rem 1.35rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: var(--brand);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.adminSave:hover {
+  background: var(--brand-deep);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adminDay {
+    transition: none;
+  }
+
+  .adminDay:hover {
+    transform: none;
+  }
+}
+
+/* --- Seating planner -----------------------------------------------------
+   The showpiece. Styled to read as a tool rather than as a page: cooler,
+   squarer, denser, and no display face except on the numbers. */
+.plan {
+  border: 1px solid var(--d-border);
+  border-radius: var(--d-radius-lg);
+  background: var(--d-surface);
+  color: var(--d-text);
+  overflow: hidden;
+}
+
+.planBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--d-border);
+  background: var(--d-bg-alt);
+}
+
+.planCount {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9375rem;
+  color: var(--d-muted);
+  flex-wrap: wrap;
+}
+
+.planCount strong {
+  font-family: var(--d-display);
+  font-size: 1.875rem;
+  line-height: 1;
+  color: var(--d-text);
+}
+
+.planOver {
+  color: #b3261e;
+}
+
+.planMeter {
+  display: block;
+  width: 9rem;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--d-border);
+  overflow: hidden;
+}
+
+.planFill,
+.planFillOver {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
+.planFill {
+  background: var(--brand);
+}
+
+.planFillOver {
+  background: #b3261e;
+}
+
+.planReset {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.25rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--d-border);
+  background: var(--d-surface);
+  color: var(--d-text);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.planReset:hover {
+  border-color: var(--brand);
+}
+
+.planBody {
+  display: grid;
+  gap: 0;
+}
+
+@media (min-width: 52rem) {
+  .planBody {
+    grid-template-columns: 13rem 1fr;
+  }
+}
+
+.planPalette {
+  padding: 1rem;
+  border-bottom: 1px solid var(--d-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (min-width: 52rem) {
+  .planPalette {
+    border-bottom: 0;
+    border-right: 1px solid var(--d-border);
+    display: block;
+  }
+}
+
+.planPaletteLabel {
+  width: 100%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--d-faint);
+  margin-bottom: 0.75rem;
+}
+
+.planAdd {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: auto;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--d-border);
+  background: var(--d-surface);
+  color: var(--d-text);
+  font: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+@media (min-width: 52rem) {
+  .planAdd {
+    width: 100%;
+  }
+}
+
+.planAdd:hover {
+  border-color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 6%, var(--d-surface));
+}
+
+.planChip {
+  width: 18px;
+  height: 12px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--brand) 30%, #fff);
+  border: 1px solid color-mix(in srgb, var(--brand) 55%, #fff);
+  flex: none;
+}
+
+.planChipRound {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.planSeats {
+  display: block;
+  font-style: normal;
+  font-size: 0.75rem;
+  color: var(--d-faint);
+}
+
+/* The floor. A plain rectangle with a grid on it reads as a plan without
+   needing a drawing, and it stays crisp at any size. */
+.planFloor {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  touch-action: none;
+  background-color: color-mix(in srgb, var(--brand-deep) 4%, #fff);
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--brand-deep) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--brand-deep) 8%, transparent) 1px, transparent 1px);
+  background-size: 6.25% 8.333%;
+}
+
+.planStage,
+.planBarn {
+  position: absolute;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--d-faint);
+  border: 1px dashed var(--d-border);
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+}
+
+.planStage {
+  left: 50%;
+  bottom: 0.5rem;
+  transform: translateX(-50%);
+}
+
+.planBarn {
+  right: 0.5rem;
+  top: 0.5rem;
+}
+
+.planItem {
+  position: absolute;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  border: 1.5px solid color-mix(in srgb, var(--brand) 55%, #fff);
+  background: color-mix(in srgb, var(--brand) 22%, #fff);
+  color: color-mix(in srgb, var(--brand-deep) 80%, #000);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  font-size: 0.8125rem;
+  font-weight: 650;
+}
+
+.planItemRound {
+  border-radius: 50%;
+}
+
+/* A dance floor and a bar hold no seats, so they are drawn as areas rather
+   than as furniture. */
+.planItemBlank {
+  background: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--brand-deep) 8%, #fff) 0 6px,
+    color-mix(in srgb, var(--brand-deep) 13%, #fff) 6px 12px
+  );
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--brand-deep) 30%, #fff);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.planItemActive {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent);
+  z-index: 3;
+}
+
+.planItemDragging {
+  cursor: grabbing;
+  z-index: 4;
+  box-shadow: 0 8px 22px -8px rgb(20 24 28 / 0.45);
+}
+
+.planItem:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+}
+
+.planItemLabel {
+  pointer-events: none;
+}
+
+/* Only on the table the pointer is over or the keyboard is on, so the plan is
+   not covered in little bins. */
+.planRemove {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  width: 22px;
+  height: 22px;
+  display: none;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--d-border);
+  background: var(--d-surface);
+  color: var(--d-muted);
+  cursor: pointer;
+  padding: 0;
+}
+
+.planItem:hover .planRemove,
+.planItemActive .planRemove {
+  display: grid;
+}
+
+.planRemove:hover {
+  color: #b3261e;
+  border-color: #b3261e;
+}
+
+.planHint {
+  padding: 0.875rem 1.25rem;
+  border-top: 1px solid var(--d-border);
+  background: var(--d-bg-alt);
+  font-size: 0.8125rem;
+  color: var(--d-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planFill,
+  .planFillOver {
+    transition: none;
+  }
+}
+
+/* --- Torch ---------------------------------------------------------------
+   The second photograph sits on top and is masked to a soft circle under the
+   pointer. Nothing is armed until the script has confirmed a real pointer, so
+   without JavaScript, on a phone, or with reduced motion requested, the hero
+   is simply the daylight photograph with the evening one never shown. */
+.torch {
+  position: absolute;
+  inset: -6% 0;
+  --tx: 50%;
+  --ty: 45%;
+  --tr: 0px;
+}
+
+.torch > * {
+  position: absolute;
+  inset: 0;
+}
+
+.torch img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.torchNight {
+  opacity: 0;
+}
+
+.torch[data-torch='on'] {
+  /* A length, not a percentage. `radial-gradient(circle 24% at ...)` is
+     invalid CSS: a circle's radius may only be a length, and the whole
+     gradient is dropped, which uncovered the entire second photograph. */
+  --tr: clamp(9rem, 20vmin, 16rem);
+}
+
+.torch[data-torch='on'] .torchNight {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  mask-image: radial-gradient(
+    circle var(--tr) at var(--tx) var(--ty),
+    #000 0%,
+    #000 55%,
+    transparent 100%
+  );
+  /* Safari needs the prefixed property as well as the standard one. */
+  -webkit-mask-image: radial-gradient(
+    circle var(--tr) at var(--tx) var(--ty),
+    #000 0%,
+    #000 55%,
+    transparent 100%
+  );
+}
+
+/* A hairline ring so the edge of the torch reads as deliberate rather than as
+   a rendering artifact. */
+.torch[data-torch='on']::after {
+  content: '';
+  position: absolute;
+  left: var(--tx);
+  top: var(--ty);
+  width: calc(var(--tr) * 2);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
+  pointer-events: none;
+  transition: width 0.4s ease;
+}
+
+.torchHint {
+  position: absolute;
+  left: var(--d-gutter);
+  bottom: 1.25rem;
+  z-index: 2;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.5);
+  display: none;
+}
+
+.torch[data-torch='on'] ~ .torchHint {
+  display: block;
 }

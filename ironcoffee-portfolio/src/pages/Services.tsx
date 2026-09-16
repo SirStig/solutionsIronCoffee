@@ -1,4 +1,4 @@
-import { Check, X } from 'lucide-react';
+import { Check, Lock, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/Seo';
 import { site } from '../content/site';
@@ -8,6 +8,7 @@ import {
   DIY_SURVEY,
   care,
   compare,
+  ladderNote,
   pricingFaq,
   steps,
   tiers,
@@ -221,6 +222,8 @@ export default function Services() {
             What it costs
           </h2>
 
+          <p className={styles.ladderNote}>{ladderNote}</p>
+
           <div className={styles.tiers}>
             {tiers.map((tier) => (
               <article
@@ -235,15 +238,36 @@ export default function Services() {
                 </div>
                 <p className={styles.price}>{tier.price}</p>
                 <p className={styles.summary}>{tier.summary}</p>
+
+                {/* The same question on all three, answered differently. It is
+                    the shortest way to show that these are three different
+                    jobs rather than three sizes of the same one. */}
+                <p className={styles.login}>
+                  <Lock size={13} aria-hidden="true" />
+                  {tier.login}
+                </p>
+
+                <p className={styles.builtLabel}>What gets built</p>
                 <ul className={styles.features}>
-                  {tier.features.map((feature) => (
-                    <li key={feature}>
+                  {tier.built.map((item) => (
+                    <li key={item}>
                       <Check size={14} className={styles.yes} aria-hidden="true" />
-                      <span>{feature}</span>
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-                <p className={styles.timeline}>{tier.timeline}</p>
+
+                <p className={styles.timeline}>
+                  {tier.timeline}
+                  {tier.seeIt && (
+                    <Link
+                      to={`/templates/${tier.seeIt.slug}`}
+                      className={styles.seeIt}
+                    >
+                      {tier.seeIt.label}
+                    </Link>
+                  )}
+                </p>
               </article>
             ))}
           </div>

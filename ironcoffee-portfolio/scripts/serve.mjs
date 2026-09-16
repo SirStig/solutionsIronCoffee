@@ -11,6 +11,7 @@
  */
 import { createServer } from 'node:http';
 import { createReadStream } from 'node:fs';
+import { createGzip } from 'node:zlib';
 import { stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -91,14 +92,38 @@ createServer(async (req, res) => {
     return;
   }
 
+  const type = TYPES[path.extname(match.file)] ?? 'application/octet-stream';
+
+  /* Compress what Apache compresses, and nothing else.
+   *
+   * This server exists so a build can be checked the way it will actually be
+   * served, and for a long time it got this wrong: it sent every file
+   * uncompressed while production runs mod_deflate. Measuring a sample site
+   * over a throttled connection here therefore reported eighteen seconds to
+   * largest contentful paint against roughly four in reality, and the gap was
+   * entirely this function.
+   *
+   * woff2, AVIF and WebP are already compressed and are deliberately left
+   * alone, which is also what the .htaccess does. */
+  const compressible =
+    /^(text\/|application\/(javascript|json|xml|rss\+xml|manifest\+json)|image\/svg)/.test(
+      type
+    );
+  const wantsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] ?? '');
+
   res.writeHead(match.status, {
-    'content-type': TYPES[path.extname(match.file)] ?? 'application/octet-stream',
+    'content-type': type,
     'cache-control': match.file.endsWith('.html')
       ? 'no-cache'
       : 'public, max-age=31536000, immutable',
+    ...(compressible && wantsGzip
+      ? { 'content-encoding': 'gzip', vary: 'Accept-Encoding' }
+      : {}),
   });
 
-  createReadStream(match.file).pipe(res);
+  const file = createReadStream(match.file);
+  if (compressible && wantsGzip) file.pipe(createGzip()).pipe(res);
+  else file.pipe(res);
 }).listen(PORT, '127.0.0.1', () => {
   console.log(`Serving ${path.relative(root, DIR)} at http://127.0.0.1:${PORT}`);
 });

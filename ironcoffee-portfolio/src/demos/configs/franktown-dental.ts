@@ -10,7 +10,7 @@ const franktownDental: DemoConfig = {
   createdAt: '2026-09-15',
   template: 'professional',
   showcase: true,
-  tier: 'standard',
+  tier: 'site',
 
   pages: [
     { slug: 'services', label: 'Treatments', kind: 'services', title: 'What we treat' },

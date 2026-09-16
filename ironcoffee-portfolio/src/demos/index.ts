@@ -173,9 +173,16 @@ export function todayName(now = new Date()): string {
 export function sampleFeatures(demo: DemoConfig): string[] {
   const out: string[] = [];
 
+  // The venue sample is the odd one out and says so first, because its whole
+  // reason for existing is the part no other sample has.
+  if (demo.template === 'venue') {
+    out.push('Scroll-driven', 'Pinned gallery', 'No JavaScript');
+  }
   if (demo.pages?.length) out.push(`${demo.pages.length + 1} pages`);
   if (demo.menu?.length) out.push('Priced menu');
-  if (demo.products?.length) out.push('Stock list');
+  if (demo.products?.length) {
+    out.push(demo.template === 'venue' ? 'Priced packages' : 'Stock list');
+  }
   if (demo.pages?.some((p) => p.kind === 'order')) out.push('Pickup ordering');
   if (demo.template === 'trades' || demo.template === 'professional') {
     out.push(demo.template === 'trades' ? 'Quote form' : 'Booking form');
