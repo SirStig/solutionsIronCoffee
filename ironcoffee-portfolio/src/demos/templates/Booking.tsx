@@ -13,7 +13,7 @@ import {
   VisitBlock,
 } from '../components/blocks';
 import { Section, SectionHead } from '../components/primitives';
-import type { NavLink } from '../components/DemoNav';
+import { homeNavLinks, type NavLink } from '../components/DemoNav';
 
 /**
  * Booking. A split hero, then the service list as a priced column rather than
@@ -21,12 +21,15 @@ import type { NavLink } from '../components/DemoNav';
  * makes the page scan like a price list instead of a brochure.
  */
 export default function BookingTemplate({ config }: { config: DemoConfig }) {
-  const links: NavLink[] = [
+  const anchors: NavLink[] = [
     { label: 'Services', href: '#services' },
     ...(config.team?.length ? [{ label: 'Team', href: '#team' }] : []),
     { label: 'About', href: '#about' },
     { label: 'Visit', href: '#visit' },
   ];
+
+  // Anchors on a one-page sample, real page links on a multi-page one.
+  const links = homeNavLinks(config, anchors);
 
   return (
     <DemoShell config={config} links={links} navVariant="centered">

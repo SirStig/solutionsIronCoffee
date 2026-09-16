@@ -15,20 +15,20 @@
  */
 export const outcomes = [
   {
-    title: 'People can find you at all',
-    body: 'Someone searching for what you do right now is finding your competitor, or a Facebook page nobody has touched since spring. That is what not having one actually costs.',
+    title: 'They find you, not your competitor',
+    body: 'Someone is searching for what you do today. Right now they are finding somebody else.',
   },
   {
-    title: 'You stop answering the same four questions',
-    body: 'Are you open, what does it cost, do you have it in, where are you. Answered before the phone rings, so the calls you do take are worth taking.',
+    title: 'The same four questions, answered',
+    body: 'Hours, prices, what you have in, where you are. All of it, before the phone rings.',
   },
   {
-    title: 'You look like you are still trading',
-    body: 'Fair or not, people decide in seconds whether a business is still going. A real site settles it. A dead page settles it the other way.',
+    title: 'You look open',
+    body: 'A Facebook page nobody has touched since spring says you closed. A real site says you did not.',
   },
   {
-    title: 'It gets done without you doing it',
-    body: 'Most businesses without a website are not short of money. They are short of a free weekend. This takes about an hour of your time, total.',
+    title: 'It actually gets built',
+    body: 'You are not short of money. You are short of a free weekend. This costs you about an hour.',
   },
 ];
 

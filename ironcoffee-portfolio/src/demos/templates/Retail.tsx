@@ -14,7 +14,7 @@ import {
 } from '../components/blocks';
 import { Section, SectionHead } from '../components/primitives';
 import { todayName } from '../index';
-import type { NavLink } from '../components/DemoNav';
+import { homeNavLinks, type NavLink } from '../components/DemoNav';
 import styles from '../Demo.module.css';
 
 /**
@@ -25,12 +25,15 @@ import styles from '../Demo.module.css';
  * note under it carries today's hours. Everything else can wait.
  */
 export default function RetailTemplate({ config }: { config: DemoConfig }) {
-  const links: NavLink[] = [
+  const anchors: NavLink[] = [
     ...(config.products?.length ? [{ label: 'In stock', href: '#stock' }] : []),
     { label: 'Services', href: '#services' },
     { label: 'About', href: '#about' },
     { label: 'Visit', href: '#visit' },
   ];
+
+  // Anchors on a one-page sample, real page links on a multi-page one.
+  const links = homeNavLinks(config, anchors);
 
   const today = config.hours.find((h) => h.day === todayName());
 

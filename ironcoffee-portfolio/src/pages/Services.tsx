@@ -43,13 +43,12 @@ export default function Services() {
         <header className={styles.header}>
           <h1>See your website before you pay for it.</h1>
           <p className={styles.lede}>
-            Not a mockup or a slide deck. I build the real thing, send you a
-            link, and you open it on your phone. If you do not want it you say
-            so, and that is the end of it. You will not have paid me anything.
+            I build the real thing first and send you the link. Open it on your
+            phone. If you do not want it, say so and we are done, and you have
+            paid nothing.
           </p>
           <p className={styles.ledeSmall}>
-            Fixed prices, written down below. No retainer, no contract, and it
-            is yours the day it goes live.
+            Fixed price. No retainer, no contract. Yours the day it goes live.
           </p>
         </header>
 
@@ -130,24 +129,16 @@ export default function Services() {
             Why not just build it yourself on Wix?
           </h2>
           <p className={styles.sectionIntro}>
-            Plenty of people should, and I would rather say so than take your
-            money. Here is the honest version, including the part that does not
-            help me.
+            Plenty of people should. Here is the honest version.
           </p>
 
-          <h3 className={styles.subTitle}>What it costs, with your number in it</h3>
+          <h3 className={styles.subTitle}>Rent it, or own it</h3>
           <CostCompare />
 
-          <h3 className={styles.subTitle}>
-            Your customers are standing outside on a phone
-          </h3>
+          <h3 className={styles.subTitle}>Slow pages lose the call</h3>
           <p className={styles.sectionIntro}>
-            Somebody looks you up in a car park with two bars of signal. If the
-            page is still loading they go back and tap the next result, and you
-            never find out it happened. Site builders make that worse, because
-            they send the whole toolbox to every visitor. I am not going to tell
-            you what anybody else scores. Measure this page, then go and measure
-            theirs.
+            Someone looks you up in a car park on two bars. If it is still
+            loading, they tap the next result and you never know.
           </p>
           <SpeedPanel />
         </section>

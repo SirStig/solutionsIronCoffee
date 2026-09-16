@@ -17,7 +17,7 @@ import {
 } from '../components/blocks';
 import { Cta, Section, SectionHead } from '../components/primitives';
 import { directionsHref } from '../index';
-import type { NavLink } from '../components/DemoNav';
+import { homeNavLinks, type NavLink } from '../components/DemoNav';
 import styles from '../Demo.module.css';
 
 /**
@@ -28,12 +28,15 @@ import styles from '../Demo.module.css';
  * compact strip answers it without a table.
  */
 export default function FoodTemplate({ config }: { config: DemoConfig }) {
-  const links: NavLink[] = [
+  const anchors: NavLink[] = [
     ...(config.menu?.length ? [{ label: 'Menu', href: '#menu' }] : []),
     { label: 'Catering', href: '#services' },
     { label: 'About', href: '#about' },
     { label: 'Visit', href: '#visit' },
   ];
+
+  // Anchors on a one-page sample, real page links on a multi-page one.
+  const links = homeNavLinks(config, anchors);
 
   return (
     <DemoShell config={config} links={links}>

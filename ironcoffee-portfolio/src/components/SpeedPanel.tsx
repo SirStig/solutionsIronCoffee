@@ -122,10 +122,10 @@ export default function SpeedPanel() {
   return (
     <section className={styles.panel} aria-live="polite">
       <header className={styles.head}>
-        <h2 className={styles.title}>Measured on your device, just now</h2>
+        <h2 className={styles.title}>This page, on your device, just now</h2>
         <p className={styles.intro}>
-          Not a screenshot of a score from somewhere else. Your browser timed
-          this page as it loaded it, on whatever connection you are on.
+          Your browser timed it as it loaded. Not a screenshot of someone
+          else&rsquo;s score.
         </p>
       </header>
 
@@ -142,32 +142,31 @@ export default function SpeedPanel() {
                   ? `${reading.lcp} ms`
                   : `${(reading.lcp / 1000).toFixed(1)} s`
             }
-            note={`Google counts anything under ${GOOD.lcp / 1000} seconds as good`}
+            note={`Under ${GOOD.lcp / 1000}s counts as good`}
             good={reading.lcp === null ? undefined : reading.lcp <= GOOD.lcp}
           />
           <Metric
             label="Jumping about"
             value={reading.cls === null ? 'n/a' : reading.cls.toFixed(3)}
-            note="Whether things move under your thumb as it loads"
+            note="Things moving under your thumb"
             good={reading.cls === null ? undefined : reading.cls <= GOOD.cls}
           />
           <Metric
             label="Data used"
             value={`${reading.kb} KB`}
-            note="What it cost your phone plan to open this"
+            note="Off your phone plan"
           />
           <Metric
             label="Files fetched"
             value={String(reading.requests)}
-            note="Every one is another round trip on bad signal"
+            note="Each one is a round trip"
           />
         </div>
       )}
 
       <p className={styles.footnote}>
-        Do not take my word for any of it. Run Google PageSpeed Insights on
-        this page, then on any other small business site you can think of, and
-        compare the two numbers yourself.
+        Run Google PageSpeed on this page, then on any other small business
+        site. Compare them yourself.
       </p>
     </section>
   );

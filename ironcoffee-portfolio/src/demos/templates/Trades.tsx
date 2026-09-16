@@ -15,7 +15,7 @@ import {
 } from '../components/blocks';
 import { BusinessForm } from '../components/forms';
 import { Section, SectionHead } from '../components/primitives';
-import type { NavLink } from '../components/DemoNav';
+import { homeNavLinks, type NavLink } from '../components/DemoNav';
 
 /**
  * Trades. The quote form sits inside the hero.
@@ -26,12 +26,15 @@ import type { NavLink } from '../components/DemoNav';
  * reassure whoever did not fill it in immediately.
  */
 export default function TradesTemplate({ config }: { config: DemoConfig }) {
-  const links: NavLink[] = [
+  const anchors: NavLink[] = [
     { label: 'Services', href: '#services' },
     ...(config.serviceAreas?.length ? [{ label: 'Areas', href: '#areas' }] : []),
     { label: 'Work', href: '#work' },
     { label: 'Quote', href: '#quote' },
   ];
+
+  // Anchors on a one-page sample, real page links on a multi-page one.
+  const links = homeNavLinks(config, anchors);
 
   return (
     <DemoShell config={config} links={links}>

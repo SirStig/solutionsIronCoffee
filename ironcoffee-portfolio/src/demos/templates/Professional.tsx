@@ -17,7 +17,7 @@ import {
 } from '../components/blocks';
 import { BusinessForm } from '../components/forms';
 import { Section, SectionHead } from '../components/primitives';
-import type { NavLink } from '../components/DemoNav';
+import { homeNavLinks, type NavLink } from '../components/DemoNav';
 import styles from '../Demo.module.css';
 
 /**
@@ -30,12 +30,15 @@ import styles from '../Demo.module.css';
  * booking.
  */
 export default function ProfessionalTemplate({ config }: { config: DemoConfig }) {
-  const links: NavLink[] = [
+  const anchors: NavLink[] = [
     { label: 'Services', href: '#services' },
     ...(config.team?.length ? [{ label: 'Team', href: '#team' }] : []),
     ...(config.insurance?.length ? [{ label: 'Insurance', href: '#insurance' }] : []),
     { label: 'Book', href: '#appointment' },
   ];
+
+  // Anchors on a one-page sample, real page links on a multi-page one.
+  const links = homeNavLinks(config, anchors);
 
   return (
     <DemoShell config={config} links={links}>

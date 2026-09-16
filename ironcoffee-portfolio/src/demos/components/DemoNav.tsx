@@ -23,6 +23,30 @@ export function initials(name: string): string {
  * on an interior page the anchors would point at sections that are not there,
  * so only real page links are offered.
  */
+/**
+ * Nav links for a demo's home page.
+ *
+ * A multi-page site navigates to pages, not to anchors. Without this the
+ * interior pages were built, sitemapped and completely unreachable: the nav
+ * still pointed at #menu and #visit on the home page itself, so four of the
+ * six pages had no link to them anywhere on the site.
+ */
+export function homeNavLinks(
+  config: DemoConfig,
+  anchors: NavLink[]
+): NavLink[] {
+  if (!config.pages?.length) return anchors;
+
+  const base = config.showcase
+    ? `/templates/${config.slug}`
+    : `/demo/${config.slug}`;
+
+  return config.pages.map((page) => ({
+    label: page.label,
+    href: `${base}/${page.slug}`,
+  }));
+}
+
 export function pageNavLinks(
   config: DemoConfig,
   currentPageSlug?: string
