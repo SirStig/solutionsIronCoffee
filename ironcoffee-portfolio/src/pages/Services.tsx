@@ -222,7 +222,12 @@ export default function Services() {
             What it costs
           </h2>
 
-          <p className={styles.ladderNote}>{ladderNote}</p>
+          <p className={styles.ladderNote}>
+            {ladderNote(
+              showcases.filter((d) => d.tier === 'site').length,
+              showcases.filter((d) => d.tier === 'system').length
+            )}
+          </p>
 
           <div className={styles.tiers}>
             {tiers.map((tier) => (

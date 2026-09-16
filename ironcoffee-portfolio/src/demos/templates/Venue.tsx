@@ -8,6 +8,8 @@ import { BusinessForm } from '../components/forms';
 import { Parallax, Reveal, Rise } from '../components/motion';
 import SeatingPlanner from '../components/SeatingPlanner';
 import Torch from '../components/Torch';
+import AvailabilityBooking from '../venue/public/AvailabilityBooking';
+import Lightbox from '../venue/public/Lightbox';
 import { Bleed, Cta, Section, SectionHead } from '../components/primitives';
 import { directionsHref, telHref } from '../index';
 import { type NavLink } from '../components/DemoNav';
@@ -83,7 +85,7 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
           </div>
         </Torch>
         <span className={styles.torchHint} aria-hidden="true">
-          Move the cursor
+          Move the cursor to see it at night
         </span>
         <div className={styles.vHeroScrim} aria-hidden="true" />
         <div className={styles.vHeroInner}>
@@ -121,7 +123,10 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
       {/* --- A statement, set enormous, with nothing else on the screen. -- */}
       <Section>
         <Rise>
-          <p className={styles.vStatement}>{config.about.body}</p>
+          <div className={styles.vStatementRow}>
+            <p className={styles.vStatementLabel}>Why one at a time</p>
+            <p className={styles.vStatement}>{config.about.body}</p>
+          </div>
         </Rise>
       </Section>
 
@@ -166,6 +171,16 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
           sub="Drag the tables around. Every venue in the country answers this question with a phone call."
         />
         <SeatingPlanner />
+      </Section>
+
+      {/* --- The photographs, openable. ------------------------------------ */}
+      <Section tone="alt">
+        <SectionHead
+          eyebrow="Photographs"
+          title="The place, unstaged"
+          sub="Taken on ordinary days rather than on the one day everything was tidy."
+        />
+        <Lightbox images={config.gallery} label="Wren Hollow photographs" />
       </Section>
 
       {/* --- Seasons. Radio inputs and :has(), no script. ------------------ */}
@@ -295,6 +310,8 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
           title="Tell us when"
           sub="We hold a date for seven days with no deposit while you think about it."
         />
+        <AvailabilityBooking config={config} />
+
         <div className={styles.visitGrid}>
           <BusinessForm config={config} variant="quote" />
           <div className={styles.visitAside}>

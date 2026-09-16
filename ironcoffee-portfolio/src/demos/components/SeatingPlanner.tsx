@@ -26,7 +26,7 @@ import styles from '../Demo.module.css';
  *  - The seeded layout is a module constant and the saved layout is read in an
  *    effect, never during render. Reading localStorage while rendering would
  *    make the server and the browser disagree about the markup, which is a
- *    hydration error rather than a clever optimisation.
+ *    hydration error rather than a clever optimization.
  */
 
 interface TableType {

@@ -3054,28 +3054,84 @@
 .vFacts {
   background: var(--brand-deep);
   color: #fff;
-  padding-block: 1.25rem;
+  padding-block: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
 }
 
+/* A grid, not a wrapped flex row.
+ *
+ * Five facts in a flex row at a wide viewport broke four and one, which reads
+ * as an accident. auto-fit spreads them evenly at every width and the last row
+ * fills rather than orphaning, and the rule between them does the job the
+ * uneven gaps were failing to do. */
 .vFactList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
   margin: 0;
   padding: 0;
   list-style: none;
   font-size: 0.9375rem;
-  color: rgb(255 255 255 / 0.9);
+  color: rgb(255 255 255 / 0.88);
+}
+
+.vFactList li {
+  padding: 0.5rem 0 0.5rem 1.25rem;
+  border-left: 1px solid rgb(255 255 255 / 0.16);
+  text-wrap: balance;
+}
+
+.vFactList li:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+
+/* Once the row has wrapped, a left rule on the first item of each new row is
+   a stray mark. Below the breakpoint they stack, so the rule moves on top. */
+@media (max-width: 47.99rem) {
+  .vFactList li {
+    border-left: 0;
+    border-top: 1px solid rgb(255 255 255 / 0.16);
+    padding: 0.6rem 0;
+  }
+
+  .vFactList li:first-child {
+    border-top: 0;
+  }
 }
 
 /* --- Big statement ------------------------------------------------------- */
+/* Set against a label rather than alone in the left third of the page.
+ *
+ * At display size a 24ch measure is about 450 pixels, so a long sentence came
+ * out ten lines deep with the right half of the screen empty beside it. Two
+ * columns give the line somewhere to sit and somewhere to end. */
+.vStatementRow {
+  display: grid;
+  gap: clamp(1rem, 0.5rem + 2vw, 3rem);
+  align-items: start;
+}
+
+@media (min-width: 60rem) {
+  .vStatementRow {
+    grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+  }
+}
+
+.vStatementLabel {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-ink);
+  padding-top: 0.6em;
+}
+
 .vStatement {
   font-family: var(--d-display);
   font-weight: 400;
-  font-size: clamp(1.5rem, 0.9rem + 2.6vw, 2.75rem);
-  line-height: 1.28;
+  font-size: clamp(1.375rem, 0.9rem + 1.9vw, 2.375rem);
+  line-height: 1.32;
   letter-spacing: -0.005em;
-  max-width: 24ch;
+  max-width: 42ch;
   text-wrap: pretty;
 }
 
@@ -3232,23 +3288,33 @@
   opacity: 1;
 }
 
-.seasons:has(#season-spring:checked) .seasonPane:nth-of-type(1),
-.seasons:has(#season-summer:checked) .seasonPane:nth-of-type(2),
-.seasons:has(#season-autumn:checked) .seasonPane:nth-of-type(3),
-.seasons:has(#season-winter:checked) .seasonPane:nth-of-type(4) {
+/* Keyed off each input's position, never off its id.
+ *
+ * These selectors used to read `:has(#season-spring:checked)`, which looks
+ * correct and silently does nothing: CSS Modules scopes id selectors as well
+ * as class selectors, so the stylesheet shipped `#_season-spring` while the
+ * markup carried `id="season-spring"`, and the two never met. The ids still
+ * exist because the labels need something to point at, they are just no
+ * longer load-bearing for the styling. */
+.seasons:has(.seasonInput:nth-of-type(1):checked) .seasonPane:nth-of-type(1),
+.seasons:has(.seasonInput:nth-of-type(2):checked) .seasonPane:nth-of-type(2),
+.seasons:has(.seasonInput:nth-of-type(3):checked) .seasonPane:nth-of-type(3),
+.seasons:has(.seasonInput:nth-of-type(4):checked) .seasonPane:nth-of-type(4) {
   opacity: 1;
 }
 
-.seasons:has(#season-summer:checked) .seasonPane:nth-of-type(1),
-.seasons:has(#season-autumn:checked) .seasonPane:nth-of-type(1),
-.seasons:has(#season-winter:checked) .seasonPane:nth-of-type(1) {
+/* The first pane is visible by default so a browser without :has() shows
+   something. Once another season is chosen it has to be told to get out. */
+.seasons:has(.seasonInput:nth-of-type(2):checked) .seasonPane:nth-of-type(1),
+.seasons:has(.seasonInput:nth-of-type(3):checked) .seasonPane:nth-of-type(1),
+.seasons:has(.seasonInput:nth-of-type(4):checked) .seasonPane:nth-of-type(1) {
   opacity: 0;
 }
 
-.seasons:has(#season-spring:checked) .seasonTabs label:nth-of-type(1),
-.seasons:has(#season-summer:checked) .seasonTabs label:nth-of-type(2),
-.seasons:has(#season-autumn:checked) .seasonTabs label:nth-of-type(3),
-.seasons:has(#season-winter:checked) .seasonTabs label:nth-of-type(4) {
+.seasons:has(.seasonInput:nth-of-type(1):checked) .seasonTabs label:nth-of-type(1),
+.seasons:has(.seasonInput:nth-of-type(2):checked) .seasonTabs label:nth-of-type(2),
+.seasons:has(.seasonInput:nth-of-type(3):checked) .seasonTabs label:nth-of-type(3),
+.seasons:has(.seasonInput:nth-of-type(4):checked) .seasonTabs label:nth-of-type(4) {
   background: var(--brand);
   border-color: var(--brand);
   color: #fff;
@@ -3490,25 +3556,35 @@
      * `contain` is the range where the subject covers the whole viewport,
      * which for a section three viewports tall is exactly the stretch where
      * it is pinned. */
-    .vTrackOuter {
-      height: 320svh;
-      view-timeline-name: --pinned-track;
-      view-timeline-axis: block;
-    }
+    /* Pinned on a laptop, an ordinary swipeable row on a phone.
+     *
+     * Taking three screens of vertical scroll away from somebody to move a
+     * gallery sideways is a reasonable trade when they have a trackpad and a
+     * wide window. On a phone it is scroll-jacking: the page stops responding
+     * the way every other page does, and a finger already swipes sideways
+     * perfectly well. So the pin only exists above the breakpoint, and below
+     * it the fallback row underneath this block is what runs. */
+    @media (min-width: 60rem) {
+      .vTrackOuter {
+        height: 320svh;
+        view-timeline-name: --pinned-track;
+        view-timeline-axis: block;
+      }
 
-    .vTrackSticky {
-      position: sticky;
-      top: 0;
-      height: 100svh;
-      min-height: 0;
-      overflow-x: hidden;
-    }
+      .vTrackSticky {
+        position: sticky;
+        top: 0;
+        height: 100svh;
+        min-height: 0;
+        overflow-x: hidden;
+      }
 
-    .vTrack {
-      animation: vSlide linear both;
-      animation-timeline: --pinned-track;
-      animation-range: contain 0% contain 100%;
-      will-change: transform;
+      .vTrack {
+        animation: vSlide linear both;
+        animation-timeline: --pinned-track;
+        animation-range: contain 0% contain 100%;
+        will-change: transform;
+      }
     }
 
     /* 100% of the track's own width, less one viewport, is exactly the
@@ -4123,6 +4199,15 @@
 .torch {
   position: absolute;
   inset: -6% 0;
+  /* Behind the scrim and the copy, and inert.
+   *
+   * A positioned element with `z-index: auto` paints above static siblings,
+   * so this layer sat on top of the headline and the buttons and swallowed
+   * every tap aimed at them. It is decoration: it belongs at the back, and it
+   * should never be the target of anything. The hero reports the pointer on
+   * its behalf; see <Torch>. */
+  z-index: -2;
+  pointer-events: none;
   --tx: 50%;
   --ty: 45%;
   --tr: 0px;
@@ -4184,18 +4269,37 @@
   transition: width 0.4s ease;
 }
 
+/* Sits on a photograph, so it carries its own backdrop rather than trusting
+   whatever happens to be behind it. At 50% white over sunlit grass it was
+   illegible, which is a poor result for the one line telling people the
+   effect exists. */
 .torchHint {
   position: absolute;
   left: var(--d-gutter);
   bottom: 1.25rem;
   z-index: 2;
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgb(255 255 255 / 0.5);
   display: none;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: rgb(12 14 16 / 0.55);
+  backdrop-filter: blur(6px);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.92);
+}
+
+.torchHint::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+  flex: none;
 }
 
 .torch[data-torch='on'] ~ .torchHint {
-  display: block;
+  display: inline-flex;
 }

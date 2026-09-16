@@ -73,7 +73,7 @@ export const tiers: Tier[] = [
       'Set up so you turn up in Google',
     ],
     timeline: 'A week, maybe two',
-    seeIt: { label: 'All five samples are this', slug: 'ridgeline-smokehouse' },
+    seeIt: { label: 'Most of the samples are this', slug: 'ridgeline-smokehouse' },
   },
   {
     id: 'software',
@@ -110,13 +110,26 @@ export const tiers: Tier[] = [
 /**
  * The sentence that does the most work on the whole page.
  *
- * Someone who has just seen five good-looking sample sites and then a price of
- * $3,200 needs to be told, before they ask, that the samples are the cheap
+ * Someone who has just seen a row of good-looking sample sites and then a
+ * price of $3,200 has to be told, before they ask, which samples are the cheap
  * tier. Otherwise the only conclusion available is that the expensive tier is
  * the same thing with a bigger number on it.
+ *
+ * Counted from the gallery rather than written down, because the gallery keeps
+ * changing and a sentence that says "all five" on a page showing six is worse
+ * than no sentence at all.
  */
-export const ladderNote =
-  'Every sample in the gallery is the first tier. That is what five hundred dollars looks like. The difference higher up is not more pages, it is software: a database, a login, and a screen only you can see.';
+export function ladderNote(entry: number, top: number): string {
+  const n = (v: number) =>
+    ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight'][v] ??
+    String(v);
+
+  return `${n(entry).replace(/^./, (c) => c.toUpperCase())} of the samples in the gallery are the first tier, and that is what a few hundred dollars looks like. ${
+    top > 0
+      ? 'The last one is the third tier.'
+      : ''
+  } The difference is not more pages. It is software: a database, a login, and a screen only you can see.`;
+}
 
 /**
  * The comparison that is worth making.

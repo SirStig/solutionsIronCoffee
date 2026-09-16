@@ -26,7 +26,15 @@ export default function Torch({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    // The listeners go on the hero, not on this element.
+    //
+    // This layer covers the whole hero, so listening on it meant it had to
+    // accept pointer events, and accepting pointer events meant it swallowed
+    // every tap aimed at the buttons underneath it. It is now inert
+    // (`pointer-events: none` in the stylesheet) and the parent reports the
+    // pointer on its behalf, which is the same effect with none of the cost.
+    const host = el?.parentElement;
+    if (!el || !host) return;
 
     const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
     const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -39,27 +47,26 @@ export default function Torch({ children }: { children: React.ReactNode }) {
       if (frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
+        // Measured against the torch layer, which is taller than the hero by
+        // the overscan the parallax needs, so the circle tracks the cursor
+        // rather than drifting away from it down the page.
         const r = el.getBoundingClientRect();
         el.style.setProperty('--tx', `${((e.clientX - r.left) / r.width) * 100}%`);
         el.style.setProperty('--ty', `${((e.clientY - r.top) / r.height) * 100}%`);
       });
     };
 
-    const onLeave = () => {
-      el.style.setProperty('--tr', '0%');
-    };
-    const onEnter = () => {
-      el.style.removeProperty('--tr');
-    };
+    const onLeave = () => el.style.setProperty('--tr', '0px');
+    const onEnter = () => el.style.removeProperty('--tr');
 
-    el.addEventListener('pointermove', onMove);
-    el.addEventListener('pointerleave', onLeave);
-    el.addEventListener('pointerenter', onEnter);
+    host.addEventListener('pointermove', onMove);
+    host.addEventListener('pointerleave', onLeave);
+    host.addEventListener('pointerenter', onEnter);
     return () => {
       cancelAnimationFrame(frame);
-      el.removeEventListener('pointermove', onMove);
-      el.removeEventListener('pointerleave', onLeave);
-      el.removeEventListener('pointerenter', onEnter);
+      host.removeEventListener('pointermove', onMove);
+      host.removeEventListener('pointerleave', onLeave);
+      host.removeEventListener('pointerenter', onEnter);
       delete el.dataset.torch;
     };
   }, []);

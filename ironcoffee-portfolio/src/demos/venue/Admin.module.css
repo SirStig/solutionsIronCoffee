@@ -1,0 +1,1405 @@
+/* ============================================================================
+   The owner dashboard.
+
+   Deliberately not the public site. The venue page is a cathedral: enormous
+   light serif, whole screens of photograph, one idea at a time. This is the
+   back office, so it is dense, square and set in the body face, and the only
+   place a display serif appears is on the big numbers and on the preview of
+   the page itself.
+
+   Everything is drawn from the tokens the demo shell already sets on the page:
+   the three brand colors as --brand, --brand-deep and --brand-accent, and the
+   neutral surface palette as --d-*. Nothing here picks a color of its own
+   except the warning tone, which is not a brand decision.
+   ========================================================================= */
+
+.shell {
+  /* One warning color, the only hue this file invents. 7.6:1 on white. */
+  --a-warn: #8a3d10;
+  /* Corners a third of the public radius. Squarer reads as a tool. */
+  --a-radius: calc(var(--d-radius) / 3);
+  --a-radius-sm: calc(var(--d-radius) / 4);
+  --a-pad: clamp(0.875rem, 0.6rem + 1.2vw, 1.5rem);
+
+  display: grid;
+  grid-template-columns: 1fr;
+  /* The public page is warm. The back office is the same neutral nudged
+     cooler, which is most of what makes it read as a different piece of
+     software without introducing a second palette. */
+  background: color-mix(in srgb, var(--d-bg-alt) 86%, #eaeef2);
+  border: 1px solid var(--d-border);
+  border-radius: var(--a-radius);
+  overflow: hidden;
+  color: var(--d-text);
+  font-family: var(--d-font);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@media (min-width: 52rem) {
+  .shell {
+    grid-template-columns: 14rem minmax(0, 1fr);
+  }
+}
+
+.shell :focus-visible {
+  outline: 2px solid var(--brand-deep);
+  outline-offset: 2px;
+}
+
+/* --- Sidebar, which becomes a top bar under 52rem ------------------------- */
+
+.side {
+  background: var(--brand-deep);
+  min-width: 0;
+}
+
+.mark {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0.875rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.markInitials {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--a-radius-sm);
+  background: var(--brand);
+  color: var(--d-on-brand, #ffffff);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.markText {
+  display: grid;
+  min-width: 0;
+}
+
+.markName {
+  font-size: 0.875rem;
+  font-weight: 650;
+  color: #ffffff;
+}
+
+.markRole {
+  font-size: 0.6875rem;
+  color: rgb(255 255 255 / 0.72);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0.5rem;
+  min-width: 0;
+}
+
+.navBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.6rem;
+  border: 0;
+  border-radius: var(--a-radius-sm);
+  background: transparent;
+  color: rgb(255 255 255 / 0.8);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.navBtn:hover {
+  background: rgb(255 255 255 / 0.08);
+  color: #ffffff;
+}
+
+.navBtnOn {
+  background: rgb(255 255 255 / 0.15);
+  color: #ffffff;
+}
+
+.navIcon {
+  flex: 0 0 auto;
+  color: var(--brand-accent);
+}
+
+.navLabel {
+  flex: 1 1 auto;
+}
+
+.navBadge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: var(--brand-accent);
+  /* The ink token, not white: the accent is a pale gold on this sample and
+     anything light on it disappears. */
+  color: var(--d-text);
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.side :focus-visible {
+  outline-color: #ffffff;
+}
+
+@media (max-width: 51.9375rem) {
+  .nav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .navBtn {
+    width: auto;
+    flex: 0 0 auto;
+  }
+}
+
+/* Five icons in a row, the way a phone expects them. */
+@media (max-width: 34rem) {
+  .nav {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    overflow: visible;
+  }
+
+  .navBtn {
+    width: 100%;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-height: 3rem;
+    padding: 0.4rem 0.2rem;
+    text-align: center;
+  }
+
+  .navLabel {
+    flex: 0 0 auto;
+    max-width: 100%;
+    overflow: hidden;
+    font-size: 0.625rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .navBadge {
+    position: absolute;
+    top: 0.15rem;
+    right: 0.35rem;
+  }
+}
+
+/* --- The pane beside it --------------------------------------------------- */
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: 0.875rem var(--a-pad);
+  background: var(--d-surface);
+  border-bottom: 1px solid var(--d-border);
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--d-muted);
+}
+
+.viewTitle {
+  margin: 0.1rem 0 0;
+  font-size: 1.125rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.demoNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  max-width: 30rem;
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--d-muted);
+}
+
+.demoNote svg {
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+}
+
+.live {
+  display: flex;
+  align-items: center;
+  min-height: 1.75rem;
+  margin: 0;
+  padding: 0 var(--a-pad);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--brand-ink, var(--brand-deep));
+}
+
+.main {
+  padding: 0 var(--a-pad) var(--a-pad);
+  min-width: 0;
+}
+
+.main:focus {
+  outline: none;
+}
+
+.view {
+  display: grid;
+  gap: 0.875rem;
+}
+
+/* --- Cards, the container everything sits in ----------------------------- */
+
+.card {
+  padding: clamp(0.875rem, 2vw, 1.25rem);
+  background: var(--d-surface);
+  border: 1px solid var(--d-border);
+  border-radius: var(--a-radius);
+  min-width: 0;
+}
+
+.cardHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 650;
+}
+
+.cardTitle:focus {
+  outline: none;
+}
+
+.cardSub {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.2rem 0 0;
+  font-size: 0.75rem;
+  color: var(--d-muted);
+}
+
+.empty {
+  margin: 0;
+  padding: 1rem 0;
+  font-size: 0.8125rem;
+  color: var(--d-muted);
+}
+
+/* --- Controls ------------------------------------------------------------- */
+
+.btn,
+.btnPrimary,
+.btnQuiet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.25rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--d-border);
+  border-radius: var(--a-radius-sm);
+  background: var(--d-surface);
+  color: var(--d-text);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:hover,
+.btnQuiet:hover {
+  background: var(--d-bg-alt);
+}
+
+.btnPrimary {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--d-on-brand, #ffffff);
+}
+
+.btnPrimary:hover {
+  background: color-mix(in srgb, var(--brand) 84%, #101418);
+}
+
+.btnQuiet {
+  background: transparent;
+  border-color: transparent;
+  color: var(--d-muted);
+}
+
+.btnQuiet:hover {
+  color: var(--d-text);
+}
+
+.btn:disabled,
+.btnPrimary:disabled,
+.btnQuiet:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--d-border);
+  border-radius: var(--a-radius-sm);
+  background: var(--d-surface);
+  color: var(--d-text);
+  cursor: pointer;
+}
+
+.iconBtn:hover {
+  background: var(--d-bg-alt);
+}
+
+.iconBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.field {
+  margin: 0 0 0.875rem;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0.75rem;
+}
+
+.fieldLabel {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  min-height: 2.25rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--d-border);
+  border-radius: var(--a-radius-sm);
+  background: var(--d-surface);
+  color: var(--d-text);
+  font: inherit;
+  font-size: 0.8125rem;
+}
+
+.textarea {
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.fieldFoot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 0.75rem;
+  margin: 0.3rem 0 0;
+  font-size: 0.6875rem;
+  color: var(--d-muted);
+}
+
+.counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.counterOver {
+  color: var(--a-warn);
+  font-weight: 650;
+}
+
+.warn {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--a-warn);
+}
+
+.panelNote {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--d-muted);
+}
+
+.message {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.bullets {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.8125rem;
+}
+
+.sent {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  background: var(--d-bg-alt);
+  border-left: 3px solid var(--brand);
+  font-size: 0.8125rem;
+  white-space: pre-wrap;
+}
+
+.sentLabel {
+  margin: 0 0 0.25rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--d-muted);
+}
+
+/* --- Status pills --------------------------------------------------------- */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--d-border);
+  border-radius: 999px;
+  background: var(--d-bg-alt);
+  font-size: 0.6875rem;
+  font-weight: 650;
+}
+
+.pill_confirmed {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--d-on-brand, #ffffff);
+}
+
+.pill_held {
+  background: color-mix(in srgb, var(--brand-accent) 30%, #ffffff);
+  border-color: color-mix(in srgb, var(--brand-accent) 60%, #ffffff);
+  color: var(--d-text);
+}
+
+.pill_free {
+  background: var(--d-surface);
+}
+
+.pill_closed {
+  color: var(--d-muted);
+}
+
+/* --- Overview ------------------------------------------------------------- */
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  gap: 0.875rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tile {
+  padding: 0.75rem 0.875rem;
+  background: var(--d-surface);
+  border: 1px solid var(--d-border);
+  border-radius: var(--a-radius);
+}
+
+.tileLabel {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--d-muted);
+}
+
+/* The one place the display face is allowed out of the public page: a number
+   large enough that the serif reads as confidence rather than decoration. */
+.tileValue {
+  margin: 0.15rem 0 0;
+  font-family: var(--d-display);
+  font-weight: var(--d-display-weight);
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.tileNote {
+  margin: 0.15rem 0 0;
+  font-size: 0.75rem;
+  color: var(--d-muted);
+}
+
+.chartCeiling {
+  margin: 0 0 0.25rem;
+  font-size: 0.6875rem;
+  color: var(--d-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.chartSvg {
+  display: block;
+  width: 100%;
+  height: clamp(8rem, 22vw, 12rem);
+}
+
+.chartGrid {
+  stroke: var(--d-border);
+  stroke-width: 1;
+}
+
+.chartAxis {
+  stroke: var(--d-muted);
+  stroke-width: 1;
+}
+
+.barConfirmed {
+  fill: var(--brand);
+}
+
+.barHeld {
+  fill: color-mix(in srgb, var(--brand-accent) 55%, #ffffff);
+}
+
+.chartLabels {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  margin: 0.35rem 0 0.75rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.625rem;
+  color: var(--d-muted);
+  text-align: center;
+}
+
+.labelShort {
+  display: none;
+}
+
+@media (max-width: 34rem) {
+  .labelLong {
+    display: none;
+  }
+
+  .labelShort {
+    display: inline;
+  }
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.875rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.75rem;
+  color: var(--d-muted);
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.swatch {
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  border: 1px solid var(--d-border);
+}
+
+.swatchConfirmed {
+  background: var(--brand);
+  border-color: var(--brand);
+}
+
+.swatchHeld {
+  background: color-mix(in srgb, var(--brand-accent) 55%, #ffffff);
+  border-color: color-mix(in srgb, var(--brand-accent) 70%, #ffffff);
+}
+
+.swatchFree {
+  background: var(--d-surface);
+}
+
+.swatchClosed {
+  background: var(--d-bg-alt);
+}
+
+.needs {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.need {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.6rem;
+  border: 0;
+  border-radius: var(--a-radius-sm);
+  background: transparent;
+  color: var(--d-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.need:hover {
+  background: var(--d-bg-alt);
+}
+
+.needIcon {
+  flex: 0 0 auto;
+  margin-top: 0.1rem;
+  color: var(--brand-ink, var(--brand-deep));
+}
+
+.needText {
+  display: grid;
+  gap: 0.1rem;
+  font-size: 0.8125rem;
+}
+
+.needSub {
+  font-size: 0.75rem;
+  color: var(--d-muted);
+}
+
+/* --- Calendar ------------------------------------------------------------- */
+
+.calWrap {
+  display: grid;
+  gap: 0.875rem;
+  align-items: start;
+}
+
+@media (min-width: 62rem) {
+  .calWrap {
+    grid-template-columns: minmax(0, 1fr) 20rem;
+  }
+}
+
+.monthNav {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.weekHead {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--d-muted);
+  text-align: center;
+}
+
+.calGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  min-height: 3rem;
+  padding: 0.3rem;
+  border: 1px solid var(--d-border);
+  background: var(--d-surface);
+  color: var(--d-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.dayNum {
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.dayWho {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  color: var(--d-muted);
+}
+
+/* Under the width where a name fits in a column, the color carries the state
+   and the accessible label carries the rest. */
+@media (max-width: 44rem) {
+  .dayWho {
+    display: none;
+  }
+}
+
+.day_free {
+  background: var(--d-surface);
+}
+
+.day_confirmed {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--d-on-brand, #ffffff);
+}
+
+.day_confirmed .dayWho {
+  color: var(--d-on-brand, #ffffff);
+}
+
+.day_held {
+  background: color-mix(in srgb, var(--brand-accent) 26%, #ffffff);
+  border-color: color-mix(in srgb, var(--brand-accent) 55%, #ffffff);
+}
+
+.day_closed {
+  background: var(--d-bg-alt);
+  color: var(--d-muted);
+}
+
+.daySelected {
+  outline: 2px solid var(--brand-deep);
+  outline-offset: -2px;
+}
+
+.dayPad {
+  border: 0;
+}
+
+/* The detail panel sits in the flow beside the grid, so it is marked with an
+   edge rather than a shadow. It is part of the page, not on top of it. */
+.panel {
+  border-left: 3px solid var(--brand);
+}
+
+.panelIdle {
+  display: grid;
+  place-items: center;
+  min-height: 7rem;
+  text-align: center;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+
+.fact {
+  margin: 0;
+}
+
+.factKey {
+  margin: 0;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--d-muted);
+}
+
+.factVal {
+  margin: 0.15rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* --- Enquiries ------------------------------------------------------------ */
+
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 2px;
+  border-radius: var(--a-radius-sm);
+  background: var(--d-bg-alt);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2rem;
+  padding: 0.3rem 0.6rem;
+  border: 0;
+  border-radius: calc(var(--a-radius-sm) - 1px);
+  background: transparent;
+  color: var(--d-muted);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--d-text);
+}
+
+.tabOn {
+  background: var(--d-surface);
+  color: var(--d-text);
+}
+
+.tabCount {
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: var(--d-border);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabOn .tabCount {
+  background: var(--brand);
+  color: var(--d-on-brand, #ffffff);
+}
+
+.searchWrap {
+  position: relative;
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  left: 0.55rem;
+  transform: translateY(-50%);
+  color: var(--d-muted);
+  pointer-events: none;
+}
+
+.search {
+  width: 100%;
+  min-height: 2.25rem;
+  padding: 0.4rem 0.6rem 0.4rem 1.95rem;
+  border: 1px solid var(--d-border);
+  border-radius: var(--a-radius-sm);
+  background: var(--d-surface);
+  color: var(--d-text);
+  font: inherit;
+  font-size: 0.8125rem;
+}
+
+.listWrap {
+  min-width: 0;
+}
+
+.listWrap:focus {
+  outline: none;
+}
+
+.list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.listItem {
+  display: grid;
+  gap: 0.2rem;
+  width: 100%;
+  padding: 0.65rem;
+  border: 0;
+  border-bottom: 1px solid var(--d-border);
+  background: transparent;
+  color: var(--d-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.listItem:hover {
+  background: var(--d-bg-alt);
+}
+
+.listTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.listName {
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+
+.listWhen {
+  flex: 0 0 auto;
+  font-size: 0.6875rem;
+  white-space: nowrap;
+  color: var(--d-muted);
+}
+
+.listMeta {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--brand-ink, var(--brand-deep));
+}
+
+.listMsg {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.8125rem;
+  color: var(--d-muted);
+}
+
+/* --- Bookings table ------------------------------------------------------- */
+
+.tableWrap {
+  overflow-x: auto;
+  min-width: 0;
+  border: 1px solid var(--d-border);
+  border-radius: var(--a-radius-sm);
+}
+
+.tableWrap:focus {
+  outline: none;
+}
+
+.table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.table th,
+.table td {
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--d-border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table thead th {
+  padding: 0;
+  background: var(--d-bg-alt);
+}
+
+.sortBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  width: 100%;
+  min-height: 2.25rem;
+  padding: 0.5rem 0.6rem;
+  border: 0;
+  background: transparent;
+  color: var(--d-muted);
+  font: inherit;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.sortBtnOn {
+  color: var(--d-text);
+}
+
+.numeric {
+  text-align: right;
+}
+
+.numeric .sortBtn {
+  justify-content: flex-end;
+}
+
+.row {
+  cursor: pointer;
+}
+
+.row:hover {
+  background: var(--d-bg-alt);
+}
+
+.rowBtn {
+  min-height: 1.5rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--brand-ink, var(--brand-deep));
+  font: inherit;
+  font-weight: 650;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.table tfoot th,
+.table tfoot td {
+  background: var(--d-bg-alt);
+  border-bottom: 0;
+  font-weight: 700;
+}
+
+/* --- Pages, the editor and its preview ------------------------------------ */
+
+.cms {
+  display: grid;
+  gap: 0.875rem;
+  align-items: start;
+}
+
+@media (min-width: 64rem) {
+  .cms {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.previewFrame {
+  overflow: hidden;
+  border: 1px solid var(--d-border);
+  border-radius: var(--a-radius-sm);
+}
+
+.previewHero {
+  padding: clamp(1rem, 3vw, 1.75rem);
+  background: var(--brand-deep);
+  color: #ffffff;
+}
+
+.previewBrand {
+  margin: 0 0 0.75rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.75);
+}
+
+/* The preview is the public page, so it gets the public page's face. */
+.previewHeadline {
+  display: grid;
+  margin: 0;
+  font-family: var(--d-display);
+  font-weight: var(--d-display-weight);
+  font-size: clamp(1.5rem, 1rem + 2.6vw, 2.25rem);
+  letter-spacing: var(--d-display-tracking);
+  font-feature-settings: var(--d-display-settings);
+  line-height: 1.1;
+}
+
+.previewLine {
+  display: block;
+}
+
+.previewSub {
+  max-width: 34rem;
+  margin: 0.6rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: rgb(255 255 255 / 0.85);
+}
+
+.previewCta {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--a-radius-sm);
+  background: #ffffff;
+  color: var(--brand-ink, var(--brand-deep));
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.previewAbout {
+  padding: clamp(1rem, 3vw, 1.5rem);
+  background: var(--d-surface);
+}
+
+.previewKicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--d-muted);
+}
+
+.previewAbout p {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.serp {
+  margin-top: 0.875rem;
+  padding: 0.75rem;
+  border: 1px dashed var(--d-border);
+  border-radius: var(--a-radius-sm);
+  background: var(--d-bg-alt);
+}
+
+.serpUrl {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--d-muted);
+}
+
+.serpTitle {
+  margin: 0.15rem 0;
+  font-size: 1rem;
+  color: var(--brand-ink, var(--brand-deep));
+}
+
+.serpDesc {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+/* --- Drawer --------------------------------------------------------------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgb(12 14 18 / 0.45);
+}
+
+.drawer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(30rem, 100%);
+  max-height: 100%;
+  background: var(--d-surface);
+  color: var(--d-text);
+  border-left: 1px solid var(--d-border);
+  font-family: var(--d-font);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.drawer:focus {
+  outline: none;
+}
+
+.drawerHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--d-border);
+}
+
+.drawerTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.drawerMeta {
+  margin: 0.15rem 0 0;
+  font-size: 0.75rem;
+  color: var(--d-muted);
+}
+
+.drawerBody {
+  flex: 1 1 auto;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.drawerFoot {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--d-border);
+  background: var(--d-bg-alt);
+}
+
+@media (max-width: 40rem) {
+  .overlay {
+    align-items: flex-end;
+  }
+
+  .drawer {
+    width: 100%;
+    max-height: 90%;
+    border-left: 0;
+    border-top: 1px solid var(--d-border);
+  }
+}
+
+@media (max-width: 40rem) and (prefers-reduced-motion: no-preference) {
+  .drawer {
+    animation-name: sheetIn;
+  }
+}
+
+@keyframes sheetIn {
+  from {
+    transform: translateY(6%);
+    opacity: 0.4;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* --- Motion, all of it optional ------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .navBtn,
+  .btn,
+  .btnPrimary,
+  .btnQuiet,
+  .iconBtn,
+  .tab,
+  .day,
+  .listItem,
+  .need,
+  .row {
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease,
+      color 120ms ease;
+  }
+
+  .drawer {
+    animation: drawerIn 180ms ease-out;
+  }
+
+  .scrim {
+    animation: scrimIn 180ms ease-out;
+  }
+}
+
+@keyframes drawerIn {
+  from {
+    transform: translateX(4%);
+    opacity: 0.4;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes scrimIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* --- Utility -------------------------------------------------------------- */
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

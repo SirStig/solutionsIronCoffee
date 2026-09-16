@@ -131,7 +131,7 @@ async function loadChunkHints(alreadyLinked = new Set()) {
      *
      * So: the image and the fonts first, then the stylesheets the page cannot
      * paint without, then the JavaScript. Nothing is removed, it is only
-     * reordered and re-prioritised, and the page still hydrates exactly as it
+     * reordered and re-prioritized, and the page still hydrates exactly as it
      * did. */
     const tags = [];
 
@@ -205,6 +205,18 @@ function buildRoutes({ projects, posts, previews, showcases, demoRoutes, images 
     { url: '/templates', priority: '0.9', changefreq: 'monthly' },
     { url: '/contact', priority: '0.6', changefreq: 'yearly' },
   ];
+
+  /* The gallery leads with a screenshot, so it gets the same treatment as a
+     sample: preload the one image that is the largest thing on the screen, and
+     stop the script graph bidding against it. Without this the page waited on
+     React before it could show the first sample, and measured at nearly six
+     seconds on a throttled connection against two for the samples themselves. */
+  const gallery = staticRoutes.find((r) => r.url === '/templates');
+  if (gallery && showcases[0]) {
+    gallery.lcp = lcpFor(images, `templates/${showcases[0].slug}-desktop`, {
+      sizes: '(min-width: 64rem) 46vw, 92vw',
+    });
+  }
 
   return [
     ...staticRoutes,

@@ -17,7 +17,7 @@ import {
 } from './blocks';
 import { BusinessForm } from './forms';
 import OrderFlow from './OrderFlow';
-import AdminView from './AdminView';
+import AdminApp from '../venue/admin/AdminApp';
 import { Cta, Section, SectionHead } from './primitives';
 import { pageNavLinks } from './DemoNav';
 import styles from '../Demo.module.css';
@@ -91,7 +91,7 @@ export default function DemoSubPage({
 
       {page.kind === 'admin' ? (
         <Section>
-          <AdminView config={config} />
+          <AdminApp config={config} />
         </Section>
       ) : null}
 
