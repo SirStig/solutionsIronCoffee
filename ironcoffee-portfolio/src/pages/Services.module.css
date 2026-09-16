@@ -301,3 +301,49 @@
   font-size: var(--text-lg);
   font-weight: 650;
 }
+
+.ledeSmall {
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text-faint);
+}
+
+/* --- Outcomes ------------------------------------------------------------- */
+.outcomes {
+  margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+}
+
+/* Four items, so auto-fit gives three and an orphan. Fixed counts instead. */
+.outcomeGrid {
+  display: grid;
+  gap: var(--space-5) var(--space-6);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .outcomeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1080px) {
+  .outcomeGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.outcome {
+  padding-top: var(--space-4);
+  border-top: 2px solid var(--accent);
+}
+
+.outcomeTitle {
+  font-size: var(--text-lg);
+  font-weight: 650;
+}
+
+.outcomeBody {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}

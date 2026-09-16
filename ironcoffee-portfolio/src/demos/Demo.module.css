@@ -2173,6 +2173,9 @@
 }
 
 .crumbs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
   text-decoration: none;
   font-weight: 600;
 }

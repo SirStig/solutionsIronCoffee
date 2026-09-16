@@ -122,10 +122,10 @@ export default function SpeedPanel() {
   return (
     <section className={styles.panel} aria-live="polite">
       <header className={styles.head}>
-        <h2 className={styles.title}>This page, measured in your browser</h2>
+        <h2 className={styles.title}>Measured on your device, just now</h2>
         <p className={styles.intro}>
-          Not a screenshot of a score from somewhere else. These are read from
-          the page you are reading, right now, on the device you are holding.
+          Not a screenshot of a score from somewhere else. Your browser timed
+          this page as it loaded it, on whatever connection you are on.
         </p>
       </header>
 
@@ -134,33 +134,40 @@ export default function SpeedPanel() {
       ) : (
         <div className={styles.grid}>
           <Metric
-            label="Largest paint"
-            value={reading.lcp === null ? 'n/a' : `${reading.lcp} ms`}
-            note={`Google calls anything under ${GOOD.lcp / 1000} s good`}
+            label="Time to appear"
+            value={
+              reading.lcp === null
+                ? 'n/a'
+                : reading.lcp < 1000
+                  ? `${reading.lcp} ms`
+                  : `${(reading.lcp / 1000).toFixed(1)} s`
+            }
+            note={`Google counts anything under ${GOOD.lcp / 1000} seconds as good`}
             good={reading.lcp === null ? undefined : reading.lcp <= GOOD.lcp}
           />
           <Metric
-            label="Layout shift"
+            label="Jumping about"
             value={reading.cls === null ? 'n/a' : reading.cls.toFixed(3)}
-            note={`Under ${GOOD.cls} means nothing jumped while loading`}
+            note="Whether things move under your thumb as it loads"
             good={reading.cls === null ? undefined : reading.cls <= GOOD.cls}
           />
           <Metric
-            label="Page weight"
+            label="Data used"
             value={`${reading.kb} KB`}
-            note="Everything this page downloaded"
+            note="What it cost your phone plan to open this"
           />
           <Metric
-            label="Requests"
+            label="Files fetched"
             value={String(reading.requests)}
-            note="Files fetched to render it"
+            note="Every one is another round trip on bad signal"
           />
         </div>
       )}
 
       <p className={styles.footnote}>
-        Run PageSpeed Insights on this page and on any other small business site
-        you like, and compare the two. That is the whole argument.
+        Do not take my word for any of it. Run Google PageSpeed Insights on
+        this page, then on any other small business site you can think of, and
+        compare the two numbers yourself.
       </p>
     </section>
   );

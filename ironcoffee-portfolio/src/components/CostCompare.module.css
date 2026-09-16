@@ -45,6 +45,12 @@
   font-size: var(--text-lg);
 }
 
+.hint {
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+  max-width: 28rem;
+}
+
 .suffix {
   font-size: var(--text-sm);
   color: var(--text-faint);
@@ -89,8 +95,10 @@
 }
 
 .check input {
-  width: 20px;
-  height: 20px;
+  /* 24px is the WCAG 2.5.8 minimum for a control. */
+  width: 24px;
+  height: 24px;
+  flex: none;
   accent-color: var(--accent);
 }
 
@@ -104,6 +112,7 @@
 .caption {
   caption-side: top;
   text-align: left;
+  max-width: 48rem;
   font-size: var(--text-sm);
   color: var(--text-muted);
   padding-bottom: var(--space-3);
@@ -155,5 +164,14 @@
 }
 
 .honest strong {
+  color: var(--text);
+}
+
+.verdict {
+  padding: var(--space-5);
+  border-radius: var(--radius);
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-ring);
+  font-size: var(--text-base);
   color: var(--text);
 }

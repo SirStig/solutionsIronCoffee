@@ -48,8 +48,9 @@ export default function PreviewExpired({ business }: { business?: string }) {
         </div>
 
         <p className={styles.note}>
-          Joshua Kac builds websites for small businesses around Elizabeth and
-          Parker, Colorado. Email <a href={`mailto:${site.email}`}>{site.email}</a>.
+          Joshua Kac builds websites for small businesses, for a fixed price,
+          and you see yours finished before you pay for it. Email{' '}
+          <a href={`mailto:${site.email}`}>{site.email}</a>.
         </p>
       </div>
     </>

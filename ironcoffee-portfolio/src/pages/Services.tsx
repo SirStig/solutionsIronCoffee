@@ -4,7 +4,7 @@ import SpeedPanel from '../components/SpeedPanel';
 import { Link } from 'react-router-dom';
 import Seo from '../components/Seo';
 import { site } from '../content/site';
-import { care, pricingFaq, tiers } from '../content/pricing';
+import { care, outcomes, pricingFaq, tiers } from '../content/pricing';
 import styles from './Services.module.css';
 
 const steps = [
@@ -34,20 +34,36 @@ export default function Services() {
   return (
     <>
       <Seo
-        title="What a website costs"
-        description="Fixed pricing for small business websites in Elizabeth, Parker and around Colorado. One page from $500, a full site for $1,800, and optional monthly care."
+        title="See your website before you pay for it"
+        description="Small business websites for a fixed price. I build yours first, you look at it, then you decide. One page from $500, a full site for $1,800."
         path="/services"
       />
 
       <div className="container-wide">
         <header className={styles.header}>
-          <h1>What a website costs.</h1>
+          <h1>See your website before you pay for it.</h1>
           <p className={styles.lede}>
-            Three prices, written down, so you can work out whether this is worth
-            a phone call without having to make one. Every job is quoted before
-            it starts and the number does not move afterwards.
+            Not a mockup or a slide deck. I build the real thing, send you a
+            link, and you open it on your phone. If you do not want it you say
+            so, and that is the end of it. You will not have paid me anything.
+          </p>
+          <p className={styles.ledeSmall}>
+            Fixed prices, written down below. No retainer, no contract, and it
+            is yours the day it goes live.
           </p>
         </header>
+
+        <section className={styles.outcomes}>
+          <h2 className="visually-hidden">What having one does for you</h2>
+          <div className={styles.outcomeGrid}>
+            {outcomes.map((item) => (
+              <article key={item.title} className={styles.outcome}>
+                <h3 className={styles.outcomeTitle}>{item.title}</h3>
+                <p className={styles.outcomeBody}>{item.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
         <div className={styles.tiers}>
           {tiers.map((tier) => (
@@ -111,23 +127,27 @@ export default function Services() {
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>
-            Why not just use Wix or Squarespace?
+            Why not just build it yourself on Wix?
           </h2>
           <p className={styles.sectionIntro}>
-            Sometimes you should, and I will say so. But two things are worth
-            knowing before you decide, and both of them you can check yourself
-            rather than take my word for.
+            Plenty of people should, and I would rather say so than take your
+            money. Here is the honest version, including the part that does not
+            help me.
           </p>
 
-          <h3 className={styles.subTitle}>One. It is yours, and it adds up</h3>
+          <h3 className={styles.subTitle}>What it costs, with your number in it</h3>
           <CostCompare />
 
-          <h3 className={styles.subTitle}>Two. It is fast, and that is checkable</h3>
+          <h3 className={styles.subTitle}>
+            Your customers are standing outside on a phone
+          </h3>
           <p className={styles.sectionIntro}>
-            Most drag-and-drop platforms ship a few megabytes of JavaScript
-            before anyone sees a word. On a phone, on rural Colorado signal,
-            that is the difference between a customer waiting and a customer
-            going back to the search results. Here is this page:
+            Somebody looks you up in a car park with two bars of signal. If the
+            page is still loading they go back and tap the next result, and you
+            never find out it happened. Site builders make that worse, because
+            they send the whole toolbox to every visitor. I am not going to tell
+            you what anybody else scores. Measure this page, then go and measure
+            theirs.
           </p>
           <SpeedPanel />
         </section>
