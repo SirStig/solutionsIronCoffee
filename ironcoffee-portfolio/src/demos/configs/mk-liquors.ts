@@ -44,7 +44,7 @@ const mkLiquors: DemoConfig = {
     primary: '#7B2233',
     secondary: '#241016',
     accent: '#C9A227',
-    font: 'serif',
+    font: 'craft',
   },
 
   hero: {

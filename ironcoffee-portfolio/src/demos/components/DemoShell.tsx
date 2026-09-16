@@ -7,9 +7,11 @@ import { CallBar } from './blocks';
 import styles from '../Demo.module.css';
 
 const fontClass: Record<BrandFont, string> = {
-  sans: styles.fontSans,
-  serif: styles.fontSerif,
-  slab: styles.fontSlab,
+  editorial: styles.fontEditorial,
+  luxe: styles.fontLuxe,
+  industrial: styles.fontIndustrial,
+  modern: styles.fontModern,
+  craft: styles.fontCraft,
 };
 
 /**

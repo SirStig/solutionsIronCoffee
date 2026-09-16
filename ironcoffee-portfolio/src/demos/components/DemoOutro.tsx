@@ -19,7 +19,7 @@ export default function DemoOutro({ config }: { config: DemoConfig }) {
           eyebrow="Built by Joshua Kac"
           title="Your business, on a site like this one."
           sub="Every page here is real code, not a picture of a website. Yours would be built the same way, with your photos, your colors and your hours, and it would load just as fast on a phone."
-          centered
+          align="center"
         />
         <div
           className={styles.heroActions}

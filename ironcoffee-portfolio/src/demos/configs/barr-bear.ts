@@ -44,7 +44,7 @@ const barrBear: DemoConfig = {
     primary: '#7A4A24',
     secondary: '#2A1C12',
     accent: '#C9A227',
-    font: 'slab',
+    font: 'industrial',
   },
 
   hero: {

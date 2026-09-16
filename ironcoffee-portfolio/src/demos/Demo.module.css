@@ -45,6 +45,10 @@
 
   --d-font: var(--font-sans);
   --d-display: var(--font-sans);
+  --d-display-weight: 700;
+  --d-display-tracking: -0.02em;
+  --d-display-case: none;
+  --d-display-settings: normal;
 
   color-scheme: light;
   font-family: var(--d-font);
@@ -54,22 +58,55 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* Heading pairings selected by `brand.font`. All system or already-loaded
-   stacks, because a demo must not pay for a webfont it did not need. */
-.fontSans {
-  --d-font: var(--font-sans);
-  --d-display: var(--font-sans);
+/* Heading faces selected by `brand.font`, declared in tokens.css.
+ *
+ * Each sample loads exactly one of these, and only the headings use it, so the
+ * cost is a single latin-subset woff2 somewhere between 32 and 90 KB.
+ *
+ * `--d-display-tracking`, `--d-display-weight` and `--d-display-case` travel
+ * with the face because they are not interchangeable. Archivo set in caps at
+ * 900 looks like a contractor's truck; Playfair given the same treatment looks
+ * like a ransom note. Every rule that uses `--d-display` reads all four. */
+.fontEditorial {
+  --d-display: 'Fraunces var', 'Iowan Old Style', Georgia, serif;
+  --d-display-weight: 700;
+  --d-display-tracking: -0.015em;
+  --d-display-case: none;
+  /* Fraunces ships an optical size and a "wonk" axis. Dialing both up at
+     display size is what stops it reading as yet another Georgia. */
+  --d-display-settings: 'opsz' 100, 'SOFT' 20, 'WONK' 1;
 }
 
-.fontSerif {
-  --d-font: var(--font-sans);
-  --d-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia,
-    'Times New Roman', serif;
+.fontLuxe {
+  --d-display: 'Playfair var', 'Didot', 'Bodoni MT', Georgia, serif;
+  --d-display-weight: 600;
+  --d-display-tracking: -0.01em;
+  --d-display-case: none;
+  --d-display-settings: normal;
 }
 
-.fontSlab {
-  --d-font: var(--font-sans);
-  --d-display: Rockwell, 'Roboto Slab', 'Bookman Old Style', Georgia, serif;
+.fontIndustrial {
+  --d-display: 'Archivo var', 'Helvetica Neue', Arial, sans-serif;
+  --d-display-weight: 800;
+  --d-display-tracking: -0.005em;
+  --d-display-case: uppercase;
+  --d-display-settings: 'wdth' 88;
+}
+
+.fontModern {
+  --d-display: 'Outfit var', 'Avenir Next', 'Segoe UI', sans-serif;
+  --d-display-weight: 600;
+  --d-display-tracking: -0.025em;
+  --d-display-case: none;
+  --d-display-settings: normal;
+}
+
+.fontCraft {
+  --d-display: 'Bricolage var', 'Helvetica Neue', Arial, sans-serif;
+  --d-display-weight: 700;
+  --d-display-tracking: -0.02em;
+  --d-display-case: none;
+  --d-display-settings: 'opsz' 48;
 }
 
 /* These are element defaults for the demo scope, so they are wrapped in
@@ -85,10 +122,20 @@
 :where(.root) h3,
 :where(.root) h4 {
   font-family: var(--d-display);
-  line-height: 1.12;
-  letter-spacing: -0.02em;
+  font-weight: var(--d-display-weight);
+  font-variation-settings: var(--d-display-settings);
+  letter-spacing: var(--d-display-tracking);
+  text-transform: var(--d-display-case);
+  line-height: 1.08;
   text-wrap: balance;
   margin: 0;
+}
+
+/* Caps need air between the letters and none of the tightening a lowercase
+   display line wants. Scoped to the one pairing that sets them. */
+.fontIndustrial :where(h1, h2, h3, h4) {
+  letter-spacing: 0.005em;
+  word-spacing: 0.04em;
 }
 
 :where(.root) p {
@@ -2438,4 +2485,292 @@
 .orderNote {
   font-size: 0.75rem;
   color: var(--d-faint);
+}
+
+/* ==========================================================================
+   Editorial blocks
+   ==========================================================================
+   Everything above this line lays out information. These lay out emphasis.
+
+   A sample made only of contained sections reads as one long column whatever
+   is in it, and that flatness is most of what "looks like a cheap template"
+   actually means. A page needs somewhere to be loud, and it needs that place
+   to be rare.
+   ========================================================================= */
+
+/* --- Section heads -------------------------------------------------------
+   A short rule before the eyebrow. It costs one pseudo-element and it is the
+   difference between a label floating above a heading and a heading that
+   looks placed. */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.centered .eyebrow {
+  justify-content: center;
+}
+
+.eyebrowRule {
+  display: block;
+  width: 1.75rem;
+  height: 2px;
+  flex: none;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+.sectionHeadWide {
+  max-width: none;
+}
+
+/* Section titles carry the page. At the old size they were barely larger than
+   a card heading, which left every section reading at one volume. */
+.sectionTitle {
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+}
+
+.sectionHead .sectionSub {
+  max-width: 34rem;
+}
+
+.centered .sectionSub {
+  margin-inline: auto;
+}
+
+/* --- Full-bleed bands ---------------------------------------------------- */
+.bleed {
+  padding-block: clamp(3.5rem, 2rem + 6vw, 7rem);
+}
+
+.bleedBrand {
+  background: var(--brand);
+  color: #fff;
+}
+
+.bleedDeep {
+  background: var(--brand-deep);
+  color: #fff;
+}
+
+.bleedAlt {
+  background: var(--d-bg-alt);
+  color: var(--d-text);
+}
+
+/* --- Pull quote ----------------------------------------------------------
+   Set in the display face at a size no card would ever give it. The opening
+   quotation mark hangs into the left margin so the first letter of the
+   sentence lines up with everything else on the page, which is the small
+   thing that separates this from a blockquote with a big font-size. */
+.pullQuote {
+  margin: 0;
+}
+
+.pullQuoteText {
+  margin: 0;
+  font-family: var(--d-display);
+  font-weight: var(--d-display-weight);
+  font-variation-settings: var(--d-display-settings);
+  letter-spacing: var(--d-display-tracking);
+  font-size: clamp(1.75rem, 1.1rem + 3.2vw, 3.5rem);
+  line-height: 1.12;
+  text-wrap: balance;
+  max-width: 22ch;
+  hanging-punctuation: first;
+}
+
+.pullQuoteText::before {
+  content: '\201C';
+}
+
+.pullQuoteText::after {
+  content: '\201D';
+}
+
+/* Safari and Firefox do not support hanging-punctuation, so the quote mark
+   pushes the line in by its own width there. A negative indent puts it back
+   where Chrome already has it, and is harmless in the browsers that do. */
+@supports not (hanging-punctuation: first) {
+  .pullQuoteText {
+    text-indent: -0.42em;
+  }
+}
+
+.pullQuoteBy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  margin-top: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid rgb(255 255 255 / 0.25);
+  max-width: 22ch;
+}
+
+.bleedAlt .pullQuoteBy {
+  border-top-color: var(--d-border);
+}
+
+.pullQuoteName {
+  font-family: var(--d-font);
+  font-weight: 650;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.pullQuoteDetail {
+  font-family: var(--d-font);
+  font-size: 0.9375rem;
+  color: rgb(255 255 255 / 0.7);
+}
+
+.bleedAlt .pullQuoteDetail {
+  color: var(--d-muted);
+}
+
+/* --- Marquee -------------------------------------------------------------
+   Two identical runs side by side, translated by exactly half the track, so
+   the second copy is arriving as the first leaves. */
+.marquee {
+  overflow: hidden;
+  padding-block: 0.875rem;
+  background: var(--brand-deep);
+  color: #fff;
+  border-block: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: demoMarquee 42s linear infinite;
+}
+
+.marqueeRun {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0 1.25rem 0 0;
+  list-style: none;
+}
+
+.marqueeItem {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  white-space: nowrap;
+  font-size: 0.9375rem;
+  font-weight: 550;
+  letter-spacing: 0.01em;
+  color: rgb(255 255 255 / 0.9);
+}
+
+/* The separator is drawn rather than typed so it never gets read aloud. */
+.marqueeItem::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+  flex: none;
+}
+
+@keyframes demoMarquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Anyone who has asked their system to stop moving things gets the same
+   phrases as a static wrapped row. They are short enough to read that way,
+   which is why they are allowed to be short. */
+@media (prefers-reduced-motion: reduce) {
+  .marqueeTrack {
+    animation: none;
+    width: 100%;
+  }
+
+  .marqueeTrack > [aria-hidden='true'] {
+    display: none;
+  }
+
+  .marqueeRun {
+    flex-wrap: wrap;
+    gap: 0.5rem 2.5rem;
+    justify-content: center;
+    padding-inline: var(--d-gutter);
+  }
+}
+
+/* --- Feature rows --------------------------------------------------------
+   The picture runs past the column it belongs to. A photograph sitting neatly
+   inside the text measure is a card; one that breaks the margin looks like
+   somebody laid the page out on purpose. */
+.featureRows {
+  display: grid;
+  gap: clamp(3rem, 1.5rem + 6vw, 6rem);
+}
+
+.featureRow {
+  display: grid;
+  gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+  align-items: center;
+}
+
+.featureRow > * {
+  min-width: 0;
+}
+
+.featureMedia {
+  border-radius: var(--d-radius-lg);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--d-bg-alt);
+}
+
+.featureMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featureKicker {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-ink);
+  margin-bottom: 0.75rem;
+}
+
+.featureTitle {
+  font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+}
+
+.featureBody {
+  margin-top: 1rem;
+  color: var(--d-muted);
+  font-size: var(--text-lg);
+}
+
+@media (min-width: 60rem) {
+  .featureRow {
+    grid-template-columns: 1.15fr 1fr;
+    gap: clamp(2.5rem, 1rem + 4vw, 5rem);
+  }
+
+  .featureRow .featureMedia {
+    margin-inline-start: calc(var(--d-gutter) * -1);
+  }
+
+  .featureRow.reversed .featureMedia {
+    order: 2;
+    margin-inline: 0 calc(var(--d-gutter) * -1);
+  }
 }

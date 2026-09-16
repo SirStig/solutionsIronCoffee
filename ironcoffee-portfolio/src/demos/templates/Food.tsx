@@ -10,22 +10,29 @@ import {
   GalleryGrid,
   HoursList,
   HoursStrip,
+  Marquee,
   MenuBlock,
+  PullQuote,
   ServiceCards,
   StatsBand,
-  Testimonials,
 } from '../components/blocks';
-import { Cta, Section, SectionHead } from '../components/primitives';
+import { Bleed, Cta, Section, SectionHead } from '../components/primitives';
 import { directionsHref } from '../index';
 import { homeNavLinks, type NavLink } from '../components/DemoNav';
 import styles from '../Demo.module.css';
 
 /**
- * Food. The photograph fills the screen, then the hours, then the menu.
+ * Food, laid out like a menu card rather than a brochure.
  *
- * Hours come second on purpose: for a place that smokes a fixed amount and
- * closes when it is gone, "are they open" beats "what do they serve", and a
- * compact strip answers it without a table.
+ * The photograph fills the screen, then the hours, because for a place that
+ * smokes a fixed amount and closes when it is gone, "are they open" beats
+ * "what do they serve".
+ *
+ * Every heading on this page is left-aligned, and it is the only sample where
+ * that is true end to end. The five samples are supposed to look like five
+ * different studios made them, and heading alignment is the cheapest tell
+ * there is: centered text down a whole page is what a template does when it
+ * does not know what the page is for.
  */
 export default function FoodTemplate({ config }: { config: DemoConfig }) {
   const anchors: NavLink[] = [
@@ -48,11 +55,7 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
         </div>
       </div>
 
-      {config.stats?.length ? (
-        <Section tone="alt">
-          <StatsBand stats={config.stats} />
-        </Section>
-      ) : null}
+      {config.marquee?.length ? <Marquee items={config.marquee} /> : null}
 
       {config.menu?.length ? (
         <Section id="menu">
@@ -60,7 +63,6 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
             eyebrow="The menu"
             title="What we are serving"
             sub="Everything is made here. Call ahead and it will be boxed and waiting."
-            centered
           />
           <MenuBlock sections={config.menu} />
         </Section>
@@ -76,17 +78,24 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
 
       <Section id="about" tone="alt">
         <AboutBlock config={config} />
+        {config.stats?.length ? <StatsBand stats={config.stats} /> : null}
       </Section>
 
       {config.services.length > 0 && (
         <Section id="services">
-          <SectionHead eyebrow="Also available" title="Feeding a crowd" centered />
+          <SectionHead eyebrow="Also available" title="Feeding a crowd" />
           <ServiceCards items={config.services} />
         </Section>
       )}
 
+      {config.testimonials?.length ? (
+        <Bleed tone="deep">
+          <PullQuote items={config.testimonials} />
+        </Bleed>
+      ) : null}
+
       <Section id="visit" tone="dark">
-        <SectionHead eyebrow="Find us" title="Come and eat" centered />
+        <SectionHead eyebrow="Find us" title="Come and eat" />
         <div className={styles.visitGrid}>
           <div>
             <ContactDetails config={config} />
@@ -104,16 +113,9 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
         </div>
       </Section>
 
-      {config.testimonials?.length ? (
-        <Section tone="alt">
-          <SectionHead eyebrow="In their words" title="What people say" centered />
-          <Testimonials items={config.testimonials} />
-        </Section>
-      ) : null}
-
       {config.faq?.length ? (
-        <Section tone="alt">
-          <SectionHead title="Before you come" centered />
+        <Section tone="alt" narrow>
+          <SectionHead title="Before you come" />
           <FaqList items={config.faq} />
         </Section>
       ) : null}

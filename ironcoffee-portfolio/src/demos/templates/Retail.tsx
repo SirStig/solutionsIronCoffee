@@ -8,11 +8,12 @@ import {
   GalleryGrid,
   ProductBlock,
   ServiceCards,
+  Marquee,
+  PullQuote,
   StatsBand,
-  Testimonials,
   VisitBlock,
 } from '../components/blocks';
-import { Section, SectionHead } from '../components/primitives';
+import { Bleed, Section, SectionHead } from '../components/primitives';
 import { todayName } from '../index';
 import { homeNavLinks, type NavLink } from '../components/DemoNav';
 import styles from '../Demo.module.css';
@@ -50,23 +51,17 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
               <span>Call {config.business.phone} to check before you drive out.</span>
             )}
           </div>
-        }
-      />
+        } />
+
+      {config.marquee?.length ? <Marquee items={config.marquee} /> : null}
 
       {config.products?.length ? (
         <Section id="stock">
           <SectionHead
             eyebrow="On the shelves"
             title="What we carry"
-            sub="Call to confirm before you drive out. Stock moves fast and this page is only as current as our last update."
-          />
+            sub="Call to confirm before you drive out. Stock moves fast and this page is only as current as our last update." />
           <ProductBlock groups={config.products} />
-        </Section>
-      ) : null}
-
-      {config.stats?.length ? (
-        <Section tone="alt">
-          <StatsBand stats={config.stats} />
         </Section>
       ) : null}
 
@@ -74,6 +69,7 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
         <Section id="services" tone="alt">
           <SectionHead eyebrow="Beyond the shelves" title="What else we do" />
           <ServiceCards items={config.services} bordered />
+          {config.stats?.length ? <StatsBand stats={config.stats} /> : null}
         </Section>
       )}
 
@@ -85,8 +81,7 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
         <GalleryGrid
           images={config.gallery}
           business={config.business.name}
-          fullBleed
-        />
+          fullBleed />
       )}
 
       <Section id="visit" tone="alt">
@@ -95,15 +90,14 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
       </Section>
 
       {config.testimonials?.length ? (
-        <Section tone="alt">
-          <SectionHead eyebrow="In their words" title="What people say" centered />
-          <Testimonials items={config.testimonials} />
-        </Section>
+        <Bleed tone="deep">
+          <PullQuote items={config.testimonials} />
+        </Bleed>
       ) : null}
 
       {config.faq?.length ? (
         <Section narrow>
-          <SectionHead title="Good to know" centered />
+          <SectionHead title="Good to know" />
           <FaqList items={config.faq} />
         </Section>
       ) : null}

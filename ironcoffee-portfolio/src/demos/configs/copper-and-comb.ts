@@ -25,7 +25,7 @@ const copperAndComb: DemoConfig = {
     primary: '#1F3A38',
     secondary: '#12211F',
     accent: '#C08552',
-    font: 'serif',
+    font: 'luxe',
   },
 
   hero: {

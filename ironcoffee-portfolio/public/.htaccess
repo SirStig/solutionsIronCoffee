@@ -51,11 +51,21 @@
   RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
   RewriteRule ^(.+?)/?$ /$1/index.html [L]
 
-  # Anything still unmatched falls back to the SPA shell, which renders the
-  # client-side 404.
+  # Anything still unmatched is a genuine 404, and has to answer with one.
+  #
+  # This used to serve /index.html, which meant a mistyped or deleted URL came
+  # back 200 OK carrying the app shell, and the "not found" page only appeared
+  # once JavaScript had run. A crawler sees the status line, not the render, so
+  # every dead URL on the site looked alive: soft 404s stay indexed, Search
+  # Console cannot report a removed page, and crawl budget goes on nothing.
+  #
+  # Aborting here is safe precisely because every real route is prerendered to
+  # its own index.html and was already claimed by the rule above. Falling this
+  # far means there is nothing to serve, and ErrorDocument below hands over the
+  # styled 404 page with the right status on it.
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^ /index.html [L]
+  RewriteRule ^ - [R=404,L]
 </IfModule>
 
 ErrorDocument 404 /404.html

@@ -183,8 +183,19 @@ export default function OrderFlow({ config }: { config: DemoConfig }) {
               `That is ${count} item${count === 1 ? '' : 's'} for ${time}. On the live site this would print in the kitchen and text you when it is ready.`}
           </p>
 
+          {/* Says what this is and, more usefully, what it is not.
+              Nobody is buying a hand-built checkout: a restaurant already pays
+              Toast or Square for card processing, tax tables and a kitchen
+              printer, and rebuilding that badly would be a worse product at a
+              higher price. What is actually being sold is this, the ordering
+              page on the restaurant's own site instead of a third party's, with
+              the order handed to whatever they already run. */}
           <p className={styles.orderNote}>
-            This is a demonstration. No payment is taken and nothing is sent.
+            A demonstration. No payment is taken and nothing is sent. On a real
+            site this hands the order to the till system the business already
+            uses, so the card, the tax and the kitchen ticket stay where they
+            are and the ordering page lives here instead of on somebody
+            else&rsquo;s.
           </p>
         </div>
       </aside>

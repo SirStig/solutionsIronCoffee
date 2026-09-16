@@ -34,7 +34,7 @@ const test: DemoConfig = {
     primary: '#5B6B3A',
     secondary: '#2A2F1E',
     accent: '#C8922B',
-    font: 'slab',
+    font: 'editorial',
   },
 
   hero: {

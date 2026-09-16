@@ -1,37 +1,248 @@
+/* Pricing.
+ *
+ * One measure for prose, one for tables and grids. The previous version let
+ * every block find its own width, which is why the page read as a pile of
+ * unrelated boxes rather than an argument. */
+
 .header {
-  max-width: 44rem;
-  padding-block: clamp(3rem, 2rem + 4vw, 5rem) 0;
+  max-width: 48rem;
+  padding-block: var(--space-8) var(--space-7);
+}
+
+.kicker {
+  font-size: var(--text-sm);
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-4);
+}
+
+.h1 {
+  font-size: var(--text-4xl);
+  line-height: 1.04;
+  letter-spacing: var(--tracking-tighter);
+  text-wrap: balance;
+  margin: 0;
 }
 
 .lede {
   margin-top: var(--space-5);
+  font-size: var(--text-xl);
+  line-height: 1.5;
+  color: var(--text-muted);
+  max-width: 34rem;
+  text-wrap: pretty;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.heroNote {
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text-faint);
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+.btnPrimary,
+.btnGhost,
+.btnOnDark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 2.75rem clears the 24px minimum target with room for a fat thumb. */
+  min-height: 2.75rem;
+  padding: 0.7rem 1.35rem;
+  border-radius: var(--radius);
+  font-size: var(--text-base);
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btnPrimary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.btnPrimary:hover {
+  background: var(--accent-hover);
+}
+
+.btnGhost {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.btnGhost:hover {
+  background: var(--surface-hover);
+}
+
+.btnOnDark {
+  border-color: rgb(255 255 255 / 0.35);
+  color: #fff;
+}
+
+.btnOnDark:hover {
+  background: rgb(255 255 255 / 0.12);
+}
+
+/* --- Sections ------------------------------------------------------------- */
+.section {
+  padding-block: var(--space-8);
+  border-top: 1px solid var(--border);
+}
+
+.h2 {
+  font-size: var(--text-3xl);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.1;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.sectionLede {
+  margin-top: var(--space-4);
+  max-width: 38rem;
+  color: var(--text-muted);
   font-size: var(--text-lg);
+  text-wrap: pretty;
+}
+
+/* --- Comparison table -----------------------------------------------------
+   A real <table>, because it is one: three columns of paired claims with a
+   row header on each line. Div soup here would read as a list of nothing to
+   anyone using a screen reader. */
+.tableWrap {
+  margin-top: var(--space-6);
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.compare {
+  width: 100%;
+  min-width: 40rem;
+  border-collapse: collapse;
+  font-size: var(--text-base);
+}
+
+.compare thead th {
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  font-size: var(--text-sm);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.compare tbody th {
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+  width: 1%;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+/* Flex rather than an inline icon, so a claim that wraps to a second line
+   hangs under the first word instead of tucking under the tick. */
+.compare td {
+  padding: var(--space-4) var(--space-5);
   color: var(--text-muted);
 }
 
-/* --- Tiers --------------------------------------------------------------- */
+.compare td > span:last-child {
+  display: block;
+}
+
+.compare td {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+}
+
+.compare tbody tr + tr th,
+.compare tbody tr + tr td {
+  border-top: 1px solid var(--border);
+}
+
+/* The column being argued for gets a tint and a full-height edge, so the eye
+   knows which side it is on without a badge saying so. */
+.compare .mineCol {
+  background: var(--accent-subtle);
+  color: var(--text);
+  border-left: 1px solid var(--border);
+  font-weight: 500;
+}
+
+.compare svg {
+  margin-top: 0.3em;
+  flex: none;
+}
+
+.yes {
+  color: var(--success);
+}
+
+.no {
+  color: var(--text-faint);
+}
+
+.stat {
+  margin-top: var(--space-5);
+  max-width: 40rem;
+  color: var(--text-muted);
+  font-size: var(--text-lg);
+  line-height: 1.55;
+}
+
+.stat strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.source {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-faint);
+}
+
+/* --- Tiers ---------------------------------------------------------------- */
 .tiers {
-  margin-top: clamp(2.5rem, 1.5rem + 4vw, 4rem);
+  margin-top: var(--space-6);
   display: grid;
-  gap: var(--space-5);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   align-items: start;
 }
 
 .tier {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: var(--space-5);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
   height: 100%;
-  padding: clamp(1.5rem, 1.2rem + 1vw, 2rem);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
 }
 
 .featured {
   border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent), var(--shadow);
+  box-shadow: var(--shadow);
 }
 
 .tierTop {
@@ -39,145 +250,130 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  min-height: 1.75rem;
+  flex-wrap: wrap;
 }
 
 .tierName {
   font-size: var(--text-lg);
   font-weight: 650;
+  margin: 0;
 }
 
 .tag {
   font-size: var(--text-xs);
   font-weight: 700;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--accent-contrast);
-  background: var(--accent);
-  padding: 0.2rem 0.6rem;
+  color: var(--accent);
+  background: var(--accent-subtle);
   border-radius: var(--radius-full);
+  padding: 0.25rem 0.6rem;
   white-space: nowrap;
 }
 
 .price {
-  font-size: var(--text-3xl);
+  font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
   font-weight: 700;
   letter-spacing: var(--tracking-tighter);
   line-height: 1;
+  margin: 0;
 }
 
 .summary {
   color: var(--text-muted);
-  font-size: var(--text-sm);
-}
-
-.bestFor {
-  padding: var(--space-3) 0;
   margin: 0;
-  border-block: 1px solid var(--border);
-  font-size: var(--text-sm);
-  color: var(--text-muted);
+  text-wrap: pretty;
 }
 
-.features {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
-}
-
-.features li {
-  display: flex;
-  gap: var(--space-2);
-  align-items: flex-start;
-}
-
-.tick {
-  color: var(--accent);
-  flex: none;
-  margin-top: 0.2em;
-}
-
-.timeline {
-  margin-top: auto;
-  padding-top: var(--space-4);
-  font-size: var(--text-sm);
-  color: var(--text-faint);
-}
-
-/* --- Care plan ----------------------------------------------------------- */
-.care {
-  margin-top: clamp(3rem, 2rem + 3vw, 5rem);
-  padding: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--bg-subtle);
-  display: grid;
-  gap: var(--space-5);
-}
-
-@media (min-width: 800px) {
-  .care {
-    grid-template-columns: 20rem 1fr;
-    gap: var(--space-7);
-  }
-}
-
-.carePrice {
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  letter-spacing: var(--tracking-tight);
-  margin-top: var(--space-2);
-}
-
-.careNote {
-  margin-top: var(--space-3);
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-}
-
+.features,
 .careList {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   gap: var(--space-2);
-  font-size: var(--text-sm);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
 }
 
+.features li,
 .careList li {
   display: flex;
-  gap: var(--space-2);
   align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
 }
 
-/* --- Process ------------------------------------------------------------- */
-.section {
-  margin-top: clamp(3rem, 2rem + 3vw, 5rem);
+.features svg,
+.careList svg {
+  margin-top: 0.22em;
+  flex: none;
 }
 
-.sectionTitle {
-  font-size: var(--text-2xl);
+.timeline {
+  margin: auto 0 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+  font-size: var(--text-sm);
+  color: var(--text-faint);
 }
 
-.steps {
+/* --- Proof ---------------------------------------------------------------- */
+.proof {
   margin-top: var(--space-6);
-  display: grid;
-  gap: var(--space-5);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-  counter-reset: step;
   list-style: none;
   padding: 0;
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
+
+.proofCard {
+  display: grid;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: inherit;
+}
+
+.proofShot {
+  display: block;
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+}
+
+.proofShot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.proofCard:hover .proofShot img {
+  transform: scale(1.04);
+}
+
+.proofName {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+/* --- Process -------------------------------------------------------------- */
+.steps {
+  margin-top: var(--space-6);
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
 }
 
 .step {
   counter-increment: step;
+  border-top: 2px solid var(--border-strong);
   padding-top: var(--space-4);
-  border-top: 2px solid var(--border);
 }
 
 .step::before {
@@ -192,61 +388,107 @@
 .stepTitle {
   font-size: var(--text-lg);
   font-weight: 650;
+  margin: 0;
 }
 
 .stepBody {
   margin-top: var(--space-2);
-  font-size: var(--text-sm);
   color: var(--text-muted);
+  font-size: var(--text-sm);
+  text-wrap: pretty;
 }
 
-/* --- FAQ ----------------------------------------------------------------- */
+/* --- Care plan ------------------------------------------------------------ */
+.care {
+  margin-block: var(--space-8);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  display: grid;
+  gap: var(--space-5);
+}
+
+.careHead .h2 {
+  font-size: var(--text-2xl);
+}
+
+.carePrice {
+  margin-top: var(--space-3);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+}
+
+.careNote {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-faint);
+  max-width: 28rem;
+}
+
+@media (min-width: 46rem) {
+  .care {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .careList {
+    gap: var(--space-3);
+  }
+}
+
+/* --- FAQ ------------------------------------------------------------------ */
 .faq {
   margin-top: var(--space-6);
   display: grid;
   gap: var(--space-4);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
 }
 
 .faqItem {
-  padding: var(--space-5);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-4);
 }
 
 .faqQ {
   font-size: var(--text-base);
   font-weight: 650;
+  margin: 0;
+  text-wrap: pretty;
 }
 
 .faqA {
   margin-top: var(--space-2);
-  font-size: var(--text-sm);
   color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  text-wrap: pretty;
 }
 
-/* --- Closing CTA --------------------------------------------------------- */
+/* --- Close ---------------------------------------------------------------- */
 .close {
-  margin-block: clamp(3rem, 2rem + 3vw, 5rem) var(--space-9);
-  padding: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+  margin-block: var(--space-8) var(--space-9);
+  padding: var(--space-8) var(--space-6);
   border-radius: var(--radius-lg);
-  background: var(--text);
-  color: var(--bg);
+  background: #17150f;
+  color: #fff;
   text-align: center;
 }
 
 .closeTitle {
-  font-size: var(--text-2xl);
-  color: inherit;
+  font-size: var(--text-3xl);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+  text-wrap: balance;
 }
 
 .closeBody {
-  margin-top: var(--space-4);
-  margin-inline: auto;
+  margin: var(--space-4) auto 0;
   max-width: 34rem;
-  color: inherit;
-  opacity: 0.78;
+  color: rgb(255 255 255 / 0.75);
+  text-wrap: pretty;
 }
 
 .closeActions {
@@ -255,95 +497,4 @@
   flex-wrap: wrap;
   gap: var(--space-3);
   justify-content: center;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: var(--space-3) var(--space-5);
-  border-radius: var(--radius);
-  font-weight: 650;
-  text-decoration: none;
-  border: 1.5px solid transparent;
-}
-
-.btnPrimary {
-  background: var(--accent);
-  color: var(--accent-contrast);
-}
-
-.btnPrimary:hover {
-  background: var(--accent-hover);
-  color: var(--accent-contrast);
-}
-
-.btnGhost {
-  border-color: currentColor;
-  color: inherit;
-}
-
-.btnGhost:hover {
-  color: inherit;
-  opacity: 0.8;
-}
-
-.sectionIntro {
-  margin-top: var(--space-4);
-  max-width: 44rem;
-  color: var(--text-muted);
-}
-
-.subTitle {
-  margin-top: var(--space-7);
-  margin-bottom: var(--space-4);
-  font-size: var(--text-lg);
-  font-weight: 650;
-}
-
-.ledeSmall {
-  margin-top: var(--space-4);
-  font-size: var(--text-sm);
-  color: var(--text-faint);
-}
-
-/* --- Outcomes ------------------------------------------------------------- */
-.outcomes {
-  margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
-}
-
-/* Four items, so auto-fit gives three and an orphan. Fixed counts instead. */
-.outcomeGrid {
-  display: grid;
-  gap: var(--space-5) var(--space-6);
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 640px) {
-  .outcomeGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1080px) {
-  .outcomeGrid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.outcome {
-  padding-top: var(--space-4);
-  border-top: 2px solid var(--accent);
-}
-
-.outcomeTitle {
-  font-size: var(--text-lg);
-  font-weight: 650;
-}
-
-.outcomeBody {
-  margin-top: var(--space-3);
-  font-size: var(--text-sm);
-  color: var(--text-muted);
 }

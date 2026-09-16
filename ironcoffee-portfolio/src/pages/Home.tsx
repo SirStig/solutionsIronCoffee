@@ -22,6 +22,7 @@ const personSchema = {
     'https://www.linkedin.com/in/joshua-kac-aa50b7131',
   ],
   worksFor: { '@type': 'Organization', name: site.company },
+  makesOffer: { '@id': `${site.url}/services#service` },
 };
 
 export default function Home() {
@@ -47,9 +48,9 @@ export default function Home() {
 
         <div className={styles.lede}>
           <p>
-            I&rsquo;m a software engineer. I build apps end to end &mdash; the
-            backend, the mobile app, the web app and the infrastructure under all
-            three &mdash; and I ship them to real people rather than to a
+            I&rsquo;m a software engineer. I build apps end to end: the
+            backend, the mobile app, the web app and the infrastructure under
+            all three. And I ship them to real people rather than to a
             portfolio.
           </p>
           <p>
@@ -62,8 +63,13 @@ export default function Home() {
             learned more from it not working out than from anything that did.
           </p>
           <p>
-            I build with AI heavily and say so openly &mdash;{' '}
-            <Link to="/about">here&rsquo;s how I actually use it</Link>.
+            I build with AI heavily and say so openly.{' '}
+            <Link to="/about">Here&rsquo;s how I actually use it</Link>.
+          </p>
+          <p>
+            I also build <Link to="/services">small business websites</Link> for
+            a fixed price, and there are{' '}
+            <Link to="/templates">finished samples</Link> you can open.
           </p>
         </div>
 

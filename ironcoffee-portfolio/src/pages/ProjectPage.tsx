@@ -16,15 +16,53 @@ export default function ProjectPage() {
   const path = `/work/${project.slug}`;
   const primary = project.links.find((l) => l.primary) ?? project.links[0];
 
-  const schema = {
-    '@type': 'CreativeWork',
-    name: project.name,
-    headline: project.tagline,
-    description: project.summary,
-    url: `${site.url}${path}`,
-    dateCreated: project.year,
-    author: { '@type': 'Person', name: site.name, url: site.url },
-    keywords: project.tech.join(', '),
+  /* Shipped apps get the type Google actually associates with apps. No
+     `aggregateRating`, deliberately: that is the half of the rich result that
+     needs a star average, and a number on this site that can go stale is
+     against the house rules whatever it would buy in search. */
+  const isApp = project.links.some((l) =>
+    /apps\.apple\.com|play\.google\.com/.test(l.href)
+  );
+
+  const schema = isApp
+    ? {
+        '@type': 'SoftwareApplication',
+        name: project.name,
+        description: project.summary,
+        url: `${site.url}${path}`,
+        applicationCategory: 'MobileApplication',
+        operatingSystem: 'iOS, Android, Web',
+        author: { '@type': 'Person', name: site.name, url: site.url },
+      }
+    : {
+        '@type': 'CreativeWork',
+        name: project.name,
+        headline: project.tagline,
+        description: project.summary,
+        url: `${site.url}${path}`,
+        dateCreated: project.year,
+        author: { '@type': 'Person', name: site.name, url: site.url },
+        keywords: project.tech.join(', '),
+      };
+
+/**
+ * Breadcrumbs.
+ *
+ * Worth the few lines: this is one of the handful of schema types that still
+ * produces a visible result in Google, the path line under the blue link, and
+ * every one of these pages genuinely sits under a parent.
+ */
+  const breadcrumbs = {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Work', item: `${site.url}/work` },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: project.name,
+        item: `${site.url}${path}`,
+      },
+    ],
   };
 
   return (
@@ -33,7 +71,7 @@ export default function ProjectPage() {
         title={project.name}
         description={project.summary}
         path={path}
-        jsonLd={schema}
+        jsonLd={[schema, breadcrumbs]}
       />
 
       <article className="container-wide">

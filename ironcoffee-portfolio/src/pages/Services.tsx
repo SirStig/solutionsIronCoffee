@@ -1,119 +1,272 @@
-import { Check } from 'lucide-react';
-import CostCompare from '../components/CostCompare';
-import SpeedPanel from '../components/SpeedPanel';
+import { Check, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/Seo';
 import { site } from '../content/site';
-import { care, outcomes, pricingFaq, tiers } from '../content/pricing';
+import { showcases } from '../demos';
+import DemoImage from '../demos/components/DemoImage';
+import { initials } from '../demos/components/DemoNav';
+import {
+  DIY_SURVEY,
+  care,
+  compare,
+  pricingFaq,
+  steps,
+  tiers,
+} from '../content/pricing';
 import styles from './Services.module.css';
 
-const steps = [
-  {
-    title: 'A phone call',
-    body: 'Twenty minutes. What you do, who comes in, and what you want the site to make happen.',
-  },
-  {
-    title: 'You see it built',
-    body: 'I put together a real page with your photos and send you the link. Nothing is owed until you have looked at it.',
-  },
-  {
-    title: 'You mark it up',
-    body: 'Tell me what is wrong, what is missing and what I got backwards. This is the part that makes it yours.',
-  },
-  {
-    title: 'It goes live',
-    body: 'Domain pointed, search listings updated, and a call so you know how to change your own hours.',
-  },
-];
-
 /**
- * Pricing. Reachable from every sample site and every preview, because that is
- * the link an owner goes looking for about ninety seconds after they open one.
+ * Pricing. Linked from every sample site and every preview, because that is
+ * the page an owner goes looking for about ninety seconds after opening one.
+ *
+ * The order is the argument. The objection comes second, before the prices,
+ * because a reader who has not been given a reason to stop comparing this to
+ * a thirty dollar subscription will do exactly that when they hit the numbers.
+ * Proof comes after the prices, because that is the moment somebody wants to
+ * see whether the work is any good. The monthly plan comes last of the money
+ * sections, and it is the only place a subscription price appears next to one
+ * of mine.
  */
+/**
+ * Structured data for the page.
+ *
+ * `Service`, not `LocalBusiness`. Every local type wants a street address and
+ * opening hours, none of which are published anywhere on this site, and
+ * inventing them to satisfy a schema validator is the same lie the demo
+ * configs are forbidden from telling.
+ *
+ * Worth being clear about what this does and does not buy: neither `Offer`
+ * pricing nor `FAQPage` produces a visible rich result for a service business
+ * in Google today, and FAQ rich results were retired outright. This is here
+ * because it is accurate and machine-readable, which matters for the entity
+ * graph and for the answer engines that now read pages instead of ranking
+ * them. It is not here to win a snippet.
+ */
+const serviceSchema = {
+  '@type': 'Service',
+  '@id': `${site.url}/services#service`,
+  name: 'Small business website design',
+  serviceType: 'Website design and development',
+  provider: { '@type': 'Person', '@id': `${site.url}/#person`, name: site.name },
+  areaServed: 'US',
+  url: `${site.url}/services`,
+  description:
+    'Fixed-price websites for small businesses. Built first, paid for only if you keep it.',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Website packages',
+    itemListElement: tiers.map((tier) => {
+      const digits = tier.price.replace(/[^0-9]/g, '');
+      const offered = {
+        '@type': 'Service',
+        name: `${tier.name} website`,
+        description: tier.summary,
+      };
+      return tier.price.startsWith('From')
+        ? {
+            '@type': 'Offer',
+            name: tier.name,
+            url: `${site.url}/services`,
+            priceSpecification: {
+              '@type': 'PriceSpecification',
+              minPrice: digits,
+              priceCurrency: 'USD',
+            },
+            itemOffered: offered,
+          }
+        : {
+            '@type': 'Offer',
+            name: tier.name,
+            url: `${site.url}/services`,
+            price: digits,
+            priceCurrency: 'USD',
+            itemOffered: offered,
+          };
+    }),
+  },
+};
+
+const faqSchema = {
+  '@type': 'FAQPage',
+  mainEntity: pricingFaq.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Pricing',
+      item: `${site.url}/services`,
+    },
+  ],
+};
+
 export default function Services() {
   return (
     <>
       <Seo
-        title="See your website before you pay for it"
-        description="Small business websites for a fixed price. I build yours first, you look at it, then you decide. One page from $500, a full site for $1,800."
+        title="Small business website design, priced up front"
+        description="Fixed prices for small business websites. One page $500, a full site $1,800. I build it first, you look at it, then you decide."
         path="/services"
+        jsonLd={[serviceSchema, faqSchema, breadcrumbSchema]}
       />
 
       <div className="container-wide">
         <header className={styles.header}>
-          <h1>See your website before you pay for it.</h1>
+          <p className={styles.kicker}>Websites for small businesses</p>
+          <h1 className={styles.h1}>
+            I build it first. You look at it. Then you decide.
+          </h1>
           <p className={styles.lede}>
-            I build the real thing first and send you the link. Open it on your
-            phone. If you do not want it, say so and we are done, and you have
-            paid nothing.
+            A finished site with your photos and your words on it, before any
+            money changes hands. Say no and you owe nothing.
           </p>
-          <p className={styles.ledeSmall}>
-            Fixed price. No retainer, no contract. Yours the day it goes live.
+          <div className={styles.heroActions}>
+            <Link to="/templates" className={styles.btnPrimary}>
+              See the samples
+            </Link>
+            <a href={`mailto:${site.email}`} className={styles.btnGhost}>
+              Email me
+            </a>
+          </div>
+          <p className={styles.heroNote}>
+            $500 to $1,800. Fixed. No retainer, no contract, yours the day it
+            goes live.
           </p>
         </header>
 
-        <section className={styles.outcomes}>
-          <h2 className="visually-hidden">What having one does for you</h2>
-          <div className={styles.outcomeGrid}>
-            {outcomes.map((item) => (
-              <article key={item.title} className={styles.outcome}>
-                <h3 className={styles.outcomeTitle}>{item.title}</h3>
-                <p className={styles.outcomeBody}>{item.body}</p>
+        {/* --- The objection, before the prices ---------------------------- */}
+        <section className={styles.section} aria-labelledby="wix">
+          <h2 id="wix" className={styles.h2}>
+            Why not just use Wix?
+          </h2>
+          <p className={styles.sectionLede}>
+            Plenty of people should. If you have a site you are happy with,
+            keep it. Here is the honest difference.
+          </p>
+
+          <div className={styles.tableWrap}>
+            <table className={styles.compare}>
+              <thead>
+                <tr>
+                  <th scope="col">
+                    <span className="visually-hidden">The question</span>
+                  </th>
+                  <th scope="col">Doing it yourself</th>
+                  <th scope="col" className={styles.mineCol}>
+                    Having me do it
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {compare.map((row) => (
+                  <tr key={row.question}>
+                    <th scope="row">{row.question}</th>
+                    <td>
+                      <X size={15} className={styles.no} aria-hidden="true" />
+                      <span>{row.diy}</span>
+                    </td>
+                    <td className={styles.mineCol}>
+                      <Check size={15} className={styles.yes} aria-hidden="true" />
+                      <span>{row.mine}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p className={styles.stat}>
+            <strong>{DIY_SURVEY.abandoned}</strong> of people who start a
+            build-it-yourself website never get it live.{' '}
+            <strong>{DIY_SURVEY.neverReturned}</strong> never go back to it at
+            all.{' '}
+            <a
+              className={styles.source}
+              href={DIY_SURVEY.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {DIY_SURVEY.note}
+            </a>
+          </p>
+        </section>
+
+        {/* --- Prices ------------------------------------------------------ */}
+        <section className={styles.section} aria-labelledby="prices">
+          <h2 id="prices" className={styles.h2}>
+            What it costs
+          </h2>
+
+          <div className={styles.tiers}>
+            {tiers.map((tier) => (
+              <article
+                key={tier.id}
+                className={[styles.tier, tier.featured && styles.featured]
+                  .filter(Boolean)
+                  .join(' ')}
+              >
+                <div className={styles.tierTop}>
+                  <h3 className={styles.tierName}>{tier.name}</h3>
+                  {tier.featured && <span className={styles.tag}>Most people</span>}
+                </div>
+                <p className={styles.price}>{tier.price}</p>
+                <p className={styles.summary}>{tier.summary}</p>
+                <ul className={styles.features}>
+                  {tier.features.map((feature) => (
+                    <li key={feature}>
+                      <Check size={14} className={styles.yes} aria-hidden="true" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className={styles.timeline}>{tier.timeline}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <div className={styles.tiers}>
-          {tiers.map((tier) => (
-            <article
-              key={tier.id}
-              className={[styles.tier, tier.featured && styles.featured]
-                .filter(Boolean)
-                .join(' ')}
-            >
-              <div className={styles.tierTop}>
-                <h2 className={styles.tierName}>{tier.name}</h2>
-                {tier.featured && <span className={styles.tag}>Most people</span>}
-              </div>
+        {/* --- Proof ------------------------------------------------------- */}
+        <section className={styles.section} aria-labelledby="proof">
+          <h2 id="proof" className={styles.h2}>
+            Look at the work first
+          </h2>
+          <p className={styles.sectionLede}>
+            Finished sample sites, every one a real page rather than a picture
+            of one. Open one on your phone.
+          </p>
 
-              <p className={styles.price}>{tier.price}</p>
-              <p className={styles.summary}>{tier.summary}</p>
-              <p className={styles.bestFor}>{tier.bestFor}</p>
-
-              <ul className={styles.features}>
-                {tier.features.map((feature) => (
-                  <li key={feature}>
-                    <Check size={15} className={styles.tick} aria-hidden="true" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <p className={styles.timeline}>{tier.timeline}</p>
-            </article>
-          ))}
-        </div>
-
-        <section className={styles.care}>
-          <div>
-            <h2 className={styles.sectionTitle}>{care.name}</h2>
-            <p className={styles.carePrice}>{care.price}</p>
-            <p className={styles.careNote}>{care.note}</p>
-          </div>
-
-          <ul className={styles.careList}>
-            {care.features.map((feature) => (
-              <li key={feature}>
-                <Check size={15} className={styles.tick} aria-hidden="true" />
-                <span>{feature}</span>
+          <ul className={styles.proof}>
+            {showcases.map((demo) => (
+              <li key={demo.slug}>
+                <Link to={`/templates/${demo.slug}`} className={styles.proofCard}>
+                  <span className={styles.proofShot}>
+                    <DemoImage
+                      name={demo.hero.image}
+                      alt={`${demo.business.name} sample site`}
+                      mark={initials(demo.business.name)}
+                      sizes="(min-width: 60rem) 20vw, 45vw"
+                    />
+                  </span>
+                  <span className={styles.proofName}>{demo.business.name}</span>
+                </Link>
               </li>
             ))}
           </ul>
         </section>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>How it goes</h2>
+        {/* --- Process ------------------------------------------------------ */}
+        <section className={styles.section} aria-labelledby="how">
+          <h2 id="how" className={styles.h2}>
+            How it goes
+          </h2>
           <ol className={styles.steps}>
             {steps.map((step) => (
               <li key={step.title} className={styles.step}>
@@ -124,27 +277,32 @@ export default function Services() {
           </ol>
         </section>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>
-            Why not just build it yourself on Wix?
-          </h2>
-          <p className={styles.sectionIntro}>
-            Plenty of people should. Here is the honest version.
-          </p>
-
-          <h3 className={styles.subTitle}>Rent it, or own it</h3>
-          <CostCompare />
-
-          <h3 className={styles.subTitle}>Slow pages lose the call</h3>
-          <p className={styles.sectionIntro}>
-            Someone looks you up in a car park on two bars. If it is still
-            loading, they tap the next result and you never know.
-          </p>
-          <SpeedPanel />
+        {/* --- The monthly plan. The only place a subscription price sits
+             beside one of mine, because month against month is the honest
+             comparison and the one worth having. ---------------------------- */}
+        <section className={styles.care} aria-labelledby="care">
+          <div className={styles.careHead}>
+            <h2 id="care" className={styles.h2}>
+              {care.name}
+            </h2>
+            <p className={styles.carePrice}>{care.price}</p>
+            <p className={styles.careNote}>{care.note}</p>
+          </div>
+          <ul className={styles.careList}>
+            {care.features.map((feature) => (
+              <li key={feature}>
+                <Check size={15} className={styles.yes} aria-hidden="true" />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
         </section>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Questions worth asking</h2>
+        {/* --- Objections --------------------------------------------------- */}
+        <section className={styles.section} aria-labelledby="faq">
+          <h2 id="faq" className={styles.h2}>
+            The questions I actually get
+          </h2>
           <div className={styles.faq}>
             {pricingFaq.map((item) => (
               <article key={item.q} className={styles.faqItem}>
@@ -156,18 +314,18 @@ export default function Services() {
         </section>
 
         <section className={styles.close}>
-          <h2 className={styles.closeTitle}>Have a look before you decide.</h2>
+          <h2 className={styles.closeTitle}>Nothing to lose by looking.</h2>
           <p className={styles.closeBody}>
-            Four finished sample sites, built the same way yours would be. Open
-            one on your phone and see how it feels.
+            Tell me what you do and I will build the first version. If you do
+            not want it, that is the end of it.
           </p>
           <div className={styles.closeActions}>
-            <Link to="/templates" className={`${styles.btn} ${styles.btnPrimary}`}>
-              See the samples
-            </Link>
-            <a href={`mailto:${site.email}`} className={`${styles.btn} ${styles.btnGhost}`}>
+            <a href={`mailto:${site.email}`} className={styles.btnPrimary}>
               Email me
             </a>
+            <Link to="/templates" className={styles.btnOnDark}>
+              See the samples
+            </Link>
           </div>
         </section>
       </div>

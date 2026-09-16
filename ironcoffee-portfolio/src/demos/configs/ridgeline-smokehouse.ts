@@ -46,7 +46,7 @@ const ridgelineSmokehouse: DemoConfig = {
     primary: '#B3451E',
     secondary: '#241C17',
     accent: '#E0A32E',
-    font: 'slab',
+    font: 'editorial',
   },
 
   hero: {
@@ -129,6 +129,15 @@ const ridgelineSmokehouse: DemoConfig = {
         { name: 'Cornbread', desc: 'Honey butter.', price: '$4' },
       ],
     },
+  ],
+
+  marquee: [
+    'Brisket until it runs out',
+    'Oak fired, never gas',
+    'Catering from ten people up',
+    'Order ahead, skip the line',
+    'Cash and card',
+    'Dogs welcome on the patio',
   ],
 
   stats: [

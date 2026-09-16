@@ -17,6 +17,7 @@ import franktownDental from './configs/franktown-dental';
 import hairGenius from './configs/hair-genius';
 import jillsFeed from './configs/jills-feed';
 import mkLiquors from './configs/mk-liquors';
+import ninebarkGarden from './configs/ninebark-garden';
 import ridgelineSmokehouse from './configs/ridgeline-smokehouse';
 import summitRidge from './configs/summit-ridge';
 import test from './configs/test';
@@ -26,6 +27,7 @@ const all: DemoConfig[] = [
   copperAndComb,
   summitRidge,
   franktownDental,
+  ninebarkGarden,
   test,
   jillsFeed,
   barrBear,
@@ -155,6 +157,35 @@ export function todayName(now = new Date()): string {
     'Friday',
     'Saturday',
   ][now.getDay()];
+}
+
+/**
+ * What a sample actually demonstrates, read off the config.
+ *
+ * The gallery needs to say more than "a nice looking page", because every
+ * competitor's showcase says that. It needs to name the working parts, and
+ * the only way to keep those honest as the samples change is to derive them
+ * from the same data the page renders from rather than typing a list next to
+ * a slug and letting it rot.
+ */
+export function sampleFeatures(demo: DemoConfig): string[] {
+  const out: string[] = [];
+
+  if (demo.pages?.length) out.push(`${demo.pages.length + 1} pages`);
+  if (demo.menu?.length) out.push('Priced menu');
+  if (demo.products?.length) out.push('Stock list');
+  if (demo.pages?.some((p) => p.kind === 'order')) out.push('Pickup ordering');
+  if (demo.template === 'trades' || demo.template === 'professional') {
+    out.push(demo.template === 'trades' ? 'Quote form' : 'Booking form');
+  }
+  if (demo.team?.length) out.push('Staff profiles');
+  if (demo.insurance?.length) out.push('Insurance list');
+  if (demo.serviceAreas?.length) out.push('Service areas');
+  if (demo.gallery.length >= 4) out.push('Photo gallery');
+  if (demo.faq?.length) out.push('FAQ');
+
+  // Long enough to look substantial, short enough to read in one pass.
+  return out.slice(0, 6);
 }
 
 export type { DemoConfig } from './types';

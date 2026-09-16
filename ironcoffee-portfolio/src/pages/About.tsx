@@ -37,8 +37,8 @@ export default function About() {
         <div className={styles.prose}>
           <p className={styles.lede}>
             I&rsquo;m self-taught, I&rsquo;ve been writing code since I was a
-            kid, and I build the whole thing &mdash; backend, mobile, web and
-            the infrastructure underneath.
+            kid, and I build the whole thing: backend, mobile, web and the
+            infrastructure underneath.
           </p>
 
           <p>
@@ -54,14 +54,14 @@ export default function About() {
           <p>
             Most of my time goes to <Link to="/work/beyond25">Beyond25</Link>, an
             AI music curator that&rsquo;s live on iOS, Android, Mac and the web.
-            The interesting engineering there isn&rsquo;t the model &mdash;
-            it&rsquo;s making sure every track it suggests actually exists and
-            actually plays, which turns out to be most of the work.
+            The interesting engineering there isn&rsquo;t the model. It is
+            making sure every track it suggests actually exists and actually
+            plays, which turns out to be most of the work.
           </p>
           <p>
             Alongside it, <Link to="/work/ourlee">Ourlee</Link> is in closed
             beta, and <Link to="/work/novaswift">NovaSwift</Link> is the thing I
-            build when I want to stop thinking about product &mdash; a
+            build when I want to stop thinking about product: a
             from-scratch Swift rebuild of a 2002 space sim, which mostly meant
             reverse-engineering file formats nobody has documented in twenty
             years.
@@ -71,10 +71,9 @@ export default function About() {
           <p>
             Before those I spent a long stretch as co-founder and lead developer
             on <Link to="/work/project-yoked">Project Yoked</Link>, an
-            all-in-one fitness platform. It was enormously ambitious &mdash;
+            all-in-one fitness platform. It was enormously ambitious:
             workout tracking, a video feed, a 1.7M-food nutrition database, a
-            per-muscle recovery model, an Apple Watch app &mdash; and it&rsquo;s
-            shut down now.
+            per-muscle recovery model, an Apple Watch app. It is shut down now.
           </p>
           <p>
             I put it on this site on purpose. It was too much surface area for
@@ -90,8 +89,8 @@ export default function About() {
           <ul className={styles.list}>
             <li>Ship something small and real before designing the big version.</li>
             <li>
-              Own the boring parts &mdash; deploys, migrations, error tracking
-              &mdash; because that&rsquo;s where products actually die.
+              Own the boring parts, deploys and migrations and error
+              tracking, because that&rsquo;s where products actually die.
             </li>
             <li>
               Write the honest version of the status. &ldquo;Kinda broken right
@@ -103,8 +102,8 @@ export default function About() {
           <p>
             I use AI heavily, and I&rsquo;d rather say that plainly than have
             you wonder. It&rsquo;s involved in most of what I build.{' '}
-            <Link to="/work/novaswift">NovaSwift</Link> is the clearest example
-            &mdash; the engine, and the reverse-engineering of a
+            <Link to="/work/novaswift">NovaSwift</Link> is the clearest
+            example. The engine, and the reverse-engineering of a
             twenty-year-old resource format nobody had documented, came out of
             working alongside Claude Code.
           </p>
@@ -113,9 +112,9 @@ export default function About() {
             undocumented formats, and being the second opinion at one in the
             morning. Where it doesn&rsquo;t is deciding what to build, or
             excusing me from understanding what shipped. I still own the
-            architecture, the trade-offs and every bug that reaches production
-            &mdash; a tool that makes me faster doesn&rsquo;t make the judgement
-            calls for me.
+            architecture, the trade-offs and every bug that reaches
+            production. A tool that makes me faster doesn&rsquo;t make the
+            judgement calls for me.
           </p>
           <p>
             I think being cagey about this is going to age badly. If it&rsquo;s
@@ -124,10 +123,19 @@ export default function About() {
 
           <h2>Outside of that</h2>
           <p>
-            Games are what got me into this in the first place &mdash; my first
+            Games are what got me into this in the first place. My first
             released project was a Game Dev Tycoon mod generator in 2016, and I
             still end up back there. There&rsquo;s a{' '}
             <Link to="/games">whole page of it</Link>.
+          </p>
+
+          <h2>Small business websites</h2>
+          <p>
+            Alongside the app work I build{' '}
+            <Link to="/services">websites for small businesses</Link> at a fixed
+            price, and I build the first version before anyone pays for it.
+            There are <Link to="/templates">finished samples</Link> you can open
+            on a phone.
           </p>
         </div>
 

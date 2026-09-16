@@ -13,15 +13,15 @@ import {
   ServiceList,
   StatsBand,
   TeamGrid,
-  Testimonials,
+  PullQuote,
 } from '../components/blocks';
 import { BusinessForm } from '../components/forms';
-import { Section, SectionHead } from '../components/primitives';
+import { Bleed, Section, SectionHead } from '../components/primitives';
 import { homeNavLinks, type NavLink } from '../components/DemoNav';
 import styles from '../Demo.module.css';
 
 /**
- * Professional. Light, centered and quiet, with the photograph demoted to a
+ * Professional. Light,  and quiet, with the photograph demoted to a
  * band under the headline.
  *
  * A clinic is competing on trust rather than appetite, so the page leads with
@@ -53,7 +53,7 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
       ) : null}
 
       <Section id="services">
-        <SectionHead eyebrow="Care" title="What we treat" centered />
+        <SectionHead eyebrow="Care" title="What we treat" align="center" />
         <ServiceList items={config.services} />
       </Section>
 
@@ -62,8 +62,7 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
           <SectionHead
             eyebrow="Your team"
             title="The people you will actually see"
-            centered
-          />
+            align="center" />
           <TeamGrid members={config.team} />
         </Section>
       ) : null}
@@ -73,18 +72,15 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
           <SectionHead
             eyebrow="Insurance"
             title="Plans we accept"
-            sub="Do not see yours? Call us. We work with most PPO plans and can check your benefits before you come in."
-            centered
-          />
+            sub="Do not see yours? Call us. We work with most PPO plans and can check your benefits before you come in." />
           <InsuranceList plans={config.insurance} />
         </Section>
       ) : null}
 
       {config.testimonials?.length ? (
-        <Section tone="alt">
-          <SectionHead eyebrow="In their words" title="What patients say" centered />
-          <Testimonials items={config.testimonials} />
-        </Section>
+        <Bleed tone="brand">
+          <PullQuote items={config.testimonials} />
+        </Bleed>
       ) : null}
 
       <Section tone="alt">
@@ -93,7 +89,7 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
 
       {config.faq?.length ? (
         <Section narrow>
-          <SectionHead title="Common questions" centered />
+          <SectionHead title="Common questions" />
           <FaqList items={config.faq} />
         </Section>
       ) : null}
@@ -103,8 +99,7 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
           eyebrow="New patients welcome"
           title="Request an appointment"
           sub="Fill this in and the front desk will call to confirm a time."
-          centered
-        />
+          align="center" />
         {/* Deliberately not <VisitBlock>. That is itself a two-column grid,
             and nesting it here produced four cramped columns that snapped an
             email address in half. */}

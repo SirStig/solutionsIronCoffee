@@ -121,6 +121,110 @@ export function Testimonials({ items }: { items: DemoTestimonial[] }) {
 }
 
 /**
+ * One quote, at the size a billboard would use it, on the brand color.
+ *
+ * Three quotes in three equal cards is a row every visitor has learned to skip.
+ * One of them, given the whole width and a display face, is the only place on
+ * these samples where a stranger's sentence is the loudest thing on screen.
+ * Picks the shortest quote on file, because this treatment falls apart past
+ * about thirty words.
+ */
+export function PullQuote({ items }: { items: DemoTestimonial[] }) {
+  const pick = [...items].sort((a, b) => a.quote.length - b.quote.length)[0];
+  if (!pick) return null;
+
+  return (
+    <figure className={styles.pullQuote}>
+      <div className={styles.container}>
+        <blockquote className={styles.pullQuoteText}>{pick.quote}</blockquote>
+        <figcaption className={styles.pullQuoteBy}>
+          <span className={styles.pullQuoteName}>{pick.name}</span>
+          {pick.detail && (
+            <span className={styles.pullQuoteDetail}>{pick.detail}</span>
+          )}
+        </figcaption>
+      </div>
+    </figure>
+  );
+}
+
+/**
+ * A band of short claims sliding past.
+ *
+ * The list is duplicated so the second copy is arriving as the first leaves,
+ * which is what makes the loop seamless; the copy is hidden from assistive
+ * technology so nobody hears the same six phrases twice. Anyone who has asked
+ * their system to stop moving things gets a static wrapped row instead, which
+ * is why the phrases are short enough to read that way too.
+ */
+export function Marquee({ items }: { items: string[] }) {
+  if (!items.length) return null;
+  const run = (
+    <ul className={styles.marqueeRun}>
+      {items.map((item) => (
+        <li key={item} className={styles.marqueeItem}>
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+
+  return (
+    <div className={styles.marquee}>
+      <div className={styles.marqueeTrack}>
+        {run}
+        <div aria-hidden="true">{run}</div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Alternating rows of photograph and copy, the image running past the column
+ * it belongs to.
+ *
+ * The overhang is the whole point. A picture that sits neatly inside the text
+ * column is a card; one that breaks the margin looks like somebody laid the
+ * page out on purpose.
+ */
+export function FeatureRows({
+  items,
+  business,
+}: {
+  items: { title: string; body: string; image: string; kicker?: string }[];
+  business: string;
+}) {
+  return (
+    <div className={styles.featureRows}>
+      {items.map((item, i) => (
+        <article
+          key={item.title}
+          className={[styles.featureRow, i % 2 === 1 && styles.reversed]
+            .filter(Boolean)
+            .join(' ')}
+        >
+          <div className={styles.featureMedia}>
+            <DemoImage
+              name={item.image}
+              alt={`${item.title} at ${business}`}
+              mark={initials(business)}
+              sizes="(min-width: 900px) 55vw, 100vw"
+            />
+          </div>
+          <div className={styles.featureCopy}>
+            {item.kicker && (
+              <span className={styles.featureKicker}>{item.kicker}</span>
+            )}
+            <h3 className={styles.featureTitle}>{item.title}</h3>
+            <p className={styles.featureBody}>{item.body}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+/**
  * Services as a priced list rather than a grid of cards.
  *
  * A salon or barber reads its own service list this way, as a column of names

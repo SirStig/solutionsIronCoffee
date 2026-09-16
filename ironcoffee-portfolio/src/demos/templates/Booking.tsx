@@ -6,19 +6,25 @@ import {
   AboutBlock,
   FaqList,
   GalleryGrid,
+  PullQuote,
   ServiceRows,
   StatsBand,
   TeamGrid,
-  Testimonials,
   VisitBlock,
 } from '../components/blocks';
-import { Section, SectionHead } from '../components/primitives';
+import { Bleed, Section, SectionHead } from '../components/primitives';
 import { homeNavLinks, type NavLink } from '../components/DemoNav';
 
 /**
- * Booking. A split hero, then the service list as a priced column rather than
- * a grid, because that is how a salon writes its own menu of services and it
- * makes the page scan like a price list instead of a brochure.
+ * Booking, laid out like a treatment card.
+ *
+ * A split hero, then the service list as a priced column rather than a grid,
+ * because that is how a salon writes its own menu of services and it makes the
+ * page scan like a price list instead of a brochure.
+ *
+ * This is the one sample that centers its headings, and it centers all of
+ * them. Done once it reads as a house style; done on three of five samples it
+ * reads as the only trick the template knows.
  */
 export default function BookingTemplate({ config }: { config: DemoConfig }) {
   const anchors: NavLink[] = [
@@ -40,32 +46,27 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
           eyebrow="Services"
           title="What we do, and what it costs"
           sub="Prices start where they start. Anything that depends on length or condition gets quoted in the chair before we begin."
+          align="center"
         />
         <ServiceRows items={config.services} />
       </Section>
-
-      {config.stats?.length ? (
-        <Section tone="alt">
-          <StatsBand stats={config.stats} />
-        </Section>
-      ) : null}
 
       {config.team?.length ? (
         <Section id="team" tone="alt">
           <SectionHead
             eyebrow="The team"
             title="Who you will be sitting with"
-            centered
+            align="center"
           />
           <TeamGrid members={config.team} />
+          {config.stats?.length ? <StatsBand stats={config.stats} /> : null}
         </Section>
       ) : null}
 
       {config.testimonials?.length ? (
-        <Section tone="alt">
-          <SectionHead eyebrow="In their words" title="What clients say" centered />
-          <Testimonials items={config.testimonials} />
-        </Section>
+        <Bleed tone="deep">
+          <PullQuote items={config.testimonials} />
+        </Bleed>
       ) : null}
 
       <Section id="about">
@@ -81,13 +82,13 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
       )}
 
       <Section id="visit" tone="alt">
-        <SectionHead eyebrow="Find us" title="Where to come" />
+        <SectionHead eyebrow="Find us" title="Where to come" align="center" />
         <VisitBlock config={config} />
       </Section>
 
       {config.faq?.length ? (
         <Section narrow>
-          <SectionHead title="Good to know" centered />
+          <SectionHead title="Good to know" align="center" />
           <FaqList items={config.faq} />
         </Section>
       ) : null}

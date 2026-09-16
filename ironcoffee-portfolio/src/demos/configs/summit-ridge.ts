@@ -49,7 +49,7 @@ const summitRidge: DemoConfig = {
     primary: '#1D4E89',
     secondary: '#10233A',
     accent: '#F08A24',
-    font: 'sans',
+    font: 'industrial',
   },
 
   hero: {

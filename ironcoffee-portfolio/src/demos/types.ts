@@ -22,8 +22,28 @@ export type TemplateName =
   | 'professional'
   | 'trades';
 
-/** Body/heading pairing. Resolved to real stacks in `demoFont()`. */
-export type BrandFont = 'sans' | 'serif' | 'slab';
+/**
+ * Which display face sets the headings.
+ *
+ * Body copy is Inter on every sample. Only the headings change, because a
+ * display face at paragraph size is how a site starts looking like a
+ * scrapbook, and because the heading is where a stranger decides whether the
+ * business looks expensive or looks homemade.
+ *
+ * Pick by trade, not by taste. Two samples sharing a face is the fastest way
+ * for a gallery to read as one template with the names swapped.
+ */
+export type BrandFont =
+  /** Fraunces. Warm and a little odd. Food, coffee, anything handmade. */
+  | 'editorial'
+  /** Playfair Display. High contrast and formal. Salons, spas, jewelers. */
+  | 'luxe'
+  /** Archivo, wide and heavy in caps. Trades, haulage, agriculture. */
+  | 'industrial'
+  /** Outfit. Geometric and calm. Clinics, dentists, family practices. */
+  | 'modern'
+  /** Bricolage Grotesque. Drawn by hand. Barbers, record shops, bottle shops. */
+  | 'craft';
 
 export interface DemoBusiness {
   name: string;
@@ -211,6 +231,17 @@ export interface DemoConfig {
   faq?: DemoFaq[];
   /** Three or four numbers worth stating plainly. */
   stats?: DemoStat[];
+
+  /**
+   * Short phrases for the band that slides past under the hero.
+   *
+   * Four words each, six at the outside. These are the things a regular would
+   * say about the place, not slogans: "Brisket until it runs out", "Cash and
+   * card", "Dogs welcome on the patio". Leave it out and the band does not
+   * render, which is the right answer for a business that has nothing to put
+   * in it.
+   */
+  marquee?: string[];
 
   /** Gallery samples only. See DemoTestimonial. */
   testimonials?: DemoTestimonial[];

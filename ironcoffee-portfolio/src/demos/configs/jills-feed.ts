@@ -50,7 +50,7 @@ const jillsFeed: DemoConfig = {
     primary: '#6B7B3A',
     secondary: '#2B3220',
     accent: '#C2892F',
-    font: 'slab',
+    font: 'industrial',
   },
 
   hero: {

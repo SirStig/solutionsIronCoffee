@@ -23,12 +23,38 @@ export default function BlogPost() {
     description: post.excerpt,
     datePublished: post.date,
     dateModified: post.date,
+    inLanguage: 'en-US',
     url: `${site.url}${path}`,
     wordCount: post.readingTime * 220,
     keywords: post.tags.join(', '),
     author: { '@type': 'Person', name: site.name, url: site.url },
     publisher: { '@type': 'Person', name: site.name, url: site.url },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `${site.url}${path}` },
+  };
+
+/**
+ * Breadcrumbs.
+ *
+ * Worth the few lines: this is one of the handful of schema types that still
+ * produces a visible result in Google, the path line under the blue link, and
+ * every one of these pages genuinely sits under a parent.
+ */
+  const breadcrumbs = {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Writing',
+        item: `${site.url}/blog`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: post.title,
+        item: `${site.url}${path}`,
+      },
+    ],
   };
 
   return (
@@ -40,7 +66,7 @@ export default function BlogPost() {
         type="article"
         publishedTime={post.date}
         tags={post.tags}
-        jsonLd={schema}
+        jsonLd={[schema, breadcrumbs]}
       />
 
       <article className="container-wide">

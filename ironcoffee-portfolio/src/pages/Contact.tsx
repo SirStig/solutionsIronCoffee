@@ -63,8 +63,8 @@ export default function Contact() {
         <header className={styles.header}>
           <h1>Get in touch</h1>
           <p className={styles.intro}>
-            Available for contract work and engineering roles. Email is fastest
-            &mdash; I read everything and reply to anything real.
+            Available for contract work and engineering roles. Email is
+            fastest. I read everything and reply to anything real.
           </p>
         </header>
 

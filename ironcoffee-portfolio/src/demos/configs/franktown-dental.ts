@@ -45,7 +45,7 @@ const franktownDental: DemoConfig = {
     primary: '#0E7C86',
     secondary: '#0B3A40',
     accent: '#5FB88C',
-    font: 'sans',
+    font: 'modern',
   },
 
   hero: {

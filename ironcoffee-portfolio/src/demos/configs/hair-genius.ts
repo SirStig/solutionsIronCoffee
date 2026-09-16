@@ -41,7 +41,7 @@ const hairGenius: DemoConfig = {
     primary: '#1C1C1E',
     secondary: '#0E0E10',
     accent: '#C0462F',
-    font: 'sans',
+    font: 'craft',
   },
 
   hero: {

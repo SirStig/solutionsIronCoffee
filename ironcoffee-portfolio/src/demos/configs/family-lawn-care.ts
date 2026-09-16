@@ -41,7 +41,7 @@ const familyLawnCare: DemoConfig = {
     primary: '#2F6B34',
     secondary: '#16301A',
     accent: '#D8A024',
-    font: 'sans',
+    font: 'modern',
   },
 
   hero: {

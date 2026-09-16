@@ -7,14 +7,14 @@ import {
   BadgeBar,
   FaqList,
   GalleryGrid,
+  PullQuote,
   ServiceAreas,
   ServiceSteps,
   StatsBand,
-  Testimonials,
   VisitBlock,
 } from '../components/blocks';
 import { BusinessForm } from '../components/forms';
-import { Section, SectionHead } from '../components/primitives';
+import { Bleed, Section, SectionHead } from '../components/primitives';
 import { homeNavLinks, type NavLink } from '../components/DemoNav';
 
 /**
@@ -24,6 +24,10 @@ import { homeNavLinks, type NavLink } from '../components/DemoNav';
  * and every scroll between arriving and being able to ask for help costs a
  * lead, so the form is above the fold and the rest of the page exists to
  * reassure whoever did not fill it in immediately.
+ *
+ * Headings are left-aligned and set in caps by the `industrial` pairing, which
+ * is doing the same job a sign-written truck does: it is not subtle, and a
+ * roofer competing on being reachable at eight in the evening should not be.
  */
 export default function TradesTemplate({ config }: { config: DemoConfig }) {
   const anchors: NavLink[] = [
@@ -50,12 +54,6 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
 
       {config.badges?.length ? <BadgeBar items={config.badges} /> : null}
 
-      {config.stats?.length ? (
-        <Section tone="alt">
-          <StatsBand stats={config.stats} />
-        </Section>
-      ) : null}
-
       <Section id="services">
         <SectionHead
           eyebrow="What we do"
@@ -63,6 +61,7 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
           sub="Every job starts with someone coming out to look at it properly, at no cost to you."
         />
         <ServiceSteps items={config.services} />
+        {config.stats?.length ? <StatsBand stats={config.stats} /> : null}
       </Section>
 
       {config.gallery.length > 0 && (
@@ -76,10 +75,9 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
       )}
 
       {config.testimonials?.length ? (
-        <Section tone="alt">
-          <SectionHead eyebrow="In their words" title="What homeowners say" centered />
-          <Testimonials items={config.testimonials} />
-        </Section>
+        <Bleed tone="brand">
+          <PullQuote items={config.testimonials} />
+        </Bleed>
       ) : null}
 
       <Section>
@@ -87,11 +85,10 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
       </Section>
 
       {config.serviceAreas?.length ? (
-        <Section id="areas" tone="dark" narrow>
+        <Section id="areas" tone="dark">
           <SectionHead
             eyebrow="Service area"
             title={`Working across ${config.business.city} and the towns around it`}
-            centered
           />
           <ServiceAreas areas={config.serviceAreas} />
         </Section>
@@ -104,7 +101,7 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
 
       {config.faq?.length ? (
         <Section narrow>
-          <SectionHead title="Questions we get" centered />
+          <SectionHead title="Questions we get" />
           <FaqList items={config.faq} />
         </Section>
       ) : null}

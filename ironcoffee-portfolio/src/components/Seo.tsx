@@ -69,6 +69,14 @@ export default function Seo({
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={imageUrl} />
+      {/* Several unfurlers, LinkedIn in particular, render a preview more
+          reliably when the dimensions arrive with the URL rather than after a
+          fetch. Every image passed here is a generated 1200x630 card, so these
+          are safe to state; if that ever stops being true, read them off the
+          image manifest instead of hardcoding them. */}
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={fullTitle} />
       <meta property="og:locale" content={site.locale} />
 
       <meta name="twitter:card" content="summary_large_image" />

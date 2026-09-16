@@ -35,7 +35,7 @@ const defaults: Record<DemoPage['kind'], { title: string; intro?: string }> = {
   stock: { title: 'What we carry' },
   order: {
     title: 'Order for pickup',
-    intro: 'Choose what you want, pick a time, and it will be boxed and waiting.',
+    intro: 'Choose what you want, pick a time, and it will be boxed and waiting. No app, no third party taking a cut.',
   },
 };
 
@@ -164,7 +164,7 @@ export default function DemoSubPage({
           never left at a dead end two clicks in. */}
       {(config.pages?.length ?? 0) > 1 && (
         <Section tone="alt" narrow>
-          <SectionHead title="Elsewhere on the site" centered />
+          <SectionHead title="Elsewhere on the site" align="center" />
           <div className={styles.pageLinks}>
             {config.pages
               ?.filter((p) => p.slug !== page.slug)
