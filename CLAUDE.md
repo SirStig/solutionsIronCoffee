@@ -120,6 +120,42 @@ Demo images are manifest keys, not paths. Put sources in
 optimizer has not produced yet renders a branded gradient, so a config can be
 written and reviewed before the photos exist.
 
+**A preview for a real business is drawn, not photographed.** A key written
+`art:<scene>` resolves to an original illustration in
+`src/demos/components/artwork.tsx` instead of a photograph. The gradient
+fallback is honest about having no picture and says nothing else, and six of
+them down a page reads as a wireframe, which is not a thing anybody buys. A
+drawing also cannot make the claim a stock photo makes: an interior that is not
+their interior is a small lie an owner spots instantly.
+
+Scenes live in `components/scenes/<trade>.tsx`, are drawn on a 1200x900 grid,
+and paint with five CSS variables rather than literal colors, so one drawing
+serves an olive feed store and a wine-red bottle shop. `.artFill` declares the
+daylight colorway and `.artDark` the light-on-deep one; anywhere copy sits over
+the media the dark version is used and the scrim drops to almost nothing,
+because a scrim heavy enough to rescue white text from a bright photograph
+flattens an illustration into a silhouette.
+
+Three things that are easy to get wrong. A hero band is nearer 3:1 than 4:3, so
+`slice` shows roughly y 250 to 650 of the artboard and a subject drawn outside
+that stripe is not in the picture. Every scene carries its own alt sentence,
+because the only alt text a template can write on its own is "photo 3", which
+is both uninformative and wrong about the medium. And ids inside a scene are
+namespaced with `useId`, since a gallery renders four scenes into one document
+and the UI audit fails the build on a duplicate id, rightly.
+
+`brand.motif` names a tile in `components/motifs.tsx` that repeats behind the
+deep bands. It exists because the statement band runs at about 4:1 and cropping
+a 4:3 scene to that gives you a detail of itself: the lawn sample showed the
+middle nine inches of a mower. That band never wanted a picture, it wanted a
+surface.
+
+Templates ask `isDrawn(config)` rather than assuming. The trades template used
+to print "Photographed the day we finished" over a set of drawings, which is
+exactly the kind of wrong detail that costs a sale: an owner who catches the
+page describing its own pictures inaccurately has no reason to believe the
+opening times.
+
 A config marked `draft: true` is typechecked and validated by the tests but
 never prerendered, so a half-written business cannot become a link that gets
 sent by accident. Clear the flag when the content is actually gathered. Drafts

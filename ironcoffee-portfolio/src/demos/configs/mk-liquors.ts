@@ -68,10 +68,18 @@ import type { DemoConfig } from '../types';
 const mkLiquors: DemoConfig = {
   slug: 'mk-liquors',
   createdAt: '2026-09-15',
-  // Hours and the live phone line still need one call.
-  draft: true,
-
   template: 'retail',
+
+  /*
+   * Live, not a draft.
+   *
+   * The state liquor license settles both questions a draft flag exists to
+   * hold open: the business is trading, and it is trading under this name.
+   * See the header. Two details are still worth a call, and neither is a
+   * reason to keep the page unreachable: whether (303) 953-0154 or the number
+   * on the incorrect Yelp listing is the live line, and whether the hours
+   * below, which Yahoo and Yelp agree on exactly, came from one feed.
+   */
 
   business: {
     // Confirmed against the state liquor license, not against a directory.

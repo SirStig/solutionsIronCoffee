@@ -328,26 +328,47 @@ registerScenes({
           <path d="M120 534 H1080" stroke={INK} strokeWidth="4" opacity="0.3" />
         </g>
 
-        {/* Razor, open past straight, which is how one sits when you put it
-            down. The blade is pale and the scales are solid, so the two halves
-            of the object never read as one bar. */}
-        <g transform="translate(560 360) rotate(-12)">
-          {/* Scales, the handle. */}
-          <g transform="translate(224 96) rotate(26)">
-            <rect x="-14" y="-34" width="330" height="68" rx="30" fill={INK} />
-            <rect x="20" y="-14" width="250" height="14" rx="7" fill={POP} opacity="0.85" />
-            <circle cx="286" cy="0" r="10" fill={PAPER} opacity="0.6" />
+        {/*
+         * Razor, open past straight, the way one sits when you put it down.
+         *
+         * Everything is built out from the pivot at the origin: blade to the
+         * left, scales rotated off to the right. Drawn as two separately
+         * placed shapes they came out as two unrelated objects lying near each
+         * other, which is the giveaway that nobody checked the hinge.
+         */}
+        <g transform="translate(590 400) rotate(-10)">
+          {/* Scales, hinged at the pivot and swung back under the blade. */}
+          <g transform="rotate(24)">
+            <rect x="-26" y="-36" width="368" height="72" rx="34" fill={INK} />
+            <rect x="24" y="-13" width="272" height="15" rx="7" fill={POP} opacity="0.85" />
+            <circle cx="316" cy="0" r="11" fill={PAPER} opacity="0.55" />
           </g>
-          {/* Blade: a tang, a spine and a hollow-ground edge. */}
-          <path d="M-320 -46 H150 q44 0 68 26 l26 28 h-94 q-34 22 -70 22 H-320 Z" fill={WASH} />
-          <path d="M-320 -46 H150 q44 0 68 26 l26 28 h-94 q-34 22 -70 22 H-320 Z" fill="none" stroke={INK} strokeWidth="8" strokeLinejoin="round" />
-          <path d="M-312 -30 H152" stroke={INK} strokeWidth="6" opacity="0.35" />
-          <path d="M-312 14 H130" stroke={PAPER} strokeWidth="10" opacity="0.7" />
-          <circle cx="212" cy="88" r="14" fill={POP} stroke={INK} strokeWidth="6" />
+
+          {/* Blade: tang, then a spine and a hollow-ground edge running left. */}
+          <path
+            d="M-6 -30 h-296 a14 14 0 0 0 -14 14 v20 a14 14 0 0 0 14 14 h268
+               q26 0 40 -20 Z"
+            fill={WASH}
+          />
+          <path
+            d="M-6 -30 h-296 a14 14 0 0 0 -14 14 v20 a14 14 0 0 0 14 14 h268
+               q26 0 40 -20 Z"
+            fill="none"
+            stroke={INK}
+            strokeWidth="8"
+            strokeLinejoin="round"
+          />
+          {/* The spine line and the ground edge, which is what says "razor"
+              rather than "butter knife". */}
+          <path d="M-296 -14 H-2" stroke={INK} strokeWidth="6" opacity="0.35" />
+          <path d="M-300 12 H-30" stroke={PAPER} strokeWidth="9" opacity="0.7" />
+
+          {/* The pivot itself, drawn last so it sits over both halves. */}
+          <circle cx="0" cy="0" r="15" fill={POP} stroke={INK} strokeWidth="7" />
         </g>
 
         {/* Folded hot towel, steaming, sat where the frame will not cut it. */}
-        <g transform="translate(880 700)">
+        <g transform="translate(838 662)">
           <rect x="-180" y="-56" width="360" height="112" rx="56" fill={POP} opacity="0.6" />
           <rect x="-180" y="-56" width="360" height="112" rx="56" fill="none" stroke={INK} strokeWidth="8" />
           <path

@@ -181,11 +181,12 @@
   height: 100%;
 }
 
+/* No rule on top. The section head already draws one, and the two landed
+   about twenty pixels apart. */
 .archiveList {
   list-style: none;
   padding: 0;
   margin: 0;
-  border-top: 1px solid var(--border);
 }
 
 /* Under 600 the heading, badge and link cannot share a row without the link

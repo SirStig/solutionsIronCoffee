@@ -68,8 +68,21 @@ const barrBear: DemoConfig = {
   slug: 'barr-bear',
   createdAt: '2026-09-15',
   template: 'booking',
-  // Hours, prices and the spelling of her name are all still unconfirmed.
-  draft: true,
+
+  /*
+   * Live, not a draft.
+   *
+   * Nothing anywhere suggests she has stopped: her Facebook renders "Open now"
+   * today, reviews land in October and December 2025, Yelp's page was indexed
+   * in July 2026, and there is no closure signal of any kind. The trade name
+   * registration at the Secretary of State is expired, but she is a sole
+   * proprietor and a lapsed name filing is not a shut door.
+   *
+   * What is still unconfirmed is on the page rather than behind it: the hours
+   * are Google's rather than hers, and prices are shown as "Call for pricing"
+   * because none are public. Both are the sort of thing a preview is meant to
+   * get corrected, and neither is a claim that could embarrass her.
+   */
 
   business: {
     name: 'Barr Bear Country Cuts',

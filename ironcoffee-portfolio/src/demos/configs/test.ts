@@ -5,12 +5,15 @@ import type { DemoConfig } from '../types';
  *
  * Two jobs. It keeps `test.ironcoffee.com` pointing at something real, so the
  * wildcard DNS and the certificate can be checked without touching a config
- * meant for an actual business. And it is the only preview in the repo, which
- * means the preview code path stays exercised on every build: the expiry
- * banner, the noindex tag, the contact form that routes to me.
+ * meant for an actual business. And it is the one preview that is never going
+ * to be retired or taken down on request, so the preview code path stays
+ * exercised on every build whatever else is live: the expiry banner, the
+ * noindex tag, the contact form that routes to me.
  *
- * It also happens to be the only `retail` config, so that template does not rot
- * while the gallery shows off the other four.
+ * It is also the only preview whose photographs are real, which makes it the
+ * only page that exercises the photo branch of <DemoImage> and the photo
+ * wording in the disclosure. Every preview built for an actual business is
+ * illustrated, because none of them have handed over pictures yet.
  *
  * `createdAt` needs bumping every couple of months or this will retire itself
  * and start serving the expired page, which is exactly what it should do.

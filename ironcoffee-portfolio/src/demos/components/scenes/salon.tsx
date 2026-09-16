@@ -384,9 +384,36 @@ registerScenes({
           );
         })}
 
-        {/* Grass. */}
-        <g stroke={MID} strokeWidth="7" strokeLinecap="round" opacity="0.8">
-          <path d="M80 900 L94 796 M150 900 L140 820 M560 900 L574 800 M630 900 L620 824 M1040 900 L1054 794 M1110 900 L1100 818" />
+        {/*
+         * A nearer slope, in front of the trees.
+         *
+         * Without it the lower half of this frame was an empty tan field and
+         * the whole drawing sat in the top third. Three planes is the least a
+         * landscape needs: something far, something the subject stands on, and
+         * something between the viewer and it.
+         */}
+        <path
+          d="M0 742 q210 -58 430 -14 q240 48 460 -10 q160 -42 310 -6 L1200 900 L0 900 Z"
+          fill={MID}
+          opacity="0.45"
+        />
+        <path
+          d="M0 742 q210 -58 430 -14 q240 48 460 -10 q160 -42 310 -6"
+          fill="none"
+          stroke={INK}
+          strokeWidth="7"
+        />
+        <path
+          d="M0 742 q210 -58 430 -14 q240 48 460 -10 q160 -42 310 -6 L1200 900 L0 900 Z"
+          fill={hatch(id)}
+          color={INK}
+          opacity="0.12"
+        />
+
+        {/* Grass on the near slope, taller because it is closer.
+            Every blade leans the same way. Mirrored pairs read as brackets. */}
+        <g stroke={INK} strokeWidth="6" strokeLinecap="round" opacity="0.5" fill="none">
+          <path d="M44 792 q-6 -23 -12 -46 M89 821 q-8 -42 -15 -83 M134 804 q-9 -34 -18 -68 M179 833 q-11 -27 -21 -53 M224 816 q-12 -45 -24 -90 M269 799 q-14 -38 -27 -75 M314 828 q-15 -30 -30 -60 M359 811 q-7 -49 -13 -97 M404 794 q-8 -41 -16 -82 M449 823 q-10 -34 -19 -67 M494 806 q-11 -26 -22 -52 M539 835 q-13 -45 -25 -89 M584 818 q-14 -37 -28 -74 M629 801 q-16 -30 -31 -59 M674 830 q-7 -48 -14 -96 M719 813 q-9 -41 -17 -81 M764 796 q-10 -33 -20 -66 M809 825 q-12 -26 -23 -51 M854 808 q-13 -44 -26 -88 M899 837 q-15 -37 -29 -73 M944 820 q-6 -29 -12 -58 M989 803 q-8 -48 -15 -95 M1034 832 q-9 -40 -18 -80 M1079 815 q-11 -33 -21 -65 M1124 798 q-12 -25 -24 -50 M1169 827 q-14 -44 -27 -87" />
         </g>
       </>
     ),

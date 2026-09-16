@@ -568,6 +568,22 @@
   );
 }
 
+/* On a phone the headline runs the full width, so it crosses whatever the
+   illustration has in the middle of the frame rather than sitting beside it.
+   The bottle shop caught this: "if it is not on the shelf" was set straight
+   across a row of bottles. Wide layouts keep the light scrim, because there
+   the copy and the subject are in different halves of the picture. */
+@media (max-width: 899px) {
+  .heroScrimArt {
+    background: linear-gradient(
+      180deg,
+      rgb(8 10 12 / 0.34) 0%,
+      rgb(8 10 12 / 0.58) 46%,
+      rgb(8 10 12 / 0.78) 100%
+    );
+  }
+}
+
 .heroInner {
   max-width: var(--d-wide);
   margin-inline: auto;
