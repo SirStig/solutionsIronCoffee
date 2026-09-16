@@ -167,6 +167,13 @@ export function artName(key: string | undefined): string | undefined {
   return key.slice(ART_PREFIX.length);
 }
 
+/** Every image key a demo renders, in the order the page uses them. */
+export function imageKeys(demo: DemoConfig): string[] {
+  return [demo.hero.image, ...demo.gallery, demo.about.image].filter(
+    (key): key is string => Boolean(key)
+  );
+}
+
 /**
  * Whether this demo is illustrated rather than photographed.
  *
@@ -176,10 +183,46 @@ export function artName(key: string | undefined): string | undefined {
  * its own pictures inaccurately has no reason to trust the opening times.
  */
 export function isDrawn(demo: DemoConfig): boolean {
-  return (
-    Boolean(artName(demo.hero.image)) ||
-    demo.gallery.some((key) => Boolean(artName(key)))
-  );
+  return imageKeys(demo).every((key) => Boolean(artName(key)));
+}
+
+/**
+ * How this demo's pictures should be described on the page.
+ *
+ * Three states, and getting the wrong one printed is a small error that costs
+ * a sale. The trades template used to choose between "drawn for this preview"
+ * and "photographed the day we finished", which is a correct pair right up
+ * until a preview carries generic stock: then a page about somebody's business
+ * claims their own work is pictured when it is not, and an owner who catches
+ * that has no reason to believe the opening times either.
+ */
+export type PictureKind =
+  /** Illustrations made for this preview, and nothing else. */
+  | 'drawn'
+  /** Both: photographs of the trade, with drawings beside them. */
+  | 'mixed'
+  /** Real photographs, but of the trade rather than of this business. */
+  | 'placeholder'
+  /** This business's own pictures. */
+  | 'own';
+
+/**
+ * `keys` narrows the question to part of the page.
+ *
+ * The trades template's "Recent jobs" heading is about the gallery and only
+ * the gallery, so asking about the whole page would have it describing an
+ * illustration three sections further down.
+ */
+export function pictureKind(
+  demo: DemoConfig,
+  keys: string[] = imageKeys(demo)
+): PictureKind {
+  const anyDrawn = keys.some((key) => Boolean(artName(key)));
+  const anyPhoto = keys.some((key) => !artName(key));
+
+  if (anyDrawn && anyPhoto) return demo.placeholderPhotos ? 'mixed' : 'own';
+  if (anyDrawn) return 'drawn';
+  return demo.placeholderPhotos ? 'placeholder' : 'own';
 }
 
 /* --- Formatting helpers shared by every template ------------------------ */

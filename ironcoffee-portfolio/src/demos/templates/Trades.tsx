@@ -17,7 +17,7 @@ import {
 import { BusinessForm } from '../components/forms';
 import { Bleed, Section, SectionHead } from '../components/primitives';
 import { homeNavLinks, type NavLink } from '../components/DemoNav';
-import { isDrawn } from '../index';
+import { pictureKind } from '../index';
 
 /**
  * Trades. The quote form sits inside the hero.
@@ -74,9 +74,17 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
           <SectionHead
             title="Recent jobs"
             sub={
-              isDrawn(config)
-                ? 'Drawn for this preview. The finished site shows your own work.'
-                : 'Photographed the day we finished.'
+              {
+                drawn:
+                  'Drawn for this preview. The finished site shows your own work.',
+                placeholder:
+                  'Stand-in photographs to show the layout. The finished site shows your own jobs.',
+                mixed:
+                  'Stand-in photographs to show the layout. The finished site shows your own jobs.',
+                own: 'Photographed the day we finished.',
+                // Asked about the gallery alone: this heading is about these
+                // pictures, not about the drawing further down the page.
+              }[pictureKind(config, config.gallery)]
             }
           />
           <GalleryGrid images={config.gallery} business={config.business.name} />

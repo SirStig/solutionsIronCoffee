@@ -183,15 +183,45 @@ export interface DemoStat {
 /**
  * A customer quote.
  *
- * Only ever populated for the fictional gallery samples. Putting words in a
- * real customer's mouth on a preview for a real business is not a shortcut
- * worth taking, so the real configs leave this out and the templates simply
- * do not render the section.
+ * Two different things share this shape, and `source` is what tells them
+ * apart.
+ *
+ * Without it, the quote is **written**: a fictional customer of a fictional
+ * business, which is fine on a gallery sample and forbidden anywhere else.
+ * Putting invented words in a real customer's mouth on a page you are about to
+ * send that customer's boss is not a shortcut worth taking, and a test fails
+ * the build if a preview carries an uncited quote.
+ *
+ * With it, the quote is **theirs**: copied verbatim from a review they already
+ * have in public, with the platform named on the page so anyone can go and
+ * find it. That is not a claim being invented, it is a claim being repeated,
+ * and it is the single strongest thing a cold preview can put in front of an
+ * owner: proof you looked them up before you wrote to them.
+ *
+ * Copy it exactly. If anything at all is altered, even capitalizing the first
+ * letter, say so in a comment next to it.
  */
 export interface DemoTestimonial {
   quote: string;
-  name: string;
+  /**
+   * Who said it. Required in practice on a sample, optional on a preview.
+   *
+   * Several of these businesses have genuine reviews on aggregators that
+   * publish the words and drop the name. The choice there is between printing
+   * the quote with the platform alone, or inventing a plausible name to sit
+   * under it, and the second is the exact thing the rule against invented
+   * testimonials exists to prevent. So this is optional and the attribution
+   * degrades to the source on its own.
+   */
+  name?: string;
   detail?: string;
+  /**
+   * Where it was published: 'Google', 'Facebook', 'Yelp'.
+   *
+   * Set only on a verbatim quote of a real, public review. Printed on the page
+   * as the attribution, so it is a promise that the words are findable.
+   */
+  source?: string;
 }
 
 /**
@@ -275,7 +305,10 @@ export interface DemoConfig {
    */
   marquee?: string[];
 
-  /** Gallery samples only. See DemoTestimonial. */
+  /**
+   * Written quotes on a sample, verbatim public reviews on a preview.
+   * `source` is what separates the two. See DemoTestimonial.
+   */
   testimonials?: DemoTestimonial[];
 
   /**

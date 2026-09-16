@@ -15,16 +15,29 @@ export function Section({
   id,
   tone = 'plain',
   narrow = false,
+  reveal = false,
   children,
 }: {
   id?: string;
   tone?: Tone;
   narrow?: boolean;
+  /**
+   * Lift the whole section in as it arrives.
+   *
+   * For a section whose contents are one thing rather than a row of things. A
+   * row wants <stagger> on the row instead, so the cards arrive in sequence;
+   * doing both animates the children twice and they fight.
+   */
+  reveal?: boolean;
   children: ReactNode;
 }) {
   return (
     <section id={id} className={[styles.section, toneClass[tone]].filter(Boolean).join(' ')}>
-      <div className={[styles.container, narrow && styles.narrow].filter(Boolean).join(' ')}>
+      <div
+        className={[styles.container, narrow && styles.narrow, reveal && styles.rise]
+          .filter(Boolean)
+          .join(' ')}
+      >
         {children}
       </div>
     </section>
@@ -62,6 +75,10 @@ export function SectionHead({
         styles.sectionHead,
         align === 'center' && styles.centered,
         wide && styles.sectionHeadWide,
+        // Every section heading lifts in, on every template. Not decoration:
+        // it is what tells a reader scrolling a long page that a new section
+        // has started, which a flat page leaves entirely to the type.
+        styles.rise,
       ]
         .filter(Boolean)
         .join(' ')}

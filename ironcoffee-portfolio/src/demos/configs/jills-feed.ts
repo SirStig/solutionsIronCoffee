@@ -79,7 +79,7 @@ const jillsFeed: DemoConfig = {
   hero: {
     headline: 'Call first. We will tell you what is on the shelf.',
     sub: "Jill's has been on Tabor Street since 2015. Ring before you hitch up the trailer and save yourself the drive.",
-    image: 'art:feed-plains',
+    image: 'demos/jills-feed/hero',
     ctaLabel: 'Call the Store',
     ctaHref: 'tel:+13036464730',
   },
@@ -161,17 +161,58 @@ const jillsFeed: DemoConfig = {
   ],
 
   gallery: [
-    'art:feed-sacks',
-    'art:feed-brooder',
-    'art:feed-hay',
-    'art:feed-propane',
+    'demos/jills-feed/feed',
+    'demos/jills-feed/hay',
+    'demos/jills-feed/chicks',
+    'demos/jills-feed/tack',
   ],
 
   about: {
     heading: 'Eleven years on Tabor Street.',
     body: "Jill Walkinshaw opened Jill's Feed & Country Supply in February 2015, in a building that had been a feed store long before that. It carries feed, hay, bedding, seed, animal health products and chicks for Elizabeth and the country around it, fills propane, and loads your truck while you are still getting your wallet out. In 2022 it was voted Best Pet Supply Store in Elbert County.",
+    // Drawn, where the photographs are not. A picture of the trade can
+    // stand beside the story; it cannot be the story, and one illustration
+    // per page is what stops five previews looking like five stock sets.
     image: 'art:feed-seed',
   },
+
+  /*
+   * No testimonials, and that is a decision rather than an omission.
+   *
+   * There are real reviews out there and the words are good: "The best feed store in the county! We always get fast
+   * service, with the feed loaded for us", and "Great feed store, ladies are
+   * always happy and helpful."
+   * But every aggregator that carries them strips the reviewer's name and
+   * does not say which platform they came from, and `source` is a promise
+   * that the quote can be found. Printing "Google review" over a review I
+   * cannot confirm was left on Google is inventing a citation, which is the
+   * same failure as inventing the quote, only harder to spot.
+   *
+   * Worth two minutes on the call: ask where their reviews are and this
+   * section fills itself. See barr-bear.ts for the shape.
+   */
+
+  pages: [
+    {
+      slug: 'stock',
+      label: 'What we carry',
+      kind: 'stock',
+      intro: 'Categories rather than a stock list. Ring before you hitch up the trailer and we will check the shelf.',
+    },
+    {
+      slug: 'about',
+      label: 'The store',
+      kind: 'about',
+      title: 'Eleven years on Tabor Street',
+    },
+    {
+      slug: 'visit',
+      label: 'Visit',
+      kind: 'contact',
+      title: 'Stop by',
+      intro: 'On South Tabor Street in Elizabeth. Somebody will come out and load it.',
+    },
+  ],
 
   faq: [
     {
@@ -187,6 +228,21 @@ const jillsFeed: DemoConfig = {
       a: 'Yes. That is normal here, not a favor, and you do not need to ask twice.',
     },
   ],
+
+  /*
+   * The photography is the trade, not this shop, and the page says so.
+   *
+   * <DemoShell> prints a line admitting it, which is the point: an owner spots
+   * a picture of somebody else's place instantly, and having already said it
+   * turns the one weak spot in a cold preview into evidence that you are
+   * straight with people. None of these are exteriors, storefronts or signage,
+   * because a generic interior reads as a layout while a building reads as a
+   * claim about their premises.
+   *
+   * Clear this flag the day they hand over their own pictures.
+   */
+  placeholderPhotos: true,
+
 };
 
 export default jillsFeed;

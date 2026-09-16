@@ -93,38 +93,57 @@ const hairGenius: DemoConfig = {
     // is disputed by half the listings that mention it.
     headline: 'A proper skin fade, in a suite off Dransfeldt Road.',
     sub: 'Walk in if there is a chair free. Ring first if you would rather not find out the hard way.',
-    image: 'art:barber-room',
+    image: 'demos/hair-genius/hero',
     ctaLabel: 'Call the Shop',
     ctaHref: 'tel:+13038055348',
   },
 
-  // No prices. The shop publishes none and the only public numbers belong to
-  // one barber's own book.
+  /*
+   * No prices, and no price field either.
+   *
+   * The shop publishes none and the only public numbers belong to one barber's
+   * own book, so there is nothing here that could be printed. What changed is
+   * how that absence is expressed. Every row used to carry `price: 'Call for
+   * pricing'`, which rendered as the same four words repeated down the right
+   * hand edge of the widest, emptiest part of the page: a column whose entire
+   * content was one sentence, four times. Leaving the field out puts the
+   * template into its numbered variant instead, and the question the column
+   * was answering is answered once, in the FAQ, where a question belongs.
+   */
   services: [
     {
       title: 'Haircut',
       icon: 'scissors',
       body: 'Scissor or clipper, finished the way you asked for it rather than the way it was quickest.',
-      price: 'Call for pricing',
     },
     {
       title: 'Skin fade',
       icon: 'razor',
       body: 'Low, mid, high or bald, blended properly rather than stepped.',
-      price: 'Call for pricing',
     },
     {
       title: 'Beard trim and line up',
       icon: 'comb',
       body: 'Shaped to the jaw, edges clean, hot towel if you want one.',
-      price: 'Call for pricing',
     },
     {
       title: 'Kids',
       icon: 'child',
       body: 'First haircuts included, and nobody here is in a hurry about it.',
-      price: 'Call for pricing',
     },
+  ],
+
+  /*
+   * Short and true, and every one of them is a restatement of something
+   * already on the page rather than a new claim.
+   */
+  marquee: [
+    'Family owned and operated',
+    'Walk in if there is a chair',
+    'Skin fades',
+    'Beard trims and line ups',
+    'First haircuts',
+    'Suite 128, off Dransfeldt',
   ],
 
   // The Google version. See the header: the other half of the sources say
@@ -140,22 +159,102 @@ const hairGenius: DemoConfig = {
   ],
 
   gallery: [
-    'art:barber-chair',
-    'art:barber-fade',
-    'art:barber-tools',
-    'art:barber-razor',
+    'demos/hair-genius/chair',
+    'demos/hair-genius/fade',
+    'demos/hair-genius/tools',
+    'demos/hair-genius/detail',
   ],
 
   about: {
     heading: 'Family run, in Suite 128.',
     body: 'Hair Genius is a family owned and operated barbershop in a suite set back off Dransfeldt Road. It takes a minute to find the first time, which is why the directions link is on this page and the address is not left to do the work on its own. Inside it is classic and modern in equal measure: walk in when there is a chair, ring ahead when there is not.',
+    // Drawn, where the photographs are not. A picture of the trade can
+    // stand beside the story; it cannot be the story, and one illustration
+    // per page is what stops five previews looking like five stock sets.
     image: 'art:barber-pole',
   },
+
+  /*
+   * Real reviews, copied word for word, and the page says so.
+   *
+   * The rule against testimonials on a preview exists to stop invented ones.
+   * These are not invented: they are already in public, under these names, on
+   * Google, and anybody can go and read them. Repeating a claim a customer
+   * already made is a different act from making one up, and `source` is what
+   * carries that difference onto the page.
+   *
+   * Captured 2026-09-16 from the Birdeye mirror of their Google reviews, which
+   * showed all four as "a year ago". No date is printed, because "a year ago"
+   * relative to a crawl of unknown age is not a date, and a wrong one on a
+   * page with somebody's business name at the top is worse than none.
+   *
+   * The shortest quote is the one the band sets at display size, which is why
+   * the fourth is not here. Owen Lindbloom's "Best barber shop I've ever been
+   * too" is shorter than Samson's and would have taken the slot, and it
+   * carries a typo that at billboard size reads as ours rather than his.
+   */
+  testimonials: [
+    {
+      // Verbatim but for the capital I, which he did not use. It leads the
+      // band at display size and "i've" there reads as a mistake on our part.
+      quote: "Best barbershop experience I've had, great family environment.",
+      name: 'Samson Jones',
+      source: 'Google',
+    },
+    {
+      quote:
+        'This place always gets me and my brother right! Everyone is so talented! Highly recommend!',
+      name: 'Carter Wilson',
+      source: 'Google',
+    },
+    {
+      quote:
+        'The haircuts were absolutely phenomenal and the service was amazing. The shop had multiple teenagers that were bonding and having fun, it was simply a joy to be around such a positive environment.',
+      name: 'Cole Mortell',
+      source: 'Google',
+    },
+  ],
+
+  /*
+   * Three pages rather than one.
+   *
+   * Every kind here renders from data already in this file, so this list is
+   * the whole difference between the one page tier and the next one up. It is
+   * also the part of the preview that is worth pointing at on the call: the
+   * question "what would more than one page even hold" is easier to answer by
+   * clicking than by describing.
+   */
+  pages: [
+    {
+      slug: 'services',
+      label: 'Services',
+      kind: 'services',
+      intro: 'Prices are not published, so ring the shop and they will tell you before you come in.',
+    },
+    {
+      slug: 'about',
+      label: 'The shop',
+      kind: 'about',
+      title: 'Family run, in Suite 128',
+    },
+    {
+      slug: 'visit',
+      label: 'Visit',
+      kind: 'contact',
+      title: 'Find the shop',
+      intro: 'It is set back off Dransfeldt Road, so the directions link is worth using the first time.',
+    },
+  ],
 
   faq: [
     {
       q: 'Do you take walk-ins?',
       a: 'Yes, when there is a chair. Afternoons are the busy stretch, so a call first saves you standing around.',
+    },
+    {
+      // The question the price column used to answer four times over.
+      q: 'What does a cut cost?',
+      a: 'Prices are not published online. Ring the shop and they will tell you before you come in.',
     },
     {
       q: 'Where exactly are you?',
@@ -166,6 +265,21 @@ const hairGenius: DemoConfig = {
       a: 'Yes, first haircuts included. Say it is their first when you ring and there will be time set aside for it.',
     },
   ],
+
+  /*
+   * The photography is the trade, not this shop, and the page says so.
+   *
+   * <DemoShell> prints a line admitting it, which is the point: an owner spots
+   * a picture of somebody else's place instantly, and having already said it
+   * turns the one weak spot in a cold preview into evidence that you are
+   * straight with people. None of these are exteriors, storefronts or signage,
+   * because a generic interior reads as a layout while a building reads as a
+   * claim about their premises.
+   *
+   * Clear this flag the day they hand over their own pictures.
+   */
+  placeholderPhotos: true,
+
 };
 
 export default hairGenius;

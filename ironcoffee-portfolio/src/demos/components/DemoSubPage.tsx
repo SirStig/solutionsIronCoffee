@@ -15,7 +15,7 @@ import {
   ServiceAreas,
   TeamGrid,
 } from './blocks';
-import { BusinessForm } from './forms';
+import { BusinessForm, formVariant } from './forms';
 import OrderFlow from './OrderFlow';
 import AdminApp from '../venue/admin/AdminApp';
 import { Cta, Section, SectionHead } from './primitives';
@@ -106,9 +106,27 @@ export default function DemoSubPage({
       ) : null}
 
       {page.kind === 'services' && (
-        <Section>
-          <ServiceCards items={config.services} />
-        </Section>
+        <>
+          <Section>
+            <ServiceCards items={config.services} />
+          </Section>
+          {/* A page holding one grid and nothing else is the reason interior
+              pages get dismissed as padding. The band is already in the
+              config and it gives the page something with weight in it. */}
+          {config.gallery.length > 0 && (
+            <GalleryGrid
+              images={config.gallery}
+              business={config.business.name}
+              fullBleed
+            />
+          )}
+          {config.serviceAreas?.length ? (
+            <Section narrow>
+              <SectionHead title="Where we work" />
+              <ServiceAreas areas={config.serviceAreas} />
+            </Section>
+          ) : null}
+        </>
       )}
 
       {page.kind === 'about' && (
@@ -159,10 +177,9 @@ export default function DemoSubPage({
       {page.kind === 'contact' && (
         <Section>
           <div className={styles.visitGrid}>
-            <BusinessForm
-              config={config}
-              variant={config.template === 'professional' ? 'appointment' : 'quote'}
-            />
+            {/* A barbershop got the roofer's form here, address field and all.
+                See the copy map in forms.tsx. */}
+            <BusinessForm config={config} variant={formVariant(config)} />
             <div className={styles.visitAside}>
               <ContactDetails config={config} />
               <Cta href={directionsHref(config)}>Get directions</Cta>

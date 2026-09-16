@@ -22,13 +22,77 @@ const emailjsConfigured = Boolean(
  * submission, and says exactly where the message would arrive once the site is
  * real, which answers the question every owner asks anyway.
  */
+type FormVariant = 'quote' | 'appointment' | 'booking';
+
+/**
+ * The words each trade actually uses, kept in one place.
+ *
+ * There used to be two variants and a chain of ternaries, and a barbershop got
+ * the roofing one: "Property address", "free inspection", "Request my free
+ * quote", on a page about haircuts. Every one of those is checkable nonsense to
+ * the owner reading it, and an owner who catches the form describing somebody
+ * else's trade has no reason to believe the opening hours either.
+ *
+ * `extra` is the one field that differs between them. A dental practice asks
+ * about insurance, a roofer needs the address of the roof, and a barbershop
+ * needs neither and must not ask: a form that wants a stranger's home address
+ * before it will book a haircut is a form nobody fills in.
+ */
+const copy: Record<
+  FormVariant,
+  {
+    title: string;
+    intro: string;
+    detail: string;
+    submit: string;
+    extra: 'address' | 'insurance' | 'none';
+  }
+> = {
+  quote: {
+    title: 'Get a free quote',
+    intro:
+      'Tell us what is going on and we will get you on the schedule for a free inspection.',
+    detail: 'What is going on?',
+    submit: 'Request my free quote',
+    extra: 'address',
+  },
+  appointment: {
+    title: 'Request an appointment',
+    intro:
+      'Tell us when suits you and the front desk will confirm by phone, usually the same day.',
+    detail: 'What do you need seen to?',
+    submit: 'Request appointment',
+    extra: 'insurance',
+  },
+  booking: {
+    title: 'Ask for a time',
+    intro:
+      'Say what you are after and when suits, and the shop will ring you back to fix a time.',
+    detail: 'What are you after?',
+    submit: 'Send the request',
+    extra: 'none',
+  },
+};
+
+/**
+ * Which set of words a template's contact form should use.
+ *
+ * Read off the template rather than the slug, so a new business in an existing
+ * trade needs no change here.
+ */
+export function formVariant(config: DemoConfig): FormVariant {
+  if (config.template === 'professional') return 'appointment';
+  if (config.template === 'booking') return 'booking';
+  return 'quote';
+}
+
 export function BusinessForm({
   config,
   variant = 'quote',
   compact = false,
 }: {
   config: DemoConfig;
-  variant?: 'quote' | 'appointment';
+  variant?: FormVariant;
   /** Tighter, for the trades hero where the form sits over the photograph. */
   compact?: boolean;
 }) {
@@ -36,13 +100,16 @@ export function BusinessForm({
 
   const destination =
     config.business.email ?? config.business.phone ?? 'your inbox';
-  const isAppointment = variant === 'appointment';
+  const words = copy[variant];
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     event.currentTarget.reset();
     setState('demo');
   }
+
+  // The hero form is short on purpose; the extra field is the one to drop.
+  const extra = compact ? 'none' : words.extra;
 
   return (
     <form
@@ -51,14 +118,8 @@ export function BusinessForm({
         .join(' ')}
       onSubmit={onSubmit}
     >
-      <h3 className={styles.formTitle}>
-        {isAppointment ? 'Request an appointment' : 'Get a free quote'}
-      </h3>
-      <p className={styles.formIntro}>
-        {isAppointment
-          ? 'Tell us when suits you and the front desk will confirm by phone, usually the same day.'
-          : 'Tell us what is going on and we will get you on the schedule for a free inspection.'}
-      </p>
+      <h3 className={styles.formTitle}>{words.title}</h3>
+      <p className={styles.formIntro}>{words.intro}</p>
 
       <div className={styles.formRow}>
         <label className={styles.field}>
@@ -78,7 +139,7 @@ export function BusinessForm({
         </label>
       </div>
 
-      {isAppointment ? (
+      {(variant === 'appointment' || variant === 'booking') && !compact && (
         <div className={styles.formRow}>
           <label className={styles.field}>
             <span>Best time to reach you</span>
@@ -89,12 +150,16 @@ export function BusinessForm({
             </select>
           </label>
 
-          <label className={styles.field}>
-            <span>Insurance (optional)</span>
-            <input type="text" name="insurance" autoComplete="off" />
-          </label>
+          {extra === 'insurance' && (
+            <label className={styles.field}>
+              <span>Insurance (optional)</span>
+              <input type="text" name="insurance" autoComplete="off" />
+            </label>
+          )}
         </div>
-      ) : compact ? null : (
+      )}
+
+      {extra === 'address' && (
         <label className={styles.field}>
           <span>Property address</span>
           <input type="text" name="address" autoComplete="street-address" />
@@ -102,12 +167,12 @@ export function BusinessForm({
       )}
 
       <label className={styles.field}>
-        <span>{isAppointment ? 'What do you need seen to?' : 'What is going on?'}</span>
+        <span>{words.detail}</span>
         <textarea name="message" rows={compact ? 3 : 4} required />
       </label>
 
       <button type="submit" className={`${styles.btn} ${styles.btnPrimary}`}>
-        {isAppointment ? 'Request appointment' : 'Request my free quote'}
+        {words.submit}
       </button>
 
       <p className={styles.formStatus} role="status" aria-live="polite" data-state={state}>

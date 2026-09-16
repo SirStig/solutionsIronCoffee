@@ -3,9 +3,10 @@ import type { DemoConfig } from './types';
 import { daysRemaining, demos, drafts, formatExpiry, fullAddress, isExpired, previews, showcases, telHref, todayName, getDemo, getAnyDemo } from './index';
 import { TEMPLATES, TEMPLATE_BLURBS } from './templates';
 import { iconNames } from './components/icons';
-import { artName } from './index';
+import { artName, pictureKind } from './index';
 import { hasScene } from './components/artwork';
 import { hasMotif } from './components/motifs';
+import { openState } from './components/blocks';
 import './components/scenes';
 
 const all = Object.values(demos);
@@ -112,12 +113,36 @@ describe('demo configs', () => {
     }
   });
 
-  it('never puts words in a real customer\u2019s mouth', () => {
-    // Testimonials are invented copy. On a fictional sample that is fine and
-    // labeled; on a preview carrying a real business\u2019s name it is not.
+  it('never puts invented words in a real mouth', () => {
+    /*
+     * A quote with no `source` is written copy. On a fictional sample that is
+     * fine and the page says the business is invented; on a preview carrying a
+     * real name it is the one mistake that cannot be walked back, because the
+     * person best placed to catch it is the person being pitched.
+     *
+     * A quote with a `source` is a real review being repeated, and the source
+     * is printed on the page so anyone can go and check it. That is allowed,
+     * and it is the strongest thing a cold preview can carry.
+     */
     for (const demo of all) {
       if (demo.showcase) continue;
-      expect(demo.testimonials ?? [], demo.slug).toHaveLength(0);
+      for (const quote of demo.testimonials ?? []) {
+        expect(
+          quote.source,
+          `${demo.slug}: "${quote.quote.slice(0, 40)}" has no source. A quote on a preview must name where it was published.`
+        ).toBeTruthy();
+      }
+    }
+  });
+
+  it('does not dress an invented quote up as a real review', () => {
+    // The other direction, and the reason `source` is not decoration: citing a
+    // sample's fictional customer to Google would make the one label that
+    // means something mean nothing.
+    for (const demo of showcases) {
+      for (const quote of demo.testimonials ?? []) {
+        expect(quote.source, `${demo.slug}: ${quote.name}`).toBeUndefined();
+      }
     }
   });
 
@@ -264,20 +289,151 @@ describe('formatting helpers', () => {
     }
   });
 
-  /* A preview for a real business is either drawn or photographed, never the
-   * two at once. Mixing them is the one combination that looks like a mistake
-   * rather than like a decision, and it also makes the disclosure at the foot
-   * of the page wrong whichever sentence it picks. */
-  it('does not mix drawings and photographs in one demo', () => {
+  /*
+   * Mixing drawings and photographs is allowed, but only when the page can say
+   * so.
+   *
+   * This used to forbid the mix outright, for two reasons. One was that the
+   * disclosure at the foot of the page had no true sentence to print: it chose
+   * between "these are drawings" and "these are photographs" and either was
+   * half wrong. That is fixed, and `pictureKind` now returns 'mixed' with
+   * wording that covers both.
+   *
+   * The other reason was that a mix looks like a mistake rather than a
+   * decision, and that one still holds if the mix is accidental. What makes it
+   * a decision here is the split being the same on every preview and doing a
+   * job: photographs carry the hero and the gallery, where a stranger decides
+   * whether this is a real business with a real website, and one drawing sits
+   * beside the story, where a stock photograph would be claiming to be a place
+   * it is not.
+   *
+   * So the rule is now about honesty rather than uniformity. Mix if you like,
+   * but a preview that mixes must carry `placeholderPhotos`, because that flag
+   * is what makes the page admit the photographs are not theirs.
+   */
+  it('only mixes drawings and photographs on a page that admits it', () => {
     for (const demo of all) {
       const keys = [demo.hero.image, ...demo.gallery, demo.about.image].filter(
         (key): key is string => Boolean(key)
       );
-      const drawn = keys.filter((key) => artName(key));
+      const drawn = keys.filter((key) => artName(key)).length;
+      const mixed = drawn > 0 && drawn < keys.length;
+      if (!mixed) continue;
+
       expect(
-        drawn.length === 0 || drawn.length === keys.length,
-        `${demo.slug} mixes ${drawn.length} drawings with ${keys.length - drawn.length} photos`
-      ).toBe(true);
+        demo.showcase || demo.placeholderPhotos,
+        `${demo.slug} mixes ${drawn} drawings with ${keys.length - drawn} photos but does not set placeholderPhotos, so the disclosure cannot say the photographs are stand-ins`
+      ).toBeTruthy();
     }
+  });
+
+  it('describes a mixed demo as mixed', () => {
+    // The disclosure reads off this, so a preview that carries both must not
+    // resolve to a kind whose sentence names only one of them.
+    for (const demo of previews) {
+      const keys = [demo.hero.image, ...demo.gallery, demo.about.image].filter(
+        (key): key is string => Boolean(key)
+      );
+      const drawn = keys.filter((key) => artName(key)).length;
+      if (drawn === 0 || drawn === keys.length) continue;
+      expect(pictureKind(demo), demo.slug).toBe('mixed');
+    }
+  });
+});
+
+describe('open now', () => {
+  /*
+   * The badge makes a claim about a real business, so the only acceptable
+   * failure mode is saying nothing. Everything below is one of the strings
+   * that actually appears in these configs.
+   */
+  const week = (open: string) =>
+    [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ].map((day) => ({ day, open }));
+
+  // A Wednesday, so every day of the week table is reachable from it.
+  const at = (hhmm: string) => new Date(`2026-09-16T${hhmm}:00`);
+
+  it('is open between the two times', () => {
+    expect(openState(week('10am to 6pm'), at('11:30'))).toEqual({
+      open: true,
+      note: 'Until 6pm',
+    });
+  });
+
+  it('is closed before opening and says when', () => {
+    expect(openState(week('10am to 6pm'), at('08:00'))).toEqual({
+      open: false,
+      note: 'Opens 10am',
+    });
+  });
+
+  it('is closed after closing and points at the next day', () => {
+    expect(openState(week('10am to 6pm'), at('19:00'))).toEqual({
+      open: false,
+      note: 'Opens Thursday',
+    });
+  });
+
+  it('reads the minutes, not just the hour', () => {
+    expect(openState(week('8:30am to 5:30pm'), at('08:15'))?.open).toBe(false);
+    expect(openState(week('8:30am to 5:30pm'), at('08:45'))?.open).toBe(true);
+  });
+
+  it('puts noon and midnight on the right side of the clock', () => {
+    // 12pm is noon and 12am is midnight, so the hour wraps rather than adds.
+    expect(openState(week('12pm to 8pm'), at('13:00'))?.open).toBe(true);
+    expect(openState(week('12am to 6am'), at('13:00'))?.open).toBe(false);
+  });
+
+  it('carries a closing time past midnight into the next day', () => {
+    expect(openState(week('6pm to 1am'), at('23:00'))?.open).toBe(true);
+  });
+
+  it('skips a closed day when looking for the next one', () => {
+    const hours = [
+      { day: 'Sunday', open: 'Closed' },
+      { day: 'Monday', open: 'Closed' },
+      { day: 'Tuesday', open: '8am to 5pm' },
+      { day: 'Wednesday', open: 'Closed' },
+      { day: 'Thursday', open: 'Closed' },
+      { day: 'Friday', open: '8am to 5pm' },
+      { day: 'Saturday', open: 'Closed' },
+    ];
+    expect(openState(hours, at('12:00'))).toEqual({
+      open: false,
+      note: 'Opens Friday',
+    });
+  });
+
+  it('says nothing at all about a day with no clock in it', () => {
+    // These are real values in these configs. Guessing "Open now" from any of
+    // them would put a false claim about a real business on its own page.
+    for (const text of [
+      'By appointment',
+      'Call or message',
+      'Emergency calls only',
+      'Open until the brisket runs out',
+    ]) {
+      expect(openState(week(text), at('12:00')), text).toBeNull();
+    }
+  });
+
+  it('says nothing when no row matches today', () => {
+    expect(openState([{ day: 'Monday', open: '9am to 5pm' }], at('12:00'))).toBeNull();
+  });
+
+  it('never claims to be open on a week that is entirely closed', () => {
+    expect(openState(week('Closed'), at('12:00'))).toEqual({
+      open: false,
+      note: 'Closed today',
+    });
   });
 });

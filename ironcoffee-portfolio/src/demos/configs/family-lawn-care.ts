@@ -108,7 +108,7 @@ const familyLawnCare: DemoConfig = {
   hero: {
     headline: 'The people who quote your yard are the people who cut it.',
     sub: 'Full service lawn care in Parker. A father and son, no crews, no subcontractors, no different truck every week.',
-    image: 'art:lawn-stripes',
+    image: 'demos/family-lawn-care/hero',
     ctaLabel: 'Get a Quote',
     ctaHref: '#quote',
   },
@@ -167,17 +167,53 @@ const familyLawnCare: DemoConfig = {
   ],
 
   gallery: [
-    'art:lawn-mower',
-    'art:lawn-edge',
-    'art:lawn-hedge',
-    'art:lawn-leaves',
+    'demos/family-lawn-care/mower',
+    'demos/family-lawn-care/edging',
+    'demos/family-lawn-care/lawn',
+    'demos/family-lawn-care/cleanup',
   ],
 
   about: {
     heading: 'Two people, and both of them turn up.',
     body: 'Family Lawn Care is a father and son working in Parker. In their own words, truly a family owned business. There is no office, no crew rotation and nobody selling you an upgrade over the phone: the person who walks your yard and quotes the work is the person standing behind the mower on Tuesday.',
+    // Drawn, where the photographs are not. A picture of the trade can
+    // stand beside the story; it cannot be the story, and one illustration
+    // per page is what stops five previews looking like five stock sets.
     image: 'art:lawn-sprinkler',
   },
+
+  /*
+   * No testimonials, and nothing to quote.
+   *
+   * Seventy four Facebook followers, one visible post from 2020 and no
+   * reviews anywhere: not evidence they have stopped, just almost no evidence
+   * of anything. Unlike the two stores in Kiowa there is not even
+   * unattributed text to come back to, so this page argues from what they
+   * say about themselves and from the work, which is the honest way round for
+   * a business with no public record.
+   */
+
+  pages: [
+    {
+      slug: 'services',
+      label: 'Services',
+      kind: 'services',
+      intro: 'Four things, all of them with public evidence behind them. A service they do not offer is a worse error on a preview than a short list.',
+    },
+    {
+      slug: 'areas',
+      label: 'Where we work',
+      kind: 'areas',
+      intro: 'Named subdivisions rather than "Denver metro", which is their own list and better than most competitors manage.',
+    },
+    {
+      slug: 'visit',
+      label: 'Get a quote',
+      kind: 'contact',
+      title: 'Get a quote',
+      intro: 'The person who walks your yard and quotes the work is the person standing behind the mower on Tuesday.',
+    },
+  ],
 
   faq: [
     {
@@ -193,6 +229,21 @@ const familyLawnCare: DemoConfig = {
       a: 'No, as long as the gate is unlocked and the dog is in.',
     },
   ],
+
+  /*
+   * The photography is the trade, not this shop, and the page says so.
+   *
+   * <DemoShell> prints a line admitting it, which is the point: an owner spots
+   * a picture of somebody else's place instantly, and having already said it
+   * turns the one weak spot in a cold preview into evidence that you are
+   * straight with people. None of these are exteriors, storefronts or signage,
+   * because a generic interior reads as a layout while a building reads as a
+   * claim about their premises.
+   *
+   * Clear this flag the day they hand over their own pictures.
+   */
+  placeholderPhotos: true,
+
 };
 
 export default familyLawnCare;

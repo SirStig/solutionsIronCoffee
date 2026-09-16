@@ -119,41 +119,53 @@ const barrBear: DemoConfig = {
   hero: {
     headline: 'Ring Le Ann, and she will fit you in.',
     sub: 'Barr Bear Country Cuts has been on Comanche Street in Kiowa since 2007. Times and prices are quickest to get by picking up the phone.',
-    image: 'art:salon-station',
+    image: 'demos/barr-bear/hero',
     ctaLabel: 'Call the Shop',
     ctaHref: 'tel:+13036212420',
   },
 
   /*
-   * No prices. Nothing about what she charges is public, and the one thing
-   * every review agrees on is that it is less than it should be, so a number
-   * invented here would be wrong in the direction that costs her money.
+   * No prices, and no price field either.
+   *
+   * Nothing about what she charges is public, and the one thing every review
+   * agrees on is that it is less than it should be, so a number invented here
+   * would be wrong in the direction that costs her money.
+   *
+   * Every row used to carry `price: 'Call for pricing'`, which rendered as the
+   * same four words repeated down the right hand edge of the widest, emptiest
+   * part of the page. Leaving the field out puts the template into its
+   * numbered variant and the question is answered once, in the FAQ.
    */
   services: [
     {
       title: 'Haircuts',
       icon: 'scissors',
       body: 'Men, women and children, all in the same chair, without leaving town for it.',
-      price: 'Call for pricing',
     },
     {
       title: 'Beard and neck work',
       icon: 'razor',
       body: 'Shaped, trimmed and finished properly rather than squared off in a hurry.',
-      price: 'Call for pricing',
     },
     {
       title: 'Color and styling',
       icon: 'brush',
       body: 'Ask in the chair. Nineteen years in one town is nineteen years of knowing what suits who.',
-      price: 'Call for pricing',
     },
     {
       title: 'Textured and loc work',
       icon: 'sparkle',
       body: 'Not something every small town shop takes on. Worth asking about when you ring.',
-      price: 'Call for pricing',
     },
+  ],
+
+  marquee: [
+    'Nineteen years, one chair',
+    'On Comanche Street since 2007',
+    'Men, women and children',
+    'Beard and neck work',
+    'Textured and loc work',
+    'Ring and she will fit you in',
   ],
 
   /*
@@ -173,19 +185,88 @@ const barrBear: DemoConfig = {
   ],
 
   gallery: [
-    'art:salon-shears',
-    'art:salon-basin',
-    'art:salon-color',
-    'art:salon-dryer',
+    'demos/barr-bear/chair',
+    'demos/barr-bear/clippers',
+    'demos/barr-bear/tools',
+    'demos/barr-bear/detail',
   ],
 
   about: {
     heading: 'Nineteen years, one chair, one town.',
     body: 'Barr Bear Country Cuts has been on Comanche Street since February 2007, owned and run the whole time by Le Ann Goetz. She is a native Coloradan and she lives in Kiowa, which means the person who answers the phone is the person who cuts your hair and the person whose name is over the door. Nineteen years in a town this size is not a business plan, it is a reputation.',
+    // Drawn, where the photographs are not. A picture of the trade can
+    // stand beside the story; it cannot be the story, and one illustration
+    // per page is what stops five previews looking like five stock sets.
     image: 'art:salon-pines',
   },
 
+  /*
+   * Real reviews, copied word for word, and the page names where they came
+   * from so anybody can go and read them.
+   *
+   * Captured 2026-09-16 from the Birdeye mirror of her Google reviews, shown
+   * there as eight to twenty four months old. No date is printed: "11 months
+   * ago" relative to a crawl of unknown age is not a date, and a wrong one on
+   * a page with her name at the top is worse than none.
+   *
+   * Harrison's is worth reading before the call. It names shoulder massages
+   * and a nose hair trim, which is what "and MORE" on her Facebook page turns
+   * out to mean, and it ends on her not charging enough, which is the same
+   * thing the note above this config says every review agrees on. The reviews
+   * were making the argument for the page before the page existed.
+   *
+   * Her name is spelled three different ways across the three, and all three
+   * stay as written. Tidying them would be editing a customer's words, and the
+   * inconsistency is itself the evidence that these are real.
+   */
+  testimonials: [
+    {
+      quote: 'Excellent shop! The owner Leann is fantastic!',
+      name: 'Eileen Kellogg',
+      source: 'Google',
+    },
+    {
+      quote:
+        'LeAnn is the best. I have hair that grows every direction & she can cut it so it looks great!',
+      name: 'Nancy Turner',
+      source: 'Google',
+    },
+    {
+      quote:
+        'LeeAnn is the best! Great haircuts, beard trims, shoulder massages, and even a nose hair trim. Above and beyond! Only problem is she doesn\u2019t charge enough.',
+      name: 'Harrison Filas',
+      source: 'Google',
+    },
+  ],
+
+  pages: [
+    {
+      slug: 'services',
+      label: 'Services',
+      kind: 'services',
+      intro: 'Prices are not published anywhere, so ring and she will tell you.',
+    },
+    {
+      slug: 'about',
+      label: 'The shop',
+      kind: 'about',
+      title: 'Nineteen years, one chair, one town',
+    },
+    {
+      slug: 'visit',
+      label: 'Visit',
+      kind: 'contact',
+      title: 'Find the shop',
+      intro: 'On Comanche Street in Kiowa. Ringing ahead is the surest way to get seen.',
+    },
+  ],
+
   faq: [
+    {
+      // The question the price column used to answer four times over.
+      q: 'What does a cut cost?',
+      a: 'Nothing is published online. Ring and she will tell you before you come in.',
+    },
     {
       q: 'Do I need an appointment?',
       a: 'Ringing ahead is the surest way to get seen. Call and she will tell you what she has free.',
@@ -199,6 +280,21 @@ const barrBear: DemoConfig = {
       a: 'Yes, including the wriggly ones. Say so when you call and she will leave a bit more time.',
     },
   ],
+
+  /*
+   * The photography is the trade, not this shop, and the page says so.
+   *
+   * <DemoShell> prints a line admitting it, which is the point: an owner spots
+   * a picture of somebody else's place instantly, and having already said it
+   * turns the one weak spot in a cold preview into evidence that you are
+   * straight with people. None of these are exteriors, storefronts or signage,
+   * because a generic interior reads as a layout while a building reads as a
+   * claim about their premises.
+   *
+   * Clear this flag the day they hand over their own pictures.
+   */
+  placeholderPhotos: true,
+
 };
 
 export default barrBear;

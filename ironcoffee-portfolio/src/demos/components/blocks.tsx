@@ -54,7 +54,7 @@ export function ServiceCards({
   bordered?: boolean;
 }) {
   return (
-    <div className={styles.serviceGrid}>
+    <div className={`${styles.serviceGrid} ${styles.stagger}`}>
       {items.map((service) => (
         <article
           key={service.title}
@@ -85,7 +85,7 @@ export function ServiceCards({
  */
 export function StatsBand({ stats }: { stats: DemoStat[] }) {
   return (
-    <dl className={styles.stats}>
+    <dl className={`${styles.stats} ${styles.stagger}`}>
       {stats.map((stat) => (
         <div key={stat.label} className={styles.stat}>
           {stat.icon && (
@@ -101,19 +101,34 @@ export function StatsBand({ stats }: { stats: DemoStat[] }) {
   );
 }
 
-/** Customer quotes. Gallery samples only; see DemoTestimonial. */
+/**
+ * Customer quotes in a row of cards.
+ *
+ * On a sample these are written. On a preview they are verbatim public
+ * reviews and carry a `source`, which is printed under the name: the
+ * attribution is the difference between repeating a claim and making one.
+ */
 export function Testimonials({ items }: { items: DemoTestimonial[] }) {
   return (
-    <div className={styles.quotes}>
+    <div className={`${styles.quotes} ${styles.stagger}`}>
       {items.map((t) => (
-        <figure key={t.name} className={styles.quoteCard}>
+        <figure key={t.quote} className={styles.quoteCard}>
           <span className={styles.quoteMark} aria-hidden="true">
             <Icon name="quote" size={28} />
           </span>
           <blockquote className={styles.quoteText}>{t.quote}</blockquote>
           <figcaption className={styles.quoteBy}>
-            <span className={styles.quoteName}>{t.name}</span>
+            {t.name && <span className={styles.quoteName}>{t.name}</span>}
             {t.detail && <span className={styles.quoteDetail}>{t.detail}</span>}
+            {t.source && (
+              <span
+                className={[styles.quoteSource, !t.name && styles.quoteSourceOnly]
+                  .filter(Boolean)
+                  .join(' ')}
+              >
+                {t.source} review
+              </span>
+            )}
           </figcaption>
         </figure>
       ))}
@@ -130,8 +145,35 @@ export function Testimonials({ items }: { items: DemoTestimonial[] }) {
  * Picks the shortest quote on file, because this treatment falls apart past
  * about thirty words.
  */
+/**
+ * The quote <PullQuote> will set at display size.
+ *
+ * Exported so a template can render the remaining quotes in a row underneath
+ * without printing one of them twice.
+ */
+export function pullQuotePick(
+  items: DemoTestimonial[]
+): DemoTestimonial | undefined {
+  return [...items].sort((a, b) => a.quote.length - b.quote.length)[0];
+}
+
+/**
+ * The quote that gets set at display size, and the ones that do not.
+ *
+ * Every template that shows reviews needs this split, and doing it by hand in
+ * each one is how the same review ends up printed twice on a page: once as the
+ * band and once in a card underneath it.
+ */
+export function splitQuotes(items?: DemoTestimonial[]): {
+  lead?: DemoTestimonial;
+  others: DemoTestimonial[];
+} {
+  const lead = items?.length ? pullQuotePick(items) : undefined;
+  return { lead, others: items?.filter((t) => t !== lead) ?? [] };
+}
+
 export function PullQuote({ items }: { items: DemoTestimonial[] }) {
-  const pick = [...items].sort((a, b) => a.quote.length - b.quote.length)[0];
+  const pick = pullQuotePick(items);
   if (!pick) return null;
 
   return (
@@ -139,9 +181,19 @@ export function PullQuote({ items }: { items: DemoTestimonial[] }) {
       <div className={styles.container}>
         <blockquote className={styles.pullQuoteText}>{pick.quote}</blockquote>
         <figcaption className={styles.pullQuoteBy}>
-          <span className={styles.pullQuoteName}>{pick.name}</span>
+          {pick.name && (
+            <span className={styles.pullQuoteName}>{pick.name}</span>
+          )}
           {pick.detail && (
             <span className={styles.pullQuoteDetail}>{pick.detail}</span>
+          )}
+          {/* On a preview this line is the whole point of the section. It says
+              the sentence above is not marketing copy, it is something a
+              customer already wrote somewhere the owner can go and check. */}
+          {pick.source && (
+            <span className={styles.pullQuoteDetail}>
+              {pick.source} review
+            </span>
           )}
         </figcaption>
       </div>
@@ -299,22 +351,62 @@ export function FeatureRows({
  * A salon or barber reads its own service list this way, as a column of names
  * with prices on the right, and it makes the page feel unlike the card grids
  * every other template uses.
+ *
+ * `numbered` is for the shop that publishes no prices, and it is not a
+ * cosmetic choice. Priced, the row is a name, a leader and a figure, and the
+ * figure is what the eye lands on. Unpriced, that same layout renders four
+ * rows of "Call for pricing" down the right hand edge: a column whose only job
+ * is to repeat one sentence, on the widest, emptiest part of the page. The
+ * number takes that anchor back and the description gets the width instead, so
+ * a shop that will not publish prices gets a service list that looks
+ * deliberate rather than one that looks unfinished.
  */
-export function ServiceRows({ items }: { items: DemoService[] }) {
+export function ServiceRows({
+  items,
+  numbered = false,
+}: {
+  items: DemoService[];
+  numbered?: boolean;
+}) {
   return (
-    <ul className={styles.serviceRows}>
-      {items.map((service) => (
+    <ul
+      className={[
+        styles.serviceRows,
+        numbered && styles.serviceRowsNumbered,
+        styles.stagger,
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      {items.map((service, index) => (
         <li key={service.title} className={styles.serviceRow}>
-          <div className={styles.serviceRowHead}>
-            <span className={styles.serviceRowTitle}>{service.title}</span>
-            {service.price && (
-              <>
-                <span className={styles.menuLeader} aria-hidden="true" />
-                <span className={styles.menuPrice}>{service.price}</span>
-              </>
-            )}
+          {/* The icon if there is one, the numeral if there is not. Every
+              config already names an icon per service and the priced layout
+              has nowhere to put it; in this one the leading slot is free, and
+              a drawn mark carries more of a shop's character than 01 does. */}
+          {numbered && (
+            <span className={styles.serviceRowMark} aria-hidden="true">
+              {service.icon ? (
+                <Icon name={service.icon} size={22} />
+              ) : (
+                <span className={styles.serviceRowNum}>
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+              )}
+            </span>
+          )}
+          <div className={styles.serviceRowMain}>
+            <div className={styles.serviceRowHead}>
+              <span className={styles.serviceRowTitle}>{service.title}</span>
+              {!numbered && service.price && (
+                <>
+                  <span className={styles.menuLeader} aria-hidden="true" />
+                  <span className={styles.menuPrice}>{service.price}</span>
+                </>
+              )}
+            </div>
+            <p className={styles.serviceRowBody}>{service.body}</p>
           </div>
-          <p className={styles.serviceRowBody}>{service.body}</p>
         </li>
       ))}
     </ul>
@@ -324,7 +416,7 @@ export function ServiceRows({ items }: { items: DemoService[] }) {
 /** Services as a numbered sequence. Reads as a process, which suits trades. */
 export function ServiceSteps({ items }: { items: DemoService[] }) {
   return (
-    <ol className={styles.serviceSteps}>
+    <ol className={`${styles.serviceSteps} ${styles.stagger}`}>
       {items.map((service, index) => (
         <li key={service.title} className={styles.serviceStep}>
           <span className={styles.serviceStepNum} aria-hidden="true">
@@ -434,7 +526,7 @@ export function ProductBlock({ groups }: { groups: DemoProductGroup[] }) {
               ))}
             </ul>
           ) : (
-          <div className={styles.productGrid}>
+          <div className={`${styles.productGrid} ${styles.stagger}`}>
             {group.items.map((item) => (
               <article key={item.name} className={styles.productCard}>
                 <h4 className={styles.productName}>{item.name}</h4>
@@ -467,6 +559,165 @@ export function ProductBlock({ groups }: { groups: DemoProductGroup[] }) {
 }
 
 /* --- Hours --------------------------------------------------------------- */
+
+/* --- Open now -----------------------------------------------------------
+ *
+ * Whether the shop is open at this moment, worked out from the hours table.
+ *
+ * The one piece of a small business site that a Facebook page cannot do and
+ * every owner immediately understands. It is also the cheapest possible proof
+ * that the page is running code rather than sitting there as a picture, which
+ * matters when the thing being sold is a site rather than a subscription.
+ *
+ * Three rules keep it honest.
+ *
+ * It only ever reads the same strings the hours table prints two inches below
+ * it, so the badge and the table cannot disagree. If the hours on the page are
+ * wrong, the badge is wrong in exactly the same way, which is the correction
+ * a preview is meant to provoke.
+ *
+ * Anything it cannot parse renders nothing at all. 'By appointment', 'Call or
+ * message' and 'Emergency calls only' are real values in these configs and
+ * none of them is a time. Guessing "Open now" from a sentence the parser did
+ * not understand would put a false claim about a real business on a page with
+ * that business's name at the top.
+ *
+ * And like <HoursList>, it reads the clock in an effect rather than during
+ * render. These pages are built hours or weeks ahead of being looked at, so a
+ * time resolved at render would be the build machine's, baked into the HTML
+ * and wrong by the time anybody sees it.
+ * ----------------------------------------------------------------------- */
+
+/** '5:30pm' -> 1050. Minutes past midnight, or null if it is not a time. */
+function clockMinutes(text: string): number | null {
+  const m = text.trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)$/i);
+  if (!m) return null;
+
+  const hour12 = Number(m[1]);
+  if (hour12 < 1 || hour12 > 12) return null;
+
+  const mins = m[2] ? Number(m[2]) : 0;
+  if (mins > 59) return null;
+
+  const pm = m[3].toLowerCase() === 'pm';
+  // 12am is midnight and 12pm is noon, so the hour wraps rather than adds.
+  const hour24 = (hour12 % 12) + (pm ? 12 : 0);
+  return hour24 * 60 + mins;
+}
+
+interface Span {
+  open: number;
+  close: number;
+  /** The strings as the config wrote them, so the badge quotes rather than
+      reformats. '10am' stays '10am' and never becomes '10:00 AM'. */
+  opensAt: string;
+  closesAt: string;
+}
+
+/** '10am to 6pm' -> a span. Anything else -> null. */
+function parseSpan(text: string): Span | null {
+  const parts = text.trim().split(/\s+(?:to|until|till|through|-|–|—)\s+/i);
+  if (parts.length !== 2) return null;
+
+  const open = clockMinutes(parts[0]);
+  const close = clockMinutes(parts[1]);
+  if (open === null || close === null) return null;
+
+  return {
+    open,
+    // A close earlier than the open is the next morning, not a negative day.
+    close: close <= open ? close + 24 * 60 : close,
+    opensAt: parts[0].trim(),
+    closesAt: parts[1].trim(),
+  };
+}
+
+const isClosed = (text: string) => /^closed$/i.test(text.trim());
+
+export interface OpenState {
+  open: boolean;
+  /** 'until 6pm', 'opens 10am', 'opens Tuesday'. */
+  note: string;
+}
+
+/**
+ * Exported for the tests, which is the only way to check this without
+ * pretending to be a browser at half past four on a Wednesday.
+ */
+export function openState(
+  hours: DemoConfig['hours'],
+  now = new Date()
+): OpenState | null {
+  const today = todayName(now);
+  const row = hours.find((h) => h.day === today);
+  if (!row) return null;
+
+  const minutesNow = now.getHours() * 60 + now.getMinutes();
+
+  // The next day that states a time, for the "opens Thursday" case. Starts at
+  // tomorrow and gives up after a full week rather than looping forever on a
+  // config where nothing parses.
+  const nextOpenDay = (): string | null => {
+    const index = hours.findIndex((h) => h.day === today);
+    for (let step = 1; step <= hours.length; step += 1) {
+      const candidate = hours[(index + step) % hours.length];
+      if (parseSpan(candidate.open)) return candidate.day;
+    }
+    return null;
+  };
+
+  if (isClosed(row.open)) {
+    const day = nextOpenDay();
+    return { open: false, note: day ? `Opens ${day}` : 'Closed today' };
+  }
+
+  const span = parseSpan(row.open);
+  // 'By appointment', 'Call or message', anything else with no clock in it.
+  // Saying nothing is the only safe answer.
+  if (!span) return null;
+
+  if (minutesNow < span.open) {
+    return { open: false, note: `Opens ${span.opensAt}` };
+  }
+  if (minutesNow < span.close) {
+    return { open: true, note: `Until ${span.closesAt}` };
+  }
+
+  const day = nextOpenDay();
+  return { open: false, note: day ? `Opens ${day}` : 'Closed now' };
+}
+
+export function OpenNow({
+  hours,
+  className,
+}: {
+  hours: DemoConfig['hours'];
+  className?: string;
+}) {
+  const [state, setState] = useState<OpenState | null>(null);
+
+  useEffect(() => setState(openState(hours)), [hours]);
+
+  if (!state) return null;
+
+  return (
+    <span
+      className={[
+        styles.openNow,
+        state.open ? styles.openNowYes : styles.openNowNo,
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      <span className={styles.openNowDot} aria-hidden="true" />
+      <span className={styles.openNowLabel}>
+        {state.open ? 'Open now' : 'Closed'}
+      </span>
+      <span className={styles.openNowNote}>{state.note}</span>
+    </span>
+  );
+}
 
 /**
  * Marks the current day, but only after the page has hydrated.
@@ -534,6 +785,37 @@ export function HoursStrip({ hours }: { hours: DemoConfig['hours'] }) {
   );
 }
 
+/**
+ * Hours and the one action, as a card that sits over the hero.
+ *
+ * The roofing sample puts a quote form here and it is the strongest opening in
+ * the set, because something useful is on screen before the visitor has
+ * scrolled at all. A barbershop has no form worth filling in: the useful thing
+ * is whether they are open right now and what the number is.
+ *
+ * The whole week is printed rather than just today, which looks like more work
+ * and is in fact less: seven static rows are the same markup on the server and
+ * in the browser, so there is nothing to reconcile and nothing that pops in a
+ * beat after the page paints. The two live parts, the badge and the highlight
+ * on today's row, each arrive on their own once there is a real clock to read.
+ */
+export function HoursCard({ config }: { config: DemoConfig }) {
+  const { hero } = config;
+
+  return (
+    <div className={styles.hoursCard}>
+      <div className={styles.hoursCardHead}>
+        <h2 className={styles.hoursCardTitle}>Hours</h2>
+        <OpenNow hours={config.hours} />
+      </div>
+      <HoursList hours={config.hours} />
+      <Cta href={hero.ctaHref} block>
+        {hero.ctaLabel}
+      </Cta>
+    </div>
+  );
+}
+
 /* --- Gallery ------------------------------------------------------------- */
 
 /**
@@ -556,11 +838,22 @@ export function GalleryGrid({
   images,
   business,
   fullBleed = false,
+  cols: forcedCols,
 }: {
   images: string[];
   business: string;
   /** Edge to edge, with no section padding. Breaks up a page of containers. */
   fullBleed?: boolean;
+  /**
+   * Override the column count `layout()` would pick.
+   *
+   * There for a set of drawings, which want to run as one band across the
+   * page. Four photographs in a two by two grid read as four photographs;
+   * four illustrations in the same grid read as four pieces of clip art in
+   * boxes, and the same four in a single row read as one frieze, which is a
+   * thing somebody drew on purpose.
+   */
+  cols?: number;
 }) {
   if (images.length === 0) return null;
 
@@ -572,12 +865,17 @@ export function GalleryGrid({
   // first tile a double-width span adds one cell, and a count that was awkward
   // becomes one that is not. Five photos is the common case and the result is
   // a better layout than five equal squares would have been anyway.
-  const { cols, lead } = layout(images.length);
+  const auto = layout(images.length);
+  const cols = forcedCols ?? auto.cols;
+  // A forced column count is a deliberate shape; the lead tile's double span
+  // exists only to rescue a count that divides by nothing, and applying it
+  // here would put a hole back in the row it was asked to make.
+  const lead = forcedCols ? false : auto.lead;
 
   if (fullBleed) {
     return (
       <div
-        className={styles.galleryBand}
+        className={`${styles.galleryBand} ${styles.stagger}`}
         style={{ '--band-cols': cols } as React.CSSProperties}
       >
         {images.map((name, index) => (
@@ -604,7 +902,7 @@ export function GalleryGrid({
 
   return (
     <div
-      className={styles.gallery}
+      className={`${styles.gallery} ${styles.stagger}`}
       style={{ '--band-cols': cols } as React.CSSProperties}
     >
       {images.map((name, index) => (
@@ -633,7 +931,7 @@ export function GalleryGrid({
 
 export function TeamGrid({ members }: { members: DemoTeamMember[] }) {
   return (
-    <div className={styles.teamGrid}>
+    <div className={`${styles.teamGrid} ${styles.stagger}`}>
       {members.map((member) => (
         <article key={member.name} className={styles.teamCard}>
           <div className={styles.teamPhoto}>
@@ -657,7 +955,7 @@ export function TeamGrid({ members }: { members: DemoTeamMember[] }) {
 
 export function FaqList({ items }: { items: DemoFaq[] }) {
   return (
-    <div className={styles.faqList}>
+    <div className={`${styles.faqList} ${styles.stagger}`}>
       {items.map((item) => (
         <article key={item.q} className={styles.faqItem}>
           <h3 className={styles.faqQ}>{item.q}</h3>
@@ -787,7 +1085,16 @@ export function ContactDetails({ config }: { config: DemoConfig }) {
   );
 }
 
-/** Contact details, hours and a directions link: the "where and when" block. */
+/**
+ * Contact details, hours and a directions link: the "where and when" block.
+ *
+ * The week is printed here even on a template whose hero already carries an
+ * hours card. Dropping it to avoid the repetition was tried and was worse: the
+ * section is titled "Where to come", and with one short column under that
+ * heading it reads as a page that ran out of things to say. A visitor looking
+ * for opening times in the place opening times belong is not annoyed to find
+ * them.
+ */
 export function VisitBlock({ config }: { config: DemoConfig }) {
   return (
     <div className={styles.visitGrid}>
@@ -803,6 +1110,7 @@ export function VisitBlock({ config }: { config: DemoConfig }) {
         <h3 className={styles.blockTitle}>
           <Clock size={18} aria-hidden="true" />
           Hours
+          <OpenNow hours={config.hours} />
         </h3>
         <HoursList hours={config.hours} />
       </div>

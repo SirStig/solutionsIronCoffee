@@ -683,6 +683,17 @@
   grid-template-columns: minmax(0, 28rem);
 }
 
+/* Four cards land as three and a hole: auto-fit gets three tracks out of this
+   container at the minimum track size, and the fourth card drops to a row of
+   its own beside two empty cells. A trailing gap in a grid is the same bug the
+   photo gallery solves with `layout()`, and it is the fastest way for a page
+   that is otherwise finished to look unfinished. Two by two has no hole. */
+@media (min-width: 40rem) {
+  .serviceGrid:has(> :last-child:nth-child(4)) {
+    grid-template-columns: repeat(2, minmax(0, 26rem));
+  }
+}
+
 .serviceCard {
   position: relative;
   color: var(--d-text);
@@ -4465,4 +4476,180 @@
 
 .vEnquireAside {
   padding-top: 0.5rem;
+}
+
+/* --- Numbered service rows -----------------------------------------------
+   The unpriced variant. See <ServiceRows>: a shop that publishes no prices
+   rendered in the priced layout gets a column of "Call for pricing" repeated
+   down the right hand edge, which is the emptiest thing a page can do with its
+   widest column. The numeral takes that anchor back. */
+.serviceRowsNumbered .serviceRow {
+  display: flex;
+  /* Not baseline: the mark is a circle, and baseline-aligning a 2.25rem disc
+     to a line of type hangs it below the title it belongs to. */
+  align-items: flex-start;
+  gap: clamp(0.75rem, 0.5rem + 1vw, 1.25rem);
+}
+
+.serviceRowMain {
+  min-width: 0;
+}
+
+.serviceRowNum {
+  font-family: var(--d-display);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+}
+
+/* --- Open now ------------------------------------------------------------
+   A live badge next to the hours. Deliberately not brand colored: "open" has
+   one conventional color and borrowing the brand's would make a green shop
+   look open and a red one look shut. The greens and grays below are fixed and
+   checked, 5.9:1 and 7:1 against both section grounds. */
+.openNow {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-left: auto;
+  font-family: var(--d-font);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.openNowDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  flex: none;
+  align-self: center;
+  background: currentColor;
+}
+
+.openNowLabel {
+  font-weight: 650;
+}
+
+.openNowYes {
+  color: #146c3a;
+}
+
+.openNowNo {
+  color: var(--d-muted);
+}
+
+.openNowNote {
+  color: var(--d-faint);
+}
+
+/* --- Review attribution ---------------------------------------------------
+   Printed under the name on a preview, where the quote is a real review
+   rather than a written one. Small on purpose: it is a citation, not a badge,
+   and it should read as a fact about where the sentence came from. */
+.quoteSource {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--d-faint);
+}
+
+/* --- Staggered arrival ----------------------------------------------------
+   A row of cards that fades in as one slab is worse than one that does not
+   move at all: the eye reads a single rectangle appearing rather than a set of
+   things. Each child gets its range pushed a little further down the scroll,
+   so the row arrives left to right.
+
+   Everything here follows the rules at the top of the venue motion block. The
+   starting state lives inside @supports, so a browser without scroll-driven
+   animation gets the finished page rather than a blank one; nothing but
+   opacity and transform moves, so none of it can shift the layout; and it all
+   stops for anyone who has asked their system to stop moving things. Delete
+   this block and the pages still read correctly, they just stop moving. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .stagger > * {
+      opacity: 0;
+      transform: translateY(1.5rem);
+      animation: dStagger linear both;
+      animation-timeline: view();
+      /* Finished before the child reaches the middle of the screen, however
+         far down the run it is. A reader must never be waiting on this. */
+      animation-range: entry 6% cover calc(26% + var(--d-step, 0%));
+    }
+
+    .stagger > *:nth-child(2) { --d-step: 5%; }
+    .stagger > *:nth-child(3) { --d-step: 10%; }
+    .stagger > *:nth-child(4) { --d-step: 15%; }
+    .stagger > *:nth-child(n + 5) { --d-step: 20%; }
+
+    @keyframes dStagger {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  }
+}
+
+/* --- Hours card ----------------------------------------------------------
+   The hero aside for a business whose useful opening fact is "are they open",
+   not "fill this in". Same surface and shadow as the quote form card on the
+   roofing sample, because they are the same object doing the same job in the
+   same place, and two different cards over two heroes would be two house
+   styles. It states its own text color for the same reason <form> does: it
+   sits over a dark hero and must not inherit white onto white. */
+.hoursCard {
+  min-width: 0;
+  color: var(--d-text);
+  background: var(--d-surface);
+  border: 1px solid var(--d-border);
+  border-radius: var(--d-radius-lg);
+  padding: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+  box-shadow: var(--d-shadow);
+}
+
+.hoursCardHead {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.hoursCardTitle {
+  font-size: 1.25rem;
+}
+
+.hoursCard .btn {
+  margin-top: 1.25rem;
+}
+
+
+/* The leading slot in a numbered service row: an icon where the config names
+   one, the numeral where it does not. Sized to the numeral either way so the
+   titles line up whether or not a given service has an icon. */
+.serviceRowMark {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--brand) 9%, transparent);
+  color: var(--brand);
+}
+
+/* An unnamed review has the source doing the whole job of the attribution, so
+   it carries the weight the name would have had rather than sitting under it
+   as a caption. */
+.quoteSourceOnly {
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-weight: 650;
+  color: var(--d-muted);
 }

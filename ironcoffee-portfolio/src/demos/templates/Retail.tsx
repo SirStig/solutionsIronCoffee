@@ -10,7 +10,9 @@ import {
   ServiceCards,
   Marquee,
   PullQuote,
+  splitQuotes,
   StatementBand,
+  Testimonials,
   StatsBand,
   VisitBlock,
 } from '../components/blocks';
@@ -38,6 +40,8 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
   const links = homeNavLinks(config, anchors);
 
   const today = config.hours.find((h) => h.day === todayName());
+
+  const { lead, others } = splitQuotes(config.testimonials);
 
   return (
     <DemoShell config={config} links={links}>
@@ -75,6 +79,17 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
         </Section>
       )}
 
+      {others.length > 0 && (
+        <Section>
+          <SectionHead
+            eyebrow="In their own words"
+            title="What people say about the place"
+            sub={`Left in public by their own customers. ${others[0].source ?? 'Google'} reviews, copied word for word.`}
+          />
+          <Testimonials items={others} />
+        </Section>
+      )}
+
       <Section id="about">
         <AboutBlock config={config} />
       </Section>
@@ -91,9 +106,9 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
         <VisitBlock config={config} />
       </Section>
 
-      {config.testimonials?.length ? (
+      {lead ? (
         <Bleed tone="deep">
-          <PullQuote items={config.testimonials} />
+          <PullQuote items={config.testimonials ?? []} />
         </Bleed>
       ) : (
         <StatementBand

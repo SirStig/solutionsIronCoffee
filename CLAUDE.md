@@ -24,7 +24,8 @@ npm run typecheck       # tsc --noEmit
 npm run optimize:media  # rebuild public/img from assets/images (cached)
 npm run generate:brand  # rebuild favicons + share cards from vector source
 npm run capture:samples # screenshot the gallery samples (needs a build first)
-npm run audit:ui        # drive the build across 2 engines x 8 viewports
+npm run audit:ui        # drive the build across 2 engines x 10 viewports
+npm run demos           # list every demo site and its URL
 ```
 
 `capture:samples` is deliberately not part of `npm run build`: it photographs
@@ -120,13 +121,26 @@ Demo images are manifest keys, not paths. Put sources in
 optimizer has not produced yet renders a branded gradient, so a config can be
 written and reviewed before the photos exist.
 
-**A preview for a real business is drawn, not photographed.** A key written
-`art:<scene>` resolves to an original illustration in
-`src/demos/components/artwork.tsx` instead of a photograph. The gradient
-fallback is honest about having no picture and says nothing else, and six of
-them down a page reads as a wireframe, which is not a thing anybody buys. A
-drawing also cannot make the claim a stock photo makes: an interior that is not
-their interior is a small lie an owner spots instantly.
+**A preview for a real business carries both, and the split is deliberate.**
+A key written `art:<scene>` resolves to an original illustration in
+`src/demos/components/artwork.tsx` instead of a photograph. Photographs take
+the hero and the gallery; one drawing sits beside the story in the about block.
+
+This used to be drawings only, on the argument that an interior which is not
+their interior is a small lie an owner spots instantly. That argument is right
+about the hero of a *place* and wrong about everything else, and following it
+all the way produced five previews with no photography on them at all, which
+reads as a wireframe rather than as a website. The fix is not to stop
+disclosing, it is to disclose and then show something worth looking at:
+`placeholderPhotos: true` puts a line on the page saying the photographs are of
+the trade rather than of their place. Never a storefront, an exterior or
+anything with signage: a generic interior reads as a layout, a building reads
+as a claim about their premises.
+
+The drawing in the about block is what keeps five previews from reading as five
+stock sets, and it is the one slot where a photograph would be claiming to be
+somewhere it is not. The gradient fallback is honest about having no picture
+and says nothing else, so it is a placeholder, never a design.
 
 Scenes live in `components/scenes/<trade>.tsx`, are drawn on a 1200x900 grid,
 and paint with five CSS variables rather than literal colors, so one drawing
@@ -150,11 +164,19 @@ a 4:3 scene to that gives you a detail of itself: the lawn sample showed the
 middle nine inches of a mower. That band never wanted a picture, it wanted a
 surface.
 
-Templates ask `isDrawn(config)` rather than assuming. The trades template used
+Templates ask `pictureKind(config)` rather than assuming, and it answers with
+four states: `drawn`, `mixed`, `placeholder` or `own`. The trades template used
 to print "Photographed the day we finished" over a set of drawings, which is
 exactly the kind of wrong detail that costs a sale: an owner who catches the
 page describing its own pictures inaccurately has no reason to believe the
-opening times.
+opening times. It had the same bug again in the other direction the moment
+previews carried stock, which is why the two-state version is gone.
+
+Pass a narrower list to ask about part of the page: the trades gallery heading
+is about those pictures, so it asks `pictureKind(config, config.gallery)` and
+does not describe a drawing three sections further down. A preview that mixes
+must set `placeholderPhotos`, and a test enforces it, because that flag is the
+only thing that gives the disclosure a true sentence to print.
 
 A config marked `draft: true` is typechecked and validated by the tests but
 never prerendered, so a half-written business cannot become a link that gets
@@ -183,9 +205,63 @@ optional, since some businesses publish only a Facebook page and a booking
 link, and every template degrades to the next best action rather than letting
 anyone invent a number. And `placeholderPhotos: true` prints a line on the page
 admitting the photography is generic, which is what you set on a preview for a
-real business until they hand over their own pictures. Never generate a
-storefront, an exterior or anything with signage for a real business: a generic
-interior reads as a layout, a building reads as a claim about their premises.
+real business until they hand over their own pictures.
+
+**A preview has to carry proof, and the honesty rules are not an excuse not
+to.** Every slot that makes a page persuasive, the stats band, the quotes, the
+team grid, the extra pages, is conditional in the templates: no data, no
+section. So "never invent a stat for a real business" got implemented as
+*leave the section out*, and five previews came out as the same eight sections
+in the same order with twice the white space, which is not a page anybody pays
+a few hundred dollars for. The rule is right. The conclusion drawn from it was
+wrong. Fill the slot with something true instead.
+
+The strongest of those is a review the business already has in public.
+`DemoTestimonial.source` is what separates the two things that share that
+shape: without it the quote is written copy, fine on a fictional sample and
+forbidden on a preview; with it the quote is theirs, copied word for word, with
+the platform printed on the page so anyone can go and check. Two tests hold the
+line in both directions, and `name` is optional because several aggregators
+publish the words and drop the name. **Never cite a platform you have not
+confirmed.** Inventing the citation is the same failure as inventing the quote
+and it is harder to spot, so a review whose source cannot be established stays
+in a comment in the config until the call settles it. Of the five previews, two
+carry reviews, two carry a note naming the unattributed text, and one has
+nothing to quote at all, which is also why they no longer look alike.
+
+**Motion is CSS only and it now runs everywhere.** `components/motion.tsx` and
+the `@supports (animation-timeline: view())` blocks in `Demo.module.css` were
+written for the venue sample and imported by exactly one file, so every other
+template, which is every preview, had no motion of any kind. `SectionHead`
+lifts in on every template now, and `.stagger` on a grid brings its children in
+one after another rather than as one slab. Verified running in both Chromium
+and WebKit, so Safari and iOS included. All of it is additive: delete it and
+the pages still read.
+
+A screenshot of one of these pages needs `reducedMotion: 'reduce'`, or
+everything below the fold photographs at `opacity: 0` and the page looks
+broken. Scroll it first as well, or the lazy images below the fold stay as blur
+placeholders. Neither is a bug in the page and both look exactly like one.
+
+**`<OpenNow>` is the cheapest thing on the page and the one owners react to.**
+It works out open or closed from the same hours table printed below it, so the
+two can never disagree, and it renders nothing at all for a day it cannot
+parse: "By appointment", "Call or message" and "Emergency calls only" are real
+values in these configs and none of them is a time. Guessing from a string the
+parser did not understand would put a false claim about a real business on a
+page with that business's name at the top. It reads the clock in an effect, not
+during render, for the same reason `<HoursList>` does.
+
+**Finding them again.** `npm run demos` prints every sample and every preview
+with its URL, its extra pages, its subdomain and how many days a preview has
+left. `--urls` gives bare URLs to pipe somewhere, `--json` gives the lot,
+`--local` points them at the dev server. It reads the configs through esbuild
+rather than the SSR bundle, so it needs no build and answers instantly.
+
+It is a terminal command and not a page on the site on purpose. A public index
+of every preview would undo all three things that keep them out of search at
+once, and these are pages built for one business to look at rather than a
+directory.
 
 **The gallery and the pricing page.** `/templates` illustrates itself with
 real screenshots of the real samples, captured by `scripts/capture-samples.mjs`

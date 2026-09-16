@@ -6,22 +6,32 @@ import {
   AboutBlock,
   FaqList,
   GalleryGrid,
+  HoursCard,
+  Marquee,
   PullQuote,
+  splitQuotes,
   StatementBand,
   ServiceRows,
   StatsBand,
   TeamGrid,
+  Testimonials,
   VisitBlock,
 } from '../components/blocks';
 import { Bleed, Section, SectionHead } from '../components/primitives';
 import { homeNavLinks, type NavLink } from '../components/DemoNav';
+import { pictureKind } from '../index';
 
 /**
  * Booking, laid out like a treatment card.
  *
- * A split hero, then the service list as a priced column rather than a grid,
- * because that is how a salon writes its own menu of services and it makes the
- * page scan like a price list instead of a brochure.
+ * The service list is a priced column rather than a grid, because that is how
+ * a salon writes its own menu of services and it makes the page scan like a
+ * price list instead of a brochure. A shop that publishes no prices gets the
+ * numbered variant instead; see <ServiceRows> for why that is not a cosmetic
+ * swap.
+ *
+ * The hero is chosen by whether the pictures are photographs or drawings
+ * rather than by which business it is. See below.
  *
  * This is the one sample that centers its headings, and it centers all of
  * them. Done once it reads as a house style; done on three of five samples it
@@ -49,9 +59,41 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
     (service) => service.price && !/^call/i.test(service.price)
   );
 
+  /*
+   * A preview and a sample want different heroes, and the difference is who is
+   * reading.
+   *
+   * A sample is browsed by a stranger comparing designs, so the five of them
+   * have to open five different ways or the gallery reads as one template with
+   * the names swapped. The split hero is this one's.
+   *
+   * A preview is read by exactly one person deciding whether to pay for it,
+   * and the fastest way to answer "is this thing any use to me" is to put
+   * something working on screen before they scroll: the week, and whether the
+   * shop is open at this moment. That is the roofing sample's opening, which
+   * is the strongest in the set, with the quote form swapped for the card a
+   * barbershop actually needs.
+   */
+  const card = !config.showcase;
+
+  // Drawings run as a single band; photographs keep the grid. See the prop.
+  const drawnGallery = pictureKind(config, config.gallery) === 'drawn';
+
+  const { lead, others } = splitQuotes(config.testimonials);
+
   return (
     <DemoShell config={config} links={links} navVariant="centered">
-      <DemoHero config={config} variant="split" />
+      {card ? (
+        <DemoHero
+          config={config}
+          variant="panel"
+          aside={<HoursCard config={config} />}
+        />
+      ) : (
+        <DemoHero config={config} variant="split" />
+      )}
+
+      {config.marquee?.length ? <Marquee items={config.marquee} /> : null}
 
       <Section id="services">
         <SectionHead
@@ -64,7 +106,7 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
           }
           align="center"
         />
-        <ServiceRows items={config.services} />
+        <ServiceRows items={config.services} numbered={!priced} />
       </Section>
 
       {config.team?.length ? (
@@ -79,9 +121,26 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
         </Section>
       ) : null}
 
-      {config.testimonials?.length ? (
+      {others.length > 0 && (
+        <Section tone="alt">
+          <SectionHead
+            eyebrow="In their own words"
+            title="What people say about the place"
+            sub={
+              /* Named, not implied. A page that quotes reviews without saying
+                 where they came from is indistinguishable from one that made
+                 them up, which is the whole reason the rule about invented
+                 quotes exists. */
+              `Left in public by their own customers. ${others[0].source ?? 'Google'} reviews, copied word for word.`
+            }
+          />
+          <Testimonials items={others} />
+        </Section>
+      )}
+
+      {lead ? (
         <Bleed tone="deep">
-          <PullQuote items={config.testimonials} />
+          <PullQuote items={config.testimonials ?? []} />
         </Bleed>
       ) : (
         <StatementBand
@@ -102,6 +161,7 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
           images={config.gallery}
           business={config.business.name}
           fullBleed
+          cols={drawnGallery ? config.gallery.length : undefined}
         />
       )}
 

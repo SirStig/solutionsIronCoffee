@@ -104,7 +104,7 @@ const mkLiquors: DemoConfig = {
   hero: {
     headline: 'Ask us for it. If it is not on the shelf, we will order it.',
     sub: 'Beer, wine and spirits on Comanche Street, without the drive to Parker and back.',
-    image: 'art:bottle-shelf',
+    image: 'demos/mk-liquors/hero',
     ctaLabel: 'Call the Store',
     ctaHref: 'tel:+13039530154',
   },
@@ -185,17 +185,58 @@ const mkLiquors: DemoConfig = {
   ],
 
   gallery: [
-    'art:bottle-row',
-    'art:bottle-cooler',
-    'art:bottle-wine',
-    'art:bottle-barrel',
+    'demos/mk-liquors/shelves',
+    'demos/mk-liquors/wine',
+    'demos/mk-liquors/beer',
+    'demos/mk-liquors/counter',
   ],
 
   about: {
     heading: 'The one on Comanche Street.',
     body: 'MK Liquors is on Comanche Street in Kiowa, run by the family that owns it rather than by a chain. If what you want is not on the shelf, ask and it can be ordered in. The next store is a long way down the highway, which is the whole reason this one is worth keeping.',
+    // Drawn, where the photographs are not. A picture of the trade can
+    // stand beside the story; it cannot be the story, and one illustration
+    // per page is what stops five previews looking like five stock sets.
     image: 'art:bottle-glasses',
   },
+
+  /*
+   * No testimonials, and that is a decision rather than an omission.
+   *
+   * There are real reviews out there and the words are good: "Very friendly and knowledgeable just the way a small
+   * town Liquor store is suppose to be", and "Good selection. Owner
+   * opperated and they are very nice people."
+   * But every aggregator that carries them strips the reviewer's name and
+   * does not say which platform they came from, and `source` is a promise
+   * that the quote can be found. Printing "Google review" over a review I
+   * cannot confirm was left on Google is inventing a citation, which is the
+   * same failure as inventing the quote, only harder to spot.
+   *
+   * Worth two minutes on the call: ask where their reviews are and this
+   * section fills itself. See barr-bear.ts for the shape.
+   */
+
+  pages: [
+    {
+      slug: 'stock',
+      label: 'What we carry',
+      kind: 'stock',
+      intro: 'Categories rather than a brand list, because what is on the shelf this week is a question for the phone.',
+    },
+    {
+      slug: 'about',
+      label: 'The store',
+      kind: 'about',
+      title: 'The one on Comanche Street',
+    },
+    {
+      slug: 'visit',
+      label: 'Visit',
+      kind: 'contact',
+      title: 'Stop by',
+      intro: 'On Comanche Street in Kiowa, which is a good deal closer than the drive to Parker.',
+    },
+  ],
 
   faq: [
     {
@@ -211,6 +252,21 @@ const mkLiquors: DemoConfig = {
       a: 'The family that owns it. The same people are behind the counter, which is the whole difference between here and a chain down the highway.',
     },
   ],
+
+  /*
+   * The photography is the trade, not this shop, and the page says so.
+   *
+   * <DemoShell> prints a line admitting it, which is the point: an owner spots
+   * a picture of somebody else's place instantly, and having already said it
+   * turns the one weak spot in a cold preview into evidence that you are
+   * straight with people. None of these are exteriors, storefronts or signage,
+   * because a generic interior reads as a layout while a building reads as a
+   * claim about their premises.
+   *
+   * Clear this flag the day they hand over their own pictures.
+   */
+  placeholderPhotos: true,
+
 };
 
 export default mkLiquors;
