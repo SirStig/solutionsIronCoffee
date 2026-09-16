@@ -77,7 +77,12 @@ for (const slug of slugs) {
   ]) {
     const ctx = await browser.newContext({
       viewport,
-      deviceScaleFactor: 2,
+      /* 1x, not 2x. The desktop shot is displayed at roughly 660 CSS pixels
+         wide in the gallery, so a 1440 wide capture is already better than
+         2x for it, and the media optimizer resamples to four widths from
+         here anyway. At 2x these were 3 MB each and nineteen megabytes of
+         screenshots went into the repository for no visible gain. */
+      deviceScaleFactor: 1,
       // The sample-site banner is scaffolding for the gallery, not part of
       // what the business would ship, and it is the first thing in the frame.
       reducedMotion: 'reduce',

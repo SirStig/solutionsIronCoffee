@@ -2170,7 +2170,7 @@
   );
 }
 
-/* A hairline rule with a brand-coloured leader, used under section heads that
+/* A hairline rule with a brand-colored leader, used under section heads that
    sit left rather than centered. */
 .ruled {
   padding-bottom: 1.25rem;
@@ -2620,10 +2620,15 @@
   letter-spacing: 0;
 }
 
+/* Full white, and the difference from the name is carried by weight rather
+   than opacity. Fading white to 70% on a mid-tone brand color drops it to
+   3.25:1, and how far it drops depends entirely on which brand color the
+   config happens to set, so there is no safe alpha to pick here. */
 .pullQuoteDetail {
   font-family: var(--d-font);
   font-size: 0.9375rem;
-  color: rgb(255 255 255 / 0.7);
+  font-weight: 400;
+  color: #fff;
 }
 
 .bleedAlt .pullQuoteDetail {

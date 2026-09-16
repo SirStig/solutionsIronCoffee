@@ -65,6 +65,7 @@ export default function Templates() {
         title="Sample small business websites"
         description="Finished sample websites for restaurants, salons, trades, clinics and shops. Real working pages you can open on your phone, not screenshots."
         path="/templates"
+        image="/og-templates.png"
         jsonLd={collectionSchema}
       />
 
@@ -87,12 +88,12 @@ export default function Templates() {
                 .filter(Boolean)
                 .join(' ')}
             >
-              <Link
-                to={`/templates/${demo.slug}`}
-                className={styles.shots}
-                tabIndex={-1}
-                aria-hidden="true"
-              >
+              {/* A plain span, not a second link. The business name below
+                  already links to this page and covers the whole row through
+                  its ::after overlay, so a link here would be a duplicate
+                  destination with no accessible name on it. The hover
+                  animation keys off :hover, which a span has too. */}
+              <span className={styles.shots}>
                 {/* A screenshot, framed. The chrome is three dots and a bar:
                     enough for the eye to read "browser" without pretending to
                     be a specific one. */}
@@ -117,7 +118,7 @@ export default function Templates() {
                     sizes="(min-width: 64rem) 12vw, 26vw"
                   />
                 </span>
-              </Link>
+              </span>
 
               <div className={styles.copy}>
                 <p className={styles.kind}>

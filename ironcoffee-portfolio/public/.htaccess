@@ -28,6 +28,24 @@
   RewriteCond %{DOCUMENT_ROOT}/demo/%1/index.html -f
   RewriteRule ^/?$ /demo/%1/index.html [L]
 
+  # Interior pages of a multi-page preview: sammieds.ironcoffee.com/menu is
+  # the page built at /demo/sammieds/menu/.
+  #
+  # Without this, only the front page of a preview worked on its own
+  # subdomain and every nav link landed on the catch-all at the bottom of this
+  # file. That used to serve the SPA shell, which rendered the client-side 404
+  # under the business's own domain name; now it would answer a real 404. Both
+  # are wrong, and neither shows up until you send someone a link.
+  #
+  # `%1` is the subdomain from the host conditions, `$1` the first path
+  # segment from the rule. The pattern excludes anything with a dot in it, so
+  # hashed asset filenames stay with the -f rule further down.
+  RewriteCond %{HTTP_HOST} !^ironcoffee\.com$ [NC]
+  RewriteCond %{HTTP_HOST} !^(www|solutions|api|mail|smtp|imap|pop|webmail|ftp|cdn|ns[0-9]*)\.ironcoffee\.com$ [NC]
+  RewriteCond %{HTTP_HOST} ^([a-z0-9][a-z0-9-]*)\.ironcoffee\.com$ [NC]
+  RewriteCond %{DOCUMENT_ROOT}/demo/%1/$1/index.html -f
+  RewriteRule ^([a-z0-9][a-z0-9-]*)/?$ /demo/%1/$1/index.html [L]
+
   # A subdomain with no demo behind it has to stop here. Without this it falls
   # through to the SPA shell at the bottom of this file and quietly serves the
   # portfolio from someone else's business name.

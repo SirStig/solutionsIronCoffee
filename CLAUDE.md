@@ -22,7 +22,16 @@ npm run deploy          # build, diff against Dreamhost, confirm, rsync over SSH
 npm test                # Vitest
 npm run typecheck       # tsc --noEmit
 npm run optimize:media  # rebuild public/img from assets/images (cached)
-npm run generate:brand  # rebuild favicons + og-image.png from vector source
+npm run generate:brand  # rebuild favicons + share cards from vector source
+npm run capture:samples # screenshot the gallery samples (needs a build first)
+```
+
+`capture:samples` is deliberately not part of `npm run build`: it photographs
+the finished build, so wiring it in would be circular. Re-run it only when a
+template changes, and in this order:
+
+```bash
+npm run build && npm run capture:samples && npm run build
 ```
 
 **Never verify a build with `vite preview`.** It serves `index.html` for every
@@ -80,6 +89,27 @@ Five templates in `src/demos/templates/` compose shared blocks from
 `src/demos/components/`, and `src/demos/Demo.module.css` is the entire demo
 design system. Brand colors arrive as inline custom properties on the shell.
 
+**The five samples must not look like five copies of one template.** Two things
+enforce that and both are easy to undo by accident.
+
+`brand.font` picks one of five real display faces, self-hosted and declared in
+`tokens.css`: Fraunces, Playfair, Archivo, Outfit, Bricolage Grotesque. Only
+headings use them, body copy is Inter everywhere, and a browser only downloads
+a face an element actually renders in, so a sample costs exactly one woff2.
+Each pairing also carries its own weight, tracking and casing, because Archivo
+at 900 in caps reads as a contractor's truck and Playfair given the same
+treatment reads as a ransom note. Pick by trade, not by taste.
+
+And `SectionHead` defaults to left. Centered eyebrow over centered title over
+centered sentence, ten times down a page, is the single loudest "bought a
+template" signal there is. `align="center"` is for a heading meant to land as
+an announcement: once per page, twice at the outside. `Booking` is the one
+sample that centers throughout, on purpose, so that reads as a house style
+rather than as the only trick the system knows.
+
+`Bleed`, `PullQuote` and `Marquee` exist to break the rhythm. A page made
+entirely of contained sections reads as one long column whatever is in it.
+
 Demo pages are standalone: `App.tsx` drops the portfolio header and footer for
 them, since a demo stands in for someone else's business. They also pin
 themselves to a light palette regardless of the site theme.
@@ -102,6 +132,23 @@ admitting the photography is generic, which is what you set on a preview for a
 real business until they hand over their own pictures. Never generate a
 storefront, an exterior or anything with signage for a real business: a generic
 interior reads as a layout, a building reads as a claim about their premises.
+
+**The gallery and the pricing page.** `/templates` illustrates itself with
+real screenshots of the real samples, captured by `scripts/capture-samples.mjs`
+into `assets/images/templates/` and referenced as ordinary manifest keys. It
+used to show each sample's hero photograph, which meant a page selling websites
+was illustrated with pictures of brisket and haircuts while every competitor's
+showcase shows screens.
+
+`/services` is ordered as an argument, and the order matters more than the
+words: the Wix objection comes *before* the prices, because a reader who has
+not been given a reason to stop comparing this to a thirty dollar subscription
+will do exactly that the moment they hit a number. Two rules hold it together.
+Never put a build price next to a monthly price, because $1,800 against $204 a
+year loses on arithmetic every time and printing that comparison just teaches
+the reader to run it; the care plan is the only thing that belongs beside a
+subscription. And keep every line short. A pricing page that has to be read
+twice has already lost.
 
 **Checking the demos.** `npm run build` then `npm run serve`, never `vite
 preview`. The browser audit in the scratchpad drives Chromium and WebKit across

@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import Seo from '../components/Seo';
 import { site } from '../content/site';
 import { showcases } from '../demos';
-import DemoImage from '../demos/components/DemoImage';
-import { initials } from '../demos/components/DemoNav';
+import Img from '../components/Img';
 import {
   DIY_SURVEY,
   care,
@@ -115,6 +114,7 @@ export default function Services() {
         title="Small business website design, priced up front"
         description="Fixed prices for small business websites. One page $500, a full site $1,800. I build it first, you look at it, then you decide."
         path="/services"
+        image="/og-services.png"
         jsonLd={[serviceSchema, faqSchema, breadcrumbSchema]}
       />
 
@@ -170,18 +170,34 @@ export default function Services() {
                   <tr key={row.question}>
                     <th scope="row">{row.question}</th>
                     <td>
-                      <X size={15} className={styles.no} aria-hidden="true" />
-                      <span>{row.diy}</span>
+                      <span className={styles.cell}>
+                        <X size={15} className={styles.no} aria-hidden="true" />
+                        <span>{row.diy}</span>
+                      </span>
                     </td>
                     <td className={styles.mineCol}>
-                      <Check size={15} className={styles.yes} aria-hidden="true" />
-                      <span>{row.mine}</span>
+                      <span className={styles.cell}>
+                        <Check
+                          size={15}
+                          className={styles.yes}
+                          aria-hidden="true"
+                        />
+                        <span>{row.mine}</span>
+                      </span>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          {/* The table keeps a 40rem minimum and scrolls inside its own box
+              rather than collapsing into cards, because the argument only
+              works while both answers are on screen together. The cut-off
+              third column is most of the affordance; this says it out loud
+              for anyone who reads before they swipe. */}
+          <p className={styles.swipe} aria-hidden="true">
+            Swipe the table sideways
+          </p>
 
           <p className={styles.stat}>
             <strong>{DIY_SURVEY.abandoned}</strong> of people who start a
@@ -247,11 +263,13 @@ export default function Services() {
             {showcases.map((demo) => (
               <li key={demo.slug}>
                 <Link to={`/templates/${demo.slug}`} className={styles.proofCard}>
+                  {/* The screenshot, not the business's hero photograph. A
+                      strip of food and haircuts says nothing about whether
+                      the websites are any good. */}
                   <span className={styles.proofShot}>
-                    <DemoImage
-                      name={demo.hero.image}
-                      alt={`${demo.business.name} sample site`}
-                      mark={initials(demo.business.name)}
+                    <Img
+                      name={`templates/${demo.slug}-desktop`}
+                      alt={`The ${demo.business.name} sample site`}
                       sizes="(min-width: 60rem) 20vw, 45vw"
                     />
                   </span>

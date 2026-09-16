@@ -10,7 +10,12 @@
 }
 
 .rss {
-  display: inline-block;
+  /* WCAG 2.5.8 wants 24px in both directions on a target that is not
+     sitting inline inside a sentence. Small text on a 1.6 line box
+     lands at 22. */
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
   margin-top: var(--space-4);
   font-size: var(--text-sm);
   color: var(--accent);

@@ -156,18 +156,18 @@
   vertical-align: top;
 }
 
-/* Flex rather than an inline icon, so a claim that wraps to a second line
-   hangs under the first word instead of tucking under the tick. */
 .compare td {
   padding: var(--space-4) var(--space-5);
+  vertical-align: top;
   color: var(--text-muted);
 }
 
-.compare td > span:last-child {
-  display: block;
-}
-
-.compare td {
+/* The flex lives on a wrapper inside the cell, never on the cell. `display:
+   flex` on a <td> takes it out of table layout entirely, which silently drops
+   both columns into a single stacked one. The wrapper gets the same effect and
+   keeps the hanging indent: a claim that runs to a second line lines up under
+   the first word rather than tucking under the tick. */
+.cell {
   display: flex;
   align-items: flex-start;
   gap: 0.45rem;
@@ -200,6 +200,19 @@
   color: var(--text-faint);
 }
 
+.swipe {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+}
+
+/* Once the table fits, the hint is noise. */
+@media (min-width: 46rem) {
+  .swipe {
+    display: none;
+  }
+}
+
 .stat {
   margin-top: var(--space-5);
   max-width: 40rem;
@@ -214,7 +227,11 @@
 }
 
 .source {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  /* Its own line, so it is a standalone target rather than a word inside a
+     sentence, and WCAG 2.5.8 wants 24px on those. */
+  min-height: 24px;
   margin-top: var(--space-2);
   font-size: var(--text-sm);
   color: var(--text-faint);
@@ -338,16 +355,25 @@
   display: block;
   border-radius: var(--radius);
   overflow: hidden;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 11;
   background: var(--bg-subtle);
   border: 1px solid var(--border);
 }
 
 .proofShot img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   transition: transform 0.35s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proofShot img {
+    transition: none;
+  }
+
+  .proofCard:hover .proofShot img {
+    transform: none;
+  }
 }
 
 .proofCard:hover .proofShot img {

@@ -29,6 +29,70 @@ const mark = (size) => `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" 
   <circle cx="32" cy="32" r="16" fill="${COPPER}"/>
 </svg>`;
 
+/**
+ * Share cards.
+ *
+ * One generic card for the whole site meant a prospect who was texted a link
+ * to the pricing page saw the same "Joshua Kac, software engineer" panel as
+ * somebody sent a blog post. That is the worst possible preview for the two
+ * pages the business runs on, because the link is nearly always forwarded to
+ * somebody who has never heard of me and decides in one glance whether to tap.
+ *
+ * So the commercial pages get their own. Same furniture, different words, and
+ * a price on the one where a price is the whole argument.
+ */
+const card = ({ title, kicker, sub, foot }) => `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0c0b0a"/>
+      <stop offset="100%" stop-color="#1a1512"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="5" fill="${COPPER}"/>
+  <!-- Sits above the kicker, not behind it. The portfolio card puts the dot
+       on the same baseline as its first line of type, which works there
+       because that line starts 150px lower down. -->
+  <circle cx="112" cy="116" r="16" fill="${COPPER}"/>
+
+  <text x="96" y="200" font-family="Inter, Helvetica, Arial, sans-serif"
+        font-size="26" font-weight="600" fill="${COPPER}" letter-spacing="2">${kicker}</text>
+
+  <text x="96" y="318" font-family="Inter, Helvetica, Arial, sans-serif"
+        font-size="76" font-weight="700" fill="${CREAM}" letter-spacing="-2.5">${title}</text>
+
+  <text x="96" y="392" font-family="Inter, Helvetica, Arial, sans-serif"
+        font-size="34" font-weight="500" fill="${CREAM}">${sub}</text>
+
+  <text x="96" y="462" font-family="Inter, Helvetica, Arial, sans-serif"
+        font-size="28" font-weight="400" fill="${MUTED}">${foot}</text>
+
+  <text x="96" y="556" font-family="Inter, Helvetica, Arial, sans-serif"
+        font-size="24" font-weight="500" fill="#7a736e">solutions.ironcoffee.com</text>
+</svg>`;
+
+const pageCards = [
+  [
+    'og-services.png',
+    card({
+      kicker: 'SMALL BUSINESS WEBSITES',
+      title: 'See it before you pay',
+      sub: 'One page $500. Full site $1,800.',
+      foot: 'Fixed price. No retainer. Yours the day it goes live.',
+    }),
+  ],
+  [
+    'og-templates.png',
+    card({
+      kicker: 'SAMPLES',
+      title: 'Five real websites',
+      sub: 'Restaurants, salons, trades, clinics, shops.',
+      foot: 'Working pages you can open on a phone, not screenshots.',
+    }),
+  ],
+];
+
 const ogImage = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
@@ -88,7 +152,14 @@ async function main() {
     .png({ compressionLevel: 9, palette: true, quality: 90 })
     .toFile(path.join(PUBLIC, 'og-image.png'));
 
-  console.log('Brand assets regenerated.');
+  for (const [name, svg] of pageCards) {
+    await sharp(Buffer.from(svg), { density: 144 })
+      .resize(1200, 630)
+      .png({ compressionLevel: 9, palette: true, quality: 90 })
+      .toFile(path.join(PUBLIC, name));
+  }
+
+  console.log(`Brand assets regenerated, including ${pageCards.length} page cards.`);
 }
 
 main().catch((err) => {

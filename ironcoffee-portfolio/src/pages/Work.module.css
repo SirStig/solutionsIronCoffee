@@ -31,6 +31,10 @@
 }
 
 .groupLink {
+  /* WCAG 2.5.8 wants 24px in both directions on a target that is not
+     sitting inline inside a sentence. Small text on a 1.6 line box
+     lands at 22. */
+  min-height: 24px;
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
