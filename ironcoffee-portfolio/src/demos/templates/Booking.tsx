@@ -10,6 +10,7 @@ import {
   Marquee,
   PullQuote,
   splitQuotes,
+  reviewsIntro,
   StatementBand,
   ServiceRows,
   StatsBand,
@@ -126,13 +127,9 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
           <SectionHead
             eyebrow="In their own words"
             title="What people say about the place"
-            sub={
-              /* Named, not implied. A page that quotes reviews without saying
-                 where they came from is indistinguishable from one that made
-                 them up, which is the whole reason the rule about invented
-                 quotes exists. */
-              `Left in public by their own customers. ${others[0].source ?? 'Google'} reviews, copied word for word.`
-            }
+            /* Named, not implied, and only when it is true. See the helper. */
+            sub={reviewsIntro(others)}
+            align="center"
           />
           <Testimonials items={others} />
         </Section>

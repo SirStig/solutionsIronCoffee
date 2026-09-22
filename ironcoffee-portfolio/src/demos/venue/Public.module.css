@@ -567,14 +567,23 @@
 
 /* The grid paints no surface of its own and inherits its text color, because
    it gets dropped into both the pale sections and the near-black ones. */
+/* Two columns, then three. `auto-fill` at 11rem fitted five across a desktop
+   container, so six photographs came out as a row of five small thumbnails
+   and one left on its own underneath. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(0.75rem, 0.5rem + 1vw, 1.25rem);
   list-style: none;
   margin: 0;
   padding: 0;
   color: inherit;
+}
+
+@media (min-width: 45rem) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .thumb {

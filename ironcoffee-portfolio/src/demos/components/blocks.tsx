@@ -137,6 +137,24 @@ export function Testimonials({ items }: { items: DemoTestimonial[] }) {
 }
 
 /**
+ * The sentence under a reviews heading, or nothing.
+ *
+ * It names the platform only when every quote it introduces carries one. The
+ * templates used to write `source ?? 'Google'`, so each gallery sample, whose
+ * customers are invented and whose quotes deliberately carry no source,
+ * printed "Google reviews, copied word for word" over them: the exact claim
+ * the tests forbid a sample's quotes from making, made by the heading instead.
+ */
+export function reviewsIntro(items: DemoTestimonial[]): string | undefined {
+  if (!items.length || items.some((t) => !t.source)) return undefined;
+
+  const sources = [...new Set(items.map((t) => t.source))];
+  return sources.length === 1
+    ? `Left in public by their own customers. ${sources[0]} reviews, copied word for word.`
+    : 'Left in public by their own customers and copied word for word. Each one says where.';
+}
+
+/**
  * One quote, at the size a billboard would use it, on the brand color.
  *
  * Three quotes in three equal cards is a row every visitor has learned to skip.
@@ -1075,8 +1093,12 @@ export function ContactDetails({ config }: { config: DemoConfig }) {
           </span>
           <span>
             <span className={styles.contactLabel}>Email</span>
+            {/* A break opportunity after the @, so a narrow screen splits the
+                address where a reader expects rather than wherever the
+                letters run out: "examp / le" at 390px. */}
             <a className={styles.contactValue} href={`mailto:${business.email}`}>
-              {business.email}
+              {business.email.split('@')[0]}@<wbr />
+              {business.email.split('@').slice(1).join('@')}
             </a>
           </span>
         </li>

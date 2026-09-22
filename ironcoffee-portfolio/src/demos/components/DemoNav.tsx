@@ -1,13 +1,22 @@
-import { Phone } from 'lucide-react';
+import { Menu, Phone } from 'lucide-react';
 import type { DemoConfig } from '../types';
 import { telHref } from '../index';
 import DemoImage from './DemoImage';
 import { Cta } from './primitives';
 import styles from '../Demo.module.css';
 
-/** Two or three letters for the logo stand-in: 'Ridgeline Smokehouse' → 'RS'. */
+/**
+ * Two or three letters for the logo stand-in: 'Ridgeline Smokehouse' → 'RS'.
+ *
+ * Also used for a team member's portrait, which is why it drops a title and
+ * the letters after a comma. 'Dr. Alison Park, DDS' came out as 'DAP', and an
+ * apostrophe used to become a word break, so "Jill's Feed" became 'JSF'.
+ */
 export function initials(name: string): string {
   return name
+    .split(',')[0]
+    .replace(/['’]/g, '')
+    .replace(/^(dr|mr|mrs|ms|mx)\.?\s+/i, '')
     .replace(/[^\p{L}\p{N} ]/gu, ' ')
     .split(/\s+/)
     .filter(Boolean)
@@ -69,9 +78,12 @@ export interface NavLink {
 }
 
 /**
- * Sticky header. No hamburger menu: the links collapse away under 900px and the
- * one action that matters is duplicated in the fixed call bar at the bottom of
- * the screen, which is where a thumb already is.
+ * Sticky header.
+ *
+ * Below the width where the links fit on one row they move into a menu. The
+ * one action that matters is still duplicated in the fixed call bar at the
+ * bottom of a phone screen, which is where a thumb already is, but the call
+ * bar cannot reach the other pages of a multi-page demo and the menu can.
  */
 export default function DemoNav({
   config,
@@ -152,6 +164,39 @@ export default function DemoNav({
             <Phone size={16} aria-hidden="true" />
             {business.phone}
           </a>
+        )}
+
+        {(links.length > 0 || business.phone) && (
+          <details className={styles.navMenu}>
+            <summary className={styles.navMenuButton}>
+              <Menu size={18} aria-hidden="true" />
+              Menu
+            </summary>
+            <div className={styles.navMenuPanel}>
+              {/* Picking an anchor scrolls the page but leaves a <details>
+                  open over it, so a click anywhere in the list closes it. */}
+              <ul
+                className={styles.navMenuList}
+                onClick={(event) =>
+                  event.currentTarget.closest('details')?.removeAttribute('open')
+                }
+              >
+                {links.map((link) => (
+                  <li key={link.href}>
+                    <a href={link.href}>{link.label}</a>
+                  </li>
+                ))}
+                {business.phone && (
+                  <li>
+                    <a href={telHref(business.phone)}>
+                      <Phone size={17} aria-hidden="true" />
+                      {business.phone}
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
+          </details>
         )}
 
         <Cta href={ctaHref} className={styles.navCta}>

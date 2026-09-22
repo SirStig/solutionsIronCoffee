@@ -11,6 +11,7 @@ import {
   Marquee,
   PullQuote,
   splitQuotes,
+  reviewsIntro,
   StatementBand,
   Testimonials,
   StatsBand,
@@ -84,7 +85,7 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
           <SectionHead
             eyebrow="In their own words"
             title="What people say about the place"
-            sub={`Left in public by their own customers. ${others[0].source ?? 'Google'} reviews, copied word for word.`}
+            sub={reviewsIntro(others)}
           />
           <Testimonials items={others} />
         </Section>

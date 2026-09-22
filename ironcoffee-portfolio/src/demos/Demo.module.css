@@ -483,15 +483,18 @@
 
 .navLinks {
   display: none;
-  gap: 1.5rem;
+  gap: 1.25rem;
   font-size: 0.9375rem;
   font-weight: 550;
 }
 
+/* A two-word label must never break inside a header. "Our team" set as
+   "Our / team" doubled the height of the dental sample's nav at 1440. */
 .navLinks a {
   text-decoration: none;
   color: var(--d-muted);
   padding-block: 0.25rem;
+  white-space: nowrap;
 }
 
 .navLinks a:hover {
@@ -512,13 +515,132 @@
   padding: 0.6rem 1.1rem;
   min-height: 44px;
   font-size: 0.9375rem;
+  white-space: nowrap;
+  flex: none;
 }
 
+/* Three breakpoints, because a header has three things competing for one row.
+ *
+ * The call to action arrives first: below 900px it lives in the call bar at
+ * the bottom of the screen instead. The links arrive once they genuinely fit
+ * beside a long business name and a long button label, which is later than it
+ * looks; at 900 the dental sample's five links pushed "Request an Appointment"
+ * onto two lines. The phone number is last, and it steps aside for a site with
+ * five or more pages, because the button already does its job. */
 @media (min-width: 900px) {
-  .navLinks,
-  .navPhone,
   .navCta {
     display: inline-flex;
+  }
+}
+
+@media (min-width: 1100px) {
+  .navLinks {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 1240px) {
+  .navPhone {
+    display: inline-flex;
+  }
+
+  .nav:has(.navLinks > a:nth-child(5)) .navPhone {
+    display: none;
+  }
+}
+
+/* --- Menu, for the widths where the links do not fit -----------------------
+ *
+ * There used to be no menu at all. The links disappeared under 900px and the
+ * call bar stood in for the one action that matters, which was true of a
+ * one-page sample and false of every multi-page one: on a phone, Order,
+ * Catering and Our story had no link to them anywhere in the header, so four
+ * of the six pages on the smokehouse sample could not be reached from its
+ * home page without scrolling to the footer and not finding them there
+ * either.
+ *
+ * A <details> element, so it opens without JavaScript and before hydration. */
+.navMenu {
+  position: static;
+  flex: none;
+}
+
+.navMenuButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--d-radius);
+  border: 1px solid var(--d-border);
+  background: var(--d-surface);
+  color: var(--d-text);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.navMenuButton::-webkit-details-marker {
+  display: none;
+}
+
+.navMenuButton:hover {
+  border-color: var(--brand);
+}
+
+.navMenu[open] .navMenuButton {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--d-on-brand);
+}
+
+.navMenuPanel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: 41;
+  background: var(--d-surface);
+  border-bottom: 1px solid var(--d-border);
+  box-shadow: 0 18px 30px -18px rgb(20 24 28 / 0.35);
+  max-height: calc(100svh - 8rem);
+  overflow-y: auto;
+}
+
+.navMenuList {
+  max-width: var(--d-wide);
+  margin-inline: auto;
+  padding: 0.5rem var(--d-gutter) 1rem;
+  list-style: none;
+  display: grid;
+}
+
+.navMenuList a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 52px;
+  padding-block: 0.5rem;
+  border-bottom: 1px solid var(--d-border);
+  color: var(--d-text);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.navMenuList li:last-child a {
+  border-bottom: 0;
+}
+
+.navMenuList a:hover {
+  color: var(--brand-ink);
+}
+
+@media (min-width: 1100px) {
+  .navMenu {
+    display: none;
   }
 }
 
@@ -690,7 +812,50 @@
    that is otherwise finished to look unfinished. Two by two has no hole. */
 @media (min-width: 40rem) {
   .serviceGrid:has(> :last-child:nth-child(4)) {
-    grid-template-columns: repeat(2, minmax(0, 26rem));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Once four fit side by side, four side by side. Capped at two, the garden
+   center's services sat in the left two thirds of the section while the stats
+   band under them ran the full width, so the section had two right edges. */
+@media (min-width: 72rem) {
+  .serviceGrid:has(> :last-child:nth-child(4)) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* The numbered steps have the same arithmetic problem: four in auto-fit
+   tracks is three and a hole. */
+@media (min-width: 40rem) {
+  .serviceSteps:has(> :last-child:nth-child(4)) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 72rem) {
+  .serviceSteps:has(> :last-child:nth-child(4)) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Five is three and two, with the two stretched to the same total width. On
+   a six track grid the first row spans two tracks each and the second three,
+   so both rows end on the same right edge and there is no hole. */
+@media (min-width: 60rem) {
+  .serviceGrid:has(> :last-child:nth-child(5)),
+  .serviceSteps:has(> :last-child:nth-child(5)) {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .serviceGrid:has(> :last-child:nth-child(5)) > :nth-child(-n + 3),
+  .serviceSteps:has(> :last-child:nth-child(5)) > :nth-child(-n + 3) {
+    grid-column: span 2;
+  }
+
+  .serviceGrid:has(> :last-child:nth-child(5)) > :nth-child(n + 4),
+  .serviceSteps:has(> :last-child:nth-child(5)) > :nth-child(n + 4) {
+    grid-column: span 3;
   }
 }
 
@@ -770,12 +935,24 @@
   font-size: 0.9375rem;
 }
 
-/* --- Menu ---------------------------------------------------------------- */
+/* --- Menu ----------------------------------------------------------------
+   Newspaper columns, not a grid. A grid gives every row the height of its
+   tallest section, so a five item list beside a three item one left a hole
+   under the short one and the third section dropped below it, alone in the
+   left column with the right one empty. Columns let each section follow the
+   one above it, the way a printed menu card is set. */
 .menuSections {
-  display: grid;
-  gap: clamp(2.5rem, 1.5rem + 4vw, 4rem);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
-  align-items: start;
+  columns: 24rem 2;
+  column-gap: clamp(2.5rem, 1.5rem + 4vw, 4rem);
+}
+
+.menuSections > * {
+  break-inside: avoid;
+  margin-bottom: clamp(2.5rem, 1.5rem + 3vw, 3.5rem);
+}
+
+.menuSections > :last-child {
+  margin-bottom: 0;
 }
 
 .menuSectionTitle {
@@ -888,19 +1065,24 @@
   color: var(--d-muted);
 }
 
+/* Wraps rather than squeezes. On a quarter-width card "Call for pricing"
+   beside "Delivery only" broke the price over two lines; now the badge drops
+   underneath when both will not fit. */
 .productFoot {
   margin-top: auto;
   padding-top: 0.6rem;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.5rem 0.75rem;
 }
 
 .productPrice {
   font-weight: 700;
   color: var(--brand);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .avail {
@@ -1064,6 +1246,42 @@
   font-size: 0.875rem;
   color: var(--d-muted);
   margin-top: 0.6rem;
+}
+
+/* On a phone each person becomes a row: a small portrait beside the name.
+ *
+ * Stacked and centered, every member was a 160px circle, a name and a
+ * sentence, one to a screen, and a team of four cost about twelve hundred
+ * pixels of scrolling to say four names. */
+@media (max-width: 599px) {
+  .teamGrid {
+    gap: 0;
+  }
+
+  .teamCard {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    column-gap: 1rem;
+    align-items: start;
+    text-align: left;
+    padding-block: 1.1rem;
+    border-top: 1px solid var(--d-border);
+  }
+
+  .teamCard:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .teamPhoto {
+    grid-row: span 3;
+    width: 100%;
+    margin: 0;
+  }
+
+  .teamPhoto .placeholderMark {
+    font-size: 1.25rem;
+  }
 }
 
 /* --- About --------------------------------------------------------------- */
@@ -1393,6 +1611,26 @@
   color: var(--d-faint);
 }
 
+/* --- Sample pitch ---------------------------------------------------------
+   The card <DemoOutro> puts at the foot of a gallery sample. It carries
+   `.sectionDark` for the white type and the glow, and this for its shape. */
+.outroCard {
+  border-radius: var(--d-radius-lg);
+  overflow: hidden;
+  padding: clamp(2.5rem, 1.5rem + 4vw, 4.5rem) clamp(1.25rem, 0.5rem + 4vw, 4rem);
+}
+
+.outroCard .sectionHead {
+  max-width: 38rem;
+}
+
+/* After a plain white section the two paddings stack into a gap twice the
+   usual size above the card. After a tinted or dark one the gap is what
+   separates the card from that section's edge, so it stays. */
+.section:not(.sectionAlt):not(.sectionDark) + .outroSection {
+  padding-top: 0;
+}
+
 /* --- Business footer ----------------------------------------------------- */
 .footer {
   background: var(--brand-deep);
@@ -1505,10 +1743,12 @@
   }
 }
 
-/* The bar covers the last ~60px of the page on mobile. */
+/* The bar covers the last ~60px of the page on mobile, so the last thing on
+   the page grows by that much. It used to be padding on `.root`, which painted
+   a white strip under the dark disclosure at the very bottom of every demo. */
 @media (max-width: 899px) {
-  .root {
-    padding-bottom: 60px;
+  .disclosure {
+    padding-bottom: calc(1.5rem + 60px + env(safe-area-inset-bottom));
   }
 }
 
@@ -1690,6 +1930,17 @@
   .heroSplitInner {
     margin-inline: 0 auto;
   }
+
+  /* The copy starts on the same line as the logo above it and every section
+     below it. Padded by the gutter alone it sat 40px from the window edge
+     while the rest of the page started 180px in, which on a wide screen read
+     as a hero from a different site. */
+  .heroSplitCopy {
+    padding-inline-start: max(
+      var(--d-gutter),
+      calc((100vw - var(--d-wide)) / 2 + var(--d-gutter))
+    );
+  }
 }
 
 /* --- Panel ---------------------------------------------------------------- */
@@ -1789,17 +2040,22 @@
   text-shadow: 0 2px 24px rgb(0 0 0 / 0.35);
 }
 
+/* The gutter goes inside the capped row, the way `.container` does it, so the
+   note starts on the same line as the headline above it. With the gutter
+   outside, the row was a gutter wider than everything else on the page and
+   its text started 40px to the left of the hero copy. */
 .heroNote {
   background: var(--brand);
   color: var(--d-on-brand);
   font-weight: 600;
   font-size: 0.9375rem;
-  padding: 0.85rem var(--d-gutter);
+  padding-block: 0.85rem;
 }
 
 .heroNoteInner {
   max-width: var(--d-wide);
   margin-inline: auto;
+  padding-inline: var(--d-gutter);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1828,12 +2084,6 @@
 /* Four services in a single 44rem column inside a 72rem section is half a
    screen of nothing, which is what a barbershop with four services looked
    like. Two columns from the point where a second one fits. */
-@media (min-width: 62rem) {
-  .serviceRows {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
 .serviceRow {
   padding-block: 1.25rem;
   border-bottom: 1px solid var(--d-border);
@@ -1841,6 +2091,19 @@
 
 .serviceRow:first-child {
   padding-top: 0;
+}
+
+/* The top of the second column is the second row, and it has to lose its
+   padding too. Leaving it on dropped the whole right column 20px below the
+   left, so no row on the page lined up with its neighbour. */
+@media (min-width: 62rem) {
+  .serviceRows {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .serviceRow:nth-child(2) {
+    padding-top: 0;
+  }
 }
 
 .serviceRowHead {
@@ -1885,6 +2148,12 @@
   border-top: 2px solid var(--brand);
 }
 
+/* The card version gets its spacing from a flex gap; a step is a plain block,
+   so without this the body sat flush against a heading set in caps. */
+.serviceStep .serviceBody {
+  margin-top: 0.4rem;
+}
+
 .serviceStepNum {
   font-family: var(--d-display);
   font-size: 1.5rem;
@@ -1895,11 +2164,18 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Two columns and never three.
+ *
+ * The rules below draw a divider between odd and even items, which only means
+ * anything when there are exactly two columns. `auto-fit` found room for three
+ * at 1440, so the divider landed on the second item of each row of three and
+ * the grid read as broken, with every other row indented behind a stray line. */
 .serviceDefs {
   margin: 0;
   display: grid;
   gap: 0;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  grid-template-columns: minmax(0, 1fr);
+  border-bottom: 1px solid var(--d-border);
 }
 
 .serviceDef {
@@ -1908,6 +2184,10 @@
 }
 
 @media (min-width: 760px) {
+  .serviceDefs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .serviceDef:nth-child(odd) {
     padding-right: 2.5rem;
   }
@@ -1942,14 +2222,42 @@
   font-size: 0.9375rem;
 }
 
-/* --- Compact hours strip, for templates that do not want a table ---------- */
+/* --- Compact hours strip, for templates that do not want a table ----------
+ *
+ * One row, always. As a wrapped flex row it stopped two thirds of the way
+ * across a desktop screen, and on a phone it broke into four ragged rows of
+ * two that took most of the first screen under the hero. Now the week spans
+ * the container on a wide screen, and on a narrow one it is a single row
+ * that scrolls sideways, which is how every phone user already expects a
+ * week of chips to behave. */
 .hoursStrip {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-auto-flow: column;
+  /* Never narrower than its own text. A plain 1fr share of a phone screen
+     cut "11am to 7pm" off at "7p". */
+  grid-auto-columns: minmax(max-content, 1fr);
   gap: 0.5rem;
   list-style: none;
   padding: 0;
   margin: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.hoursStrip::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  /* Run to the screen edges so the row visibly continues past them, which is
+     the only hint a sideways scroller needs. */
+  .hoursStrip {
+    margin-inline: calc(var(--d-gutter) * -1);
+    padding-inline: var(--d-gutter);
+    scroll-padding-inline: var(--d-gutter);
+  }
 }
 
 .hoursChip {
@@ -1961,7 +2269,8 @@
   border-radius: var(--d-radius);
   background: var(--d-surface);
   border: 1px solid var(--d-border);
-  min-width: 6.5rem;
+  scroll-snap-align: start;
+  white-space: nowrap;
 }
 
 .hoursChipDay {
@@ -2027,8 +2336,11 @@
   font-size: 0.875rem;
 }
 
-/* --- Centered nav --------------------------------------------------------- */
-@media (min-width: 900px) {
+/* --- Centered nav ---------------------------------------------------------
+   Only from the width where the links show. Below it the links' column would
+   be empty and the name would sit centered over nothing, so the header falls
+   back to the ordinary row with a menu button. */
+@media (min-width: 1100px) {
   .navCentered .navInner {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -2142,9 +2454,14 @@
    sections stop looking like stacked white rectangles.
    ========================================================================= */
 
-/* --- Stats ---------------------------------------------------------------- */
+/* --- Stats ----------------------------------------------------------------
+   Three templates put the band directly under another block in the same
+   section, and with no margin of its own it sat flush against whatever was
+   above it: the last line of a team bio, the "24/7" under a service, the
+   bottom edge of a photograph. It keeps its distance unless it opens the
+   section. */
 .stats {
-  margin: 0;
+  margin: clamp(2.5rem, 1.5rem + 3vw, 4rem) 0 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
@@ -2152,6 +2469,10 @@
   border: 1px solid var(--d-border);
   border-radius: var(--d-radius-lg);
   overflow: hidden;
+}
+
+.stats:first-child {
+  margin-top: 0;
 }
 
 @media (min-width: 860px) {
@@ -2176,9 +2497,11 @@
   margin-bottom: 0.35rem;
 }
 
+/* Grows more slowly than it did, so a two word value such as "Same day" still
+   fits a quarter of a 1024px screen on one line. */
 .statValue {
   font-family: var(--d-display);
-  font-size: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+  font-size: clamp(2rem, 1.2rem + 1.8vw, 3rem);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -2221,6 +2544,16 @@
   display: grid;
   gap: 1.25rem;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+}
+
+/* One review stretched across the whole container was two short lines of
+   type floating in a 1080px box. A single card sits at the width of a card. */
+.quotes:has(> :only-child) {
+  grid-template-columns: minmax(0, 40rem);
+}
+
+.centered ~ .quotes {
+  justify-content: center;
 }
 
 .quoteCard {
@@ -2293,6 +2626,30 @@
       color-mix(in srgb, var(--brand-accent) 6%, transparent),
       transparent 70%
     );
+}
+
+/* Two tinted sections in a row are one surface, not two.
+ *
+ * Each paints its own wash from the top left corner, so where one ended and
+ * the next began there was a hard horizontal seam across the page: the team
+ * and the reviews on the salon, the photographs and the seasons on the venue.
+ * The second one drops its wash and the doubled padding between them. */
+.sectionAlt + .sectionAlt {
+  padding-top: 0;
+}
+
+.sectionAlt + .sectionAlt::before {
+  display: none;
+}
+
+/* And the first of the pair keeps only its top wash, since the bottom one is
+   anchored to the corner that now meets the next section. */
+.sectionAlt:has(+ .sectionAlt)::before {
+  background: radial-gradient(
+    60rem 28rem at 15% 0%,
+    color-mix(in srgb, var(--brand) 7%, transparent),
+    transparent 70%
+  );
 }
 
 .sectionDark {
@@ -2717,10 +3074,13 @@
   font-weight: var(--d-display-weight);
   font-variation-settings: var(--d-display-settings);
   letter-spacing: var(--d-display-tracking);
-  font-size: clamp(1.75rem, 1.1rem + 3.2vw, 4.25rem);
-  line-height: 1.1;
+  /* Capped lower and allowed a longer line than it was. At 4.25rem over 20ch
+     a two sentence review ran six lines deep with the right half of the band
+     empty beside it, which is a poster rather than a quote. */
+  font-size: clamp(1.75rem, 1.1rem + 2.6vw, 3.5rem);
+  line-height: 1.12;
   text-wrap: balance;
-  max-width: 20ch;
+  max-width: 24ch;
   hanging-punctuation: first;
 }
 
@@ -2852,6 +3212,33 @@
     gap: 0.5rem 2.5rem;
     justify-content: center;
     padding-inline: var(--d-gutter);
+  }
+
+  /* A separator after the last phrase separates it from nothing, and once the
+     row wraps it hangs at the end of a line on its own. */
+  .marqueeItem:last-child::after {
+    display: none;
+  }
+}
+
+/* On a phone the static fallback wraps to one phrase a line, so it reads as a
+   list and a dot in front of each one says so; a dot trailing each one does
+   not. */
+@media (prefers-reduced-motion: reduce) and (max-width: 599px) {
+  .marqueeRun {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .marqueeItem {
+    flex-direction: row-reverse;
+    gap: 0.75rem;
+    white-space: normal;
+  }
+
+  .marqueeItem:last-child::after {
+    display: block;
   }
 }
 
@@ -3117,10 +3504,15 @@
 /* Each line is a window; the span inside it is what slides up. Without the
    window the letters would simply appear, which is a different and much
    cheaper looking effect. */
+/* The window is deeper at the bottom than the line box, and pulls the next
+   line back up by the same amount. At a line-height of 0.98 a descender runs
+   below the box, and with even padding the tail of the g in "wedding" was cut
+   off flat by the overflow. */
 .revealLine {
   display: block;
   overflow: hidden;
-  padding-block: 0.06em;
+  padding-block: 0.06em 0.2em;
+  margin-bottom: -0.14em;
 }
 
 .revealInner {
@@ -3267,11 +3659,18 @@
   padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
 }
 
+/* Starts on the page's left edge rather than the window's, so the heading in
+   the lead card lines up with every other heading on the page before the
+   track begins to move. */
 .vTrack {
   display: flex;
   align-items: center;
   gap: clamp(1rem, 0.5rem + 2vw, 2.5rem);
-  padding-inline: var(--d-gutter);
+  padding-inline: max(
+      var(--d-gutter),
+      calc((100vw - var(--d-wide)) / 2 + var(--d-gutter))
+    )
+    var(--d-gutter);
 }
 
 .vTrackLead {

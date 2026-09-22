@@ -6,11 +6,10 @@
  *
  * Two things this file is built around, both learned the hard way.
  *
- * One: never put the build price next to a monthly price. A subscription wins
- * $1,800 against $204 a year on arithmetic and always will, and running that
- * comparison on your own sales page just teaches the reader to run it. The
- * monthly plan is the thing that belongs beside a subscription, because that
- * is a fair fight and it is winnable.
+ * One: lead with the price most people will pay. The entry tier costs about
+ * a year of a website builder, a comparison worth inviting. Never put the
+ * $1,800 tier beside a monthly price: a subscription wins that on arithmetic,
+ * and printing it teaches the reader to run it.
  *
  * Two: keep it short. Every line here earns its place or it goes. A pricing
  * page that has to be read twice has already lost.
@@ -32,7 +31,7 @@ export interface Tier {
   summary: string;
   /** The question that separates the tiers, answered. */
   login: string;
-  /** What actually gets built. This is what the price is for. */
+  /** What actually gets built. Three lines, no more. */
   built: string[];
   timeline: string;
   /**
@@ -46,102 +45,72 @@ export interface Tier {
   chip: string;
   /** Which sample on the gallery page is this tier. */
   seeIt?: { label: string; slug: string };
-  featured?: boolean;
+  /** The tier the page points at. Its badge text, if so. */
+  featured?: string;
 }
 
 /**
  * Three tiers, and the difference between them is not page count.
  *
- * This is the version that took the longest to get right, because the obvious
- * way to write it is wrong. A ladder that reads "one page / five pages / more
- * pages" makes the second step look like a 260% markup for four more pages,
- * and any reader doing that arithmetic concludes they are being had.
+ * A ladder that reads "one page / five pages / more pages" makes each step
+ * look like a markup for a few more pages. What actually changes is whether
+ * there is software behind the page, so every tier answers the same question,
+ * `login`: "no", "you do", "you and your staff do". Three different jobs,
+ * not three sizes of one.
  *
- * What actually changes is whether there is software behind the page. The
- * first tier is a website: words, pictures, a phone number, and nothing that
- * can break. The second is an application that happens to have a website on
- * the front, with a database, rules about who may change what, and a screen
- * the owner logs into. The third adds the owner running it themselves.
- *
- * So every tier answers the same question, `login`, and the answers are "no",
- * "you do" and "you and your staff do". Two hundred dollars to thirty-two
- * hundred stops looking like a markup and starts looking like three different
- * jobs, which is what it is.
+ * The first tier is the featured one, and that is the point of the page. Most
+ * visitors are a small business that needs the $200 site. When the $1,800
+ * card carried the highlight, a reader scrolling past saw that number, took
+ * it for the price, and left without ever reading the one meant for them.
+ * The higher tiers print their prices smaller for the same reason.
  */
 export const tiers: Tier[] = [
   {
     id: 'site',
-    name: 'A site',
+    name: 'A website',
     price: '$200 to $500',
     chip: 'A site \u00b7 $200 to $500',
-    summary: 'One page, or the whole thing. Words, photos, a phone number.',
+    summary: 'Words, photos, hours and a phone number. One page or several.',
     login: 'Nothing to log into',
     built: [
-      'Pages written for you, not a blank template',
-      'Your photos, colors and logo',
+      'Written for you, with your photos',
       'Tap to call, tap for directions',
-      'Set up so you turn up in Google',
+      'Set up to show up on Google',
     ],
-    timeline: 'A week, maybe two',
+    timeline: 'About a week',
     seeIt: { label: 'Most of the samples are this', slug: 'ridgeline-smokehouse' },
+    featured: 'Where most start',
   },
   {
     id: 'software',
-    name: 'A site with software behind it',
+    name: 'With bookings or orders',
     price: 'From $1,800',
     chip: 'With software \u00b7 from $1,800',
-    summary: 'A database. Things that change, and a screen where you see them.',
+    summary: 'A site with software behind it, and a screen where you run it.',
     login: 'You log in',
     built: [
-      'Real bookings, orders or stock, not a form',
-      'A database, and rules about what can change it',
-      'A screen where you see it and change it',
-      'It emails or texts you when something happens',
+      'Real bookings, orders or stock',
+      'A dashboard only you can see',
+      'A text or email when one comes in',
     ],
-    timeline: 'Quoted once we know what it keeps track of',
-    featured: true,
+    timeline: 'Quoted after a call',
   },
   {
     id: 'system',
-    name: 'A system',
+    name: 'Run by your staff',
     price: 'From $3,200',
     chip: 'A system \u00b7 from $3,200',
-    summary: 'The whole thing, and you run it without calling me.',
+    summary: 'All of that, plus staff accounts, payments and your other tools.',
     login: 'You and your staff log in',
     built: [
-      'Edit your own pages, prices and photos',
-      'Staff accounts, each seeing only their part',
-      'Card payments and the money side',
-      'Toast, Square, Booksy, Shopify wired in',
+      'Edit your own pages and prices',
+      'Staff accounts and card payments',
+      'Square, Toast or Shopify wired in',
     ],
-    timeline: 'Quoted after we talk',
+    timeline: 'Quoted after a call',
     seeIt: { label: 'Wren Hollow is this one', slug: 'wren-hollow' },
   },
 ];
-
-/**
- * The sentence that does the most work on the whole page.
- *
- * Someone who has just seen a row of good-looking sample sites and then a
- * price of $3,200 has to be told, before they ask, which samples are the cheap
- * tier. Otherwise the only conclusion available is that the expensive tier is
- * the same thing with a bigger number on it.
- *
- * Counted from the gallery rather than written down, because the gallery keeps
- * changing and a sentence that says "all five" on a page showing six is worse
- * than no sentence at all.
- */
-export function ladderNote(entry: number, top: number): string {
-  const n = (v: number) =>
-    ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight'][v] ??
-    String(v);
-
-  return `${n(entry).replace(/^./, (c) => c.toUpperCase())} of the samples in the gallery are the first tier, and that is what a few hundred dollars looks like. ${
-    top > 0
-      ? 'The last one is the third tier.'
-      : ''
-  } The difference is not more pages. It is software: a database, a login, and a screen only you can see.`;
-}
 
 /**
  * The comparison that is worth making.
@@ -163,29 +132,19 @@ export const compare: CompareRow[] = [
     mine: 'I do, and you see it finished first',
   },
   {
-    question: 'Want a booking system?',
-    diy: 'An app that rents you one, monthly, forever',
-    mine: 'Built into your site, and it is yours',
-  },
-  {
     question: 'Who writes the words?',
     diy: 'You stare at a blank box',
-    mine: 'I write it, you tell me what I got wrong',
+    mine: 'I do, you fix what I got wrong',
   },
   {
     question: 'Who fixes it at 8pm?',
-    diy: 'A help article and a chat window',
+    diy: 'A help article',
     mine: 'You text me',
   },
   {
     question: 'If you stop paying?',
-    diy: 'Site goes dark, domain comes off, their ads go on',
-    mine: 'You keep the site. It is yours either way',
-  },
-  {
-    question: 'Can you move it later?',
-    diy: 'You can export the text, not the site',
-    mine: 'Take the files anywhere, any host',
+    diy: 'The site goes dark',
+    mine: 'You keep it. It is yours',
   },
 ];
 
@@ -219,67 +178,39 @@ export interface PricingFaq {
  */
 export const pricingFaq: PricingFaq[] = [
   {
-    q: 'Wix is thirty dollars a month. You are eighteen hundred.',
-    a: 'Wix sells you the tool. Nobody at Wix writes your page, takes your photos or finishes it. That part is still yours to do, and it is the part that stops people.',
-  },
-  {
-    q: 'I could do it myself in a weekend.',
-    a: 'You could start it in a weekend. In one 2025 survey of people who tried, half never got it live and a fifth never went back to it.',
+    q: 'Wix is thirty dollars a month.',
+    a: 'And you still build it yourself. Most sites here cost about a year of Wix, and I do the building.',
   },
   {
     q: 'What if I see it and hate it?',
-    a: 'Then you say so and you owe me nothing. You see the real site before any money moves.',
+    a: 'Then you owe nothing. You see the real site before any money moves.',
   },
   {
-    q: 'Do I have to pay it all up front?',
+    q: 'Do I pay it all up front?',
     a: 'Half when you approve it, half when it goes live.',
   },
   {
     q: 'Who owns it?',
-    a: 'You do. Domain in your name, files yours, and I hand the lot over whenever you ask.',
+    a: 'You do. Domain in your name, files yours, handed over whenever you ask.',
   },
   {
     q: 'Do I need the monthly plan?',
-    a: 'No. Host it yourself for a few dollars a month. Most people take it because they would rather text me than learn any of this.',
-  },
-  {
-    q: 'I already have a site.',
-    a: 'Send me the link. If it is fine I will tell you it is fine.',
+    a: 'No. Host it yourself for a few dollars a month if you like.',
   },
   {
     q: 'Will this get me more customers?',
-    a: 'It gets you the ones already searching for what you do. Nobody can promise you the rest, and anyone who does is guessing.',
-  },
-  {
-    q: 'My nephew said he would do it.',
-    a: 'He might. Ask who picks up the phone in eight months when something breaks.',
-  },
-  {
-    q: 'What do you need from me?',
-    a: 'Photos, your hours, and about an hour on the phone.',
+    a: 'It gets you the ones already searching for what you do. Anyone promising more is guessing.',
   },
 ];
 
-/** The price range, spoken. Built from the tiers so it cannot go stale. */
+/** The price, said once near the top. Built from the tiers so it cannot go stale. */
 export const priceLine = () =>
-  `${tiers[0].price}, and up from there when there is software behind it. Fixed either way. No retainer, no contract, yours the day it goes live.`;
+  `Most sites are ${tiers[0].price}, fixed. No contract.`;
 
 /** What happens after you say yes. Four steps, one line each. */
 export const steps = [
-  {
-    title: 'A phone call',
-    body: 'Twenty minutes. What you do and who walks in.',
-  },
-  {
-    title: 'I build it',
-    body: 'A real site with your photos. You get a link.',
-  },
-  {
-    title: 'You mark it up',
-    body: 'Tell me what is wrong. This is the part that makes it yours.',
-  },
-  {
-    title: 'It goes live',
-    body: 'Domain pointed, Google updated, and a call so you can edit your own hours.',
-  },
+  { title: 'A phone call', body: 'Twenty minutes about what you do.' },
+  { title: 'I build it', body: 'With your photos. You get a link.' },
+  { title: 'You mark it up', body: 'Tell me what to change.' },
+  { title: 'It goes live', body: 'Domain, Google and all.' },
 ];

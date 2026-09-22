@@ -27,7 +27,7 @@
 }
 
 .lede {
-  margin-top: var(--space-5);
+  margin-top: var(--space-2);
   font-size: var(--text-xl);
   line-height: 1.5;
   color: var(--text-muted);
@@ -42,10 +42,15 @@
   margin-top: var(--space-6);
 }
 
-.heroNote {
-  margin-top: var(--space-4);
-  font-size: var(--text-sm);
-  color: var(--text-faint);
+/* The price, said before anything else, so nobody has to scroll to find out
+   whether this is for them. */
+.heroPrice {
+  margin-top: var(--space-5);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.2;
+  text-wrap: balance;
 }
 
 /* --- Buttons -------------------------------------------------------------- */
@@ -115,81 +120,101 @@
   text-wrap: pretty;
 }
 
-/* --- Comparison table -----------------------------------------------------
-   A real <table>, because it is one: three columns of paired claims with a
-   row header on each line. Div soup here would read as a list of nothing to
-   anyone using a screen reader. */
-.tableWrap {
+/* --- Comparison -----------------------------------------------------------
+   Stacked rows on a phone: the question, then both answers, all on screen at
+   once. From 46rem the same rows line up as three columns. It used to be a
+   table with a minimum width that scrolled sideways inside its box, which on
+   a phone hid the column doing the arguing. */
+.compare {
   margin-top: var(--space-6);
-  overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--surface);
+  overflow: hidden;
 }
 
-.compare {
-  width: 100%;
-  min-width: 40rem;
-  border-collapse: collapse;
-  font-size: var(--text-base);
+.compareHead {
+  display: none;
 }
 
-.compare thead th {
+.compareRow {
+  display: grid;
+  gap: var(--space-2);
   padding: var(--space-4) var(--space-5);
-  text-align: left;
-  font-size: var(--text-sm);
-  font-weight: 650;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
 }
 
-.compare tbody th {
-  padding: var(--space-4) var(--space-5);
-  text-align: left;
-  font-weight: 600;
-  color: var(--text);
-  width: 1%;
-  white-space: nowrap;
-  vertical-align: top;
-}
-
-.compare td {
-  padding: var(--space-4) var(--space-5);
-  vertical-align: top;
-  color: var(--text-muted);
-}
-
-/* The flex lives on a wrapper inside the cell, never on the cell. `display:
-   flex` on a <td> takes it out of table layout entirely, which silently drops
-   both columns into a single stacked one. The wrapper gets the same effect and
-   keeps the hanging indent: a claim that runs to a second line lines up under
-   the first word rather than tucking under the tick. */
-.cell {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.45rem;
-}
-
-.compare tbody tr + tr th,
-.compare tbody tr + tr td {
+.compareRow + .compareRow {
   border-top: 1px solid var(--border);
 }
 
-/* The column being argued for gets a tint and a full-height edge, so the eye
-   knows which side it is on without a badge saying so. */
-.compare .mineCol {
-  background: var(--accent-subtle);
+.compareQ {
+  font-size: var(--text-base);
+  font-weight: 650;
+  line-height: inherit;
+  text-wrap: wrap;
+  margin: 0;
+}
+
+.diy,
+.compareRow .mineCol {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.diy {
+  color: var(--text-muted);
+}
+
+/* The side being argued for gets a tint, so the eye knows which answer is
+   mine without a badge saying so. */
+.compareRow .mineCol {
   color: var(--text);
-  border-left: 1px solid var(--border);
   font-weight: 500;
+  background: var(--accent-subtle);
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-3);
+  margin-inline: calc(var(--space-3) * -1);
 }
 
 .compare svg {
   margin-top: 0.3em;
   flex: none;
+}
+
+@media (min-width: 46rem) {
+  .compareHead,
+  .compareRow {
+    display: grid;
+    grid-template-columns: 14rem 1fr 1fr;
+    gap: 0;
+    padding: 0;
+  }
+
+  .compareHead {
+    border-bottom: 1px solid var(--border);
+    font-size: var(--text-sm);
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .compareHead > *,
+  .compareQ,
+  .diy,
+  .compareRow .mineCol {
+    padding: var(--space-4) var(--space-5);
+  }
+
+  .compareHead .mineCol,
+  .compareRow .mineCol {
+    background: var(--accent-subtle);
+    border-left: 1px solid var(--border);
+    border-radius: 0;
+    margin: 0;
+  }
 }
 
 .yes {
@@ -198,19 +223,6 @@
 
 .no {
   color: var(--text-faint);
-}
-
-.swipe {
-  margin-top: var(--space-3);
-  font-size: var(--text-xs);
-  color: var(--text-faint);
-}
-
-/* Once the table fits, the hint is noise. */
-@media (min-width: 46rem) {
-  .swipe {
-    display: none;
-  }
 }
 
 .stat {
@@ -257,8 +269,12 @@
   height: 100%;
 }
 
+/* The tier most visitors want gets the highlight and the biggest number.
+   The other two print smaller so that someone skimming the page does not take
+   $1,800 for the price and leave. */
 .featured {
   border-color: var(--accent);
+  border-width: 2px;
   box-shadow: var(--shadow);
 }
 
@@ -289,11 +305,18 @@
 }
 
 .price {
-  font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
+  font-size: var(--text-2xl);
   font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.featured .price {
+  font-size: clamp(2.1rem, 1.8rem + 1vw, 2.6rem);
+  white-space: nowrap;
   letter-spacing: var(--tracking-tighter);
   line-height: 1;
-  margin: 0;
 }
 
 .summary {
@@ -525,22 +548,6 @@
   justify-content: center;
 }
 
-/* --- The ladder ----------------------------------------------------------
-   The note above the tiers is doing more work than any other sentence on the
-   page: it tells a reader who has just looked at five good-looking samples
-   that those samples are the cheap tier, before they conclude the expensive
-   one is the same thing with a bigger number on it. */
-.ladderNote {
-  margin-top: var(--space-5);
-  max-width: 44rem;
-  font-size: var(--text-lg);
-  line-height: 1.55;
-  color: var(--text);
-  border-left: 3px solid var(--accent);
-  padding-left: var(--space-4);
-  text-wrap: pretty;
-}
-
 /* The same question on every tier, answered differently. */
 .login {
   display: inline-flex;
@@ -563,17 +570,9 @@
   color: var(--accent-hover);
 }
 
-.builtLabel {
-  margin-top: var(--space-2);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-}
-
 .seeIt {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   align-items: center;
   /* Its own line under the timeline, so WCAG 2.5.8 wants 24px on it. */
   min-height: 24px;

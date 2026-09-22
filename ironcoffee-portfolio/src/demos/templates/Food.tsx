@@ -89,8 +89,11 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
         </Section>
       )}
 
+      {/* The brand color, not the deep one. The visit section under it is
+          already the deep tone, and two near-black bands in a row read as one
+          long dark block with a seam where the glow changed. */}
       {config.testimonials?.length ? (
-        <Bleed tone="deep">
+        <Bleed tone="brand">
           <PullQuote items={config.testimonials} />
         </Bleed>
       ) : (

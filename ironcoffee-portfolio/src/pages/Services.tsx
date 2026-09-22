@@ -8,7 +8,6 @@ import {
   DIY_SURVEY,
   care,
   compare,
-  ladderNote,
   priceLine,
   pricingFaq,
   steps,
@@ -20,13 +19,12 @@ import styles from './Services.module.css';
  * Pricing. Linked from every sample site and every preview, because that is
  * the page an owner goes looking for about ninety seconds after opening one.
  *
- * The order is the argument. The objection comes second, before the prices,
- * because a reader who has not been given a reason to stop comparing this to
- * a thirty dollar subscription will do exactly that when they hit the numbers.
- * Proof comes after the prices, because that is the moment somebody wants to
- * see whether the work is any good. The monthly plan comes last of the money
- * sections, and it is the only place a subscription price appears next to one
- * of mine.
+ * Prices come straight after the hero, cheapest first and highlighted. This
+ * page used to open with a Wix comparison and put the highlight on the $1,800
+ * tier, so a reader who skimmed met that number first and left before
+ * reaching the one meant for them. Proof follows the prices, because that is
+ * when somebody wants to see whether the work is any good. The Wix comparison
+ * comes after that, trimmed to four rows.
  */
 /**
  * Structured data for the page.
@@ -126,105 +124,27 @@ export default function Services() {
           <h1 className={styles.h1}>
             I build it first. You look at it. Then you decide.
           </h1>
+          <p className={styles.heroPrice}>{priceLine()}</p>
           <p className={styles.lede}>
-            A finished site with your photos and your words on it, before any
-            money changes hands. Say no and you owe nothing.
+            Say no and you owe nothing.
           </p>
           <div className={styles.heroActions}>
-            <Link to="/templates" className={styles.btnPrimary}>
+            <a href="#prices" className={styles.btnPrimary}>
+              See prices
+            </a>
+            <Link to="/templates" className={styles.btnGhost}>
               See the samples
             </Link>
-            <a href={`mailto:${site.email}`} className={styles.btnGhost}>
-              Email me
-            </a>
           </div>
-          <p className={styles.heroNote}>{priceLine()}</p>
         </header>
-
-        {/* --- The objection, before the prices ---------------------------- */}
-        <section className={styles.section} aria-labelledby="wix">
-          <h2 id="wix" className={styles.h2}>
-            Why not just use Wix?
-          </h2>
-          <p className={styles.sectionLede}>
-            Plenty of people should. If you have a site you are happy with,
-            keep it. Here is the honest difference.
-          </p>
-
-          <div className={styles.tableWrap}>
-            <table className={styles.compare}>
-              <thead>
-                <tr>
-                  <th scope="col">
-                    <span className="visually-hidden">The question</span>
-                  </th>
-                  <th scope="col">Doing it yourself</th>
-                  <th scope="col" className={styles.mineCol}>
-                    Having me do it
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {compare.map((row) => (
-                  <tr key={row.question}>
-                    <th scope="row">{row.question}</th>
-                    <td>
-                      <span className={styles.cell}>
-                        <X size={15} className={styles.no} aria-hidden="true" />
-                        <span>{row.diy}</span>
-                      </span>
-                    </td>
-                    <td className={styles.mineCol}>
-                      <span className={styles.cell}>
-                        <Check
-                          size={15}
-                          className={styles.yes}
-                          aria-hidden="true"
-                        />
-                        <span>{row.mine}</span>
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {/* The table keeps a 40rem minimum and scrolls inside its own box
-              rather than collapsing into cards, because the argument only
-              works while both answers are on screen together. The cut-off
-              third column is most of the affordance; this says it out loud
-              for anyone who reads before they swipe. */}
-          <p className={styles.swipe} aria-hidden="true">
-            Swipe the table sideways
-          </p>
-
-          <p className={styles.stat}>
-            <strong>{DIY_SURVEY.abandoned}</strong> of people who start a
-            build-it-yourself website never get it live.{' '}
-            <strong>{DIY_SURVEY.neverReturned}</strong> never go back to it at
-            all.{' '}
-            <a
-              className={styles.source}
-              href={DIY_SURVEY.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {DIY_SURVEY.note}
-            </a>
-          </p>
-        </section>
 
         {/* --- Prices ------------------------------------------------------ */}
         <section className={styles.section} aria-labelledby="prices">
           <h2 id="prices" className={styles.h2}>
             What it costs
           </h2>
-
-          <p className={styles.ladderNote}>
-            {ladderNote(
-              showcases.filter((d) => d.tier === 'site').length,
-              showcases.filter((d) => d.tier === 'system').length
-            )}
+          <p className={styles.sectionLede}>
+            More pages do not cost more. Software behind the page does.
           </p>
 
           <div className={styles.tiers}>
@@ -237,7 +157,9 @@ export default function Services() {
               >
                 <div className={styles.tierTop}>
                   <h3 className={styles.tierName}>{tier.name}</h3>
-                  {tier.featured && <span className={styles.tag}>Most people</span>}
+                  {tier.featured && (
+                    <span className={styles.tag}>{tier.featured}</span>
+                  )}
                 </div>
                 <p className={styles.price}>{tier.price}</p>
                 <p className={styles.summary}>{tier.summary}</p>
@@ -250,7 +172,6 @@ export default function Services() {
                   {tier.login}
                 </p>
 
-                <p className={styles.builtLabel}>What gets built</p>
                 <ul className={styles.features}>
                   {tier.built.map((item) => (
                     <li key={item}>
@@ -282,8 +203,7 @@ export default function Services() {
             Look at the work first
           </h2>
           <p className={styles.sectionLede}>
-            Finished sample sites, every one a real page rather than a picture
-            of one. Open one on your phone.
+            Real sample sites. Open one on your phone.
           </p>
 
           <ul className={styles.proof}>
@@ -305,6 +225,60 @@ export default function Services() {
               </li>
             ))}
           </ul>
+        </section>
+
+        {/* --- Why not Wix ------------------------------------------------- */}
+        <section className={styles.section} aria-labelledby="wix">
+          <h2 id="wix" className={styles.h2}>
+            Why not just use Wix?
+          </h2>
+          <p className={styles.sectionLede}>
+            Plenty of people should. Here is the difference.
+          </p>
+
+          {/* Rows, not a table. A table wide enough for both answers had to
+              scroll sideways on a phone, and nobody swipes a table to read
+              the column that makes the case. Each row stacks on a phone and
+              lines up in three columns once there is room. */}
+          <div className={styles.compare}>
+            <div className={styles.compareHead} aria-hidden="true">
+              <span />
+              <span>Doing it yourself</span>
+              <span className={styles.mineCol}>Having me do it</span>
+            </div>
+            {compare.map((row) => (
+              <div key={row.question} className={styles.compareRow}>
+                <h3 className={styles.compareQ}>{row.question}</h3>
+                <p className={styles.diy}>
+                  <X size={15} className={styles.no} aria-hidden="true" />
+                  <span>
+                    <span className="visually-hidden">Doing it yourself: </span>
+                    {row.diy}
+                  </span>
+                </p>
+                <p className={styles.mineCol}>
+                  <Check size={15} className={styles.yes} aria-hidden="true" />
+                  <span>
+                    <span className="visually-hidden">Having me do it: </span>
+                    {row.mine}
+                  </span>
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <p className={styles.stat}>
+            <strong>{DIY_SURVEY.abandoned}</strong> of people who start a
+            build-it-yourself site never get it live.{' '}
+            <a
+              className={styles.source}
+              href={DIY_SURVEY.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {DIY_SURVEY.note}
+            </a>
+          </p>
         </section>
 
         {/* --- Process ------------------------------------------------------ */}
@@ -361,8 +335,8 @@ export default function Services() {
         <section className={styles.close}>
           <h2 className={styles.closeTitle}>Nothing to lose by looking.</h2>
           <p className={styles.closeBody}>
-            Tell me what you do and I will build the first version. If you do
-            not want it, that is the end of it.
+            Tell me what you do and I will build the first version. Do not want
+            it? That is the end of it.
           </p>
           <div className={styles.closeActions}>
             <a href={`mailto:${site.email}`} className={styles.btnPrimary}>

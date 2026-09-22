@@ -12,27 +12,39 @@ import styles from '../Demo.module.css';
  * and what it sells is the build rather than the fictional business.
  */
 export default function DemoOutro({ config }: { config: DemoConfig }) {
+  /*
+   * A card on a light ground, not a dark band.
+   *
+   * As a full-width section in the deep tone it ran straight into the
+   * business footer, which is the same color, so the pitch for the build and
+   * the fictional shop's own footer read as one block. Contained, it is
+   * plainly a different voice from the page around it.
+   */
   if (config.showcase) {
     return (
-      <Section tone="dark" narrow>
-        <SectionHead
-          eyebrow="Built by Joshua Kac"
-          title="Your business, on a site like this one."
-          sub="Every page here is real code, not a picture of a website. Yours would be built the same way, with your photos, your colors and your hours, and it would load just as fast on a phone."
-          align="center"
-        />
-        <div
-          className={styles.heroActions}
-          style={{ justifyContent: 'center', marginTop: 0 }}
-        >
-          <Cta href={`${site.url}/services`} variant="onDark">
-            See what it costs
-          </Cta>
-          <Cta href={`${site.url}/templates`} variant="ghost">
-            Other templates
-          </Cta>
+      <section className={`${styles.section} ${styles.outroSection}`}>
+        <div className={styles.container}>
+          <div className={`${styles.sectionDark} ${styles.outroCard}`}>
+            <SectionHead
+              eyebrow="Built by Joshua Kac"
+              title="Your business, on a site like this one."
+              sub="Every page here is real code, not a picture of a website. Yours would be built the same way, with your photos, your colors and your hours, and it would load just as fast on a phone."
+              align="center"
+            />
+            <div
+              className={styles.heroActions}
+              style={{ justifyContent: 'center', marginTop: 0 }}
+            >
+              <Cta href={`${site.url}/services`} variant="onDark">
+                See what it costs
+              </Cta>
+              <Cta href={`${site.url}/templates`} variant="ghost">
+                Other templates
+              </Cta>
+            </div>
+          </div>
         </div>
-      </Section>
+      </section>
     );
   }
 

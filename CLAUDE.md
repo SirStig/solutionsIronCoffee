@@ -270,15 +270,19 @@ used to show each sample's hero photograph, which meant a page selling websites
 was illustrated with pictures of brisket and haircuts while every competitor's
 showcase shows screens.
 
-`/services` is ordered as an argument, and the order matters more than the
-words: the Wix objection comes *before* the prices, because a reader who has
-not been given a reason to stop comparing this to a thirty dollar subscription
-will do exactly that the moment they hit a number. Two rules hold it together.
-Never put a build price next to a monthly price, because $1,800 against $204 a
-year loses on arithmetic every time and printing that comparison just teaches
-the reader to run it; the care plan is the only thing that belongs beside a
-subscription. And keep every line short. A pricing page that has to be read
-twice has already lost.
+`/services` puts the price a visitor will actually pay where they cannot miss
+it. The hero states the entry tier in one bold line, the tiers come straight
+after, and the $200 tier carries the highlight and the biggest number, while
+the higher tiers print smaller. It used to lead with a Wix comparison and put
+the highlight on the $1,800 card, so a skimming reader met that number first,
+took it for the price, and left before reaching the one meant for them. The
+Wix comparison now follows the samples, at four rows that stack on a phone
+rather than a table that scrolls sideways, since nobody swipes a table to
+read the column making the case. Never put the $1,800
+build price next to a monthly price, because it loses to $204 a year on
+arithmetic; the entry tier costs about a year of a builder, which is a
+comparison worth inviting. And keep every line short. A pricing page that has
+to be read twice has already lost.
 
 **Checking the demos.** `npm run build` then `npm run serve`, never `vite
 preview`. `npm run audit:ui` drives Chromium and WebKit across eight viewports

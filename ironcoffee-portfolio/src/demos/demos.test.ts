@@ -6,7 +6,8 @@ import { iconNames } from './components/icons';
 import { artName, pictureKind } from './index';
 import { hasScene } from './components/artwork';
 import { hasMotif } from './components/motifs';
-import { openState } from './components/blocks';
+import { openState, reviewsIntro } from './components/blocks';
+import { initials } from './components/DemoNav';
 import './components/scenes';
 
 const all = Object.values(demos);
@@ -435,5 +436,50 @@ describe('open now', () => {
       open: false,
       note: 'Closed today',
     });
+  });
+});
+
+describe('review attribution', () => {
+  it('names no platform over quotes that carry no source', () => {
+    // The samples' customers are invented. The heading over them used to
+    // fall back to "Google", which put the forbidden citation on the page
+    // without any quote carrying it.
+    for (const demo of showcases) {
+      const intro = reviewsIntro(demo.testimonials ?? []);
+      expect(intro ?? '', demo.slug).not.toMatch(/google|yelp|facebook/i);
+    }
+  });
+
+  it('names the platform when every quote carries it', () => {
+    expect(
+      reviewsIntro([
+        { quote: 'Great.', name: 'A', source: 'Google' },
+        { quote: 'Good.', name: 'B', source: 'Google' },
+      ])
+    ).toMatch(/Google reviews/);
+  });
+
+  it('names nothing when only some quotes carry a source', () => {
+    expect(
+      reviewsIntro([
+        { quote: 'Great.', name: 'A', source: 'Google' },
+        { quote: 'Good.', name: 'B' },
+      ])
+    ).toBeUndefined();
+  });
+});
+
+describe('initials', () => {
+  it('takes the first letters of a business name', () => {
+    expect(initials('Ridgeline Smokehouse')).toBe('RS');
+  });
+
+  it('keeps an apostrophe inside its word', () => {
+    expect(initials("Jill's Feed & Country Supply")).toBe('JFC');
+  });
+
+  it('drops a title and the letters after a comma', () => {
+    expect(initials('Dr. Alison Park, DDS')).toBe('AP');
+    expect(initials('Maria Delgado, RDH')).toBe('MD');
   });
 });
