@@ -6,6 +6,7 @@ import {
   AboutBlock,
   FaqList,
   GalleryGrid,
+  HoursBar,
   ProductBlock,
   ServiceCards,
   Marquee,
@@ -21,6 +22,8 @@ import {
 } from '../components/blocks';
 import { Bleed, Section, SectionHead } from '../components/primitives';
 import { homeNavLinks, type NavLink } from '../components/DemoNav';
+import { Arranged, gallerySub, heading, orderedAnchors, type Slot } from '../components/arrange';
+import type { SectionKey } from '../types';
 import styles from '../Demo.module.css';
 
 /**
@@ -31,12 +34,13 @@ import styles from '../Demo.module.css';
  * note under it carries today's hours. Everything else can wait.
  */
 export default function RetailTemplate({ config }: { config: DemoConfig }) {
-  const anchors: NavLink[] = [
-    ...(config.products?.length ? [{ label: 'In stock', href: '#stock' }] : []),
-    ...(config.services.length ? [{ label: 'Services', href: '#services' }] : []),
-    { label: 'About', href: '#about' },
-    { label: 'Visit', href: '#visit' },
-  ];
+  const order = config.layout?.order ?? DEFAULT_ORDER;
+  const anchors: NavLink[] = orderedAnchors<NavLink>(order, {
+    stock: Boolean(config.products?.length) && { label: 'In stock', href: '#stock' },
+    services: config.services.length > 0 && { label: 'Services', href: '#services' },
+    about: { label: 'About', href: '#about' },
+    visit: { label: 'Visit', href: '#visit' },
+  });
 
   // Anchors on a one-page sample, real page links on a multi-page one.
   const links = homeNavLinks(config, anchors);
@@ -48,97 +52,175 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
 
   const { lead, others } = splitQuotes(config.testimonials);
 
-  return (
-    <DemoShell config={config} links={links}>
-      <DemoHero
-        config={config}
-        variant="strip"
-        note={
-          hasNote ? (
-            <div className={styles.heroNoteInner}>
-              <TodayHours config={config} />
-              {phone && <span>Questions? Call {phone}.</span>}
-            </div>
-          ) : undefined
-        } />
+  const layout = config.layout ?? {};
+  const hero = layout.hero ?? 'strip';
+  const align = layout.align ?? 'left';
 
-      {config.marquee?.length ? <Marquee items={config.marquee} /> : null}
+  const stock = heading(config, 'stock', {
+    eyebrow: 'On the shelves',
+    title: 'What we carry',
+    sub: phone
+      ? 'Worth a call before you drive out. This page is only ever as current as its last update.'
+      : 'This page is only ever as current as its last update.',
+  });
+  const services = heading(config, 'services', {
+    eyebrow: 'Beyond the shelves',
+    title: 'What else we do',
+  });
+  const reviews = heading(config, 'reviews', {
+    eyebrow: 'In their own words',
+    title: 'What people say about the place',
+    sub: reviewsIntro(others),
+  });
+  const gallery = heading(config, 'gallery', {
+    title: 'A look around',
+    sub: gallerySub(config),
+  });
+  const visit = heading(config, 'visit', { eyebrow: 'Find us', title: 'Stop by' });
+  const faq = heading(config, 'faq', { title: 'Good to know' });
 
-      {config.products?.length ? (
-        <Section id="stock">
-          <SectionHead
-            eyebrow="On the shelves"
-            title="What we carry"
-            sub={
-              phone
-                ? 'Worth a call before you drive out. This page is only ever as current as its last update.'
-                : 'This page is only ever as current as its last update.'
-            } />
-          <ProductBlock groups={config.products} />
+  const slots: Partial<Record<SectionKey, Slot>> = {
+    stock: {
+      show: Boolean(config.products?.length),
+      render: (tone) => (
+        <Section id="stock" tone={tone}>
+          <SectionHead {...stock} align={align} />
+          <ProductBlock groups={config.products ?? []} />
         </Section>
-      ) : null}
-
-      {config.services.length > 0 && (
-        <Section id="services" tone="alt">
-          <SectionHead eyebrow="Beyond the shelves" title="What else we do" />
+      ),
+    },
+    services: {
+      show: config.services.length > 0,
+      render: (tone) => (
+        <Section id="services" tone={tone}>
+          <SectionHead {...services} align={align} />
           <ServiceCards items={config.services} bordered />
           {config.stats?.length ? <StatsBand stats={config.stats} /> : null}
         </Section>
-      )}
-
-      {others.length > 0 && (
-        <Section>
-          <SectionHead
-            eyebrow="In their own words"
-            title="What people say about the place"
-            sub={reviewsIntro(others)}
-          />
+      ),
+    },
+    reviews: {
+      show: others.length > 0,
+      render: (tone) => (
+        <Section tone={tone}>
+          <SectionHead {...reviews} align={align} />
           <Testimonials items={others} />
         </Section>
-      )}
-
-      <Section id="about">
-        <AboutBlock config={config} />
-      </Section>
-
-      {config.gallery.length > 0 && (
-        <GalleryGrid
-          images={config.gallery}
-          business={config.business.name}
-          sample={config.placeholderPhotos}
-          fullBleed />
-      )}
-
-      <Section id="visit" tone="alt">
-        <SectionHead eyebrow="Find us" title="Stop by" />
-        <VisitBlock config={config} />
-      </Section>
-
-      {lead ? (
-        <Bleed tone="deep">
-          <PullQuote items={config.testimonials ?? []} />
-        </Bleed>
-      ) : (
-        <StatementBand
-          motif={config.brand.motif}
-          image={config.gallery[0] ?? config.hero.image}
-          line={config.business.tagline}
-          business={config.business.name}
-          kicker={`${config.business.city}, ${config.business.state}`}
-        />
-      )}
-
-      {config.faq?.length ? (
-        <Section narrow>
-          <SectionHead title="Good to know" />
-          <FaqList items={config.faq} />
+      ),
+    },
+    about: {
+      show: true,
+      render: (tone) => (
+        <Section id="about" tone={tone}>
+          <AboutBlock config={config} />
         </Section>
-      ) : null}
+      ),
+    },
+    gallery:
+      layout.gallery === 'contained'
+        ? {
+            show: config.gallery.length > 0,
+            render: (tone) => (
+              <Section id="photos" tone={tone}>
+                <SectionHead {...gallery} align={align} />
+                <GalleryGrid
+                  images={config.gallery}
+                  business={config.business.name}
+                  sample={config.placeholderPhotos}
+                />
+              </Section>
+            ),
+          }
+        : {
+            show: config.gallery.length > 0,
+            band: true,
+            render: () => (
+              <GalleryGrid
+                images={config.gallery}
+                business={config.business.name}
+                sample={config.placeholderPhotos}
+                fullBleed
+              />
+            ),
+          },
+    visit: {
+      show: true,
+      tone: layout.darkVisit ? 'dark' : undefined,
+      render: (tone) => (
+        <Section id="visit" tone={tone}>
+          <SectionHead {...visit} align={align} />
+          <VisitBlock config={config} />
+        </Section>
+      ),
+    },
+    quote: {
+      show: true,
+      band: true,
+      render: () =>
+        lead ? (
+          <Bleed tone="deep">
+            <PullQuote items={config.testimonials ?? []} />
+          </Bleed>
+        ) : (
+          <StatementBand
+            motif={config.brand.motif}
+            image={config.gallery[0] ?? config.hero.image}
+            line={config.business.tagline}
+            business={config.business.name}
+            kicker={`${config.business.city}, ${config.business.state}`}
+          />
+        ),
+    },
+    faq: {
+      show: Boolean(config.faq?.length),
+      render: (tone) => (
+        <Section narrow tone={tone}>
+          <SectionHead {...faq} align={align} />
+          <FaqList items={config.faq ?? []} />
+        </Section>
+      ),
+    },
+  };
+
+  const note = hasNote ? (
+    <div className={styles.heroNoteInner}>
+      <TodayHours config={config} />
+      {phone && <span>Questions? Call {phone}.</span>}
+    </div>
+  ) : undefined;
+
+  return (
+    <DemoShell config={config} links={links}>
+      {hero === 'strip' ? (
+        <DemoHero config={config} variant="strip" note={note} />
+      ) : (
+        <>
+          <DemoHero config={config} variant={hero} />
+          {/* No strip means no note under the photo, so the week goes in a
+              bar instead: the first question is still whether it is open. */}
+          <HoursBar config={config} />
+        </>
+      )}
+
+      {config.marquee?.length ? <Marquee items={config.marquee} /> : null}
+
+      <Arranged order={order} slots={slots} />
 
       <DemoOutro config={config} />
     </DemoShell>
   );
 }
+
+const DEFAULT_ORDER: SectionKey[] = [
+  'stock',
+  'services',
+  'reviews',
+  'about',
+  'gallery',
+  'visit',
+  'quote',
+  'faq',
+];
 
 /**
  * Today's hours, in the business's own time zone, once the page has mounted.

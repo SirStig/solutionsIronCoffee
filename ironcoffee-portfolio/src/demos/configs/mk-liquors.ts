@@ -90,13 +90,14 @@ const mkLiquors: DemoConfig = {
     phone: '(303) 953-0154',
   },
 
-  // Bricolage Grotesque: the face in the set drawn by hand, which is the right
-  // register for a bottle shop. The colors are a guess and are meant to be.
+  // Playfair: a wine list's face, and the one pairing no other preview uses.
+  // It used to share Bricolage with Hair Genius, which is two of five previews
+  // in one typeface. The colors are a guess and are meant to be.
   brand: {
     primary: '#7B2233',
     secondary: '#241016',
     accent: '#C9A227',
-    font: 'craft',
+    font: 'luxe',
     motif: 'bottles',
   },
 
@@ -106,6 +107,36 @@ const mkLiquors: DemoConfig = {
     image: 'demos/mk-liquors/hero',
     ctaLabel: 'Call the Store',
     ctaHref: 'tel:+13039530154',
+  },
+
+  /*
+   * Same template as Jill's, and it must not look it.
+   *
+   * Jill's opens on a short photo strip with today's hours under it and leads
+   * with stock, which is right for a feed store people drive to with a list.
+   * A liquor store sells the conversation at the counter, so this one opens on
+   * a full photograph, puts special orders ahead of the shelves, keeps the
+   * photographs in a contained grid and sets the visit on dark.
+   */
+  layout: {
+    hero: 'full',
+    gallery: 'contained',
+    order: ['services', 'stock', 'about', 'gallery', 'quote', 'visit', 'faq'],
+    darkVisit: true,
+  },
+
+  copy: {
+    headings: {
+      services: { eyebrow: 'Behind the counter', title: 'A small store, run by its owners' },
+      stock: {
+        eyebrow: 'The shelves',
+        title: 'Beer, wine and spirits',
+        sub: 'Categories rather than brands. What is in this week is a question for the phone.',
+      },
+      gallery: { eyebrow: 'Around the aisles', title: 'Bottles, cans and glass' },
+      visit: { eyebrow: 'Visit', title: '240 Comanche Street' },
+      faq: { title: 'Worth asking' },
+    },
   },
 
   /*
@@ -155,16 +186,9 @@ const mkLiquors: DemoConfig = {
     },
   ],
 
-  // Family ownership and special orders already have the tagline, a card and
-  // an FAQ each, so the band carries what is on the shelf and where. Nothing
-  // about the hours: they are still only "likely", see the header.
-  marquee: [
-    'Beer, wine and spirits to go',
-    'Whiskey, bourbon and rye',
-    'Red, white and sparkling',
-    'Seltzers, ciders and mixers',
-    '240 Comanche St, Kiowa',
-  ],
+  // No marquee. Every line it could carry is either the stock list printed
+  // directly below it or the hours, which are still only "likely".
+
 
   /*
    * Yahoo and Yelp agree exactly on these. See the header for why that is

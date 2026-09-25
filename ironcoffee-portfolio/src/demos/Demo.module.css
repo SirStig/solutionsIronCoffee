@@ -1353,6 +1353,33 @@
   }
 }
 
+/* No headshots: names under a brand rule instead of empty portrait frames.
+   Placed after the phone rules so the row layout they set does not apply. */
+.teamGridText {
+  gap: 2rem 1.75rem;
+}
+
+.teamGridText .teamCard {
+  display: block;
+  text-align: left;
+  padding: 1.1rem 0 0;
+  border-top: 2px solid var(--brand);
+}
+
+.teamGridText .teamCard:first-child {
+  border-top: 2px solid var(--brand);
+  padding-top: 1.1rem;
+}
+
+.teamGridText .teamName {
+  font-size: 1.25rem;
+}
+
+/* A centered page keeps its axis. */
+.centered ~ .teamGridText .teamCard {
+  text-align: center;
+}
+
 /* --- About --------------------------------------------------------------- */
 .aboutGrid {
   display: grid;
@@ -4847,6 +4874,21 @@
 
 .openNowNote {
   color: var(--d-faint);
+}
+
+/* On a dark section the fixed grays sink into the ground (2.7:1 on a deep
+   brand color), so the badge flips to light tones there. The green is lifted
+   rather than swapped for white, since open still has to read as open. */
+.sectionDark .openNowYes {
+  color: #7ee0a6;
+}
+
+.sectionDark .openNowNo {
+  color: rgb(255 255 255 / 0.85);
+}
+
+.sectionDark .openNowNote {
+  color: rgb(255 255 255 / 0.72);
 }
 
 /* --- Review attribution ---------------------------------------------------

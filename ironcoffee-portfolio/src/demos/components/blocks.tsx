@@ -978,6 +978,21 @@ export function HoursStrip({
 }
 
 /**
+ * The week as a slim bar under a hero that has no room for the hours card.
+ * Today's chip is marked once the page has a clock to read.
+ */
+export function HoursBar({ config }: { config: DemoConfig }) {
+  if (!config.hours.length) return null;
+  return (
+    <div className={styles.badgeBar}>
+      <div className={styles.container}>
+        <HoursStrip hours={config.hours} timeZone={businessTimeZone(config)} />
+      </div>
+    </div>
+  );
+}
+
+/**
  * Hours and the one action, as a card that sits over the hero.
  *
  * The roofing sample puts a quote form here and it is the strongest opening in
@@ -1145,19 +1160,36 @@ export function GalleryGrid({
 
 /* --- Team ---------------------------------------------------------------- */
 
+/**
+ * Portraits when every member has one, and type alone when any does not.
+ *
+ * A circle of initials on a gradient beside real photography reads as a
+ * missing picture, and a row of them reads as a site nobody finished. So a
+ * team without headshots is set as names, roles and bios under a brand rule,
+ * which looks like a decision. All or nothing, because one real face among
+ * three monograms makes the three look worse.
+ */
 export function TeamGrid({ members }: { members: DemoTeamMember[] }) {
+  const portraits = members.every((member) => member.image);
+
   return (
-    <div className={`${styles.teamGrid} ${styles.stagger}`}>
+    <div
+      className={[styles.teamGrid, !portraits && styles.teamGridText, styles.stagger]
+        .filter(Boolean)
+        .join(' ')}
+    >
       {members.map((member) => (
         <article key={member.name} className={styles.teamCard}>
-          <div className={styles.teamPhoto}>
-            <DemoImage
-              name={member.image}
-              alt={member.name}
-              mark={initials(member.name)}
-              sizes="(min-width: 860px) 20vw, 50vw"
-            />
-          </div>
+          {portraits && (
+            <div className={styles.teamPhoto}>
+              <DemoImage
+                name={member.image}
+                alt={member.name}
+                mark={initials(member.name)}
+                sizes="(min-width: 860px) 20vw, 50vw"
+              />
+            </div>
+          )}
           <h3 className={styles.teamName}>{member.name}</h3>
           <p className={styles.teamRole}>{member.role}</p>
           {member.bio && <p className={styles.teamBio}>{member.bio}</p>}

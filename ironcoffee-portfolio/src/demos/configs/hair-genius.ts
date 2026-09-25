@@ -99,6 +99,34 @@ const hairGenius: DemoConfig = {
   },
 
   /*
+   * Same template as Barr Bear, and it must not look it.
+   *
+   * Barr Bear opens on a photograph with the hours card over it and centers
+   * every heading, which suits one chair in a country town. This is a busier
+   * suburban shop, so it gets the other arrangement: the charcoal split hero,
+   * the week in a bar underneath, left-aligned heads, the work straight after
+   * the services, the reviews before the story, and the visit on dark.
+   */
+  layout: {
+    hero: 'split',
+    align: 'left',
+    gallery: 'contained',
+    order: ['services', 'gallery', 'quote', 'reviews', 'about', 'visit', 'faq'],
+    darkVisit: true,
+    services: 'cards',
+  },
+
+  copy: {
+    headings: {
+      services: { eyebrow: 'In the chair', title: 'Cuts, fades and beards' },
+      gallery: { eyebrow: 'The work', title: 'Clean lines, up close' },
+      reviews: { eyebrow: 'Word of mouth', title: 'What customers say' },
+      visit: { eyebrow: 'Find the shop', title: 'Suite 128, off Dransfeldt' },
+      faq: { title: 'Before you come in' },
+    },
+  },
+
+  /*
    * No prices, and no price field either.
    *
    * The shop publishes none and the only public numbers belong to one barber's

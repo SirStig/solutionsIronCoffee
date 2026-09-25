@@ -285,6 +285,51 @@ export interface DemoPage {
  * one they will spot first. So the templates print a neutral line, or nothing,
  * and a config that knows the promise is true says it here.
  */
+/**
+ * The blocks a template can move around. Each template reads only the keys it
+ * renders and ignores the rest.
+ */
+export type SectionKey =
+  | 'services'
+  | 'stock'
+  | 'team'
+  | 'reviews'
+  | 'quote'
+  | 'about'
+  | 'gallery'
+  | 'visit'
+  | 'faq';
+
+/** Overrides for one section's heading. Anything left out keeps the default. */
+export interface DemoHeading {
+  eyebrow?: string;
+  title?: string;
+  sub?: string;
+}
+
+/**
+ * How a page is arranged, as opposed to what it says.
+ *
+ * Two businesses in the same trade used to get the same page in the same
+ * order with the colors swapped, and an owner comparing notes with the shop
+ * down the road would see it in seconds. Every field is optional and a config
+ * without any of them gets the template's own arrangement.
+ */
+export interface DemoLayout {
+  /** Which opening the page uses. Each template has its own default. */
+  hero?: 'full' | 'split' | 'panel' | 'strip';
+  /** Section heading alignment. Booking centers by default, the rest left. */
+  align?: 'left' | 'center';
+  /** Edge-to-edge photo wall, or a contained grid inside a section. */
+  gallery?: 'bleed' | 'contained';
+  /** Section order after the hero. Keys a template does not know are skipped. */
+  order?: SectionKey[];
+  /** The visit section on a dark ground rather than a tinted one. */
+  darkVisit?: boolean;
+  /** Services as a ruled list (the Booking default) or as a grid of cards. */
+  services?: 'list' | 'cards';
+}
+
 export interface DemoCopy {
   /** Under the services heading. 'Every job starts with a free visit.' */
   servicesIntro?: string;
@@ -298,6 +343,8 @@ export interface DemoCopy {
   formIntro?: string;
   /** The lead form's button. */
   formSubmit?: string;
+  /** Per-section heading overrides, so two pages in one trade read differently. */
+  headings?: Partial<Record<SectionKey, DemoHeading>>;
 }
 
 /** Pickup ordering. Only read by the 'order' page. */
@@ -336,6 +383,9 @@ export interface DemoConfig {
 
   /** Promises in the business's own voice. See DemoCopy. */
   copy?: DemoCopy;
+
+  /** Arrangement: hero, order, alignment. See DemoLayout. */
+  layout?: DemoLayout;
 
   /** Settings for the pickup order page. */
   order?: DemoOrder;

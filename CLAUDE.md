@@ -109,6 +109,19 @@ an announcement: once per page, twice at the outside. `Booking` is the one
 sample that centers throughout, on purpose, so that reads as a house style
 rather than as the only trick the system knows.
 
+Two businesses in one trade get one template, so the template alone cannot
+keep them apart. `layout` is how a config changes the arrangement without
+touching a template: `hero`, `align`, `gallery` (bleed or contained), `order`
+(a list of section keys; tones alternate by position, so a new order never
+puts two tinted sections together), `darkVisit` and `services` (list or
+cards). `copy.headings` overrides any section's eyebrow, title or sub. Barr
+Bear and Hair Genius share Booking, Jill's and MK share Retail, and each pair
+uses different settings so neither reads as the other with a new logo.
+
+A team without headshots is set as type under a brand rule, never as
+initials in empty portrait circles, and it is all or nothing: one real face
+among monograms makes the monograms look worse.
+
 `Bleed`, `PullQuote` and `Marquee` exist to break the rhythm. A page made
 entirely of contained sections reads as one long column whatever is in it.
 
