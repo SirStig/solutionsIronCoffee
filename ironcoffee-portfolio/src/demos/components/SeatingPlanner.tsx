@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { RotateCcw, Trash2 } from 'lucide-react';
+import { RotateCcw, RotateCw, Trash2 } from 'lucide-react';
 import styles from '../Demo.module.css';
 
 /**
@@ -68,37 +68,89 @@ const SEED: Placed[] = [
 ];
 
 const CAPACITY = 140;
-const STORE = 'wren-hollow-plan';
 const GRID = 2;
+/** Keys added from the palette start here, clear of the seeded `s1` to `s6`. */
+const FIRST_KEY = 100;
 
 const snap = (n: number) => Math.round(n / GRID) * GRID;
 const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
+const clampX = (x: number) => clamp(snap(x), 3, 97);
+const clampY = (y: number) => clamp(snap(y), 4, 96);
 
-export default function SeatingPlanner() {
+/** The number in a key like `p104`, or -1 for one with no number in it. */
+const keyNumber = (key: string) => {
+  const match = /(\d+)$/.exec(key);
+  return match ? Number(match[1]) : -1;
+};
+
+/**
+ * A saved layout, checked before it is trusted.
+ *
+ * Storage is written by an older build as easily as by this one, and by
+ * anybody with a console. Anything that is not a list of known tables with
+ * numeric positions and distinct keys is thrown away in favor of the seed,
+ * rather than rendered as a plan that crashes on the first drag.
+ */
+function readPlan(raw: string | null): Placed[] | null {
+  if (!raw) return null;
+  let value: unknown;
+  try {
+    value = JSON.parse(raw);
+  } catch {
+    return null;
+  }
+  if (!Array.isArray(value)) return null;
+  const out: Placed[] = [];
+  const keys = new Set<string>();
+  for (const item of value) {
+    if (typeof item !== 'object' || item === null) return null;
+    const { key, type, x, y, rotated } = item as Record<string, unknown>;
+    if (typeof key !== 'string' || keys.has(key)) return null;
+    if (typeof type !== 'string' || !BY_ID[type]) return null;
+    if (typeof x !== 'number' || !Number.isFinite(x)) return null;
+    if (typeof y !== 'number' || !Number.isFinite(y)) return null;
+    keys.add(key);
+    out.push({ key, type, x: clampX(x), y: clampY(y), rotated: rotated === true });
+  }
+  return out;
+}
+
+export default function SeatingPlanner({
+  storageKey = 'seating-plan',
+}: {
+  /** Where the layout is remembered. One per venue, so two samples never share a plan. */
+  storageKey?: string;
+}) {
   const [placed, setPlaced] = useState<Placed[]>(SEED);
   const [active, setActive] = useState<string | null>(null);
   const [dragging, setDragging] = useState<string | null>(null);
   const planRef = useRef<HTMLDivElement>(null);
-  const nextKey = useRef(100);
+  const nextKey = useRef(FIRST_KEY);
   const offset = useRef({ dx: 0, dy: 0 });
 
   // Effect, not render: see the note at the top of this file.
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(STORE);
-      if (raw) setPlaced(JSON.parse(raw));
+      const saved = readPlan(localStorage.getItem(storageKey));
+      if (saved) {
+        // Carry on numbering after the highest saved key. Starting from
+        // FIRST_KEY again would hand out `p100` to a second table while the
+        // first one is still on the floor.
+        nextKey.current = Math.max(FIRST_KEY, ...saved.map((p) => keyNumber(p.key) + 1));
+        setPlaced(saved);
+      }
     } catch {
       /* Private window, blocked storage. The seeded layout is fine. */
     }
-  }, []);
+  }, [storageKey]);
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORE, JSON.stringify(placed));
+      localStorage.setItem(storageKey, JSON.stringify(placed));
     } catch {
       /* Nothing to do, and nothing worth telling the visitor about. */
     }
-  }, [placed]);
+  }, [placed, storageKey]);
 
   const seated = useMemo(
     () => placed.reduce((n, p) => n + (BY_ID[p.type]?.seats ?? 0), 0),
@@ -118,9 +170,7 @@ export default function SeatingPlanner() {
     (key: string, x: number, y: number) =>
       setPlaced((prev) =>
         prev.map((p) =>
-          p.key === key
-            ? { ...p, x: clamp(snap(x), 3, 97), y: clamp(snap(y), 4, 96) }
-            : p
+          p.key === key ? { ...p, x: clampX(x), y: clampY(y) } : p
         )
       ),
     []
@@ -147,13 +197,23 @@ export default function SeatingPlanner() {
 
   /* --- Adding from the palette ------------------------------------------- */
   const add = (type: string) => {
-    const key = `p${nextKey.current++}`;
+    let n = nextKey.current;
+    while (placed.some((p) => p.key === `p${n}`)) n += 1;
+    nextKey.current = n + 1;
+    const key = `p${n}`;
     setPlaced((prev) => [...prev, { key, type, x: 50, y: 50, rotated: false }]);
     setActive(key);
   };
 
   const remove = (key: string) =>
     setPlaced((prev) => prev.filter((p) => p.key !== key));
+
+  const rotate = (key: string) =>
+    setPlaced((prev) =>
+      prev.map((p) => (p.key === key ? { ...p, rotated: !p.rotated } : p))
+    );
+
+  const activeItem = placed.find((p) => p.key === active);
 
   /* --- Keyboard ----------------------------------------------------------
      Arrow keys nudge, R rotates, Delete removes. A drag-only interface is
@@ -174,9 +234,7 @@ export default function SeatingPlanner() {
     }
     if (e.key === 'r' || e.key === 'R') {
       e.preventDefault();
-      setPlaced((prev) =>
-        prev.map((p) => (p.key === item.key ? { ...p, rotated: !p.rotated } : p))
-      );
+      rotate(item.key);
       return;
     }
     if (e.key === 'Delete' || e.key === 'Backspace') {
@@ -202,6 +260,20 @@ export default function SeatingPlanner() {
             />
           </span>
         </div>
+        {/* The visible way to turn a table. R works from a keyboard, and a
+            phone has no R. */}
+        <button
+          type="button"
+          className={styles.planReset}
+          onClick={() => activeItem && rotate(activeItem.key)}
+          disabled={!activeItem}
+        >
+          <RotateCw size={14} aria-hidden="true" />
+          Rotate
+          {activeItem && BY_ID[activeItem.type] && (
+            <span className="visually-hidden"> {BY_ID[activeItem.type].label}</span>
+          )}
+        </button>
         <button
           type="button"
           className={styles.planReset}
@@ -256,12 +328,14 @@ export default function SeatingPlanner() {
             if (!t) return null;
             const w = item.rotated ? t.w * t.ratio : t.w;
             const h = item.rotated ? t.w : t.w * t.ratio;
+            /* Two siblings in a positioned frame rather than a button inside a
+               button: the table is one control and the bin is another, and
+               nesting them gives a screen reader one control with a second
+               it cannot reach. The frame carries the look and the position;
+               the table fills it. */
             return (
               <div
                 key={item.key}
-                role="button"
-                tabIndex={0}
-                aria-label={`${t.label}${t.seats ? `, ${t.seats} seats` : ''}. Arrow keys to move, R to rotate, Delete to remove.`}
                 className={[
                   styles.planItem,
                   t.round && styles.planItemRound,
@@ -277,21 +351,34 @@ export default function SeatingPlanner() {
                   width: `${w}%`,
                   aspectRatio: `${w} / ${h}`,
                 }}
-                onPointerDown={(e) => onPointerDown(e, item)}
-                onPointerMove={(e) => onPointerMove(e, item)}
-                onPointerUp={endDrag}
-                onPointerCancel={endDrag}
-                onFocus={() => setActive(item.key)}
-                onKeyDown={(e) => onKeyDown(e, item)}
               >
-                <span className={styles.planItemLabel}>
-                  {t.seats > 0 ? t.seats : t.label}
-                </span>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${t.label}${t.seats ? `, ${t.seats} seats` : ''}. Arrow keys to move, R to rotate, Delete to remove.`}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'grid',
+                    placeItems: 'center',
+                    borderRadius: 'inherit',
+                    touchAction: 'none',
+                  }}
+                  onPointerDown={(e) => onPointerDown(e, item)}
+                  onPointerMove={(e) => onPointerMove(e, item)}
+                  onPointerUp={endDrag}
+                  onPointerCancel={endDrag}
+                  onFocus={() => setActive(item.key)}
+                  onKeyDown={(e) => onKeyDown(e, item)}
+                >
+                  <span className={styles.planItemLabel}>
+                    {t.seats > 0 ? t.seats : t.label}
+                  </span>
+                </div>
                 <button
                   type="button"
                   className={styles.planRemove}
                   aria-label={`Remove ${t.label}`}
-                  onPointerDown={(e) => e.stopPropagation()}
                   onClick={() => remove(item.key)}
                 >
                   <Trash2 size={12} aria-hidden="true" />
@@ -303,9 +390,10 @@ export default function SeatingPlanner() {
       </div>
 
       <p className={styles.planHint}>
-        Drag a table. Tap one and press R to turn it, or Delete to take it out.
+        Drag a table, or select one and use the arrow keys. Rotate turns the
+        selected table (R on a keyboard), and the bin or Delete takes it out.
         Your layout is remembered on this device, and the real version emails it
-        to us with your enquiry.
+        to us with your inquiry.
       </p>
     </div>
   );

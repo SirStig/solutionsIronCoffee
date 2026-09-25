@@ -10,10 +10,11 @@ import type { DemoConfig } from '../types';
  * exercised on every build whatever else is live: the expiry banner, the
  * noindex tag, the contact form that routes to me.
  *
- * It is also the only preview whose photographs are real, which makes it the
- * only page that exercises the photo branch of <DemoImage> and the photo
- * wording in the disclosure. Every preview built for an actual business is
- * illustrated, because none of them have handed over pictures yet.
+ * It is also the only preview whose photographs are its own, which makes it
+ * the only preview that exercises the `own` answer from `pictureKind`. Every
+ * preview built for an actual business mixes stock photography of the trade
+ * with one drawing and sets `placeholderPhotos`, because none of them have
+ * handed over pictures yet.
  *
  * `createdAt` needs bumping every couple of months or this will retire itself
  * and start serving the expired page, which is exactly what it should do.
@@ -29,7 +30,7 @@ const test: DemoConfig = {
     city: 'Kiowa',
     state: 'CO',
     address: '210 County Road 45',
-    phone: '(303) 555-0173',
+    phone: '(303) 555-0179',
     email: 'store@kiowacreekmercantile.example',
   },
 
@@ -42,7 +43,7 @@ const test: DemoConfig = {
 
   hero: {
     headline: 'Yes, the chicks are in.',
-    sub: 'Stop phoning to ask. This page says what is on the shelf and we update it the morning the truck comes.',
+    sub: 'Stop calling to ask. This page says what is on the shelf and we update it the morning the truck comes.',
     image: 'demos/test/hero',
     ctaLabel: 'See the Stock List',
     ctaHref: '#stock',
@@ -86,12 +87,12 @@ const test: DemoConfig = {
       icon: 'chick',
       items: [
         {
-          name: 'Barred Rock pullets',
+          name: 'Barred Rock chicks',
           desc: 'Straight run, day old.',
           availability: 'In stock',
         },
         {
-          name: 'Rhode Island Red pullets',
+          name: 'Rhode Island Red chicks',
           availability: 'In stock',
         },
         {
@@ -123,7 +124,7 @@ const test: DemoConfig = {
     {
       title: 'We load it for you',
       icon: 'truck',
-      body: 'Pull round the back, tell us what you need and it goes in the truck. Nobody here expects you to carry a fifty pound sack across the lot.',
+      body: 'Pull around back, tell us what you need and it goes in the truck. Nobody here expects you to carry a fifty-pound sack across the lot.',
     },
     {
       title: 'Special orders',
@@ -159,14 +160,14 @@ const test: DemoConfig = {
 
   about: {
     heading: 'Third generation behind the same counter.',
-    body: 'The Mercantile opened in 1948 and has been run by the same family ever since. We know what your ground does in April and we know which feed your neighbour swears by. If we do not stock something we will tell you who does, even when that is the big place down the highway.',
+    body: 'The Mercantile opened in 1948 and has been run by the same family ever since. We know what your ground does in April and we know which feed your neighbor swears by. If we do not stock something we will tell you who does, even when that is the big place down the highway.',
     image: 'demos/test/about',
   },
 
   faq: [
     {
       q: 'How current is the stock list?',
-      a: 'Updated most mornings. If something matters, ring first. The page is a good guide and the phone is the truth.',
+      a: 'Updated most mornings. If something matters, call first. The page is a good guide and the phone is the truth.',
     },
     {
       q: 'Do you hold things?',

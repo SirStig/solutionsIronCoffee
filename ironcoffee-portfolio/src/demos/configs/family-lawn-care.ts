@@ -1,7 +1,7 @@
 import type { DemoConfig } from '../types';
 
 /**
- * Family Lawn Care, Parker CO. NOT READY TO SEND. Confirm they still trade.
+ * Family Lawn Care, Parker CO. Live. Confirm they still trade before following up.
  *
  * ## Two corrections to what this file used to say
  *
@@ -58,7 +58,7 @@ import type { DemoConfig } from '../types';
  *   - **Hours, and whether they want any printed.** None are published
  *     anywhere, and for a two-man mobile crew the honest answer may be that
  *     hours are the wrong question and the phone is the only one that matters.
- *   - **Prices**, or confirmation that "Free quote" is what they want shown.
+ *   - **Prices**. None are published, so every row says "Call for pricing".
  *   - **Brand colors.** The green and gold below is a guess.
  *
  * There is not one public customer review of this business anywhere. That is
@@ -85,7 +85,7 @@ const familyLawnCare: DemoConfig = {
 
   business: {
     name: 'Family Lawn Care',
-    tagline: 'A father and son, and the same two people every week.',
+    tagline: 'A father and son doing full service lawn care in Parker.',
     city: 'Parker',
     state: 'CO',
     // Self-published on their Facebook About tab. Confirm it still rings.
@@ -107,7 +107,7 @@ const familyLawnCare: DemoConfig = {
 
   hero: {
     headline: 'The people who quote your yard are the people who cut it.',
-    sub: 'Full service lawn care in Parker. A father and son, no crews, no subcontractors, no different truck every week.',
+    sub: 'Full service lawn care in Parker, run by a father and son.',
     image: 'demos/family-lawn-care/hero',
     ctaLabel: 'Get a Quote',
     ctaHref: '#quote',
@@ -124,28 +124,30 @@ const familyLawnCare: DemoConfig = {
     {
       title: 'Mowing through the season',
       icon: 'mower',
-      body: 'Cut, trimmed, edged and blown off. The same two people each visit, so nobody has to be told where the gate is.',
-      price: 'Free quote',
+      body: 'Cut, trimmed, edged and blown off, as part of full service lawn care.',
     },
     {
       title: 'Core aeration',
       icon: 'route',
       body: 'Spring and fall. Front Range clay packs down hard, and pulling cores is the only thing that genuinely undoes it.',
-      price: 'Free quote',
     },
     {
       title: 'Dethatching and power raking',
       icon: 'basket',
       body: 'Lifts the dead mat out from under the grass so water and seed reach soil instead of sitting on top of it.',
-      price: 'Free quote',
     },
     {
       title: 'Overseeding',
       icon: 'leaf',
-      body: 'Straight after aerating or raking, while the holes are open. Done in the wrong order it is seed on a lawn.',
-      price: 'Free quote',
+      body: 'Right after aerating or raking, while the holes are open. Done in the wrong order it is seed on a lawn.',
     },
   ],
+
+  // No prices are public, so the cards carry none and the intro says it once
+  // rather than printing "Call for pricing" four times down the page.
+  copy: {
+    servicesIntro: 'Call for a price on any of them.',
+  },
 
   // Self-published on their Facebook About tab, and better than most
   // competitors manage: three named subdivisions rather than "Denver metro".
@@ -153,8 +155,8 @@ const familyLawnCare: DemoConfig = {
 
   /*
    * No hours are published anywhere, and a mobile crew does not really have
-   * any. Rather than print seven invented rows, every day points at the one
-   * thing that does work, which is the phone.
+   * any. Rather than print seven invented rows, or claim a day off nobody has
+   * confirmed, every day points at the one thing that does work: the phone.
    */
   hours: [
     { day: 'Monday', open: 'Call or message' },
@@ -163,7 +165,7 @@ const familyLawnCare: DemoConfig = {
     { day: 'Thursday', open: 'Call or message' },
     { day: 'Friday', open: 'Call or message' },
     { day: 'Saturday', open: 'Call or message' },
-    { day: 'Sunday', open: 'Closed' },
+    { day: 'Sunday', open: 'Call or message' },
   ],
 
   gallery: [
@@ -174,8 +176,8 @@ const familyLawnCare: DemoConfig = {
   ],
 
   about: {
-    heading: 'Two people, and both of them turn up.',
-    body: 'Family Lawn Care is a father and son working in Parker. In their own words, truly a family owned business. There is no office, no crew rotation and nobody selling you an upgrade over the phone: the person who walks your yard and quotes the work is the person standing behind the mower on Tuesday.',
+    heading: 'Two people, and both of them show up.',
+    body: 'Family Lawn Care is a father and son working in Parker. In their own words, truly a family owned business, and the person who walks your yard and quotes the work is the person standing behind the mower.',
     // Drawn, where the photographs are not. A picture of the trade can
     // stand beside the story; it cannot be the story, and one illustration
     // per page is what stops five previews looking like five stock sets.
@@ -187,9 +189,9 @@ const familyLawnCare: DemoConfig = {
    *
    * Seventy four Facebook followers, one visible post from 2020 and no
    * reviews anywhere: not evidence they have stopped, just almost no evidence
-   * of anything. Unlike the two stores in Kiowa there is not even
+   * of anything. Unlike some of the other previews there is not even
    * unattributed text to come back to, so this page argues from what they
-   * say about themselves and from the work, which is the honest way round for
+   * say about themselves and from the work, which is the honest way around for
    * a business with no public record.
    */
 
@@ -198,20 +200,20 @@ const familyLawnCare: DemoConfig = {
       slug: 'services',
       label: 'Services',
       kind: 'services',
-      intro: 'Four things, all of them with public evidence behind them. A service they do not offer is a worse error on a preview than a short list.',
+      intro: 'Four things, done by a father and son. Call for a price on any of them.',
     },
     {
       slug: 'areas',
       label: 'Where we work',
       kind: 'areas',
-      intro: 'Named subdivisions rather than "Denver metro", which is their own list and better than most competitors manage.',
+      intro: 'Bradbury Ranch, Clarke Farms, Stonegate and the rest of Parker.',
     },
     {
       slug: 'visit',
       label: 'Get a quote',
       kind: 'contact',
       title: 'Get a quote',
-      intro: 'The person who walks your yard and quotes the work is the person standing behind the mower on Tuesday.',
+      intro: 'The person who walks your yard and quotes the work is the person standing behind the mower.',
     },
   ],
 
@@ -222,11 +224,7 @@ const familyLawnCare: DemoConfig = {
     },
     {
       q: 'When should a lawn be aerated?',
-      a: 'Spring or fall. Overseeding straight afterwards, while the holes are still open, is what makes the difference; seed scattered on an unopened lawn mostly feeds birds.',
-    },
-    {
-      q: 'Do I need to be home?',
-      a: 'No, as long as the gate is unlocked and the dog is in.',
+      a: 'Spring or fall. Overseeding right afterward, while the holes are still open, is what makes the difference; seed scattered on an unopened lawn mostly feeds birds.',
     },
   ],
 

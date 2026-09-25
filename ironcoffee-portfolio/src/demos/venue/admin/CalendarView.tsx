@@ -8,7 +8,7 @@
  */
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { MONTHS, PACKAGES, money, packageById, pretty, type DayRecord } from '../data';
+import { MONTHS, PACKAGES, money, packageBlock, packageById, pretty, type DayRecord } from '../data';
 import s from '../Admin.module.css';
 import { Fact, STATUS_LABEL, StatusPill } from './ui';
 import { CAL_YEAR, dayOf, monthCells, monthOf, suggestPackage, valueOf, type ViewProps } from './state';
@@ -170,8 +170,10 @@ function DayPanel({
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
   const [couple, setCouple] = useState(day.couple ?? '');
-  const [guests, setGuests] = useState(String(day.guests ?? 100));
-  const [pkg, setPkg] = useState(day.packageId ?? suggestPackage(day.guests ?? 100));
+  // Empty rather than a made-up hundred when the hold came with no headcount,
+  // so nothing gets confirmed with a number the owner never typed.
+  const [guests, setGuests] = useState(day.guests ? String(day.guests) : '');
+  const [pkg, setPkg] = useState(day.packageId ?? suggestPackage(day.guests ?? 0, day.date));
 
   // Focus follows the click into the panel, the way a disclosure does. Escape
   // sends it back to the day it came from.
@@ -179,16 +181,31 @@ function DayPanel({
     heading.current?.focus();
   }, []);
 
-  const headcount = Math.max(1, Math.min(300, Number(guests) || 0));
+  const headcount = Number.parseInt(guests, 10) || 0;
   const chosen = packageById(pkg);
   const over = chosen ? headcount - chosen.capacity : 0;
+  const offMonth = chosen ? packageBlock(chosen, day.date) : null;
+
+  // The first thing standing between this hold and a confirmation, in plain
+  // words next to the disabled button. A confirmed booking with no name, no
+  // headcount or more people than the package seats is a record the owner
+  // then has to notice is wrong.
+  const blocked =
+    !couple.trim() ? 'Add the name on the booking to confirm it.'
+    : headcount < 1 ? 'Add a guest count to confirm it.'
+    : !chosen ? 'Pick a package to confirm it.'
+    : over > 0 ? `${chosen.name} covers ${chosen.capacity}. That is ${over} over.`
+    : offMonth ? `Not on this date. ${offMonth}.`
+    : null;
 
   return (
     <aside
       className={`${s.card} ${s.panel}`}
       aria-labelledby="cal-panel-title"
       onKeyDown={(event) => {
-        if (event.key === 'Escape') onClose();
+        // A select uses Escape for itself, to back out of a choice.
+        if (event.key !== 'Escape' || event.target instanceof HTMLSelectElement) return;
+        onClose();
       }}
     >
       <header className={s.cardHead}>
@@ -287,29 +304,33 @@ function DayPanel({
                 {PACKAGES.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.name}, {money(p.price)}
+                    {packageBlock(p, day.date) ? ' (not on this date)' : ''}
                   </option>
                 ))}
               </select>
             </div>
           </div>
-          {over > 0 && chosen && (
-            <p className={s.warn}>
-              {chosen.name} covers {chosen.capacity}. That is {over} over.
+          {blocked && (
+            <p className={s.warn} id="hold-blocked">
+              {blocked}
             </p>
           )}
           <div className={s.btnRow}>
             <button
               type="button"
               className={s.btnPrimary}
-              onClick={() =>
+              disabled={blocked !== null}
+              aria-describedby={blocked ? 'hold-blocked' : undefined}
+              onClick={() => {
+                if (blocked) return;
                 dispatch({
                   type: 'confirm',
                   date: day.date,
-                  couple: couple.trim() || 'Name to follow',
+                  couple: couple.trim(),
                   guests: headcount,
                   packageId: pkg,
-                })
-              }
+                });
+              }}
             >
               Confirm booking
             </button>
@@ -326,7 +347,7 @@ function DayPanel({
 
       {day.status === 'free' && (
         <>
-          <p className={s.panelNote}>Nothing on this date. It shows as available to enquire about.</p>
+          <p className={s.panelNote}>Nothing on this date. It shows as available to inquire about.</p>
           <div className={s.btnRow}>
             <button
               type="button"
@@ -350,7 +371,7 @@ function DayPanel({
         <>
           <p className={s.panelNote}>
             Not offered. One wedding a weekend means the middle of the week stays shut, so nobody
-            can enquire about this date.
+            can inquire about this date.
           </p>
           <div className={s.btnRow}>
             <button

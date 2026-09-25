@@ -217,7 +217,7 @@ export default function Services() {
                     <Img
                       name={`templates/${demo.slug}-desktop`}
                       alt={`The ${demo.business.name} sample site`}
-                      sizes="(min-width: 60rem) 20vw, 45vw"
+                      sizes="(min-width: 40rem) 30vw, 45vw"
                     />
                   </span>
                   <span className={styles.proofName}>{demo.business.name}</span>

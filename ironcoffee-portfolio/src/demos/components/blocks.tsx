@@ -11,7 +11,7 @@ import type {
   DemoService,
   DemoTeamMember,
 } from '../types';
-import { directionsHref, fullAddress, telHref, todayName } from '../index';
+import { artName, directionsHref, fullAddress, telHref } from '../index';
 import DemoImage from './DemoImage';
 import MotifField, { hasMotif } from './motifs';
 import { initials } from './DemoNav';
@@ -88,12 +88,15 @@ export function StatsBand({ stats }: { stats: DemoStat[] }) {
     <dl className={`${styles.stats} ${styles.stagger}`}>
       {stats.map((stat) => (
         <div key={stat.label} className={styles.stat}>
-          {stat.icon && (
-            <span className={styles.statIcon}>
-              <Icon name={stat.icon} size={22} />
-            </span>
-          )}
-          <dt className={styles.statValue}>{stat.value}</dt>
+          <dt className={styles.statValue}>
+            {/* Inside the dt so the dl holds only dt and dd. */}
+            {stat.icon && (
+              <span className={styles.statIcon} aria-hidden="true">
+                <Icon name={stat.icon} size={22} />
+              </span>
+            )}
+            {stat.value}
+          </dt>
           <dd className={styles.statLabel}>{stat.label}</dd>
         </div>
       ))}
@@ -155,16 +158,8 @@ export function reviewsIntro(items: DemoTestimonial[]): string | undefined {
 }
 
 /**
- * One quote, at the size a billboard would use it, on the brand color.
- *
- * Three quotes in three equal cards is a row every visitor has learned to skip.
- * One of them, given the whole width and a display face, is the only place on
- * these samples where a stranger's sentence is the loudest thing on screen.
- * Picks the shortest quote on file, because this treatment falls apart past
- * about thirty words.
- */
-/**
- * The quote <PullQuote> will set at display size.
+ * The quote <PullQuote> will set at display size: the shortest on file,
+ * because that treatment falls apart past about thirty words.
  *
  * Exported so a template can render the remaining quotes in a row underneath
  * without printing one of them twice.
@@ -190,6 +185,13 @@ export function splitQuotes(items?: DemoTestimonial[]): {
   return { lead, others: items?.filter((t) => t !== lead) ?? [] };
 }
 
+/**
+ * One quote, at the size a billboard would use it, on the brand color.
+ *
+ * Three quotes in three equal cards is a row every visitor has learned to skip.
+ * One of them, given the whole width and a display face, is the only place on
+ * these pages where a customer's sentence is the loudest thing on screen.
+ */
 export function PullQuote({ items }: { items: DemoTestimonial[] }) {
   const pick = pullQuotePick(items);
   if (!pick) return null;
@@ -220,20 +222,15 @@ export function PullQuote({ items }: { items: DemoTestimonial[] }) {
 }
 
 /**
- * A photograph across the full width with the business's own line over it.
+ * One line of the business's own words, the full width of the screen, over a
+ * photograph or a tiled motif.
  *
- * Exists because of an asymmetry between the two kinds of page here. A gallery
- * sample has invented testimonials and can hand one to <PullQuote> to be the
- * loud moment on the page. A preview for a real business has none, and must
- * not: putting words in a real customer's mouth to decorate a page you are
- * about to send that customer's boss is not a shortcut worth taking.
- *
- * So the real previews get this instead. It is the same treatment and the same
- * weight in the layout, and every word in it is the business's own line, which
- * makes it the rare piece of design that costs nothing in honesty.
- */
-/**
- * One line of the business's own words, the full width of the screen.
+ * The same weight in the layout as <PullQuote>, for a page with no quote to
+ * give it. A gallery sample has written testimonials; a preview for a real
+ * business can only quote reviews it has in public, with the platform cited
+ * (see DemoTestimonial), and some businesses have none worth quoting. Invented
+ * words in a real customer's mouth are never the fallback. This band is, and
+ * every word in it is the business's own line.
  *
  * `motif` is the drawn version and is not a downgrade. The band runs at about
  * 4:1, and a scene composed for a 4:3 frame arrives here cropped to a detail
@@ -293,8 +290,9 @@ export function StatementBand({
  * The list is duplicated so the second copy is arriving as the first leaves,
  * which is what makes the loop seamless; the copy is hidden from assistive
  * technology so nobody hears the same six phrases twice. Anyone who has asked
- * their system to stop moving things gets a static wrapped row instead, which
- * is why the phrases are short enough to read that way too.
+ * their system to stop moving things gets one still row instead, scrolling
+ * sideways when it is wider than the screen, which is why the phrases are
+ * short enough to read that way too.
  */
 export function Marquee({ items }: { items: string[] }) {
   if (!items.length) return null;
@@ -350,7 +348,7 @@ export function FeatureRows({
               sizes="(min-width: 900px) 55vw, 100vw"
             />
           </div>
-          <div className={styles.featureCopy}>
+          <div>
             {item.kicker && (
               <span className={styles.featureKicker}>{item.kicker}</span>
             )}
@@ -440,7 +438,7 @@ export function ServiceSteps({ items }: { items: DemoService[] }) {
           <span className={styles.serviceStepNum} aria-hidden="true">
             {String(index + 1).padStart(2, '0')}
           </span>
-          <div>
+          <div className={styles.serviceStepBody}>
             <h3 className={styles.serviceTitle}>{service.title}</h3>
             <p className={styles.serviceBody}>{service.body}</p>
             {service.price && (
@@ -549,22 +547,27 @@ export function ProductBlock({ groups }: { groups: DemoProductGroup[] }) {
               <article key={item.name} className={styles.productCard}>
                 <h4 className={styles.productName}>{item.name}</h4>
                 {item.desc && <p className={styles.productDesc}>{item.desc}</p>}
-                <div className={styles.productFoot}>
-                  {item.price ? (
-                    <span className={styles.productPrice}>{item.price}</span>
-                  ) : (
-                    <span />
-                  )}
-                  {item.availability && (
-                    <span
-                      className={[styles.avail, availTone(item.availability)]
-                        .filter(Boolean)
-                        .join(' ')}
-                    >
-                      {item.availability}
-                    </span>
-                  )}
-                </div>
+                {/* The stock note first and the price last, stacked and pinned
+                    to the foot of the card, so every price in a row sits on
+                    the same line. Side by side, a short badge shared the
+                    price's line and a long one wrapped under it, and the
+                    prices in one row landed at two different heights. */}
+                {(item.price || item.availability) && (
+                  <div className={styles.productFoot}>
+                    {item.availability && (
+                      <span
+                        className={[styles.avail, availTone(item.availability)]
+                          .filter(Boolean)
+                          .join(' ')}
+                      >
+                        {item.availability}
+                      </span>
+                    )}
+                    {item.price && (
+                      <span className={styles.productPrice}>{item.price}</span>
+                    )}
+                  </div>
+                )}
               </article>
             ))}
           </div>
@@ -587,7 +590,7 @@ export function ProductBlock({ groups }: { groups: DemoProductGroup[] }) {
  * that the page is running code rather than sitting there as a picture, which
  * matters when the thing being sold is a site rather than a subscription.
  *
- * Three rules keep it honest.
+ * Four rules keep it honest.
  *
  * It only ever reads the same strings the hours table prints two inches below
  * it, so the badge and the table cannot disagree. If the hours on the page are
@@ -600,11 +603,75 @@ export function ProductBlock({ groups }: { groups: DemoProductGroup[] }) {
  * not understand would put a false claim about a real business on a page with
  * that business's name at the top.
  *
+ * It tells the time where the business is, not where the visitor is. An owner
+ * in Denver checking the page from a trip to Chicago should see their own
+ * hours, not hours shifted by one.
+ *
  * And like <HoursList>, it reads the clock in an effect rather than during
  * render. These pages are built hours or weeks ahead of being looked at, so a
  * time resolved at render would be the build machine's, baked into the HTML
  * and wrong by the time anybody sees it.
  * ----------------------------------------------------------------------- */
+
+/** Every business in these configs is in Colorado. */
+export const DEFAULT_TIME_ZONE = 'America/Denver';
+
+/** The zone a demo's clock runs in. */
+export const businessTimeZone = (config: DemoConfig): string =>
+  config.business.timeZone ?? DEFAULT_TIME_ZONE;
+
+export const WEEKDAYS = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+
+export interface ZonedClock {
+  /** 'Wednesday'. */
+  day: string;
+  /** 0 for Sunday, matching `Date.getDay()`. */
+  dayIndex: number;
+  /** Minutes past midnight on that day. */
+  minutes: number;
+}
+
+/**
+ * The weekday and time of day at `now`, on the wall clock in `timeZone`.
+ *
+ * Falls back to the device's own clock for a zone the runtime does not know,
+ * because a badge an hour out is better than a page that throws.
+ */
+export function zonedClock(now: Date, timeZone: string): ZonedClock {
+  try {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      weekday: 'long',
+      hour: 'numeric',
+      minute: 'numeric',
+      hourCycle: 'h23',
+    }).formatToParts(now);
+    const get = (type: string) => parts.find((p) => p.type === type)?.value;
+    const day = get('weekday') ?? '';
+    const dayIndex = WEEKDAYS.indexOf(day);
+    // Some runtimes still print midnight as 24 under h23.
+    const hour = Number(get('hour')) % 24;
+    const minute = Number(get('minute'));
+    if (dayIndex >= 0 && Number.isFinite(hour) && Number.isFinite(minute)) {
+      return { day, dayIndex, minutes: hour * 60 + minute };
+    }
+  } catch {
+    // An unknown zone. Fall through to the local clock.
+  }
+  return {
+    day: WEEKDAYS[now.getDay()],
+    dayIndex: now.getDay(),
+    minutes: now.getHours() * 60 + now.getMinutes(),
+  };
+}
 
 /** '5:30pm' -> 1050. Minutes past midnight, or null if it is not a time. */
 function clockMinutes(text: string): number | null {
@@ -623,8 +690,10 @@ function clockMinutes(text: string): number | null {
   return hour24 * 60 + mins;
 }
 
-interface Span {
+export interface Span {
+  /** Minutes past midnight. */
   open: number;
+  /** Minutes past midnight, past 1440 when it closes the next morning. */
   close: number;
   /** The strings as the config wrote them, so the badge quotes rather than
       reformats. '10am' stays '10am' and never becomes '10:00 AM'. */
@@ -632,9 +701,18 @@ interface Span {
   closesAt: string;
 }
 
-/** '10am to 6pm' -> a span. Anything else -> null. */
-function parseSpan(text: string): Span | null {
-  const parts = text.trim().split(/\s+(?:to|until|till|through|-|–|—)\s+/i);
+/**
+ * '10am to 6pm' -> a span. Anything else -> null.
+ *
+ * Exported so the order page offers pickup times from the same hours the
+ * badge reads, rather than from a range typed into the component.
+ */
+export function parseSpan(text: string): Span | null {
+  // Hyphen, en dash or em dash between the times, written as escapes so the
+  // source itself carries neither dash.
+  const parts = text
+    .trim()
+    .split(/\s*(?:\s(?:to|until|till|through)\s|-|\u2013|\u2014)\s*/i);
   if (parts.length !== 2) return null;
 
   const open = clockMinutes(parts[0]);
@@ -664,13 +742,24 @@ export interface OpenState {
  */
 export function openState(
   hours: DemoConfig['hours'],
-  now = new Date()
+  now = new Date(),
+  timeZone: string = DEFAULT_TIME_ZONE
 ): OpenState | null {
-  const today = todayName(now);
+  const clock = zonedClock(now, timeZone);
+  const today = clock.day;
+  const minutesNow = clock.minutes;
+
+  // Last night's hours first: a bar open 6pm to 1am is still open at half
+  // past midnight, on a day whose own row might say something else entirely.
+  const yesterdayName = WEEKDAYS[(clock.dayIndex + 6) % 7];
+  const yesterday = hours.find((h) => h.day === yesterdayName);
+  const lastNight = yesterday ? parseSpan(yesterday.open) : null;
+  if (lastNight && lastNight.close > 24 * 60 && minutesNow < lastNight.close - 24 * 60) {
+    return { open: true, note: `Until ${lastNight.closesAt}` };
+  }
+
   const row = hours.find((h) => h.day === today);
   if (!row) return null;
-
-  const minutesNow = now.getHours() * 60 + now.getMinutes();
 
   // The next day that states a time, for the "opens Thursday" case. Starts at
   // tomorrow and gives up after a full week rather than looping forever on a
@@ -707,14 +796,24 @@ export function openState(
 
 export function OpenNow({
   hours,
+  timeZone = DEFAULT_TIME_ZONE,
   className,
 }: {
   hours: DemoConfig['hours'];
+  /** IANA zone the business keeps its hours in. */
+  timeZone?: string;
   className?: string;
 }) {
   const [state, setState] = useState<OpenState | null>(null);
 
-  useEffect(() => setState(openState(hours)), [hours]);
+  // Once on mount, then every minute, so a page left open across closing time
+  // does not keep saying "Open now".
+  useEffect(() => {
+    const tick = () => setState(openState(hours, new Date(), timeZone));
+    tick();
+    const id = window.setInterval(tick, 60 * 1000);
+    return () => window.clearInterval(id);
+  }, [hours, timeZone]);
 
   if (!state) return null;
 
@@ -738,22 +837,92 @@ export function OpenNow({
 }
 
 /**
- * Marks the current day, but only after the page has hydrated.
+ * Today's weekday in the business's zone, or null until the page has mounted.
  *
  * Pages here are built ahead of time, so a weekday resolved during render would
  * be the weekday the build ran. Reading the clock in an effect means the server
- * and the browser produce identical markup, and the highlight appears a frame
- * later once there is a real clock to read.
+ * and the browser produce identical markup, and anything keyed on today
+ * appears a frame later once there is a real clock to read.
  */
-export function HoursList({ hours }: { hours: DemoConfig['hours'] }) {
+export function useToday(timeZone: string = DEFAULT_TIME_ZONE): string | null {
   const [today, setToday] = useState<string | null>(null);
+  useEffect(() => setToday(zonedClock(new Date(), timeZone).day), [timeZone]);
+  return today;
+}
 
-  useEffect(() => setToday(todayName()), []);
+/**
+ * Consecutive days with the same hours, folded into one row each.
+ *
+ * "Call or message" printed seven times down a footer is noise, and so is
+ * "By appointment" four times running. The full table stays where the hours
+ * are the subject; this is for places that only need to be read at a glance.
+ * Days are shortened to three letters so a range fits a narrow column, and a
+ * week where every day says the same thing becomes "Every day". Pure string
+ * work, no clock, so the server and the browser always agree.
+ */
+export function hourRanges(
+  hours: DemoConfig['hours']
+): { label: string; open: string }[] {
+  const short = (day: string) => day.slice(0, 3);
+  const groups: { first: string; last: string; open: string }[] = [];
+  for (const row of hours) {
+    const prev = groups[groups.length - 1];
+    if (prev && prev.open.trim().toLowerCase() === row.open.trim().toLowerCase()) {
+      prev.last = row.day;
+    } else {
+      groups.push({ first: row.day, last: row.day, open: row.open });
+    }
+  }
+  if (hours.length === 7 && groups.length === 1) {
+    return [{ label: 'Every day', open: groups[0].open }];
+  }
+  return groups.map((group) => ({
+    label:
+      group.first === group.last
+        ? short(group.first)
+        : `${short(group.first)} to ${short(group.last)}`,
+    open: group.open,
+  }));
+}
+
+/** Marks the current day, but only after the page has hydrated. */
+export function HoursList({
+  hours,
+  timeZone,
+}: {
+  hours: DemoConfig['hours'];
+  timeZone?: string;
+}) {
+  const today = useToday(timeZone);
+
+  // Seven identical rows are one fact said seven times. There is no "today"
+  // to mark when every day reads the same.
+  const uniform =
+    hours.length === 7 &&
+    hours.every(
+      (row) => row.open.trim().toLowerCase() === hours[0].open.trim().toLowerCase()
+    );
+  if (uniform) {
+    return (
+      <ul className={styles.hours}>
+        <li className={styles.hoursRow}>
+          <span className={styles.hoursDay}>Every day</span>
+          <span
+            className={[styles.hoursOpen, isClosed(hours[0].open) && styles.hoursClosed]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            {hours[0].open}
+          </span>
+        </li>
+      </ul>
+    );
+  }
 
   return (
     <ul className={styles.hours}>
       {hours.map((row) => {
-        const closed = /^closed$/i.test(row.open.trim());
+        const closed = isClosed(row.open);
         const isToday = today === row.day;
 
         return (
@@ -782,9 +951,14 @@ export function HoursList({ hours }: { hours: DemoConfig['hours'] }) {
 }
 
 /** Hours as a row of chips. Compact enough to sit directly under a hero. */
-export function HoursStrip({ hours }: { hours: DemoConfig['hours'] }) {
-  const [today, setToday] = useState<string | null>(null);
-  useEffect(() => setToday(todayName()), []);
+export function HoursStrip({
+  hours,
+  timeZone,
+}: {
+  hours: DemoConfig['hours'];
+  timeZone?: string;
+}) {
+  const today = useToday(timeZone);
 
   return (
     <ul className={styles.hoursStrip}>
@@ -819,17 +993,24 @@ export function HoursStrip({ hours }: { hours: DemoConfig['hours'] }) {
  */
 export function HoursCard({ config }: { config: DemoConfig }) {
   const { hero } = config;
+  const timeZone = businessTimeZone(config);
+  // The hero beside this card already carries the one action. When that
+  // action is a phone call, a second copy of it here is the same button twice
+  // within one screen, so the card leaves it out.
+  const heroIsCall = hero.ctaHref.startsWith('tel:');
 
   return (
     <div className={styles.hoursCard}>
       <div className={styles.hoursCardHead}>
         <h2 className={styles.hoursCardTitle}>Hours</h2>
-        <OpenNow hours={config.hours} />
+        <OpenNow hours={config.hours} timeZone={timeZone} />
       </div>
-      <HoursList hours={config.hours} />
-      <Cta href={hero.ctaHref} block>
-        {hero.ctaLabel}
-      </Cta>
+      <HoursList hours={config.hours} timeZone={timeZone} />
+      {!heroIsCall && (
+        <Cta href={hero.ctaHref} block>
+          {hero.ctaLabel}
+        </Cta>
+      )}
     </div>
   );
 }
@@ -852,14 +1033,31 @@ function layout(count: number): { cols: number; lead: boolean } {
   return { cols: Math.max(count, 1), lead: false };
 }
 
+/**
+ * Alt text for one gallery tile.
+ *
+ * A drawing ignores this and describes itself (see DemoImage). A photograph
+ * gets the business's name only when it is the business's own: on a preview
+ * dressed in stock, "Acme, photograph 2" is a claim about their premises the
+ * picture cannot back up.
+ */
+function galleryAlt(business: string, index: number, count: number, sample: boolean) {
+  return sample
+    ? `Sample photograph ${index + 1} of ${count}, not taken at ${business}`
+    : `${business}, photograph ${index + 1} of ${count}`;
+}
+
 export function GalleryGrid({
   images,
   business,
   fullBleed = false,
   cols: forcedCols,
+  sample = false,
 }: {
   images: string[];
   business: string;
+  /** The photographs are generic stock: `config.placeholderPhotos`. */
+  sample?: boolean;
   /** Edge to edge, with no section padding. Breaks up a page of containers. */
   fullBleed?: boolean;
   /**
@@ -908,7 +1106,7 @@ export function GalleryGrid({
           >
             <DemoImage
               name={name}
-              alt={`${business}, photograph ${index + 1} of ${images.length}`}
+              alt={galleryAlt(business, index, images.length, sample)}
               mark={initials(business)}
               sizes="(min-width: 900px) 25vw, 50vw"
             />
@@ -935,7 +1133,7 @@ export function GalleryGrid({
         >
           <DemoImage
             name={name}
-            alt={`${business}, photograph ${index + 1} of ${images.length}`}
+            alt={galleryAlt(business, index, images.length, sample)}
             mark={initials(business)}
             sizes="(min-width: 720px) 33vw, 50vw"
           />
@@ -994,6 +1192,12 @@ export function AboutBlock({
   reversed?: boolean;
 }) {
   const { about, business } = config;
+  // A drawing describes itself. A stock photograph must not say it was taken
+  // inside the business.
+  const aboutAlt =
+    config.placeholderPhotos && !artName(about.image)
+      ? `Sample photograph, not taken at ${business.name}`
+      : `Inside ${business.name}`;
 
   return (
     <div
@@ -1009,7 +1213,7 @@ export function AboutBlock({
       <div className={styles.aboutMedia}>
         <DemoImage
           name={about.image}
-          alt={`Inside ${business.name}`}
+          alt={aboutAlt}
           mark={initials(business.name)}
           sizes="(min-width: 860px) 50vw, 100vw"
         />
@@ -1073,7 +1277,7 @@ export function ContactDetails({ config }: { config: DemoConfig }) {
             <MapPin size={18} aria-hidden="true" />
           </span>
           <span>
-            <span className={styles.contactLabel}>Find us</span>
+            <span className={styles.contactLabel}>Address</span>
             <a
               className={styles.contactValue}
               href={directionsHref(config)}
@@ -1129,12 +1333,17 @@ export function VisitBlock({ config }: { config: DemoConfig }) {
       </div>
 
       <div>
-        <h3 className={styles.blockTitle}>
-          <Clock size={18} aria-hidden="true" />
-          Hours
-          <OpenNow hours={config.hours} />
-        </h3>
-        <HoursList hours={config.hours} />
+        {/* The badge sits beside the heading rather than inside it, so a
+            screen reader's list of headings says "Hours" and nothing that
+            changes by the minute. */}
+        <div className={`${styles.blockTitle} ${styles.blockTitleRow}`}>
+          <h3 className={`${styles.blockTitle} ${styles.blockTitleFlush}`}>
+            <Clock size={18} aria-hidden="true" />
+            Hours
+          </h3>
+          <OpenNow hours={config.hours} timeZone={businessTimeZone(config)} />
+        </div>
+        <HoursList hours={config.hours} timeZone={businessTimeZone(config)} />
       </div>
     </div>
   );
@@ -1158,9 +1367,13 @@ export function CallBar({
       ? `${base}${hero.ctaHref}`
       : hero.ctaHref;
 
+  // When the one action already is the phone call, a separate Call item would
+  // put the same number on the bar twice.
+  const heroIsCall = hero.ctaHref.startsWith('tel:');
+
   return (
     <div className={styles.callBar}>
-      {business.phone && (
+      {business.phone && !heroIsCall && (
         <a className={styles.callBarItem} href={telHref(business.phone)}>
           <Phone size={17} aria-hidden="true" />
           Call

@@ -100,10 +100,15 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
         <SectionHead
           eyebrow="Services"
           title={priced ? 'What we do, and what it costs' : 'What we do'}
+          // How a shop quotes is its own policy, so the default says only
+          // what the list itself shows. See DemoCopy.
           sub={
-            priced
-              ? 'Prices start where they start. Anything that depends on length or condition gets quoted in the chair before we begin.'
-              : 'Every job depends on length, condition and how long it takes, so you get a number in the chair before anything starts rather than a surprise at the counter.'
+            config.copy?.servicesIntro ??
+            (priced
+              ? 'Starting prices. Ask about anything not listed.'
+              : config.business.phone
+                ? 'Call and ask about prices.'
+                : undefined)
           }
           align="center"
         />
@@ -157,6 +162,7 @@ export default function BookingTemplate({ config }: { config: DemoConfig }) {
         <GalleryGrid
           images={config.gallery}
           business={config.business.name}
+          sample={config.placeholderPhotos}
           fullBleed
           cols={drawnGallery ? config.gallery.length : undefined}
         />

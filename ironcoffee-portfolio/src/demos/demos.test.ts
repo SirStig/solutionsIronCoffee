@@ -7,6 +7,7 @@ import { artName, pictureKind } from './index';
 import { hasScene } from './components/artwork';
 import { hasMotif } from './components/motifs';
 import { openState, reviewsIntro } from './components/blocks';
+import { pickupPlan } from './components/OrderFlow';
 import { initials } from './components/DemoNav';
 import './components/scenes';
 
@@ -196,7 +197,7 @@ describe('expiry', () => {
     const first = formatExpiry(preview);
     const second = formatExpiry(preview);
     expect(first).toBe(second);
-    expect(first).toMatch(/^\d{1,2} \w+ \d{4}$/);
+    expect(first).toMatch(/^[A-Z][a-z]+ \d{1,2}, \d{4}$/);
   });
 });
 
@@ -359,8 +360,10 @@ describe('open now', () => {
       'Saturday',
     ].map((day) => ({ day, open }));
 
-  // A Wednesday, so every day of the week table is reachable from it.
-  const at = (hhmm: string) => new Date(`2026-09-16T${hhmm}:00`);
+  // A Wednesday, so every day of the week table is reachable from it. Written
+  // as Denver wall-clock time (MDT, UTC-6 in September), because that is the
+  // zone the badge reads when a config names none.
+  const at = (hhmm: string, day = '16') => new Date(`2026-09-${day}T${hhmm}:00-06:00`);
 
   it('is open between the two times', () => {
     expect(openState(week('10am to 6pm'), at('11:30'))).toEqual({
@@ -396,6 +399,31 @@ describe('open now', () => {
 
   it('carries a closing time past midnight into the next day', () => {
     expect(openState(week('6pm to 1am'), at('23:00'))?.open).toBe(true);
+  });
+
+  it('is still open after midnight on the previous day\'s hours', () => {
+    // Thursday 00:30, on Wednesday's 6pm to 1am.
+    const hours = week('Closed').map((row) =>
+      row.day === 'Wednesday' ? { ...row, open: '6pm to 1am' } : row
+    );
+    expect(openState(hours, at('00:30', '17'))).toEqual({
+      open: true,
+      note: 'Until 1am',
+    });
+    expect(openState(hours, at('01:30', '17'))?.open).toBe(false);
+  });
+
+  it('tells the time where the business is, not where the visitor is', () => {
+    // 11:30 in Denver is 13:30 in New York, after a noon close there.
+    const noonClose = week('8am to 12pm');
+    expect(openState(noonClose, at('11:30'))?.open).toBe(true);
+    expect(openState(noonClose, at('11:30'), 'America/New_York')?.open).toBe(false);
+  });
+
+  it('reads a dash between the times, whichever dash it is', () => {
+    for (const text of ['10am - 6pm', '10am\u20136pm', '10am \u2014 6pm']) {
+      expect(openState(week(text), at('11:30'))?.open, text).toBe(true);
+    }
   });
 
   it('skips a closed day when looking for the next one', () => {
@@ -436,6 +464,39 @@ describe('open now', () => {
       open: false,
       note: 'Closed today',
     });
+  });
+});
+
+describe('pickup times', () => {
+  const at = (iso: string) => new Date(`${iso}-06:00`);
+  const hours = [
+    { day: 'Sunday', open: 'Closed' },
+    { day: 'Monday', open: 'Closed' },
+    { day: 'Tuesday', open: '11am to 2pm' },
+    { day: 'Wednesday', open: '11am to 2pm' },
+    { day: 'Thursday', open: '11am to 2pm' },
+    { day: 'Friday', open: '11am to 2pm' },
+    { day: 'Saturday', open: '11am to 2pm' },
+  ];
+
+  it('offers slots inside today\'s hours, starting from now', () => {
+    // Wednesday 11:50: the first slot is at least twenty minutes out.
+    expect(pickupPlan(hours, at('2026-09-16T11:50:00'), 'America/Denver')).toEqual({
+      day: null,
+      slots: ['12:30pm', '1:00pm', '1:30pm'],
+    });
+  });
+
+  it('moves to the next open day when today is closed', () => {
+    // Sunday.
+    const plan = pickupPlan(hours, at('2026-09-13T12:00:00'), 'America/Denver');
+    expect(plan?.day).toBe('Tuesday');
+    expect(plan?.slots[0]).toBe('11:30am');
+  });
+
+  it('offers nothing when no day states a time', () => {
+    const vague = hours.map((h) => ({ ...h, open: 'By appointment' }));
+    expect(pickupPlan(vague, at('2026-09-16T12:00:00'), 'America/Denver')).toBeNull();
   });
 });
 

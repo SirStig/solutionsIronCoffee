@@ -138,7 +138,12 @@ export default function Lightbox({ images, label = 'Gallery' }: LightboxProps) {
     if (isOpen) closeRef.current?.focus();
   }, [isOpen]);
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  /* Keys are heard on the document while the viewer is open, not on the
+     dialog. A click on the photograph or the dark stage lands on something
+     that is not focusable, and in Safari a click on a button does not focus
+     it either, so a handler on the dialog would go deaf the moment anybody
+     used a mouse and then reached for the arrow keys. */
+  const onKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       event.preventDefault();
       close();
@@ -168,8 +173,13 @@ export default function Lightbox({ images, label = 'Gallery' }: LightboxProps) {
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
     const active = document.activeElement;
+    const inside = active !== dialogRef.current && dialogRef.current?.contains(active);
 
-    if (event.shiftKey && (active === first || !dialogRef.current?.contains(active))) {
+    if (!inside) {
+      // Focus is on the dialog itself or has escaped it: bring it back in.
+      event.preventDefault();
+      (event.shiftKey ? last : first).focus();
+    } else if (event.shiftKey && active === first) {
       event.preventDefault();
       last.focus();
     } else if (!event.shiftKey && active === last) {
@@ -177,6 +187,20 @@ export default function Lightbox({ images, label = 'Gallery' }: LightboxProps) {
       first.focus();
     }
   };
+
+  // The latest handler, read through a ref so the listener is attached once
+  // per opening rather than on every render.
+  const keyHandler = useRef(onKeyDown);
+  useEffect(() => {
+    keyHandler.current = onKeyDown;
+  });
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const listener = (event: KeyboardEvent) => keyHandler.current(event);
+    document.addEventListener('keydown', listener);
+    return () => document.removeEventListener('keydown', listener);
+  }, [isOpen]);
 
   const overlay =
     open === null || current === null ? null : (
@@ -193,7 +217,10 @@ export default function Lightbox({ images, label = 'Gallery' }: LightboxProps) {
           role="dialog"
           aria-modal="true"
           aria-labelledby={captionId}
-          onKeyDown={onKeyDown}
+          // Focusable by script and by click, never by Tab, so a click on
+          // the photograph keeps focus inside the dialog instead of
+          // dropping it to <body>.
+          tabIndex={-1}
         >
           <div className={styles.bar}>
             <p className={styles.counter}>

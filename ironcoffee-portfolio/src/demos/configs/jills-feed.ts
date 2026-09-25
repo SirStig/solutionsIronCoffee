@@ -16,7 +16,7 @@ import type { DemoConfig } from '../types';
  *
  * Worth keeping the wrong answer written down, because the reasoning looked
  * airtight and every piece of it was circumstantial. A neighbor can be wrong
- * about which shop. A ten year anniversary post reads exactly like a closing
+ * about which shop. A ten-year anniversary post reads exactly like a closing
  * post to a search engine that only has the first line. A delinquent periodic
  * report means somebody did not file a form, not that they locked the door.
  * None of that beats one person who knows.
@@ -48,7 +48,8 @@ import type { DemoConfig } from '../types';
  *     What is below is the most commonly listed version.
  *   - **The brands, and what is usually in stock.** Categories only here.
  *   - **Brand colors**, eyedroppered off the sign. The palette is a guess.
- *   - **Photographs.** Until then the page is illustrated and says so.
+ *   - **Photographs.** Until then the page carries stock photography of the
+ *     trade, says so, and has one drawing in the about block.
  */
 const jillsFeed: DemoConfig = {
   slug: 'jills-feed',
@@ -78,7 +79,7 @@ const jillsFeed: DemoConfig = {
 
   hero: {
     headline: 'Call first. We will tell you what is on the shelf.',
-    sub: "Jill's has been on Tabor Street since 2015. Ring before you hitch up the trailer and save yourself the drive.",
+    sub: "Jill's has been on Tabor Street since 2015. Call before you hitch up the trailer and save yourself the drive.",
     image: 'demos/jills-feed/hero',
     ctaLabel: 'Call the Store',
     ctaHref: 'tel:+13036464730',
@@ -88,7 +89,7 @@ const jillsFeed: DemoConfig = {
    * Categories, no brands and no prices.
    *
    * What is on the shelf this week is the one thing a feed store's customers
-   * actually ring about, and it is the one thing nobody can know from a desk.
+   * actually call about, and it is the one thing nobody can know from a desk.
    */
   products: [
     {
@@ -97,8 +98,8 @@ const jillsFeed: DemoConfig = {
       items: [
         { name: 'Horse feed' },
         { name: 'Poultry feed' },
-        { name: 'Goat and sheep' },
-        { name: 'Cattle' },
+        { name: 'Goat and sheep feed' },
+        { name: 'Cattle feed' },
       ],
     },
     {
@@ -108,7 +109,7 @@ const jillsFeed: DemoConfig = {
         { name: 'Hay' },
         { name: 'Straw' },
         { name: 'Pine shavings' },
-        { name: 'Alfalfa' },
+        { name: 'Alfalfa hay' },
       ],
     },
     {
@@ -126,7 +127,7 @@ const jillsFeed: DemoConfig = {
     {
       title: 'We load it for you',
       icon: 'truck',
-      body: 'Pull up and somebody comes out. Nobody here expects you to wrestle a fifty pound sack into a truck bed on your own.',
+      body: 'Pull up and somebody comes out. Nobody here expects you to wrestle a fifty-pound sack into a truck bed on your own.',
     },
     {
       title: 'Propane filled',
@@ -136,16 +137,19 @@ const jillsFeed: DemoConfig = {
     {
       title: 'Chicks in season',
       icon: 'chick',
-      body: 'Ring ahead in spring to find out what has come in and what is still to come.',
+      body: 'Call ahead in spring to find out what has come in and what is still to come.',
     },
   ],
 
+  // Loading, propane and chicks already have a card and an FAQ each, so the
+  // band carries the other verified facts rather than a third copy of those.
   marquee: [
     'Locally owned since 2015',
-    'We load it for you',
-    'Propane filled, not swapped',
-    'Chicks in season',
+    'Horse, poultry, goat and cattle feed',
     'Hay, straw and shavings',
+    'Voted Best Pet Supply Store, 2022',
+    'Open Monday to Saturday',
+    'On South Tabor Street',
   ],
 
   // The most commonly listed version. Directories disagree on the opening
@@ -197,7 +201,7 @@ const jillsFeed: DemoConfig = {
       slug: 'stock',
       label: 'What we carry',
       kind: 'stock',
-      intro: 'Categories rather than a stock list. Ring before you hitch up the trailer and we will check the shelf.',
+      intro: 'Categories rather than a stock list. Call before you hitch up the trailer and we will check the shelf.',
     },
     {
       slug: 'about',
@@ -217,7 +221,7 @@ const jillsFeed: DemoConfig = {
   faq: [
     {
       q: 'Do you have chicks in?',
-      a: 'It depends on the week and the season. Ring and ask, because they go quickly and what is in this week may not be in next.',
+      a: 'It depends on the week and the season. Call and ask, because they go quickly and what is in this week may not be in next.',
     },
     {
       q: 'Do you fill propane or exchange it?',

@@ -15,14 +15,18 @@ import {
   TeamGrid,
   PullQuote,
   StatementBand,
+  businessTimeZone,
 } from '../components/blocks';
 import { BusinessForm } from '../components/forms';
 import { Bleed, Section, SectionHead } from '../components/primitives';
 import { homeNavLinks, type NavLink } from '../components/DemoNav';
 import styles from '../Demo.module.css';
 
+/** Shared with the form so it can tell it is sitting under its own words. */
+const APPOINTMENT_TITLE = 'Request an appointment';
+
 /**
- * Professional. Light,  and quiet, with the photograph demoted to a
+ * Professional. Light and quiet, with the photograph demoted to a
  * band under the headline.
  *
  * A clinic is competing on trust rather than appetite, so the page leads with
@@ -54,7 +58,7 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
       ) : null}
 
       <Section id="services">
-        <SectionHead eyebrow="Care" title="What we treat" align="center" />
+        <SectionHead eyebrow="Care" title="What we treat" />
         <ServiceList items={config.services} />
       </Section>
 
@@ -62,8 +66,7 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
         <Section id="team" tone="alt">
           <SectionHead
             eyebrow="Your team"
-            title="The people you will actually see"
-            align="center" />
+            title="The people you will actually see" />
           <TeamGrid members={config.team} />
         </Section>
       ) : null}
@@ -73,7 +76,12 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
           <SectionHead
             eyebrow="Insurance"
             title="Plans we accept"
-            sub="Do not see yours? Call us. We work with most PPO plans and can check your benefits before you come in." />
+            sub={
+              config.copy?.insuranceIntro ??
+              (config.business.phone
+                ? `Do not see yours? Call ${config.business.phone} and ask.`
+                : 'Do not see yours? Ask when you request an appointment.')
+            } />
           <InsuranceList plans={config.insurance} />
         </Section>
       ) : null}
@@ -106,14 +114,19 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
       <Section id="appointment" tone="dark">
         <SectionHead
           eyebrow="New patients welcome"
-          title="Request an appointment"
-          sub="Fill this in and the front desk will call to confirm a time."
+          title={APPOINTMENT_TITLE}
+          sub="Fill this in and the front desk will get back to you to confirm a time."
           align="center" />
         {/* Deliberately not <VisitBlock>. That is itself a two-column grid,
             and nesting it here produced four cramped columns that snapped an
             email address in half. */}
         <div className={styles.visitGrid}>
-          <BusinessForm config={config} variant="appointment" />
+          <BusinessForm
+            config={config}
+            variant="appointment"
+            headingLevel={3}
+            heading={APPOINTMENT_TITLE}
+          />
           <div className={styles.visitAside}>
             <ContactDetails config={config} />
             <div>
@@ -121,7 +134,7 @@ export default function ProfessionalTemplate({ config }: { config: DemoConfig })
                 <Clock size={18} aria-hidden="true" />
                 Hours
               </h3>
-              <HoursList hours={config.hours} />
+              <HoursList hours={config.hours} timeZone={businessTimeZone(config)} />
             </div>
           </div>
         </div>

@@ -243,9 +243,20 @@ everything below the fold photographs at `opacity: 0` and the page looks
 broken. Scroll it first as well, or the lazy images below the fold stay as blur
 placeholders. Neither is a bug in the page and both look exactly like one.
 
+**Templates never make a promise on a business's behalf.** "At no cost to
+you", "usually the same day", "everything is made here" and "we work with most
+PPO plans" all used to be template copy, which printed them on every real
+preview that used the template. They now live in the optional `copy` block
+(`servicesIntro`, `menuIntro`, `insuranceIntro`, `formTitle`, `formIntro`,
+`formSubmit`), and a template with none of it prints a neutral line or
+nothing. A fictional sample sets them freely; a preview sets one only when the
+business has said it. The same goes for `order.taxRate`: leave it out and the
+order summary says tax is worked out at pickup.
+
 **`<OpenNow>` is the cheapest thing on the page and the one owners react to.**
 It works out open or closed from the same hours table printed below it, so the
-two can never disagree, and it renders nothing at all for a day it cannot
+two can never disagree, in the business's time zone (`business.timeZone`,
+default America/Denver) rather than the visitor's, and it renders nothing at all for a day it cannot
 parse: "By appointment", "Call or message" and "Emergency calls only" are real
 values in these configs and none of them is a time. Guessing from a string the
 parser did not understand would put a false claim about a real business on a

@@ -25,7 +25,10 @@ const base: SVGProps<SVGSVGElement> = {
   focusable: false,
 };
 
-const paths: Record<string, React.ReactNode> = {
+/* `satisfies` rather than an annotation, so the keys stay literal and
+   IconName is a union of real names: a typo in a typed caller fails the
+   typecheck instead of rendering nothing. */
+const paths = {
   /* --- Food ------------------------------------------------------------- */
   flame: (
     <>
@@ -317,23 +320,26 @@ const paths: Record<string, React.ReactNode> = {
       <path d="M8.5 6h5A4 4 0 0 1 13.5 14h-3a4 4 0 0 0 0 4h5" />
     </>
   ),
-};
+} as const satisfies Record<string, React.ReactNode>;
 
 export type IconName = keyof typeof paths;
 
 export const iconNames = Object.keys(paths) as IconName[];
+
+const isIconName = (name: string): name is IconName => Object.hasOwn(paths, name);
 
 export function Icon({
   name,
   size = 24,
   className,
 }: {
-  name: string;
+  /** Configs still carry icon names as plain strings; an unknown one renders nothing. */
+  name: IconName | (string & {});
   size?: number;
   className?: string;
 }) {
+  if (!isIconName(name)) return null;
   const d = paths[name];
-  if (!d) return null;
   return (
     <svg {...base} width={size} height={size} className={className}>
       {d}

@@ -194,8 +194,10 @@ export default function Artwork({
       className={className}
       viewBox="0 0 1200 900"
       preserveAspectRatio="xMidYMid slice"
-      role="img"
-      aria-label={alt}
+      {...(alt
+        ? { role: 'img', 'aria-label': alt }
+        : // An empty alt means the caller placed it as decoration.
+          { 'aria-hidden': true, focusable: 'false' })}
     >
       <Plates id={id} />
       {scene.draw(id)}

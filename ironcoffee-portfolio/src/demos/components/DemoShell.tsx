@@ -3,7 +3,7 @@ import type { BrandFont, DemoConfig } from '../types';
 import { formatExpiry, fullAddress, pictureKind, telHref } from '../index';
 import { site } from '../../content/site';
 import DemoNav, { type NavLink } from './DemoNav';
-import { CallBar } from './blocks';
+import { CallBar, hourRanges } from './blocks';
 import styles from '../Demo.module.css';
 
 const fontClass: Record<BrandFont, string> = {
@@ -123,17 +123,21 @@ export default function DemoShell({
               </ul>
             </div>
 
-            <div>
-              <p className={styles.footerHeading}>Hours</p>
-              <ul className={styles.footerList}>
-                {config.hours.map((row) => (
-                  <li key={row.day} className={styles.footerHoursRow}>
-                    <span>{row.day}</span>
-                    <span>{row.open}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {config.hours.length > 0 && (
+              <div>
+                <p className={styles.footerHeading}>Hours</p>
+                {/* The third time the hours appear on the page, so they are
+                    folded into ranges here. The full table stays above. */}
+                <ul className={styles.footerList}>
+                  {hourRanges(config.hours).map((row) => (
+                    <li key={row.label} className={styles.footerHoursRow}>
+                      <span>{row.label}</span>
+                      <span>{row.open}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           <div className={styles.footerBottom}>

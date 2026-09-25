@@ -75,6 +75,12 @@ export interface DemoBusiness {
   phone?: string;
   email?: string;
   facebookUrl?: string;
+  /**
+   * IANA zone the hours are kept in, e.g. 'America/Denver', which is also the
+   * default. <OpenNow> and the pickup times read the clock in this zone, so a
+   * visitor in another state sees the business's hours rather than their own.
+   */
+  timeZone?: string;
 }
 
 export interface DemoBrand {
@@ -254,7 +260,7 @@ export type PageKind =
    * you can see the screen the owner gets. This is that screen.
    *
    * It is rendered from the config like every other page kind, and it is
-   * labelled on the page as a demonstration, because it is one.
+   * labeled on the page as a demonstration, because it is one.
    */
   | 'admin';
 
@@ -268,6 +274,40 @@ export interface DemoPage {
   title?: string;
   /** One line under the heading. */
   intro?: string;
+}
+
+/**
+ * Sentences a template would otherwise have to write for the business.
+ *
+ * Every one of these makes a promise: a free inspection, food made on site, a
+ * front desk that checks your benefits. On a fictional sample that is copy. On
+ * a preview for a real business it is a claim the owner has not made, and the
+ * one they will spot first. So the templates print a neutral line, or nothing,
+ * and a config that knows the promise is true says it here.
+ */
+export interface DemoCopy {
+  /** Under the services heading. 'Every job starts with a free visit.' */
+  servicesIntro?: string;
+  /** Under the menu heading on the home page. */
+  menuIntro?: string;
+  /** Under the insurance heading. */
+  insuranceIntro?: string;
+  /** The lead form's heading. Defaults to a neutral one per trade. */
+  formTitle?: string;
+  /** The sentence under the lead form's heading. */
+  formIntro?: string;
+  /** The lead form's button. */
+  formSubmit?: string;
+}
+
+/** Pickup ordering. Only read by the 'order' page. */
+export interface DemoOrder {
+  /**
+   * Sales tax as a fraction, e.g. 0.0781. Leave it out and the order summary
+   * says tax is worked out at pickup rather than printing a rate nobody
+   * confirmed.
+   */
+  taxRate?: number;
 }
 
 export interface DemoConfig {
@@ -293,6 +333,12 @@ export interface DemoConfig {
   faq?: DemoFaq[];
   /** Three or four numbers worth stating plainly. */
   stats?: DemoStat[];
+
+  /** Promises in the business's own voice. See DemoCopy. */
+  copy?: DemoCopy;
+
+  /** Settings for the pickup order page. */
+  order?: DemoOrder;
 
   /**
    * Short phrases for the band that slides past under the hero.
@@ -363,4 +409,30 @@ export interface DemoConfig {
    * cold preview into evidence that you are straight with people.
    */
   placeholderPhotos?: boolean;
+
+  /**
+   * Venue template: the copy that belongs to one venue rather than to the
+   * template. Every field is optional, and a missing one drops its line or
+   * section rather than printing another business's words.
+   */
+  venue?: {
+    /** Nav label for the sideways gallery, e.g. 'Barn'. Defaults to 'Spaces'. */
+    navSpaces?: string;
+    /** Small label beside the big statement under the hero. */
+    statementLabel?: string;
+    /** Heading over the sideways gallery. */
+    spacesTitle?: string;
+    /** Captions for the first five gallery images, in gallery order. */
+    spaceLabels?: string[];
+    /** The season switcher. `image` indexes into `gallery`. Absent hides it. */
+    seasons?: { id: string; label: string; image: number; note: string }[];
+    /** One line under the packages heading: what every package includes. */
+    packagesSub?: string;
+    /** One line under the dates heading: how holds work. */
+    holdPolicy?: string;
+    /** Tours line beside the booking flow. */
+    tours?: string;
+    /** Night photograph for the hero reveal. Defaults to `demos/<slug>/hero-night`. */
+    nightImage?: string;
+  };
 }

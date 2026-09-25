@@ -13,15 +13,6 @@ const emailjsConfigured = Boolean(
     env.VITE_EMAILJS_TEMPLATE_ID
 );
 
-/**
- * The lead form a visitor would fill in on the finished site.
- *
- * It deliberately does not send anything. A preview is shown to the owner, not
- * to their customers, so a live form here would either deliver strangers' leads
- * to the wrong inbox or quietly drop them. Instead it validates, accepts the
- * submission, and says exactly where the message would arrive once the site is
- * real, which answers the question every owner asks anyway.
- */
 type FormVariant = 'quote' | 'appointment' | 'booking';
 
 /**
@@ -32,6 +23,10 @@ type FormVariant = 'quote' | 'appointment' | 'booking';
  * quote", on a page about haircuts. Every one of those is checkable nonsense to
  * the owner reading it, and an owner who catches the form describing somebody
  * else's trade has no reason to believe the opening hours either.
+ *
+ * The defaults promise nothing a particular business might not offer: no
+ * "free", no "same day". A config that knows its own promise is true sets it
+ * through `copy.formTitle`, `copy.formIntro` and `copy.formSubmit`.
  *
  * `extra` is the one field that differs between them. A dental practice asks
  * about insurance, a roofer needs the address of the roof, and a barbershop
@@ -49,26 +44,25 @@ const copy: Record<
   }
 > = {
   quote: {
-    title: 'Get a free quote',
-    intro:
-      'Tell us what is going on and we will get you on the schedule for a free inspection.',
+    title: 'Ask for a quote',
+    intro: 'Tell us what is going on and we will get back to you about a visit.',
     detail: 'What is going on?',
-    submit: 'Request my free quote',
+    submit: 'Request a quote',
     extra: 'address',
   },
   appointment: {
     title: 'Request an appointment',
     intro:
-      'Tell us when suits you and the front desk will confirm by phone, usually the same day.',
-    detail: 'What do you need seen to?',
+      'Tell us what time works for you and the front desk will get back to you to confirm.',
+    detail: 'What can we help with?',
     submit: 'Request appointment',
     extra: 'insurance',
   },
   booking: {
     title: 'Ask for a time',
     intro:
-      'Say what you are after and when suits, and the shop will ring you back to fix a time.',
-    detail: 'What are you after?',
+      'Say what you are looking for and when works for you, and the shop will get back to you to set a time.',
+    detail: 'What are you looking for?',
     submit: 'Send the request',
     extra: 'none',
   },
@@ -86,21 +80,54 @@ export function formVariant(config: DemoConfig): FormVariant {
   return 'quote';
 }
 
+/**
+ * The lead form a visitor would fill in on the finished site.
+ *
+ * It deliberately does not send anything. A preview is shown to the owner, not
+ * to their customers, so a live form here would either deliver strangers' leads
+ * to the wrong inbox or quietly drop them. Instead it validates, accepts the
+ * submission, and says where the message would arrive once the site is real,
+ * which answers the question every owner asks anyway.
+ */
 export function BusinessForm({
   config,
   variant = 'quote',
   compact = false,
+  headingLevel = 2,
+  heading,
 }: {
   config: DemoConfig;
   variant?: FormVariant;
   /** Tighter, for the trades hero where the form sits over the photograph. */
   compact?: boolean;
+  /**
+   * 2 where the form is the first thing under the page's h1, 3 where it sits
+   * inside a section that already has its own h2.
+   */
+  headingLevel?: 2 | 3;
+  /**
+   * The heading printed directly above the form, if any. When the form's own
+   * title would say the same words ("Request an appointment" under "Request
+   * an appointment") the card says what it is asking for instead.
+   */
+  heading?: string;
 }) {
   const [state, setState] = useState<SendState>('idle');
 
-  const destination =
-    config.business.email ?? config.business.phone ?? 'your inbox';
-  const words = copy[variant];
+  // A web form arrives in an inbox, never down a phone line, so a business
+  // with no published address gets a description rather than its phone number.
+  const destination = config.business.email ?? "the owner's inbox";
+  const own = config.copy;
+  const words = {
+    ...copy[variant],
+    ...(own?.formTitle && { title: own.formTitle }),
+    ...(own?.formIntro && { intro: own.formIntro }),
+    ...(own?.formSubmit && { submit: own.formSubmit }),
+  };
+  const Heading = headingLevel === 3 ? 'h3' : 'h2';
+  const same = (a: string, b: string) =>
+    a.trim().toLowerCase() === b.trim().toLowerCase();
+  const title = heading && same(heading, words.title) ? 'Your details' : words.title;
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -118,7 +145,7 @@ export function BusinessForm({
         .join(' ')}
       onSubmit={onSubmit}
     >
-      <h3 className={styles.formTitle}>{words.title}</h3>
+      <Heading className={styles.formTitle}>{title}</Heading>
       <p className={styles.formIntro}>{words.intro}</p>
 
       <div className={styles.formRow}>
@@ -215,12 +242,11 @@ export function PreviewContact({ config }: { config: DemoConfig }) {
       form.reset();
       setState('sent');
     } catch (err) {
+      // The library's own message ("The public key is required") means
+      // nothing to the person who pressed the button. Say what to do instead.
+      console.error(err);
       setState('error');
-      setError(
-        err instanceof Error
-          ? err.message
-          : `That did not go through. Email ${site.email} instead.`
-      );
+      setError(`That did not go through. Email ${site.email} instead.`);
     }
   }
 

@@ -16,6 +16,7 @@ import {
   StatementBand,
   ServiceCards,
   StatsBand,
+  businessTimeZone,
 } from '../components/blocks';
 import { Bleed, Cta, Section, SectionHead } from '../components/primitives';
 import { directionsHref } from '../index';
@@ -29,16 +30,15 @@ import styles from '../Demo.module.css';
  * smokes a fixed amount and closes when it is gone, "are they open" beats
  * "what do they serve".
  *
- * Every heading on this page is left-aligned, and it is the only sample where
- * that is true end to end. The five samples are supposed to look like five
- * different studios made them, and heading alignment is the cheapest tell
- * there is: centered text down a whole page is what a template does when it
- * does not know what the page is for.
+ * Every section heading the template itself sets is left-aligned. The five
+ * samples are supposed to look like five different studios made them, and
+ * heading alignment is the cheapest tell there is: centered text down a whole
+ * page is what a template does when it does not know what the page is for.
  */
 export default function FoodTemplate({ config }: { config: DemoConfig }) {
   const anchors: NavLink[] = [
     ...(config.menu?.length ? [{ label: 'Menu', href: '#menu' }] : []),
-    { label: 'Catering', href: '#services' },
+    ...(config.services.length ? [{ label: 'Catering', href: '#services' }] : []),
     { label: 'About', href: '#about' },
     { label: 'Visit', href: '#visit' },
   ];
@@ -52,7 +52,7 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
 
       <div className={styles.badgeBar}>
         <div className={styles.container}>
-          <HoursStrip hours={config.hours} />
+          <HoursStrip hours={config.hours} timeZone={businessTimeZone(config)} />
         </div>
       </div>
 
@@ -63,7 +63,12 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
           <SectionHead
             eyebrow="The menu"
             title="What we are serving"
-            sub="Everything is made here. Call ahead and it will be boxed and waiting."
+            sub={
+              config.copy?.menuIntro ??
+              (config.business.phone
+                ? `Questions about the menu? Call ${config.business.phone}.`
+                : undefined)
+            }
           />
           <MenuBlock sections={config.menu} />
         </Section>
@@ -73,6 +78,7 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
         <GalleryGrid
           images={config.gallery}
           business={config.business.name}
+          sample={config.placeholderPhotos}
           fullBleed
         />
       )}
@@ -120,7 +126,7 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
               <Clock size={18} aria-hidden="true" />
               Hours
             </h3>
-            <HoursList hours={config.hours} />
+            <HoursList hours={config.hours} timeZone={businessTimeZone(config)} />
           </div>
         </div>
       </Section>

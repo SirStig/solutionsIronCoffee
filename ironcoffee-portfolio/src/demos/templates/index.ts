@@ -29,8 +29,8 @@ export const TEMPLATES: Record<
 export const TEMPLATE_BLURBS: Record<TemplateName, string> = {
   food: 'Menu sections with prices, an ordering call to action, hours and photos.',
   retail: 'A product and stock grid, so people stop phoning to ask what you have in.',
-  booking: 'A priced service list, staff bios and a booking button that never scrolls away.',
+  booking: 'A priced service list, staff bios and a call button that never scrolls away.',
   professional: 'New client offer, insurance list, team credentials and the questions people hesitate over.',
   trades: 'Service areas, trust badges, finished-job photos and a quote form.',
-  venue: 'Scroll-driven animation, a pinned sideways gallery and a season switcher that runs without a line of JavaScript.',
+  venue: 'Scroll-driven animation, a pinned sideways gallery and a season switcher built in CSS alone.',
 };

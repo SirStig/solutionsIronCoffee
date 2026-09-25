@@ -8,46 +8,46 @@
  */
 import { useMemo, useRef, useState, type RefObject } from 'react';
 import { Archive, Reply, Search, Send } from 'lucide-react';
-import { money, packageById, pretty, type Enquiry } from '../data';
+import { money, packageById, pretty, type Inquiry } from '../data';
 import s from '../Admin.module.css';
 import { Drawer, Fact, StatusPill } from './ui';
-import { suggestPackage, type AdminState, type ViewProps } from './state';
+import { CAL_YEAR, suggestPackage, type AdminState, type ViewProps } from './state';
 
-const FILTERS: { id: Enquiry['state']; label: string }[] = [
+const FILTERS: { id: Inquiry['state']; label: string }[] = [
   { id: 'new', label: 'New' },
   { id: 'open', label: 'Open' },
   { id: 'replied', label: 'Replied' },
   { id: 'archived', label: 'Archived' },
 ];
 
-const EMPTY: Record<Enquiry['state'], string> = {
-  new: 'Nothing new. Every enquiry has been looked at.',
+const EMPTY: Record<Inquiry['state'], string> = {
+  new: 'Nothing new. Every inquiry has been looked at.',
   open: 'Nothing open. Anything read has been answered or archived.',
   replied: 'No replies sent yet.',
   archived: 'Nothing archived.',
 };
 
-export default function EnquiriesView({ state, dispatch }: ViewProps) {
-  const [filter, setFilter] = useState<Enquiry['state']>('new');
+export default function InquiriesView({ state, dispatch }: ViewProps) {
+  const [filter, setFilter] = useState<Inquiry['state']>('new');
   const [query, setQuery] = useState('');
   const listRef = useRef<HTMLDivElement>(null);
 
   const counts = useMemo(() => {
-    const out: Record<Enquiry['state'], number> = { new: 0, open: 0, replied: 0, archived: 0 };
-    for (const enquiry of state.enquiries) out[enquiry.state] += 1;
+    const out: Record<Inquiry['state'], number> = { new: 0, open: 0, replied: 0, archived: 0 };
+    for (const inquiry of state.inquiries) out[inquiry.state] += 1;
     return out;
-  }, [state.enquiries]);
+  }, [state.inquiries]);
 
   const shown = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return state.enquiries.filter((enquiry) => {
-      if (enquiry.state !== filter) return false;
+    return state.inquiries.filter((inquiry) => {
+      if (inquiry.state !== filter) return false;
       if (!needle) return true;
-      return `${enquiry.name} ${enquiry.email} ${enquiry.message}`.toLowerCase().includes(needle);
+      return `${inquiry.name} ${inquiry.email} ${inquiry.message}`.toLowerCase().includes(needle);
     });
-  }, [state.enquiries, filter, query]);
+  }, [state.inquiries, filter, query]);
 
-  const open = state.enquiries.find((e) => e.id === state.openEnquiry) ?? null;
+  const open = state.inquiries.find((e) => e.id === state.openInquiry) ?? null;
 
   return (
     <div className={s.view}>
@@ -70,7 +70,7 @@ export default function EnquiriesView({ state, dispatch }: ViewProps) {
 
           <div className={s.searchWrap}>
             <label className={s.srOnly} htmlFor="enq-search">
-              Search enquiries
+              Search inquiries
             </label>
             <Search className={s.searchIcon} size={16} aria-hidden="true" />
             <input
@@ -89,22 +89,22 @@ export default function EnquiriesView({ state, dispatch }: ViewProps) {
             <p className={s.empty}>{query.trim() ? 'Nothing matches that search.' : EMPTY[filter]}</p>
           ) : (
             <ul className={s.list}>
-              {shown.map((enquiry) => (
-                <li key={enquiry.id}>
+              {shown.map((inquiry) => (
+                <li key={inquiry.id}>
                   <button
                     type="button"
                     className={s.listItem}
-                    onClick={() => dispatch({ type: 'openEnquiry', id: enquiry.id })}
+                    onClick={() => dispatch({ type: 'openInquiry', id: inquiry.id })}
                   >
                     <span className={s.listTop}>
-                      <span className={s.listName}>{enquiry.name}</span>
-                      <span className={s.listWhen}>{enquiry.received}</span>
+                      <span className={s.listName}>{inquiry.name}</span>
+                      <span className={s.listWhen}>{inquiry.received}</span>
                     </span>
                     <span className={s.listMeta}>
-                      {enquiry.wants ? pretty(enquiry.wants) : 'No date yet'}, {enquiry.guests}{' '}
+                      {inquiry.wants ? pretty(inquiry.wants) : 'No date yet'}, {inquiry.guests}{' '}
                       guests
                     </span>
-                    <span className={s.listMsg}>{enquiry.message}</span>
+                    <span className={s.listMsg}>{inquiry.message}</span>
                   </button>
                 </li>
               ))}
@@ -114,9 +114,9 @@ export default function EnquiriesView({ state, dispatch }: ViewProps) {
       </div>
 
       {open && (
-        <EnquiryDrawer
+        <InquiryDrawer
           key={open.id}
-          enquiry={open}
+          inquiry={open}
           state={state}
           dispatch={dispatch}
           returnFocusTo={listRef}
@@ -126,39 +126,42 @@ export default function EnquiriesView({ state, dispatch }: ViewProps) {
   );
 }
 
-function EnquiryDrawer({
-  enquiry,
+function InquiryDrawer({
+  inquiry,
   state,
   dispatch,
   returnFocusTo,
 }: {
-  enquiry: Enquiry;
+  inquiry: Inquiry;
   state: AdminState;
   dispatch: ViewProps['dispatch'];
   returnFocusTo: RefObject<HTMLElement | null>;
 }) {
   const [replying, setReplying] = useState(false);
-  const [text, setText] = useState(`Hi ${enquiry.name.split(' ')[0]},\n\n`);
+  const [text, setText] = useState(`Hi ${inquiry.name.split(' ')[0]},\n\n`);
 
-  const day = enquiry.wants ? state.days[enquiry.wants] : undefined;
-  const sent = state.replies[enquiry.id];
-  const headcount = enquiry.seatsPlanned ?? enquiry.guests;
-  const close = () => dispatch({ type: 'openEnquiry', id: null });
+  const day = inquiry.wants ? state.days[inquiry.wants] : undefined;
+  const sent = state.replies[inquiry.id];
+  const headcount = inquiry.seatsPlanned ?? inquiry.guests;
+  const likely = packageById(suggestPackage(headcount, inquiry.wants));
+  const close = () => dispatch({ type: 'openInquiry', id: null });
 
   // Why the hold button is or is not available, in the words you would use to
   // a colleague. A disabled button with no reason next to it is a bug report.
   const holdBlocked =
-    !day ? 'No date on this one yet.'
+    !inquiry.wants ? 'No date on this one yet.'
+    : !day ? `That date is outside the ${CAL_YEAR} calendar.`
     : day.status === 'confirmed' ? `Already booked for ${day.couple}.`
     : day.status === 'held' ? 'That date is already on hold.'
+    : day.status === 'closed' ? 'That date is not offered. Open it on the calendar first if you want to take it.'
     : null;
 
   return (
     <Drawer
-      title={enquiry.name}
+      title={inquiry.name}
       meta={
         <>
-          {enquiry.email}, received {enquiry.received}
+          {inquiry.email}, received {inquiry.received}
         </>
       }
       onClose={close}
@@ -179,13 +182,13 @@ function EnquiryDrawer({
             className={s.btn}
             disabled={holdBlocked !== null}
             onClick={() => {
-              if (!enquiry.wants) return;
+              if (!inquiry.wants) return;
               dispatch({
                 type: 'hold',
-                date: enquiry.wants,
-                couple: enquiry.name,
+                date: inquiry.wants,
+                couple: inquiry.name,
                 guests: headcount,
-                packageId: suggestPackage(headcount),
+                packageId: likely?.id,
               });
             }}
           >
@@ -196,34 +199,34 @@ function EnquiryDrawer({
             className={s.btnQuiet}
             onClick={() =>
               dispatch({
-                type: 'enquiryState',
-                id: enquiry.id,
-                state: enquiry.state === 'archived' ? 'open' : 'archived',
+                type: 'inquiryState',
+                id: inquiry.id,
+                state: inquiry.state === 'archived' ? 'open' : 'archived',
               })
             }
           >
             <Archive size={16} aria-hidden="true" />
-            {enquiry.state === 'archived' ? 'Move back to open' : 'Archive'}
+            {inquiry.state === 'archived' ? 'Move back to open' : 'Archive'}
           </button>
         </div>
       }
     >
       <dl className={s.facts}>
-        <Fact label="Date wanted">{enquiry.wants ? pretty(enquiry.wants) : 'Not said'}</Fact>
-        <Fact label="Guests">{enquiry.guests}</Fact>
+        <Fact label="Date wanted">{inquiry.wants ? pretty(inquiry.wants) : 'Not said'}</Fact>
+        <Fact label="Guests">{inquiry.guests}</Fact>
         <Fact label="That date">
-          {day ? <StatusPill status={day.status} /> : 'Outside the 2027 calendar'}
+          {day ? <StatusPill status={day.status} /> : `Outside the ${CAL_YEAR} calendar`}
         </Fact>
         <Fact label="Likely package">
-          {packageById(suggestPackage(headcount))?.name}, {money(packageById(suggestPackage(headcount))?.price ?? 0)}
+          {likely ? `${likely.name}, ${money(likely.price)}` : 'None'}
         </Fact>
       </dl>
 
-      <p className={s.message}>{enquiry.message}</p>
+      <p className={s.message}>{inquiry.message}</p>
 
-      {enquiry.seatsPlanned !== undefined && (
+      {inquiry.seatsPlanned !== undefined && (
         <p className={s.panelNote}>
-          They used the seating planner on the site and laid out {enquiry.seatsPlanned} seats.
+          They used the seating planner on the site and laid out {inquiry.seatsPlanned} seats.
         </p>
       )}
 
@@ -254,7 +257,7 @@ function EnquiryDrawer({
               className={s.btnPrimary}
               disabled={text.trim().length === 0}
               onClick={() => {
-                dispatch({ type: 'reply', id: enquiry.id, text: text.trim() });
+                dispatch({ type: 'reply', id: inquiry.id, text: text.trim() });
                 setReplying(false);
               }}
             >

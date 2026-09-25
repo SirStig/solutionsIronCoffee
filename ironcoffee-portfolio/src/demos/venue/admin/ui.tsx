@@ -52,7 +52,7 @@ export function Drawer({
   onClose: () => void;
   /**
    * Where focus goes if the control that opened the drawer is gone by the time
-   * it closes. Working an enquiry moves it out of the filter you opened it
+   * it closes. Working an inquiry moves it out of the filter you opened it
    * from, so that happens on the most ordinary path through the screen.
    */
   returnFocusTo?: RefObject<HTMLElement | null>;
@@ -73,7 +73,12 @@ export function Drawer({
     const node = panel.current;
     if (!node) return undefined;
 
-    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    // <body> is where focus sits when the control that opened this has
+    // already unmounted, as it has after a cross-link from another view.
+    // Treating it as an opener would "restore" focus to nothing and skip the
+    // fallback, so it counts as no opener at all.
+    const active = document.activeElement;
+    const opener = active instanceof HTMLElement && active !== document.body ? active : null;
     // The panel itself, not the first button, so the heading is read first.
     node.focus();
 

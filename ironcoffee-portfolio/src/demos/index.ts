@@ -43,17 +43,15 @@ export const demos: Record<string, DemoConfig> = Object.fromEntries(
 );
 
 /**
- * Set PRERENDER_DRAFTS=1 to build the drafts too.
- *
- * Only ever used to point the browser audit at them, since a page that is
- * never built is a page that never gets checked for overflow or contrast.
- * Unset, which is every real build, drafts stay out of the output entirely.
- */
-/**
  * Whether a draft config is reachable at all.
  *
  * True while developing, and in the one build that exists so the browser audit
  * can see the drafts. False in every build that gets deployed.
+ *
+ * Set PRERENDER_DRAFTS=1 to build the drafts too. That is only ever used to
+ * point the browser audit at them, since a page that is never built is a page
+ * that never gets checked for overflow or contrast. Unset, which is every real
+ * build, drafts stay out of the output entirely.
  *
  * The mode check is what keeps `npm run dev` useful: drafts are meant to render
  * there, because looking at one is the whole reason to write it before the
@@ -64,8 +62,8 @@ export const demos: Record<string, DemoConfig> = Object.fromEntries(
  * rendering the thing it was meant to forbid. `MODE` is 'development' only
  * under the dev server: 'test' under Vitest, 'production' in a real build.
  */
-// eslint-disable-next-line no-undef
 const INCLUDE_DRAFTS =
+  // eslint-disable-next-line no-undef
   (typeof process !== 'undefined' && process.env?.PRERENDER_DRAFTS === '1') ||
   import.meta.env?.MODE === 'development';
 
@@ -134,11 +132,11 @@ export function expiryDate(demo: DemoConfig): Date {
   return new Date(new Date(demo.createdAt).getTime() + PREVIEW_DAYS * DAY_MS);
 }
 
-/** '14 November 2026'. Fixed locale and timezone so every render agrees. */
+/** 'November 14, 2026'. Fixed locale and timezone so every render agrees. */
 export function formatExpiry(demo: DemoConfig): string {
-  return expiryDate(demo).toLocaleDateString('en-GB', {
-    day: 'numeric',
+  return expiryDate(demo).toLocaleDateString('en-US', {
     month: 'long',
+    day: 'numeric',
     year: 'numeric',
     timeZone: 'UTC',
   });
@@ -189,7 +187,7 @@ export function isDrawn(demo: DemoConfig): boolean {
 /**
  * How this demo's pictures should be described on the page.
  *
- * Three states, and getting the wrong one printed is a small error that costs
+ * Four states, and getting the wrong one printed is a small error that costs
  * a sale. The trades template used to choose between "drawn for this preview"
  * and "photographed the day we finished", which is a correct pair right up
  * until a preview carries generic stock: then a page about somebody's business
@@ -292,7 +290,10 @@ export function sampleFeatures(demo: DemoConfig): string[] {
   // The venue sample is the odd one out and says so first, because its whole
   // reason for existing is the part no other sample has.
   if (demo.template === 'venue') {
-    out.push('Scroll-driven', 'Pinned gallery', 'No JavaScript');
+    // "No JavaScript" used to be the third, and it was false: the same page
+    // carries a seating planner and a date picker. The motion is what is
+    // CSS-only, so that is what it says.
+    out.push('Scroll-driven', 'Pinned gallery', 'CSS-only motion');
   }
   if (demo.pages?.length) out.push(`${demo.pages.length + 1} pages`);
   if (demo.menu?.length) out.push('Priced menu');

@@ -63,7 +63,11 @@ export default function MonthGrid({
 
   return (
     <table className={styles.cal}>
-      <caption className={styles.sr}>{label}, open dates only</caption>
+      {/* Every day is in the table, open or not, so the caption says how to
+          tell them apart rather than claiming only open dates are listed. */}
+      <caption className={styles.sr}>
+        {label}. Open dates are buttons; the rest say why they are unavailable.
+      </caption>
       <thead>
         <tr>
           {WEEKDAYS.map((w) => (

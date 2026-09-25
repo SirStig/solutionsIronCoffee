@@ -14,6 +14,7 @@ import {
   ServiceCards,
   ServiceAreas,
   TeamGrid,
+  businessTimeZone,
 } from './blocks';
 import { BusinessForm, formVariant } from './forms';
 import OrderFlow from './OrderFlow';
@@ -22,9 +23,14 @@ import { Cta, Section, SectionHead } from './primitives';
 import { pageNavLinks } from './DemoNav';
 import styles from '../Demo.module.css';
 
-/** Default heading and standfirst per page kind, when the config gives none. */
+/**
+ * Default heading and standfirst per page kind, when the config gives none.
+ *
+ * A standfirst here prints on real businesses' pages too, so it promises
+ * nothing: set `intro` on the page entry for "made here every day".
+ */
 const defaults: Record<DemoPage['kind'], { title: string; intro?: string }> = {
-  menu: { title: 'The menu', intro: 'Everything is made here, every day.' },
+  menu: { title: 'The menu' },
   services: { title: 'What we do' },
   about: { title: 'About us' },
   gallery: { title: 'A look around' },
@@ -36,7 +42,7 @@ const defaults: Record<DemoPage['kind'], { title: string; intro?: string }> = {
   stock: { title: 'What we carry' },
   order: {
     title: 'Order for pickup',
-    intro: 'Choose what you want, pick a time, and it will be boxed and waiting. No app, no third party taking a cut.',
+    intro: 'Choose what you want and pick a time to collect it.',
   },
   admin: {
     title: 'What the owner sees',
@@ -74,7 +80,7 @@ export default function DemoSubPage({
           <nav className={styles.crumbs} aria-label="Breadcrumb">
             <a href={base}>{config.business.name}</a>
             <span aria-hidden="true">/</span>
-            <span>{page.label}</span>
+            <span aria-current="page">{page.label}</span>
           </nav>
           <h1 className={styles.pageTitle}>{title}</h1>
           {intro && <p className={styles.pageIntro}>{intro}</p>}
@@ -117,6 +123,7 @@ export default function DemoSubPage({
             <GalleryGrid
               images={config.gallery}
               business={config.business.name}
+              sample={config.placeholderPhotos}
               fullBleed
             />
           )}
@@ -138,6 +145,7 @@ export default function DemoSubPage({
             <GalleryGrid
               images={config.gallery}
               business={config.business.name}
+              sample={config.placeholderPhotos}
               fullBleed
             />
           )}
@@ -146,7 +154,11 @@ export default function DemoSubPage({
 
       {page.kind === 'gallery' && (
         <Section>
-          <GalleryGrid images={config.gallery} business={config.business.name} />
+          <GalleryGrid
+            images={config.gallery}
+            business={config.business.name}
+            sample={config.placeholderPhotos}
+          />
         </Section>
       )}
 
@@ -179,13 +191,17 @@ export default function DemoSubPage({
           <div className={styles.visitGrid}>
             {/* A barbershop got the roofer's form here, address field and all.
                 See the copy map in forms.tsx. */}
-            <BusinessForm config={config} variant={formVariant(config)} />
+            <BusinessForm
+              config={config}
+              variant={formVariant(config)}
+              heading={title}
+            />
             <div className={styles.visitAside}>
               <ContactDetails config={config} />
               <Cta href={directionsHref(config)}>Get directions</Cta>
               <div>
                 <h2 className={styles.blockTitle}>Hours</h2>
-                <HoursList hours={config.hours} />
+                <HoursList hours={config.hours} timeZone={businessTimeZone(config)} />
               </div>
             </div>
           </div>
