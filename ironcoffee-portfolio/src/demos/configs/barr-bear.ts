@@ -31,7 +31,8 @@ import type { DemoConfig } from '../types';
  *
  * **Do not print her name until she spells it.** Le Ann, LeAnn, Leann and
  * LeeAnn all appear in public, including across her own reviews. The page
- * therefore says "Le Ann" once, in prose she can correct in a sentence.
+ * writes "Le Ann" in the headline and the about paragraph, two places she
+ * can correct in a sentence. The reviews keep their own spellings.
  *
  * ## Still to confirm, in one phone call
  *
@@ -43,7 +44,9 @@ import type { DemoConfig } from '../types';
  *     that is one source agreeing with itself. Birdeye says Mon to Fri 9 to 6
  *     and closed weekends. What is below is what a customer searching today
  *     is shown, which is the version worth correcting first.
- *   - **The service list and prices.** Nothing is public beyond "$$". Two
+ *   - **The service list and prices.** Nothing is public beyond "$$" and
+ *     what Harrison's review names: haircuts, beard trims, shoulder
+ *     massages. The page lists those and nothing else. Two
  *     separate reviewers volunteer that she undercharges, which makes guessing
  *     worse than asking.
  *   - **What "and MORE" covers now.** Her own words, in a post from 2013:
@@ -59,10 +62,9 @@ import type { DemoConfig } from '../types';
  * Two reviewers, unprompted, say she charges too little: "Only problem is she
  * doesn't charge enough" (Harrison Filas, Google, Dec 2025) and "The fact that
  * I have also not found a better price is absolutely awesome" (Jericho,
- * Google, Oct 2025). Those are real, attributed and published, and they are
- * not on this page, because the rule in types.ts is that a preview for a real
- * business does not put customer quotes on it without asking. They belong in
- * the conversation, not in the config.
+ * Google, Oct 2025). Both are real, attributed and published. Harrison's is
+ * on this page, word for word and cited to Google, along with two others (see
+ * `testimonials`). Jericho's is not, and belongs in the conversation.
  */
 const barrBear: DemoConfig = {
   slug: 'barr-bear',
@@ -117,7 +119,7 @@ const barrBear: DemoConfig = {
   },
 
   hero: {
-    headline: 'Ring Le Ann, and she will fit you in.',
+    headline: 'Call Le Ann, and she will fit you in.',
     sub: 'Barr Bear Country Cuts has been on Comanche Street in Kiowa since 2007. Times and prices are quickest to get by picking up the phone.',
     image: 'demos/barr-bear/hero',
     ctaLabel: 'Call the Shop',
@@ -148,14 +150,14 @@ const barrBear: DemoConfig = {
       body: 'Shaped, trimmed and finished properly rather than squared off in a hurry.',
     },
     {
-      title: 'Color and styling',
-      icon: 'brush',
-      body: 'Ask in the chair. Nineteen years in one town is nineteen years of knowing what suits who.',
+      title: 'Shoulder massages',
+      icon: 'chair',
+      body: 'Ask about one when you call.',
     },
     {
-      title: 'Textured and loc work',
+      title: 'Something else?',
       icon: 'sparkle',
-      body: 'Not something every small town shop takes on. Worth asking about when you ring.',
+      body: 'Call the shop and ask.',
     },
   ],
 
@@ -164,8 +166,8 @@ const barrBear: DemoConfig = {
     'On Comanche Street since 2007',
     'Men, women and children',
     'Beard and neck work',
-    'Textured and loc work',
-    'Ring and she will fit you in',
+    'Shoulder massages',
+    'Call and she will fit you in',
   ],
 
   /*
@@ -193,7 +195,7 @@ const barrBear: DemoConfig = {
 
   about: {
     heading: 'Nineteen years, one chair, one town.',
-    body: 'Barr Bear Country Cuts has been on Comanche Street since February 2007, owned and run the whole time by Le Ann Goetz. She is a native Coloradan and she lives in Kiowa, which means the person who answers the phone is the person who cuts your hair and the person whose name is over the door. Nineteen years in a town this size is not a business plan, it is a reputation.',
+    body: 'Barr Bear Country Cuts has been on Comanche Street since February 2007, owned and run the whole time by Le Ann Goetz. The person who answers the phone is the person who cuts your hair. Nineteen years in a town this size is not a business plan, it is a reputation.',
     // Drawn, where the photographs are not. A picture of the trade can
     // stand beside the story; it cannot be the story, and one illustration
     // per page is what stops five previews looking like five stock sets.
@@ -244,7 +246,7 @@ const barrBear: DemoConfig = {
       slug: 'services',
       label: 'Services',
       kind: 'services',
-      intro: 'Prices are not published anywhere, so ring and she will tell you.',
+      intro: 'Prices are not published anywhere, so call and she will tell you.',
     },
     {
       slug: 'about',
@@ -257,7 +259,7 @@ const barrBear: DemoConfig = {
       label: 'Visit',
       kind: 'contact',
       title: 'Find the shop',
-      intro: 'On Comanche Street in Kiowa. Ringing ahead is the surest way to get seen.',
+      intro: 'On Comanche Street in Kiowa. Calling ahead is the surest way to get seen.',
     },
   ],
 
@@ -265,19 +267,20 @@ const barrBear: DemoConfig = {
     {
       // The question the price column used to answer four times over.
       q: 'What does a cut cost?',
-      a: 'Nothing is published online. Ring and she will tell you before you come in.',
+      a: 'Nothing is published online. Call and she will tell you before you come in.',
     },
     {
       q: 'Do I need an appointment?',
-      a: 'Ringing ahead is the surest way to get seen. Call and she will tell you what she has free.',
+      a: 'Calling ahead is the surest way to get seen. Call and she will tell you what she has free.',
     },
     {
-      q: 'What does "and MORE" mean?',
-      a: 'More than haircuts. Call and ask for whatever it is, because the answer is usually yes.',
+      // "and MORE" is quoted as written in the name of her Facebook page.
+      q: 'What does “and MORE” mean?',
+      a: 'It is part of the shop’s name on Facebook, and it means more than haircuts: customers mention beard trims, shoulder massages and even a nose hair trim. For anything else, call and ask.',
     },
     {
       q: 'Do you cut children’s hair?',
-      a: 'Yes, including the wriggly ones. Say so when you call and she will leave a bit more time.',
+      a: 'Yes, including the wiggly ones. Say so when you call.',
     },
   ],
 

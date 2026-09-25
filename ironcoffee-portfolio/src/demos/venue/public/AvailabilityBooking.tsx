@@ -1,12 +1,12 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { DemoConfig } from '../../types';
 import type { DayRecord, PackageRecord } from '../data';
-import { MONTHS, PACKAGES, YEAR, money, packageById, pretty } from '../data';
+import { MONTHS, PACKAGES, SEASON_YEAR, YEAR, money, packageBlock, packageById, pretty } from '../data';
 import MonthGrid from './MonthGrid';
 import styles from '../Public.module.css';
 
 /**
- * Date, headcount, package, confirm. The enquiry form that behaves like a
+ * Date, headcount, package, confirm. The inquiry form that behaves like a
  * booking screen.
  *
  * Every wedding venue website ends at a contact form, and every couple filling
@@ -27,12 +27,15 @@ import styles from '../Public.module.css';
  */
 
 /** Taken from the data rather than typed out, so the year lives in one place. */
-const YEAR_NUMBER = Number(YEAR[0].date.slice(0, 4));
+const YEAR_NUMBER = SEASON_YEAR;
 
 /** Opens on a month with dates in it. A fixed index, for the reason above. */
 const START_MONTH = 4;
 
 const QUICK_COUNTS = [40, 80, 120, 140];
+
+/** What the guest field starts on, and goes back to on "Start again". */
+const DEFAULT_GUESTS = '80';
 
 /** Above this the number input stops taking the visitor seriously. */
 const MAX_GUESTS = 400;
@@ -61,7 +64,7 @@ export default function AvailabilityBooking({ config }: { config: DemoConfig }) 
   const [month, setMonth] = useState(START_MONTH);
   const [date, setDate] = useState('');
   /** Text, not a number, so the field can be empty while somebody is typing. */
-  const [guestText, setGuestText] = useState('80');
+  const [guestText, setGuestText] = useState(DEFAULT_GUESTS);
   const [packageId, setPackageId] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -88,7 +91,9 @@ export default function AvailabilityBooking({ config }: { config: DemoConfig }) 
   const monthLabel = `${MONTHS[month]} ${YEAR_NUMBER}`;
 
   const chosen = packageById(packageId);
-  const chosenFits = Boolean(chosen && chosen.capacity >= guests);
+  const chosenSeats = Boolean(chosen && chosen.capacity >= guests);
+  /** Seats them and runs on the date they picked. */
+  const chosenFits = chosenSeats && Boolean(chosen && !packageBlock(chosen, date));
   const nothingFits = guests > LARGEST;
 
   /* --- Moving between steps ----------------------------------------------
@@ -197,7 +202,16 @@ export default function AvailabilityBooking({ config }: { config: DemoConfig }) 
               type="button"
               className={`${styles.btn} ${styles.btnGhost}`}
               onClick={() => {
+                // Everything, not just the step. "Start again" that keeps the
+                // last person's name and date is "go back", mislabeled.
                 setSent(false);
+                setMonth(START_MONTH);
+                setDate('');
+                setGuestText(DEFAULT_GUESTS);
+                setPackageId('');
+                setName('');
+                setEmail('');
+                setTouched(false);
                 setStep(1);
               }}
             >
@@ -278,7 +292,12 @@ export default function AvailabilityBooking({ config }: { config: DemoConfig }) 
                     value={guestText}
                     onChange={(e) => {
                       setSent(false);
-                      setGuestText(e.target.value.replace(/[^0-9]/g, '').slice(0, 3));
+                      const digits = e.target.value.replace(/[^0-9]/g, '').slice(0, 3);
+                      // Clamped to the same ceiling the field advertises, so
+                      // 999 cannot sit in a box that says it stops at 400.
+                      setGuestText(
+                        digits && Number(digits) > MAX_GUESTS ? String(MAX_GUESTS) : digits
+                      );
                     }}
                   />
                 </div>
@@ -305,7 +324,7 @@ export default function AvailabilityBooking({ config }: { config: DemoConfig }) 
                 <p className={styles.warn} role="status" aria-live="polite">
                   {nothingFits
                     ? `The barn seats ${LARGEST}. Anything larger is a conversation rather than a form.`
-                    : chosen && !chosenFits
+                    : chosen && !chosenSeats
                       ? `${chosen.name} seats ${chosen.capacity}, so it is out at ${guests}. Pick another on the next step.`
                       : ''}
                 </p>
@@ -339,10 +358,14 @@ export default function AvailabilityBooking({ config }: { config: DemoConfig }) 
                 <ul className={styles.packs}>
                   {PACKAGES.map((pkg) => {
                     const fits = pkg.capacity >= guests;
+                    // Seasonal and weekday packages are shown with the reason
+                    // rather than hidden, so nobody wonders where the cheap
+                    // one went.
+                    const offDate = packageBlock(pkg, date);
 
                     return (
                       <li key={pkg.id}>
-                        {fits ? (
+                        {fits && !offDate ? (
                           <button
                             type="button"
                             className={[
@@ -359,8 +382,9 @@ export default function AvailabilityBooking({ config }: { config: DemoConfig }) 
                           <div className={`${styles.pack} ${styles.packOff}`}>
                             <PackBody pkg={pkg} />
                             <p className={styles.packWhy}>
-                              Not available: seats {pkg.capacity}, and you said{' '}
-                              {guests}.
+                              {fits
+                                ? `Not on ${pretty(date)}. ${offDate}.`
+                                : `Not available: seats ${pkg.capacity}, and you said ${guests}.`}
                             </p>
                           </div>
                         )}

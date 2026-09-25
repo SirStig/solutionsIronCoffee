@@ -364,7 +364,16 @@
   padding: 0;
   display: grid;
   gap: var(--space-4);
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  /* Fixed counts rather than auto-fit. Six samples auto-fitted into five
+     columns at 1440 and left the sixth alone on a second row. Two by three on
+     a phone, three by two from a tablet up. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 40rem) {
+  .proof {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .proofCard {

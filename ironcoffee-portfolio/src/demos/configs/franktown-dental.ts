@@ -54,7 +54,7 @@ const franktownDental: DemoConfig = {
     headline: 'New patient exam, x\u2011rays and cleaning for $89.',
     sub: 'One visit, no insurance required, no pressure to schedule anything else. Most new patients are in and out in under an hour.',
     image: 'demos/franktown-family-dental/hero',
-    ctaLabel: 'Request an Appointment',
+    ctaLabel: 'Book a Visit',
     ctaHref: '#appointment',
   },
 
@@ -90,27 +90,25 @@ const franktownDental: DemoConfig = {
       title: 'Clear aligners',
       icon: 'scan',
       body: 'Scanned in-office, no impressions. Free consultation to see whether you are a candidate.',
-      price: 'Free consultation',
     },
     {
       title: 'Implants & bridges',
       icon: 'shield',
       body: 'Planned and placed here, start to finish, with financing available over twelve or twenty-four months.',
-      price: 'Call for pricing',
     },
   ],
 
   stats: [
-    { value: '$89', label: 'New patient visit', icon: 'card' },
+    { value: '2012', label: 'Practicing locally since', icon: 'pin' },
     { value: 'Same day', label: 'Emergency appointments', icon: 'calendarCheck' },
-    { value: '2', label: 'Dentists, never a locum', icon: 'heart' },
+    { value: '2', label: 'Dentists, never a fill-in', icon: 'heart' },
     { value: '< 1 hr', label: 'Most first visits', icon: 'clock' },
   ],
 
   testimonials: [
     {
-      quote: 'I had not been to a dentist in nine years and had worked myself up about it. Nobody lectured me. We made a plan and got on with it.',
-      name: 'Sam P.',
+      quote: 'I had not been to a dentist in nine years and had worked myself up about it. Nobody lectured me. We made a plan and got it done.',
+      name: 'Jordan P.',
       detail: 'New patient',
     },
     {
@@ -133,24 +131,28 @@ const franktownDental: DemoConfig = {
 
   team: [
     {
-      name: 'Dr. Alison Park, DDS',
+      name: 'Alison Park, DDS',
       role: 'General dentist · Owner',
-      image: 'demos/franktown-family-dental/dr-park',
       bio: 'University of Colorado School of Dental Medicine. Practicing in Douglas County since 2012, and the person you will actually see at your appointment.',
     },
     {
-      name: 'Dr. Ben Whitaker, DMD',
+      name: 'Ben Whitaker, DMD',
       role: 'General dentist',
-      image: 'demos/franktown-family-dental/dr-whitaker',
       bio: 'Restorative and implant dentistry. Takes most of the same-day emergency visits.',
     },
     {
       name: 'Maria Delgado, RDH',
       role: 'Lead hygienist',
-      image: 'demos/franktown-family-dental/maria',
       bio: 'Eighteen years cleaning teeth and a specialty in patients who have been avoiding the chair for a while.',
     },
   ],
+
+  copy: {
+    insuranceIntro:
+      'Do not see yours? Call us. We work with most PPO plans and can check your benefits before you come in.',
+    formIntro:
+      'Tell us what time works for you and the front desk will confirm by phone, usually the same day.',
+  },
 
   hours: [
     { day: 'Monday', open: '8am to 5pm' },

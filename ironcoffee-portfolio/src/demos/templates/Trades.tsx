@@ -35,7 +35,7 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
   const anchors: NavLink[] = [
     { label: 'Services', href: '#services' },
     ...(config.serviceAreas?.length ? [{ label: 'Areas', href: '#areas' }] : []),
-    { label: 'Work', href: '#work' },
+    ...(config.gallery.length ? [{ label: 'Work', href: '#work' }] : []),
     { label: 'Quote', href: '#quote' },
   ];
 
@@ -60,7 +60,7 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
         <SectionHead
           eyebrow="What we do"
           title="Services"
-          sub="Every job starts with someone coming out to look at it properly, at no cost to you."
+          sub={config.copy?.servicesIntro}
         />
         <ServiceSteps items={config.services} />
         {config.stats?.length ? <StatsBand stats={config.stats} /> : null}
@@ -71,8 +71,15 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
           {/* Trade-neutral on purpose. This template serves roofers, lawn
               care, HVAC and fencing, and the line here used to read "real
               roofs in this county", which it printed on all of them. */}
+          {/* "Recent jobs" is a claim that these are their jobs, which is
+              only true of their own photographs. Anything else gets a title
+              that describes the trade instead. */}
           <SectionHead
-            title="Recent jobs"
+            title={
+              pictureKind(config, config.gallery) === 'own'
+                ? 'Recent jobs'
+                : 'The kind of work we do'
+            }
             sub={
               {
                 drawn:
@@ -87,7 +94,11 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
               }[pictureKind(config, config.gallery)]
             }
           />
-          <GalleryGrid images={config.gallery} business={config.business.name} />
+          <GalleryGrid
+            images={config.gallery}
+            business={config.business.name}
+            sample={config.placeholderPhotos}
+          />
         </Section>
       )}
 
@@ -113,7 +124,10 @@ export default function TradesTemplate({ config }: { config: DemoConfig }) {
         <Section id="areas" tone="dark">
           <SectionHead
             eyebrow="Service area"
-            title={`Working across ${config.business.city} and the towns around it`}
+            // Neutral on purpose: some configs list towns around the city and
+            // some list neighborhoods inside it, and "the towns around it" is
+            // wrong about the second.
+            title="Where we work"
           />
           <ServiceAreas areas={config.serviceAreas} />
         </Section>

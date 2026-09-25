@@ -35,6 +35,12 @@
 
   --d-radius: 12px;
   --d-radius-lg: 20px;
+  --d-border-strong: #c9c7c2;
+
+  /* Height of the sticky mobile call bar, and the clearance anything at the
+     bottom of the page leaves so the bar never covers it. */
+  --d-callbar-h: 52px;
+  --d-callbar-clear: calc(var(--d-callbar-h) + 8px);
   --d-shadow: 0 1px 2px rgb(20 24 28 / 0.05), 0 8px 24px -12px rgb(20 24 28 / 0.18);
   --d-shadow-lg: 0 24px 60px -24px rgb(20 24 28 / 0.35);
 
@@ -82,6 +88,8 @@
   /* Fraunces ships an optical size and a "wonk" axis. Dialing both up at
      display size is what stops it reading as yet another Georgia. */
   --d-display-settings: 'opsz' 100, 'SOFT' 20, 'WONK' 1;
+  /* Without the pinned optical size, so a card title gets the text cut. */
+  --d-display-settings-small: 'SOFT' 20, 'WONK' 1;
 }
 
 .fontLuxe {
@@ -125,6 +133,7 @@
   --d-display-tracking: -0.02em;
   --d-display-case: none;
   --d-display-settings: 'opsz' 48;
+  --d-display-settings-small: normal;
 }
 
 /* These are element defaults for the demo scope, so they are wrapped in
@@ -149,6 +158,16 @@
   margin: 0;
 }
 
+/* Card titles and small labels are set at body size, where the display cut
+   and its negative tracking run words together: Fraunces pinned to opsz 100
+   at 18px printed "Pickuporders". Small headings let the optical size follow
+   the font size and drop the tightening. */
+:where(.root) h3,
+:where(.root) h4 {
+  font-variation-settings: var(--d-display-settings-small, var(--d-display-settings));
+  letter-spacing: 0;
+}
+
 /* Caps need air between the letters and none of the tightening a lowercase
    display line wants. Scoped to the one pairing that sets them. */
 .fontIndustrial :where(h1, h2, h3, h4) {
@@ -170,7 +189,27 @@
 .root :focus-visible {
   outline: 2px solid var(--brand);
   outline-offset: 2px;
-  border-radius: var(--d-radius);
+}
+
+/* On a dark or brand-colored ground a ring in the brand color is invisible,
+   so every band that paints one switches the ring to white. The primary call
+   bar button is itself brand-colored, so it gets the same treatment. */
+:is(
+    .sectionDark,
+    .footer,
+    .hero,
+    .heroSplit,
+    .heroStripMedia,
+    .vHero,
+    .bleedBrand,
+    .bleedDeep,
+    .vTrackOuter,
+    .heroNote,
+    .banner
+  )
+  :focus-visible,
+.callBarPrimary:focus-visible {
+  outline-color: #fff;
 }
 
 /* --- Layout --------------------------------------------------------------
@@ -200,8 +239,20 @@
   padding-inline: var(--d-gutter);
 }
 
-.narrow {
-  max-width: var(--d-narrow);
+/* A narrow section keeps a narrow column but starts it at the same left edge
+   as every other section. Centering the whole container put the FAQ heading
+   some 230px to the right of every heading above it, which reads as a
+   misaligned page rather than a narrow one. The container stays full width and
+   its children take the measure instead. The one exception is a section that
+   opens with a centered head (Booking centers throughout, on purpose): there
+   the column centers with it. */
+.container.narrow > :not(.sectionHead) {
+  max-width: calc(var(--d-narrow) - 2 * var(--d-gutter));
+  margin-inline: 0;
+}
+
+.container.narrow:has(> .centered) > * {
+  margin-inline: auto;
 }
 
 .section {
@@ -219,7 +270,10 @@
 }
 
 .sectionDark .sectionTitle,
-.sectionDark .eyebrow {
+.sectionDark .eyebrow,
+.bleedBrand .eyebrow,
+.bleedDeep .eyebrow,
+.vTrackOuter .eyebrow {
   color: #fff;
 }
 
@@ -238,17 +292,12 @@
 }
 
 .eyebrow {
-  display: block;
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--brand-ink);
   margin-bottom: 0.75rem;
-}
-
-.sectionTitle {
-  font-size: clamp(1.75rem, 1.3rem + 2vw, 2.75rem);
 }
 
 .sectionSub {
@@ -364,7 +413,7 @@
 .bannerLink {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
+  min-height: 44px;
   padding-inline: 0.5rem;
   border-radius: var(--d-radius);
   color: #fff;
@@ -491,9 +540,11 @@
 /* A two-word label must never break inside a header. "Our team" set as
    "Our / team" doubled the height of the dental sample's nav at 1440. */
 .navLinks a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   text-decoration: none;
   color: var(--d-muted);
-  padding-block: 0.25rem;
   white-space: nowrap;
 }
 
@@ -670,12 +721,37 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(
-    180deg,
-    rgb(8 10 12 / 0.28) 0%,
-    rgb(8 10 12 / 0.52) 55%,
-    rgb(8 10 12 / 0.82) 100%
-  );
+  /* Two layers. The vertical one holds the bottom of the frame, where the
+     buttons sit. The horizontal one darkens the left side, where the copy
+     sits on a wide screen: a bright window behind the salon's subtitle left
+     it at well under 4.5:1 with only the vertical gradient to lean on. The
+     right side of the photograph is left as it was. */
+  background:
+    linear-gradient(
+      90deg,
+      rgb(8 10 12 / 0.42) 0%,
+      rgb(8 10 12 / 0.3) 38%,
+      rgb(8 10 12 / 0) 68%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(8 10 12 / 0.3) 0%,
+      rgb(8 10 12 / 0.56) 55%,
+      rgb(8 10 12 / 0.84) 100%
+    );
+}
+
+/* On a phone the copy runs the full width and fills the lower two thirds, so
+   the lift goes on the middle of the frame instead of the left edge. */
+@media (max-width: 899px) {
+  .heroScrim {
+    background: linear-gradient(
+      180deg,
+      rgb(8 10 12 / 0.34) 0%,
+      rgb(8 10 12 / 0.62) 45%,
+      rgb(8 10 12 / 0.86) 100%
+    );
+  }
 }
 
 /* Over a drawing in the dark colorway, most of that scrim is redundant and
@@ -716,7 +792,7 @@
 
 @media (max-width: 899px) {
   .heroInner {
-    padding-bottom: calc(clamp(2.5rem, 1.5rem + 5vw, 4.5rem) + 64px);
+    padding-bottom: calc(clamp(2.5rem, 1.5rem + 5vw, 4.5rem) + var(--d-callbar-clear));
   }
 
   .hero {
@@ -759,7 +835,6 @@
 }
 
 .badge {
-  color: var(--d-muted);
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -794,12 +869,10 @@
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
 }
 
-/* auto-fit stretches whatever is there to fill the row, so a business with
-   two services got two cards a third of a metre wide holding one sentence
-   each. Cap the track instead and let them sit at a readable size. */
-.serviceGrid:has(> :last-child:nth-child(2)) {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 24rem));
-}
+/* Two services fill the row as two columns. Capping the tracks at a card
+   width kept each card compact but left a third of the section empty on the
+   right, beside a stats band running the full width, which read as a
+   missing card rather than as restraint. */
 
 .serviceGrid:has(> :last-child:nth-child(1)) {
   grid-template-columns: minmax(0, 28rem);
@@ -996,7 +1069,7 @@
 
 .menuPrice {
   font-weight: 700;
-  color: var(--brand);
+  color: var(--brand-ink);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -1006,12 +1079,6 @@
   color: var(--d-muted);
   font-size: 0.9375rem;
   max-width: 34rem;
-}
-
-.menuNote {
-  margin-top: 2.5rem;
-  font-size: 0.875rem;
-  color: var(--d-faint);
 }
 
 /* --- Products (retail) --------------------------------------------------- */
@@ -1033,7 +1100,7 @@
   color: var(--d-text);
   background: var(--d-surface);
   border: 1px solid var(--d-border);
-  border-radius: var(--d-radius-full, 999px);
+  border-radius: 999px;
   padding: 0.6rem 1.1rem;
   font-size: 0.9375rem;
   font-weight: 550;
@@ -1042,7 +1109,9 @@
 .productGrid {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  /* auto-fit, not auto-fill: a group of three on a four track row stretched
+     to fill it rather than leaving a card-sized hole on the right. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
 }
 
 .productCard {
@@ -1065,22 +1134,22 @@
   color: var(--d-muted);
 }
 
-/* Wraps rather than squeezes. On a quarter-width card "Call for pricing"
-   beside "Delivery only" broke the price over two lines; now the badge drops
-   underneath when both will not fit. */
+/* Always stacked, badge over price, at the foot of the card. Sharing a row
+   meant a short badge sat beside the price and a long one wrapped under it,
+   so prices in the same row landed at two heights. Last in the column, the
+   price is on the same line in every card of a row. */
 .productFoot {
   margin-top: auto;
   padding-top: 0.6rem;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 0.75rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
 .productPrice {
   font-weight: 700;
-  color: var(--brand);
+  color: var(--brand-ink);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -1418,7 +1487,7 @@
   display: grid;
   place-items: center;
   background: color-mix(in srgb, var(--brand) 10%, transparent);
-  color: var(--brand);
+  color: var(--brand-ink);
 }
 
 .contactLabel {
@@ -1440,7 +1509,7 @@
 }
 
 .contactValue:hover {
-  color: var(--brand);
+  color: var(--brand-ink);
 }
 
 .areaList {
@@ -1497,6 +1566,9 @@
   flex-direction: column;
   gap: 1rem;
   box-shadow: var(--d-shadow);
+  /* Beside a taller column a grid stretches the card, and the spare height
+     all lands under the submit button. The card is as tall as its form. */
+  align-self: start;
 }
 
 .formTitle {
@@ -1512,6 +1584,14 @@
   gap: 0.5rem;
   font-size: 1.25rem;
   margin-bottom: 1rem;
+}
+
+.blockTitleRow {
+  flex-wrap: wrap;
+}
+
+.blockTitleFlush {
+  margin: 0;
 }
 
 .formIntro {
@@ -1575,6 +1655,15 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 22%, transparent);
 }
 
+/* The tinted ring above is decoration and too faint to count as a focus
+   indicator on its own, so keyboard focus also gets a real outline. */
+.field input:focus-visible,
+.field textarea:focus-visible,
+.field select:focus-visible {
+  outline: 2px solid var(--brand-ink);
+  outline-offset: 2px;
+}
+
 .honeypot {
   position: absolute;
   width: 1px;
@@ -1590,6 +1679,20 @@
   font-size: 0.9375rem;
   min-height: 1.4em;
   margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Empty until somebody submits. It stays in the document so the live region
+   exists before it has anything to say, but it takes no room: an empty line
+   plus the flex gap was about 40px of padding under the button that the top
+   of the card did not have. */
+.formStatus:empty {
+  min-height: 0;
+  margin-top: -1rem;
+}
+
+.formCompact .formStatus:empty {
+  margin-top: -0.75rem;
 }
 
 .formStatus[data-state='sent'] {
@@ -1602,13 +1705,8 @@
 }
 
 .formStatus[data-state='demo'] {
-  color: var(--brand);
+  color: var(--brand-ink);
   font-weight: 600;
-}
-
-.formNote {
-  font-size: 0.8125rem;
-  color: var(--d-faint);
 }
 
 /* --- Sample pitch ---------------------------------------------------------
@@ -1616,7 +1714,10 @@
    `.sectionDark` for the white type and the glow, and this for its shape. */
 .outroCard {
   border-radius: var(--d-radius-lg);
+  /* clip, not hidden: hidden makes a scroll container, and a view() timeline
+     inside one attaches to a frame that never scrolls, so it never animates. */
   overflow: hidden;
+  overflow: clip;
   padding: clamp(2.5rem, 1.5rem + 4vw, 4.5rem) clamp(1.25rem, 0.5rem + 4vw, 4rem);
 }
 
@@ -1672,7 +1773,15 @@
 }
 
 .footerList a {
+  /* A 44px target that lays out at about 32px, so the list does not double
+     in height to make room for fingers. */
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 44px;
+  margin-block: -6px;
   text-decoration: none;
+  overflow-wrap: anywhere;
 }
 
 .footerList a:hover {
@@ -1729,7 +1838,7 @@
   font-weight: 650;
   font-size: 0.9375rem;
   text-decoration: none;
-  min-height: 52px;
+  min-height: var(--d-callbar-h);
 }
 
 .callBarPrimary {
@@ -1743,12 +1852,12 @@
   }
 }
 
-/* The bar covers the last ~60px of the page on mobile, so the last thing on
-   the page grows by that much. It used to be padding on `.root`, which painted
+/* The bar covers the bottom --d-callbar-clear of the page on mobile, so the
+   last thing on the page grows by that much. It used to be padding on `.root`, which painted
    a white strip under the dark disclosure at the very bottom of every demo. */
 @media (max-width: 899px) {
   .disclosure {
-    padding-bottom: calc(1.5rem + 60px + env(safe-area-inset-bottom));
+    padding-bottom: calc(1.5rem + var(--d-callbar-clear) + env(safe-area-inset-bottom));
   }
 }
 
@@ -1868,13 +1977,13 @@
    a white-on-white border. */
 .btnOutline {
   background: transparent;
-  border-color: var(--d-border-strong, var(--d-border));
+  border-color: var(--d-border-strong);
   color: var(--d-text);
 }
 
 .btnOutline:hover {
   border-color: var(--brand);
-  color: var(--brand);
+  color: var(--brand-ink);
 }
 
 .heroActionsCenter {
@@ -2143,9 +2252,19 @@
 .serviceStep {
   display: flex;
   gap: 1rem;
-  align-items: flex-start;
+  align-items: stretch;
   padding-top: 1.25rem;
   border-top: 2px solid var(--brand);
+}
+
+/* A column as tall as the tallest step in the row, so `.servicePrice` and its
+   `margin-top: auto` put every price in a row on the same line whatever the
+   length of the sentence above it. */
+.serviceStepBody {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
 }
 
 /* The card version gets its spacing from a flex gap; a step is a plain block,
@@ -2159,7 +2278,7 @@
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1;
-  color: var(--brand);
+  color: var(--brand-ink);
   flex: none;
   font-variant-numeric: tabular-nums;
 }
@@ -2376,19 +2495,6 @@
   }
 }
 
-/* --- Centered visit block ------------------------------------------------- */
-.visitCentered {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  text-align: left;
-}
-
-.visitCentered .contactList {
-  margin-bottom: 1.25rem;
-}
-
 /* --- Dark section overrides ----------------------------------------------
    The contact block, the area chips and the hours list are all built for a
    light surface. On a dark section they need their own treatment rather than
@@ -2414,10 +2520,6 @@
 
 .sectionDark .blockTitle {
   color: #fff;
-}
-
-.sectionDark .hoursRow + .hoursRow {
-  border-top-color: var(--d-border);
 }
 
 /* Contact details stacked above the hours, for templates that put a form in
@@ -2468,7 +2570,10 @@
   background: var(--d-border);
   border: 1px solid var(--d-border);
   border-radius: var(--d-radius-lg);
+  /* clip, not hidden: hidden makes a scroll container, and a view() timeline
+     inside one attaches to a frame that never scrolls, so it never animates. */
   overflow: hidden;
+  overflow: clip;
 }
 
 .stats:first-child {
@@ -2493,8 +2598,15 @@
 }
 
 .statIcon {
+  /* Sits inside the dt, whose line box is set at display size, so it has to
+     opt out of that line height or it floats half a line above the value. */
+  display: flex;
+  /* The svg is display:block from the reset, so a block wrapper parks it on
+     the left edge while the numeral below centers. Flex puts both on one axis. */
+  justify-content: center;
+  line-height: 0;
   color: var(--brand-ink);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.7rem;
 }
 
 /* Grows more slowly than it did, so a two word value such as "Same day" still
@@ -2670,24 +2782,6 @@
   );
 }
 
-/* A hairline rule with a brand-colored leader, used under section heads that
-   sit left rather than centered. */
-.ruled {
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--d-border);
-  position: relative;
-}
-
-.ruled::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -1px;
-  width: 3.5rem;
-  height: 2px;
-  background: var(--brand);
-}
-
 /* --- Interior page header ------------------------------------------------- */
 .pageHead {
   position: relative;
@@ -2722,7 +2816,9 @@
 .crumbs a {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
+  /* A 44px target that still lays out at 28px, so the trail stays compact. */
+  min-height: 44px;
+  margin-block: -8px;
   text-decoration: none;
   font-weight: 600;
 }
@@ -2858,8 +2954,8 @@
 }
 
 .stepBtn {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 10px;
   border: 1px solid var(--d-border);
   background: var(--d-surface);
@@ -3080,7 +3176,7 @@
   font-size: clamp(1.75rem, 1.1rem + 2.6vw, 3.5rem);
   line-height: 1.12;
   text-wrap: balance;
-  max-width: 24ch;
+  max-width: 30ch;
   hanging-punctuation: first;
 }
 
@@ -3195,50 +3291,47 @@
 }
 
 /* Anyone who has asked their system to stop moving things gets the same
-   phrases as a static wrapped row. They are short enough to read that way,
-   which is why they are allowed to be short. */
+   phrases standing still, in one row that scrolls sideways if it is wider
+   than the screen. It used to wrap, which left a separator dangling at the
+   end of a line and one phrase alone on the next, and on a phone it turned
+   into a tall bulleted list that read as a feature list rather than a band.
+   The scrollbar is hidden but the row still scrolls by touch, trackpad and
+   wheel, and the right edge fades so a clipped phrase looks continued rather
+   than cut. */
 @media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+  }
+
+  .marquee::-webkit-scrollbar {
+    display: none;
+  }
+
   .marqueeTrack {
     animation: none;
-    width: 100%;
+    min-width: 100%;
   }
 
   .marqueeTrack > [aria-hidden='true'] {
     display: none;
   }
 
+  /* Auto margins center the row when it fits and fall back to the start
+     edge when it does not, so the first phrase is never scrolled off. */
   .marqueeRun {
-    flex-wrap: wrap;
-    gap: 0.5rem 2.5rem;
-    justify-content: center;
+    margin-inline: auto;
     padding-inline: var(--d-gutter);
   }
 
-  /* A separator after the last phrase separates it from nothing, and once the
-     row wraps it hangs at the end of a line on its own. */
+  /* Separators go between phrases only. The animated loop needs the trailing
+     one to space the two copies; a still row does not. */
   .marqueeItem:last-child::after {
     display: none;
-  }
-}
-
-/* On a phone the static fallback wraps to one phrase a line, so it reads as a
-   list and a dot in front of each one says so; a dot trailing each one does
-   not. */
-@media (prefers-reduced-motion: reduce) and (max-width: 599px) {
-  .marqueeRun {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.4rem;
-  }
-
-  .marqueeItem {
-    flex-direction: row-reverse;
-    gap: 0.75rem;
-    white-space: normal;
-  }
-
-  .marqueeItem:last-child::after {
-    display: block;
   }
 }
 
@@ -3655,7 +3748,6 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  min-height: 60svh;
   padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
 }
 
@@ -3676,6 +3768,7 @@
 .vTrackLead {
   flex: none;
   width: min(24rem, 72vw);
+  scroll-snap-align: start;
 }
 
 .vTrackTitle {
@@ -3713,14 +3806,52 @@
 }
 
 /* Without support for scroll timelines the track is simply a row that
-   scrolls with a finger or a trackpad, which is a perfectly good gallery. */
+   scrolls with a finger or a trackpad, which is a perfectly good gallery.
+ *
+ * The lead snaps to the start, padded by exactly the track's own inset. With
+ * only the photographs as snap points the browser snapped the first one to
+ * the center on load, which scrolled the row about 150px before anybody
+ * touched it and put "The spaces" at the window's edge instead of the
+ * page's. */
 .vTrackSticky {
   overflow-x: auto;
   scroll-snap-type: x proximity;
+  scroll-padding-inline: max(
+      var(--d-gutter),
+      calc((100vw - var(--d-wide)) / 2 + var(--d-gutter))
+    )
+    var(--d-gutter);
 }
 
 .vTrackItem {
   scroll-snap-align: center;
+}
+
+/* On a phone the lead card beside the row left one sliver of the first
+   photograph showing and a tall dark band under three lines of type. The
+   heading takes its own row across the top instead, and the photographs run
+   underneath it at the width of the screen. Two rows in column flow: the
+   lead sits in the first, every figure in the second. */
+@media (max-width: 59.99rem) {
+  .vTrack {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-auto-flow: column;
+    grid-auto-columns: min(34rem, 78vw);
+    align-items: start;
+    column-gap: 1rem;
+    row-gap: 1.75rem;
+  }
+
+  .vTrackLead {
+    grid-row: 1;
+    width: min(30rem, calc(100vw - 2 * var(--d-gutter)));
+  }
+
+  .vTrackItem {
+    grid-row: 2;
+    width: auto;
+  }
 }
 
 /* --- Seasons. Radio inputs and :has(), no script. ------------------------ */
@@ -3738,9 +3869,24 @@
 
 .seasonTabs {
   display: flex;
-  flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1.75rem;
+}
+
+/* Four pills on one row at phone width. Wrapped, "Winter" sat alone on a
+   second line, which reads as the odd one out rather than one of four. */
+@media (max-width: 30rem) {
+  .seasonTabs {
+    gap: 0.375rem;
+  }
+
+  .seasonTabs label {
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+    padding-inline: 0.5rem;
+    font-size: 0.875rem;
+  }
 }
 
 .seasonTabs label {
@@ -3790,10 +3936,19 @@
   left: 0;
   right: 0;
   bottom: 0;
-  padding: clamp(1.25rem, 1rem + 2vw, 2.25rem);
-  background: linear-gradient(to top, rgb(10 12 12 / 0.8), rgb(10 12 12 / 0));
+  padding: clamp(2.5rem, 2rem + 3vw, 4rem) clamp(1.25rem, 1rem + 2vw, 2.25rem)
+    clamp(1.25rem, 1rem + 2vw, 2.25rem);
+  /* Deeper and taller than it was. Over a snow field or a bright summer sky
+     the old fade was nearly clear by the time it reached the line of type. */
+  background: linear-gradient(
+    to top,
+    rgb(10 12 12 / 0.86) 0%,
+    rgb(10 12 12 / 0.62) 55%,
+    rgb(10 12 12 / 0) 100%
+  );
   color: #fff;
   font-size: clamp(0.9375rem, 0.9rem + 0.3vw, 1.0625rem);
+  text-shadow: 0 1px 10px rgb(0 0 0 / 0.45);
 }
 
 /* The first pane is visible by default, which is what a browser with no
@@ -3836,10 +3991,13 @@
 }
 
 /* Keyboard focus lands on the hidden radio, so the ring has to be drawn on
-   the label that stands in for it. */
-.seasonInput:focus-visible + .seasonTabs label,
-.seasons:has(.seasonInput:focus-visible) .seasonTabs label:hover {
-  outline: 2px solid var(--brand);
+   the label that stands in for it, matched by position like everything above.
+   The ring sits in --brand-ink so it still shows beside the filled tab. */
+.seasons:has(.seasonInput:nth-of-type(1):focus-visible) .seasonTabs label:nth-of-type(1),
+.seasons:has(.seasonInput:nth-of-type(2):focus-visible) .seasonTabs label:nth-of-type(2),
+.seasons:has(.seasonInput:nth-of-type(3):focus-visible) .seasonTabs label:nth-of-type(3),
+.seasons:has(.seasonInput:nth-of-type(4):focus-visible) .seasonTabs label:nth-of-type(4) {
+  outline: 2px solid var(--brand-ink);
   outline-offset: 2px;
 }
 
@@ -3871,7 +4029,10 @@
 
 .parallax {
   border-radius: var(--d-radius-lg);
+  /* clip, not hidden: hidden makes a scroll container, and a view() timeline
+     inside one attaches to a frame that never scrolls, so it never animates. */
   overflow: hidden;
+  overflow: clip;
   aspect-ratio: 4 / 5;
   background: var(--d-bg-alt);
 }
@@ -3920,7 +4081,6 @@
   display: grid;
   gap: 1.25rem;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-  align-items: start;
 }
 
 .vPackage {
@@ -3959,7 +4119,7 @@
   color: var(--d-faint);
 }
 
-/* --- Enquiry meta -------------------------------------------------------- */
+/* --- Inquiry meta -------------------------------------------------------- */
 .vMeta {
   list-style: none;
   margin: 0 0 1.75rem;
@@ -3974,6 +4134,7 @@
   align-items: start;
   color: rgb(255 255 255 / 0.85);
   font-size: 0.9375rem;
+  overflow-wrap: anywhere;
 }
 
 .vMeta svg {
@@ -4123,279 +4284,6 @@
   }
 }
 
-/* --- The owner's side ----------------------------------------------------
-   Deliberately not styled like the rest of the site. A visitor arriving here
-   should be able to tell in half a second that they have crossed from the
-   shop floor into the back office, because that crossing is the entire point
-   of the page. Denser, squarer, cooler, and no display face anywhere. */
-.admin {
-  --a-line: color-mix(in srgb, var(--brand-deep) 14%, #fff);
-  --a-surface: #fff;
-  --a-ink: #1a1d1c;
-  --a-muted: #5b6360;
-  font-family: var(--d-font);
-  color: var(--a-ink);
-}
-
-.adminNote {
-  max-width: 46rem;
-  margin-bottom: clamp(1.5rem, 1rem + 2vw, 2.5rem);
-  padding: 1rem 1.25rem;
-  border-radius: var(--d-radius);
-  background: color-mix(in srgb, var(--brand) 8%, #fff);
-  border: 1px solid color-mix(in srgb, var(--brand) 28%, #fff);
-  color: var(--a-ink);
-  font-size: 0.9375rem;
-  line-height: 1.55;
-}
-
-.adminGrid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-  align-items: start;
-}
-
-.adminCard {
-  background: var(--a-surface);
-  border: 1px solid var(--a-line);
-  border-radius: var(--d-radius);
-  padding: 1.25rem;
-  min-width: 0;
-}
-
-.adminWide {
-  grid-column: 1 / -1;
-}
-
-.adminCardHead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-  padding-bottom: 0.875rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid var(--a-line);
-}
-
-.adminCardHead h3 {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  /* Body face on purpose. A back office does not have a display font. */
-  font-family: var(--d-font);
-  font-size: 0.9375rem;
-  font-weight: 650;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--a-ink);
-}
-
-.adminCardHead p {
-  font-size: 0.8125rem;
-  color: var(--a-muted);
-}
-
-/* --- Calendar ------------------------------------------------------------ */
-.adminCal {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.3rem;
-}
-
-.adminDay {
-  aspect-ratio: 1;
-  min-height: 2.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  border: 1px solid var(--a-line);
-  background: #fff;
-  color: var(--a-muted);
-  font: inherit;
-  font-size: 0.8125rem;
-  cursor: pointer;
-  transition: transform 0.12s ease;
-}
-
-.adminDay:hover {
-  transform: scale(1.08);
-}
-
-.day_free {
-  background: #fff;
-}
-
-.day_held {
-  background: color-mix(in srgb, var(--brand-accent) 30%, #fff);
-  border-color: color-mix(in srgb, var(--brand-accent) 55%, #fff);
-  color: #3d3320;
-}
-
-.day_booked {
-  background: var(--brand-deep);
-  border-color: var(--brand-deep);
-  color: #fff;
-}
-
-.adminKey {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem 1rem;
-  margin: 1rem 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 0.75rem;
-  color: var(--a-muted);
-}
-
-.adminKey li {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.adminKey span {
-  width: 11px;
-  height: 11px;
-  border-radius: 3px;
-  border: 1px solid var(--a-line);
-}
-
-/* --- Enquiries ----------------------------------------------------------- */
-.adminList {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 0.5rem;
-}
-
-.adminRow {
-  display: grid;
-  gap: 0.3rem;
-  width: 100%;
-  text-align: left;
-  padding: 0.75rem 0.875rem;
-  border-radius: 8px;
-  border: 1px solid var(--a-line);
-  background: #fff;
-  font: inherit;
-  color: var(--a-ink);
-  cursor: pointer;
-}
-
-.adminRow:hover {
-  border-color: color-mix(in srgb, var(--brand) 45%, #fff);
-}
-
-/* A left edge in the brand color, which is how every inbox on earth says
-   "you have not read this one". */
-.adminUnread {
-  border-left: 3px solid var(--brand);
-  background: color-mix(in srgb, var(--brand) 5%, #fff);
-}
-
-.adminRowTop {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  font-size: 0.875rem;
-}
-
-.adminRowTop span {
-  color: var(--a-muted);
-  font-size: 0.8125rem;
-  white-space: nowrap;
-}
-
-.adminRowNote {
-  font-size: 0.8125rem;
-  color: var(--a-muted);
-  line-height: 1.45;
-}
-
-/* --- Editor -------------------------------------------------------------- */
-.adminLabel {
-  display: block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--a-muted);
-  margin-bottom: 0.5rem;
-}
-
-.adminInput {
-  width: 100%;
-  padding: 0.7rem 0.875rem;
-  border-radius: 8px;
-  border: 1px solid var(--a-line);
-  background: #fff;
-  color: var(--a-ink);
-  font: inherit;
-  font-size: 0.9375rem;
-}
-
-.adminInput:focus-visible {
-  outline: 2px solid var(--brand);
-  outline-offset: 1px;
-}
-
-.adminPreview {
-  margin-top: 1.25rem;
-  padding: 1.25rem;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--brand-deep) 5%, #fff);
-  border: 1px dashed var(--a-line);
-}
-
-/* The one place on this page the display face appears, because this is the
-   bit of the shop floor being previewed from the back office. */
-.adminPreviewLine {
-  font-family: var(--d-display);
-  font-weight: var(--d-display-weight);
-  font-variation-settings: var(--d-display-settings);
-  letter-spacing: var(--d-display-tracking);
-  font-size: clamp(1.375rem, 1.1rem + 1.2vw, 2rem);
-  line-height: 1.1;
-  min-height: 1.1em;
-  color: var(--a-ink);
-}
-
-.adminSave {
-  margin-top: 1.25rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  min-height: 2.75rem;
-  padding: 0.7rem 1.35rem;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  background: var(--brand);
-  color: #fff;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.adminSave:hover {
-  background: var(--brand-deep);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .adminDay {
-    transition: none;
-  }
-
-  .adminDay:hover {
-    transform: none;
-  }
-}
-
 /* --- Seating planner -----------------------------------------------------
    The showpiece. Styled to read as a tool rather than as a page: cooler,
    squarer, denser, and no display face except on the numbers. */
@@ -4467,7 +4355,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  min-height: 2.25rem;
+  min-height: 2.75rem;
   padding: 0.4rem 0.85rem;
   border-radius: 999px;
   border: 1px solid var(--d-border);
@@ -4524,7 +4412,7 @@
   align-items: center;
   gap: 0.6rem;
   width: auto;
-  min-height: 2.5rem;
+  min-height: 2.75rem;
   padding: 0.5rem 0.75rem;
   margin-bottom: 0.5rem;
   border-radius: 8px;
@@ -4692,6 +4580,15 @@
   padding: 0;
 }
 
+/* The bin draws at 22px so it does not bury the table, and takes 44px of
+   pointer through an invisible ring around it. */
+.planRemove::before {
+  content: '';
+  position: absolute;
+  inset: -11px;
+  border-radius: 50%;
+}
+
 .planItem:hover .planRemove,
 .planItemActive .planRemove {
   display: grid;
@@ -4854,26 +4751,33 @@
     clamp(3rem, 2rem + 4vw, 5rem);
 }
 
-/* --- Venue enquiry -------------------------------------------------------
+/* --- Venue inquiry -------------------------------------------------------
    The booking flow carries the width; the practical details sit beside it on
    a wide screen and underneath it on a narrow one. */
-.vEnquire {
+.vInquire {
   display: grid;
   gap: clamp(1.5rem, 1rem + 2vw, 3rem);
   align-items: start;
 }
 
 @media (min-width: 64rem) {
-  .vEnquire {
+  .vInquire {
     grid-template-columns: minmax(0, 1fr) minmax(0, 17rem);
   }
 }
 
-.vEnquire > * {
+.vInquire > * {
   min-width: 0;
 }
 
-.vEnquireAside {
+/* The booking card caps its own width and centers itself in whatever it is
+   given, which inset it about 30px from the heading above. In this column it
+   starts where the heading starts. */
+.vInquire > :first-child {
+  margin-inline: 0;
+}
+
+.vInquireAside {
   padding-top: 0.5rem;
 }
 
@@ -5039,7 +4943,7 @@
   height: 2.25rem;
   border-radius: 50%;
   background: color-mix(in srgb, var(--brand) 9%, transparent);
-  color: var(--brand);
+  color: var(--brand-ink);
 }
 
 /* An unnamed review has the source doing the whole job of the attribution, so

@@ -29,10 +29,10 @@ const copperAndComb: DemoConfig = {
   },
 
   hero: {
-    headline: 'Book in thirty seconds. Keep the appointment.',
-    sub: 'Five chairs, no double-booking, and a stylist who actually has time to talk about what you want before they start cutting.',
+    headline: 'We start when we said we would.',
+    sub: 'One client per stylist at a time, and a stylist who actually has time to talk about what you want before they start cutting.',
     image: 'demos/copper-and-comb/hero',
-    ctaLabel: 'Book Online',
+    ctaLabel: 'See Services',
     // Points at the priced service list, which is where someone actually
     // decides. A real salon would send this to its booking system.
     ctaHref: '#services',
@@ -43,7 +43,7 @@ const copperAndComb: DemoConfig = {
       title: 'Cut & style',
       icon: 'scissors',
       body: 'Consultation, shampoo, cut and finish. Ninety minutes for the first visit so we get it right.',
-      price: '$65+',
+      price: 'From $65',
     },
     {
       title: 'Color',
@@ -60,7 +60,7 @@ const copperAndComb: DemoConfig = {
     {
       title: 'Extensions',
       icon: 'comb',
-      body: 'Hand-tied wefts, color-matched and cut in. Consultation required first.',
+      body: 'Hand-tied wefts, color-matched and cut in. Priya does every set herself.',
       price: 'Consultation required',
     },
     {
@@ -78,16 +78,16 @@ const copperAndComb: DemoConfig = {
   ],
 
   stats: [
-    { value: '5', label: 'Chairs, on purpose', icon: 'chair' },
     { value: '2019', label: 'Open since', icon: 'calendarCheck' },
-    { value: '90 min', label: 'First appointment', icon: 'clock' },
-    { value: 'No', label: 'Double booking', icon: 'sparkle' },
+    { value: '4', label: 'Stylists, one client each', icon: 'scissors' },
+    { value: '1,400+', label: 'Regulars on the books', icon: 'heart' },
+    { value: 'Free', label: 'Fringe trims between cuts', icon: 'sparkle' },
   ],
 
   testimonials: [
     {
       quote: 'First salon I have been to that starts when it says it will. I get an hour back every six weeks and my hair has never looked better.',
-      name: 'Priya S.',
+      name: 'Lauren S.',
       detail: 'Client since 2021',
     },
     {
@@ -101,28 +101,29 @@ const copperAndComb: DemoConfig = {
     {
       name: 'Dana Whitfield',
       role: 'Owner · Color specialist',
-      image: 'demos/copper-and-comb/dana',
       bio: 'Opened the shop in 2019 after eleven years behind a chair downtown. Takes the hard corrections nobody else will.',
     },
     {
       name: 'Marcus Reyes',
       role: 'Senior stylist',
-      image: 'demos/copper-and-comb/marcus',
       bio: 'Curly hair, textured cuts, and the fastest clean fade in Parker.',
     },
     {
       name: 'Priya Raman',
       role: 'Stylist · Extensions',
-      image: 'demos/copper-and-comb/priya',
       bio: 'Hand-tied wefts and long-hair cutting. Books out about three weeks.',
     },
     {
       name: 'Jo Bennett',
       role: 'Stylist',
-      image: 'demos/copper-and-comb/jo',
       bio: 'Takes new clients most weeks, and hers is the best first appointment in the shop.',
     },
   ],
+
+  copy: {
+    servicesIntro:
+      'Prices start where they start. Anything that depends on length or condition gets quoted in the chair before we begin.',
+  },
 
   hours: [
     { day: 'Monday', open: 'Closed' },
@@ -134,10 +135,11 @@ const copperAndComb: DemoConfig = {
     { day: 'Sunday', open: 'Closed' },
   ],
 
+  /* No 'station': that source is two photographs joined down the middle,
+     and the seam shows at any size. */
   gallery: [
     'demos/copper-and-comb/interior',
     'demos/copper-and-comb/color-1',
-    'demos/copper-and-comb/station',
     'demos/copper-and-comb/color-2',
     'demos/copper-and-comb/cut',
     'demos/copper-and-comb/detail',
@@ -145,7 +147,7 @@ const copperAndComb: DemoConfig = {
 
   about: {
     heading: 'Five chairs, on purpose.',
-    body: 'Copper & Comb stayed small because the alternative is running late. Every stylist keeps one client at a time, consultations are built into the booking, and if we think what you are asking for will wreck your hair we will say so and offer you something better. Walk-ins welcome when a chair is open, but booking online means it will be.',
+    body: 'Copper & Comb stayed small because the alternative is running late. Every stylist keeps one client at a time, consultations are built into the booking, and if we think what you are asking for will wreck your hair we will say so and offer you something better. Walk-ins welcome when a chair is open. Book online and one will be.',
     image: 'demos/copper-and-comb/about',
   },
 

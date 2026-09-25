@@ -51,6 +51,11 @@ export default function DemoImage({
   className,
   artTone = 'light',
 }: DemoImageProps) {
+  // An empty alt is the caller saying the picture is decoration: the band
+  // behind a line of type, the night version of a hero that is already
+  // described. That holds for a drawing too, so the scene's own sentence is
+  // used only when the caller asked for a description at all.
+  const decorative = alt === '';
   const scene = artName(name);
   if (scene && hasScene(scene)) {
     const drawn = sceneAlt(scene);
@@ -59,7 +64,7 @@ export default function DemoImage({
         name={scene}
         // The scene says what is in it; the caller says what it stands for.
         // Neither alone is a description, and "photo 3" is worse than both.
-        alt={drawn ? `Illustration: ${drawn}.` : alt}
+        alt={!decorative && drawn ? `Illustration: ${drawn}.` : alt}
         className={[
           styles.imgFill,
           styles.artFill,
@@ -91,8 +96,9 @@ export default function DemoImage({
   return (
     <div
       className={[styles.placeholder, className].filter(Boolean).join(' ')}
-      role="img"
-      aria-label={alt}
+      {...(decorative
+        ? { 'aria-hidden': true }
+        : { role: 'img', 'aria-label': alt })}
       style={placeholderStyle(name ?? alt)}
     >
       <div className={styles.placeholderPattern} aria-hidden="true" />

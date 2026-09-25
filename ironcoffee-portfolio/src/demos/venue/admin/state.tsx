@@ -2,7 +2,7 @@
  * Everything the owner dashboard knows, in one reducer.
  *
  * The five views share a single store because that sharing is the whole
- * argument the screen exists to make. Holding a date from an enquiry has to
+ * argument the screen exists to make. Holding a date from an inquiry has to
  * land in the calendar and move the revenue number, otherwise this is five
  * mockups standing next to each other rather than one piece of software.
  *
@@ -14,22 +14,27 @@
 import type { Dispatch } from 'react';
 import {
   CONTENT,
-  ENQUIRIES,
+  INQUIRIES,
   PACKAGES,
+  SEASON_YEAR,
   YEAR,
+  packageBlock,
   packageById,
   pretty,
   type ContentBlock,
   type DayRecord,
-  type Enquiry,
+  type Inquiry,
 } from '../data';
 
-export type ViewId = 'overview' | 'calendar' | 'enquiries' | 'bookings' | 'pages';
+export type ViewId = 'overview' | 'calendar' | 'inquiries' | 'bookings' | 'pages';
 export type SortColumn = 'date' | 'couple' | 'guests' | 'package' | 'value';
 export type SortDir = 'asc' | 'desc';
 
-/** The sample owns one fixed year of dates, so this is a constant, not a clock read. */
-export const CAL_YEAR = 2027;
+/**
+ * The sample owns one fixed year of dates, so this is a constant, not a clock
+ * read. Taken from the data so the year is written down in exactly one place.
+ */
+export const CAL_YEAR = SEASON_YEAR;
 
 /** Every date in the year, in order. Fixed at module load. */
 export const DATES: string[] = YEAR.map((d) => d.date);
@@ -46,10 +51,10 @@ export interface AdminState {
   month: number;
   selectedDate: string | null;
   days: Record<string, DayRecord>;
-  enquiries: Enquiry[];
-  /** Replies typed in this session, keyed by enquiry id. */
+  inquiries: Inquiry[];
+  /** Replies typed in this session, keyed by inquiry id. */
   replies: Record<string, string>;
-  openEnquiry: string | null;
+  openInquiry: string | null;
   openBooking: string | null;
   sort: { column: SortColumn; dir: SortDir };
   /** What the public page currently shows. */
@@ -69,8 +74,8 @@ export type Action =
   | { type: 'confirm'; date: string; couple: string; guests: number; packageId: string }
   | { type: 'free'; date: string }
   | { type: 'closeDay'; date: string }
-  | { type: 'openEnquiry'; id: string | null }
-  | { type: 'enquiryState'; id: string; state: Enquiry['state'] }
+  | { type: 'openInquiry'; id: string | null }
+  | { type: 'inquiryState'; id: string; state: Inquiry['state'] }
   | { type: 'reply'; id: string; text: string }
   | { type: 'openBooking'; date: string | null }
   | { type: 'sort'; column: SortColumn }
@@ -103,11 +108,16 @@ export function monthCells(month: number): (string | null)[] {
   return cells;
 }
 
-/** Smallest package that covers the headcount, largest if none of them do. */
-export function suggestPackage(guests: number): string {
+/**
+ * Smallest package that covers the headcount and runs on the date, largest if
+ * none of them do. Without a date, every package is a candidate.
+ */
+export function suggestPackage(guests: number, date = ''): string {
   const byCapacity = [...PACKAGES].sort((a, b) => a.capacity - b.capacity);
-  const fits = byCapacity.find((p) => p.capacity >= guests);
-  return (fits ?? byCapacity[byCapacity.length - 1]).id;
+  const offered = byCapacity.filter((p) => !packageBlock(p, date));
+  const pool = offered.length ? offered : byCapacity;
+  const fits = pool.find((p) => p.capacity >= guests);
+  return (fits ?? pool[pool.length - 1]).id;
 }
 
 export const valueOf = (day: DayRecord) => packageById(day.packageId)?.price ?? 0;
@@ -123,7 +133,7 @@ export const heldDays = (days: Record<string, DayRecord>) =>
 export interface Summary {
   confirmed: number;
   held: number;
-  newEnquiries: number;
+  newInquiries: number;
   revenue: number;
   /** What the holds would be worth if every one of them came through. */
   heldValue: number;
@@ -135,7 +145,7 @@ export function summarize(state: AdminState): Summary {
   return {
     confirmed: confirmed.length,
     held: held.length,
-    newEnquiries: state.enquiries.filter((e) => e.state === 'new').length,
+    newInquiries: state.inquiries.filter((e) => e.state === 'new').length,
     revenue: confirmed.reduce((sum, d) => sum + valueOf(d), 0),
     heldValue: held.reduce((sum, d) => sum + valueOf(d), 0),
   };
@@ -179,9 +189,9 @@ export const initialState: AdminState = {
   month: 4,
   selectedDate: null,
   days: Object.fromEntries(YEAR.map((d) => [d.date, d])),
-  enquiries: ENQUIRIES,
+  inquiries: INQUIRIES,
   replies: {},
-  openEnquiry: null,
+  openInquiry: null,
   openBooking: null,
   sort: { column: 'date', dir: 'asc' },
   content: CONTENT,
@@ -204,7 +214,7 @@ export function reducer(state: AdminState, action: Action): AdminState {
 
     case 'month':
       // Clamped, not wrapped. The sample holds one year, and a calendar that
-      // pages into an empty 2028 is a worse answer than a disabled arrow.
+      // pages into an empty following year is a worse answer than a disabled arrow.
       return { ...state, month: Math.min(11, Math.max(0, action.month)) };
 
     case 'selectDay':
@@ -213,6 +223,15 @@ export function reducer(state: AdminState, action: Action): AdminState {
     case 'hold': {
       const prev = state.days[action.date];
       if (!prev) return state;
+      // A free date can be held, and a confirmed one can be moved back to a
+      // hold. A closed date is not on offer at all, so holding it would put a
+      // booking on a day the public calendar says does not exist.
+      if (prev.status === 'closed') {
+        return { ...state, notice: `${pretty(action.date)} is not offered. Open it on the calendar first.` };
+      }
+      if (prev.status === 'held') {
+        return { ...state, notice: `${pretty(action.date)} is already on hold.` };
+      }
       const guests = action.guests ?? prev.guests;
       const day: DayRecord = {
         date: action.date,
@@ -220,12 +239,14 @@ export function reducer(state: AdminState, action: Action): AdminState {
         couple: action.couple ?? prev.couple,
         guests,
         packageId:
-          action.packageId ?? prev.packageId ?? (guests ? suggestPackage(guests) : undefined),
+          action.packageId ??
+          prev.packageId ??
+          (guests ? suggestPackage(guests, action.date) : undefined),
       };
       return {
         ...state,
         days: { ...state.days, [action.date]: day },
-        // A hold placed from the enquiry list moves the calendar with it, so
+        // A hold placed from the inquiry list moves the calendar with it, so
         // the next click on Calendar lands on the date that just changed.
         month: monthOf(action.date),
         selectedDate: action.date,
@@ -256,7 +277,7 @@ export function reducer(state: AdminState, action: Action): AdminState {
         ...state,
         days: { ...state.days, [action.date]: { date: action.date, status: 'free' } },
         selectedDate: action.date,
-        notice: `${pretty(action.date)} is open for enquiries.`,
+        notice: `${pretty(action.date)} is open for inquiries.`,
       };
     }
 
@@ -270,24 +291,24 @@ export function reducer(state: AdminState, action: Action): AdminState {
       };
     }
 
-    case 'openEnquiry': {
-      if (action.id === null) return { ...state, openEnquiry: null };
+    case 'openInquiry': {
+      if (action.id === null) return { ...state, openInquiry: null };
       // Opening one counts as reading it. A badge that only goes down when you
       // press a separate button is a badge nobody trusts.
       return {
         ...state,
-        openEnquiry: action.id,
-        enquiries: state.enquiries.map((e) =>
+        openInquiry: action.id,
+        inquiries: state.inquiries.map((e) =>
           e.id === action.id && e.state === 'new' ? { ...e, state: 'open' } : e
         ),
       };
     }
 
-    case 'enquiryState': {
-      const who = state.enquiries.find((e) => e.id === action.id)?.name ?? 'Enquiry';
+    case 'inquiryState': {
+      const who = state.inquiries.find((e) => e.id === action.id)?.name ?? 'Inquiry';
       return {
         ...state,
-        enquiries: state.enquiries.map((e) =>
+        inquiries: state.inquiries.map((e) =>
           e.id === action.id ? { ...e, state: action.state } : e
         ),
         notice:
@@ -298,7 +319,7 @@ export function reducer(state: AdminState, action: Action): AdminState {
     case 'reply':
       return {
         ...state,
-        enquiries: state.enquiries.map((e) =>
+        inquiries: state.inquiries.map((e) =>
           e.id === action.id ? { ...e, state: 'replied' } : e
         ),
         replies: { ...state.replies, [action.id]: action.text },

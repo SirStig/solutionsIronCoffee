@@ -15,7 +15,13 @@ const ridgelineSmokehouse: DemoConfig = {
   tier: 'site',
 
   pages: [
-    { slug: 'order', label: 'Order', kind: 'order' },
+    {
+      slug: 'order',
+      label: 'Order',
+      kind: 'order',
+      intro:
+        'Choose what you want, pick a time, and it will be boxed and waiting. No app, no third party taking a cut.',
+    },
     {
       slug: 'catering',
       label: 'Catering',
@@ -27,14 +33,14 @@ const ridgelineSmokehouse: DemoConfig = {
       slug: 'story',
       label: 'Our story',
       kind: 'about',
-      title: 'Two brothers and a five-hundred gallon offset',
+      title: 'Two brothers and a 500-gallon offset',
     },
     { slug: 'visit', label: 'Visit', kind: 'contact', title: 'Come and eat' },
   ],
 
   business: {
     name: 'Ridgeline Smokehouse',
-    tagline: 'Slow-smoked brisket and ribs, twelve hours a day, every day.',
+    tagline: 'Brisket and ribs, smoked twelve hours over Colorado oak.',
     city: 'Elizabeth',
     state: 'CO',
     address: '418 Main Street',
@@ -66,7 +72,7 @@ const ridgelineSmokehouse: DemoConfig = {
     {
       title: 'Catering by the pound',
       icon: 'truck',
-      body: 'Brisket, pulled pork, ribs and sides for crews, weddings and graduation parties. Two days notice is plenty.',
+      body: 'Brisket, pulled pork, ribs and sides for crews, weddings and graduation parties. Two days’ notice is plenty.',
       price: 'From $18/lb',
     },
     {
@@ -108,11 +114,11 @@ const ridgelineSmokehouse: DemoConfig = {
       section: 'Plates',
       items: [
         {
-          name: 'One meat plate',
+          name: 'One-meat plate',
           desc: 'Your pick, two sides, white bread and pickles.',
           price: '$17',
         },
-        { name: 'Two meat plate', desc: 'Two picks, two sides.', price: '$23' },
+        { name: 'Two-meat plate', desc: 'Two picks, two sides.', price: '$23' },
         {
           name: 'The Ridgeline',
           desc: 'Brisket, ribs, sausage, three sides. Feeds two if you are polite about it.',
@@ -123,7 +129,7 @@ const ridgelineSmokehouse: DemoConfig = {
     {
       section: 'Sides',
       items: [
-        { name: 'Green chili mac', price: '$6' },
+        { name: 'Green chile mac', price: '$6' },
         { name: 'Vinegar slaw', price: '$4' },
         { name: 'Pit beans', desc: 'Cooked under the brisket.', price: '$5' },
         { name: 'Cornbread', desc: 'Honey butter.', price: '$4' },
@@ -142,20 +148,20 @@ const ridgelineSmokehouse: DemoConfig = {
 
   stats: [
     { value: '2014', label: 'Smoking since', icon: 'flame' },
-    { value: '12 hrs', label: 'On every brisket', icon: 'clock' },
-    { value: 'Oak', label: 'Colorado, never gas', icon: 'smoker' },
-    { value: 'One', label: 'Location, always', icon: 'pin' },
+    { value: '12 hrs', label: 'Per brisket', icon: 'clock' },
+    { value: '200 lb', label: 'Brisket a week', icon: 'smoker' },
+    { value: '3', label: 'House sauces', icon: 'bottle' },
   ],
 
   testimonials: [
     {
       quote: 'Drove out from Castle Rock on a friend saying it was worth it. It was worth it. The bark on that brisket is something else.',
-      name: 'Marcus T.',
+      name: 'Grant L.',
       detail: 'Castle Rock',
     },
     {
-      quote: 'Ordered forty pounds for my daughter\u2019s graduation. It turned up hot, on time, and there was nothing left by four.',
-      name: 'Dana R.',
+      quote: 'Ordered forty pounds for my daughter\u2019s graduation. It showed up hot, on time, and there was nothing left by four.',
+      name: 'Kelly P.',
       detail: 'Catering, June',
     },
     {
@@ -164,6 +170,14 @@ const ridgelineSmokehouse: DemoConfig = {
       detail: 'Elizabeth',
     },
   ],
+
+  copy: {
+    menuIntro: 'Everything is made here. Call ahead and it will be boxed and waiting.',
+  },
+
+  // Fictional business, so an illustrative rate. A real one would confirm
+  // its own before this printed on an order summary.
+  order: { taxRate: 0.0781 },
 
   hours: [
     { day: 'Monday', open: 'Closed' },
@@ -185,7 +199,7 @@ const ridgelineSmokehouse: DemoConfig = {
   ],
 
   about: {
-    heading: 'Two brothers and a five-hundred gallon offset.',
+    heading: 'Two brothers and a 500-gallon offset.',
     body: 'We started on a trailer at the Elizabeth farmers market in 2014 and moved into the Main Street building three years later. The pit has not gone cold since. Everything is smoked here, overnight, over Colorado oak. No gas assist, no holding cabinet, no second location. When it sells out we close, and we would rather do that than serve you something we would not eat.',
     image: 'demos/ridgeline-smokehouse/about',
   },

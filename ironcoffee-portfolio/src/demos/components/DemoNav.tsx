@@ -1,3 +1,4 @@
+import { useEffect, useRef, type KeyboardEvent, type ReactNode } from 'react';
 import { Menu, Phone } from 'lucide-react';
 import type { DemoConfig } from '../types';
 import { telHref } from '../index';
@@ -26,14 +27,9 @@ export function initials(name: string): string {
 }
 
 /**
- * Nav links for a page of a multi-page demo.
- *
- * On the home page the extra pages come first and the in-page anchors follow;
- * on an interior page the anchors would point at sections that are not there,
- * so only real page links are offered.
- */
-/**
  * Nav links for a demo's home page.
+ *
+ * On a one-page demo these are the in-page anchors the template passes in.
  *
  * A multi-page site navigates to pages, not to anchors. Without this the
  * interior pages were built, sitemapped and completely unreachable: the nav
@@ -56,6 +52,12 @@ export function homeNavLinks(
   }));
 }
 
+/**
+ * Nav links for an interior page of a multi-page demo.
+ *
+ * The home page's anchors would point at sections that are not on this page,
+ * so only real page links are offered, with the current page left out.
+ */
 export function pageNavLinks(
   config: DemoConfig,
   currentPageSlug?: string
@@ -106,11 +108,32 @@ export default function DemoNav({
   // An interior page has no #menu or #quote to scroll to, so a bare anchor has
   // to become a link back to the home page that does.
   const brandHref = subPage ? base : '#top';
-  const ctaHref = hero.ctaHref.startsWith('#')
+  const heroCtaHref = hero.ctaHref.startsWith('#')
     ? subPage
       ? `${base}${hero.ctaHref}`
       : hero.ctaHref
     : hero.ctaHref;
+
+  // A text link that says what the button beside it says, or goes where it
+  // goes, reads as the same thing twice ("Quote" next to "Get a Quote"). The
+  // row of links only shows at widths where the button shows too, so it drops
+  // the duplicate. When the words match but the link is a page of its own
+  // (a multi-page site's "Get a quote" page), the button takes over that
+  // page's address so the page stays reachable. The small-screen menu keeps
+  // every link, because below 900px the button is hidden.
+  const sameWords = (label: string) =>
+    label.trim().toLowerCase() === hero.ctaLabel.trim().toLowerCase();
+  const namesake = links.find(
+    (link) => sameWords(link.label) && !link.href.startsWith('#')
+  );
+  const ctaHref = namesake?.href ?? heroCtaHref;
+  const rowLinks = links.filter(
+    (link) =>
+      link.href !== ctaHref &&
+      link.href !== heroCtaHref &&
+      link.href !== hero.ctaHref &&
+      !sameWords(link.label)
+  );
 
   return (
     <header
@@ -152,7 +175,7 @@ export default function DemoNav({
         </a>
 
         <nav className={styles.navLinks} aria-label="Sections">
-          {links.map((link) => (
+          {rowLinks.map((link) => (
             <a key={link.href} href={link.href}>
               {link.label}
             </a>
@@ -167,36 +190,30 @@ export default function DemoNav({
         )}
 
         {(links.length > 0 || business.phone) && (
-          <details className={styles.navMenu}>
-            <summary className={styles.navMenuButton}>
-              <Menu size={18} aria-hidden="true" />
-              Menu
-            </summary>
-            <div className={styles.navMenuPanel}>
-              {/* Picking an anchor scrolls the page but leaves a <details>
-                  open over it, so a click anywhere in the list closes it. */}
-              <ul
-                className={styles.navMenuList}
-                onClick={(event) =>
-                  event.currentTarget.closest('details')?.removeAttribute('open')
-                }
-              >
-                {links.map((link) => (
-                  <li key={link.href}>
-                    <a href={link.href}>{link.label}</a>
-                  </li>
-                ))}
-                {business.phone && (
-                  <li>
-                    <a href={telHref(business.phone)}>
-                      <Phone size={17} aria-hidden="true" />
-                      {business.phone}
-                    </a>
-                  </li>
-                )}
-              </ul>
-            </div>
-          </details>
+          <MenuDisclosure>
+            {/* Picking an anchor scrolls the page but leaves a <details>
+                open over it, so a click anywhere in the list closes it. */}
+            <ul
+              className={styles.navMenuList}
+              onClick={(event) =>
+                event.currentTarget.closest('details')?.removeAttribute('open')
+              }
+            >
+              {links.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href}>{link.label}</a>
+                </li>
+              ))}
+              {business.phone && (
+                <li>
+                  <a href={telHref(business.phone)}>
+                    <Phone size={17} aria-hidden="true" />
+                    {business.phone}
+                  </a>
+                </li>
+              )}
+            </ul>
+          </MenuDisclosure>
         )}
 
         <Cta href={ctaHref} className={styles.navCta}>
@@ -204,5 +221,46 @@ export default function DemoNav({
         </Cta>
       </div>
     </header>
+  );
+}
+
+/**
+ * The small-screen menu: a <details>, so it opens without JavaScript, plus the
+ * two things a menu is expected to do that a bare <details> does not.
+ *
+ * Escape closes it and puts focus back on the button, so a keyboard user is
+ * not left inside a panel they cannot see the edge of. A tap anywhere outside
+ * closes it too, the way every other menu on a phone behaves.
+ */
+function MenuDisclosure({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    const onPointerDown = (event: PointerEvent) => {
+      const details = ref.current;
+      if (!details?.open) return;
+      if (event.target instanceof Node && details.contains(event.target)) return;
+      details.open = false;
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => document.removeEventListener('pointerdown', onPointerDown);
+  }, []);
+
+  const onKeyDown = (event: KeyboardEvent<HTMLDetailsElement>) => {
+    const details = event.currentTarget;
+    if (event.key !== 'Escape' || !details.open) return;
+    event.preventDefault();
+    details.open = false;
+    details.querySelector('summary')?.focus();
+  };
+
+  return (
+    <details ref={ref} className={styles.navMenu} onKeyDown={onKeyDown}>
+      <summary className={styles.navMenuButton}>
+        <Menu size={18} aria-hidden="true" />
+        Menu
+      </summary>
+      <div className={styles.navMenuPanel}>{children}</div>
+    </details>
   );
 }

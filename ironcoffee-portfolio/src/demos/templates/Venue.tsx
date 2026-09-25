@@ -10,7 +10,7 @@ import Torch from '../components/Torch';
 import AvailabilityBooking from '../venue/public/AvailabilityBooking';
 import Lightbox from '../venue/public/Lightbox';
 import { Bleed, Cta, Section, SectionHead } from '../components/primitives';
-import { directionsHref, telHref } from '../index';
+import { demoBase, directionsHref, telHref } from '../index';
 import { type NavLink } from '../components/DemoNav';
 import styles from '../Demo.module.css';
 
@@ -32,12 +32,16 @@ import styles from '../Demo.module.css';
  * demonstration of anything.
  */
 export default function VenueTemplate({ config }: { config: DemoConfig }) {
+  const venue = config.venue ?? {};
+  const seasons = venue.seasons ?? [];
+  const spaceLabels = venue.spaceLabels ?? [];
+
   const anchors: NavLink[] = [
-    { label: 'Barn', href: '#spaces' },
+    { label: venue.navSpaces ?? 'Spaces', href: '#spaces' },
     { label: 'Plan', href: '#plan' },
-    { label: 'Seasons', href: '#seasons' },
-    { label: 'Prices', href: '#packages' },
-    { label: 'Visit', href: '#enquire' },
+    ...(seasons.length ? [{ label: 'Seasons', href: '#seasons' }] : []),
+    ...(config.products?.length ? [{ label: 'Prices', href: '#packages' }] : []),
+    { label: 'Visit', href: '#inquire' },
   ];
   /* Anchors *and* the owner view, rather than one or the other.
    *
@@ -49,12 +53,21 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
     ...anchors,
     ...(config.pages ?? []).map((page) => ({
       label: page.label,
-      href: `/templates/${config.slug}/${page.slug}`,
+      href: `${demoBase(config)}/${page.slug}`,
     })),
   ];
 
-  const [g0, g1, g2, g3, g4, g5] = config.gallery;
+  const [g0, g1, g2, g3, g4] = config.gallery;
   const headline = config.hero.headline.split(' / ');
+  /* The same place after dark. Same framing, same camera position, same trees,
+     so the torch reveals a moment rather than a different photograph. A second
+     shot from somewhere else on the property reads as a mistake. */
+  const night = venue.nightImage ?? `demos/${config.slug}/hero-night`;
+  /** A distinct picture per slot, cycling, when a config names one that is not there. */
+  const pick = (index: number, fallback: number) =>
+    config.gallery[index] ??
+    config.gallery[fallback % Math.max(1, config.gallery.length)] ??
+    config.hero.image;
 
   return (
     <DemoShell config={config} links={links} navVariant="centered">
@@ -80,7 +93,7 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
             />
           </div>
           <div className={`${styles.vHeroMedia} ${styles.torchNight}`}>
-            <DemoImage name={NIGHT} alt="" sizes="100vw" />
+            <DemoImage name={night} alt="" sizes="100vw" />
           </div>
         </Torch>
         <span className={styles.torchHint} aria-hidden="true">
@@ -123,7 +136,9 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
       <Section>
         <Rise>
           <div className={styles.vStatementRow}>
-            <p className={styles.vStatementLabel}>Why one at a time</p>
+            {venue.statementLabel && (
+              <p className={styles.vStatementLabel}>{venue.statementLabel}</p>
+            )}
             <p className={styles.vStatement}>{config.about.body}</p>
           </div>
         </Rise>
@@ -140,19 +155,26 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
                 <span className={styles.eyebrowRule} aria-hidden="true" />
                 The spaces
               </span>
-              <h2 className={styles.vTrackTitle}>Four rooms and a meadow.</h2>
-              <p className={styles.vTrackSub}>
-                Keep scrolling. The page moves sideways.
-              </p>
+              <h2 className={styles.vTrackTitle}>
+                {venue.spacesTitle ?? 'Take a look around.'}
+              </h2>
+              {/* True whether the track slides sideways, stacks on a phone or
+                  sits still under reduced motion, which "keep scrolling, it
+                  moves sideways" was not. */}
+              <p className={styles.vTrackSub}>In the order you would walk through them.</p>
             </div>
             {[g0, g1, g2, g3, g4].filter(Boolean).map((image, i) => (
               <figure key={image} className={styles.vTrackItem}>
                 <DemoImage
                   name={image}
-                  alt={`${config.business.name}, ${SPACE_LABELS[i]}`}
+                  alt={
+                    spaceLabels[i]
+                      ? `${config.business.name}, ${spaceLabels[i]}`
+                      : config.business.name
+                  }
                   sizes="60vw"
                 />
-                <figcaption>{SPACE_LABELS[i]}</figcaption>
+                {spaceLabels[i] && <figcaption>{spaceLabels[i]}</figcaption>}
               </figure>
             ))}
           </div>
@@ -163,64 +185,68 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
           Placed here, immediately after the pinned gallery, because a visitor
           who has come this far is convinced the page looks good and is not yet
           convinced anybody built anything. */}
-      <Section id="plan">
+      {/* Tones alternate from here down: alt, plain, alt, plain. Two alt
+          sections back to back read as one long band with a seam in it. */}
+      <Section id="plan" tone="alt">
         <SectionHead
           eyebrow="Try it"
           title="Will a hundred and twenty people fit?"
           sub="Drag the tables around. Every venue in the country answers this question with a phone call."
         />
-        <SeatingPlanner />
+        <SeatingPlanner storageKey={`${config.slug}-plan`} />
       </Section>
 
       {/* --- The photographs, openable. ------------------------------------ */}
-      <Section tone="alt">
+      <Section>
         <SectionHead
           eyebrow="Photographs"
           title="The place, unstaged"
           sub="Taken on ordinary days rather than on the one day everything was tidy."
         />
-        <Lightbox images={config.gallery} label="Wren Hollow photographs" />
+        <Lightbox images={config.gallery} label={`${config.business.name} photographs`} />
       </Section>
 
       {/* --- Seasons. Radio inputs and :has(), no script. ------------------ */}
-      <Section id="seasons" tone="alt">
-        <SectionHead
-          eyebrow="All year"
-          title="The same place, four times over"
-          sub="Pick one."
-        />
-        <div className={styles.seasons}>
-          {SEASONS.map((season, i) => (
-            <input
-              key={season.id}
-              type="radio"
-              name="season"
-              id={`season-${season.id}`}
-              className={styles.seasonInput}
-              defaultChecked={i === 0}
-            />
-          ))}
-          <div className={styles.seasonTabs} role="presentation">
-            {SEASONS.map((season) => (
-              <label key={season.id} htmlFor={`season-${season.id}`}>
-                {season.label}
-              </label>
+      {seasons.length ? (
+        <Section id="seasons" tone="alt">
+          <SectionHead
+            eyebrow="All year"
+            title="The same place, four times over"
+            sub="Pick one."
+          />
+          <div className={styles.seasons}>
+            {seasons.map((season, i) => (
+              <input
+                key={season.id}
+                type="radio"
+                name="season"
+                id={`season-${season.id}`}
+                className={styles.seasonInput}
+                defaultChecked={i === 0}
+              />
             ))}
+            <div className={styles.seasonTabs} role="presentation">
+              {seasons.map((season) => (
+                <label key={season.id} htmlFor={`season-${season.id}`}>
+                  {season.label}
+                </label>
+              ))}
+            </div>
+            <div className={styles.seasonStage}>
+              {seasons.map((season, i) => (
+                <figure key={season.id} className={styles.seasonPane}>
+                  <DemoImage
+                    name={pick(season.image, i)}
+                    alt={`${config.business.name} in ${season.label.toLowerCase()}`}
+                    sizes="(min-width: 60rem) 66vw, 100vw"
+                  />
+                  <figcaption>{season.note}</figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
-          <div className={styles.seasonStage}>
-            {SEASONS.map((season) => (
-              <figure key={season.id} className={styles.seasonPane}>
-                <DemoImage
-                  name={config.gallery[season.image] ?? g0}
-                  alt={`${config.business.name} in ${season.label.toLowerCase()}`}
-                  sizes="(min-width: 60rem) 66vw, 100vw"
-                />
-                <figcaption>{season.note}</figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      </Section>
+        </Section>
+      ) : null}
 
       {/* --- Alternating parallax features. ------------------------------- */}
       <Section>
@@ -234,12 +260,12 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
             >
               <Parallax className={styles.vFeatureMedia}>
                 <DemoImage
-                  name={config.gallery[(i + 1) % config.gallery.length] ?? g0}
+                  name={pick((i + 1) % Math.max(1, config.gallery.length), i + 1)}
                   alt=""
                   sizes="(min-width: 60rem) 50vw, 100vw"
                 />
               </Parallax>
-              <Rise className={styles.vFeatureCopy}>
+              <Rise>
                 <span className={styles.vFeatureIndex}>
                   {String(i + 1).padStart(2, '0')}
                 </span>
@@ -261,7 +287,7 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
       ) : (
         <StatementBand
           motif={config.brand.motif}
-          image={g5 ?? g0}
+          image={pick(5, 5)}
           line={config.business.tagline}
           business={config.business.name}
           kicker={`${config.business.city}, ${config.business.state}`}
@@ -273,8 +299,8 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
         <Section id="packages">
           <SectionHead
             eyebrow="What it costs"
-            title="Three ways to book it"
-            sub="Every one includes the barn, the meadow, tables, chairs and someone here all day."
+            title={waysToBook(config.products[0].items.length)}
+            sub={venue.packagesSub}
             align="center"
           />
           <div className={styles.vPackages}>
@@ -303,29 +329,33 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
         </Section>
       ) : null}
 
-      {/* --- Enquiry. -----------------------------------------------------
+      {/* --- Inquiry. -----------------------------------------------------
           The booking flow is the form. There used to be a second, generic
           quote form underneath it, which was wrong twice over: it overlapped
           the booking card at wide widths, and it carried the trades template's
           copy, so a wedding venue was asking for a property address and
           offering a free roof inspection. */}
-      <Section id="enquire" tone="dark">
+      <Section id="inquire" tone="dark">
         <SectionHead
           eyebrow="Dates"
           title="Tell us when"
-          sub="We hold a date for seven days with no deposit while you think about it."
+          sub={venue.holdPolicy}
         />
 
-        <div className={styles.vEnquire}>
+        <div className={styles.vInquire}>
           <AvailabilityBooking config={config} />
 
-          <aside className={styles.vEnquireAside}>
+          <aside className={styles.vInquireAside}>
             <ul className={styles.vMeta}>
               <li>
                 <MapPin size={17} aria-hidden="true" />
                 <span>
-                  {config.business.address}
-                  <br />
+                  {config.business.address && (
+                    <>
+                      {config.business.address}
+                      <br />
+                    </>
+                  )}
                   {config.business.city}, {config.business.state}
                 </span>
               </li>
@@ -337,10 +367,12 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
                   </a>
                 </li>
               )}
-              <li>
-                <Calendar size={17} aria-hidden="true" />
-                <span>Tours most Saturdays, by appointment</span>
-              </li>
+              {venue.tours && (
+                <li>
+                  <Calendar size={17} aria-hidden="true" />
+                  <span>{venue.tours}</span>
+                </li>
+              )}
             </ul>
             <Cta href={directionsHref(config)} variant="onDark">
               Get directions
@@ -354,25 +386,9 @@ export default function VenueTemplate({ config }: { config: DemoConfig }) {
   );
 }
 
-/**
- * The same barn after dark. Same framing, same camera position, same trees, so
- * the torch reveals a moment rather than a different photograph. A second shot
- * from somewhere else on the property reads as a mistake.
- */
-const NIGHT = 'demos/wren-hollow/hero-night';
+const WAYS = ['One way', 'Two ways', 'Three ways', 'Four ways', 'Five ways', 'Six ways'];
 
-const SPACE_LABELS = [
-  'The meadow',
-  'The ceremony lawn',
-  'The barn, set for dinner',
-  'The long tables',
-  'The loft',
-];
-
-/** `image` indexes into `config.gallery`, so a config can reorder its own year. */
-const SEASONS = [
-  { id: 'spring', label: 'Spring', image: 1, note: 'Green through to mid June. Cool mornings, long light.' },
-  { id: 'summer', label: 'Summer', image: 0, note: 'Wildflowers from July. The meadow is at its best.' },
-  { id: 'autumn', label: 'Autumn', image: 4, note: 'Aspens turn the last week of September, most years.' },
-  { id: 'winter', label: 'Winter', image: 5, note: 'Heated barn, snow outside, and the whole place to yourselves.' },
-];
+/** 'Three ways to book it', counted from the config rather than typed out. */
+function waysToBook(count: number): string {
+  return `${WAYS[count - 1] ?? 'Ways'} to book it`;
+}

@@ -27,6 +27,7 @@ function Actions({
   center?: boolean;
 }) {
   const { hero, business } = config;
+  const callFirst = hero.ctaHref.startsWith('tel:');
 
   return (
     <div
@@ -35,9 +36,19 @@ function Actions({
         .join(' ')}
     >
       <Cta href={hero.ctaHref} variant={onDark ? 'onDark' : 'primary'}>
-        {hero.ctaLabel}
+        {/* When the one action is the phone call, print the number on it.
+            Someone on a laptop cannot tap "Call the Shop", and a second
+            button beside it would dial the same number twice over. */}
+        {callFirst && business.phone ? (
+          <>
+            <Phone size={17} aria-hidden="true" />
+            {hero.ctaLabel}: {business.phone}
+          </>
+        ) : (
+          hero.ctaLabel
+        )}
       </Cta>
-      {business.phone && (
+      {business.phone && !callFirst && (
         <Cta href={telHref(business.phone)} variant={onDark ? 'ghost' : 'outline'}>
           <Phone size={17} aria-hidden="true" />
           {business.phone}
@@ -65,11 +76,20 @@ function Media({
   over?: boolean;
 }) {
   const { hero, business } = config;
+  // A drawing describes itself (see DemoImage). A stock photograph must not
+  // claim to show the business it sits under.
+  const alt =
+    config.placeholderPhotos && !artName(hero.image)
+      ? `Sample photograph, not taken at ${business.name}`
+      : `${business.name} in ${business.city}, ${business.state}`;
   return (
     <DemoImage
       name={hero.image}
-      alt={`${business.name} in ${business.city}, ${business.state}`}
-      sizes="100vw"
+      alt={alt}
+      // On a phone the hero is a tall portrait box and the photo is cropped
+      // to cover it, so it renders two to three times wider than the
+      // viewport. Saying 100vw there picked the 420px file and stretched it.
+      sizes="(max-width: 48rem) 250vw, 100vw"
       priority={priority}
       artTone={over ? 'dark' : 'light'}
     />

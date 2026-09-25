@@ -11,7 +11,7 @@ import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
 import { money, packageById, pretty, type DayRecord } from '../data';
 import s from '../Admin.module.css';
 import { Drawer, Fact } from './ui';
-import { confirmedDays, monthOf, valueOf, type SortColumn, type ViewProps } from './state';
+import { CAL_YEAR, confirmedDays, monthOf, valueOf, type SortColumn, type ViewProps } from './state';
 
 const COLUMNS: { id: SortColumn; label: string; numeric?: boolean }[] = [
   { id: 'date', label: 'Date' },
@@ -39,7 +39,10 @@ function sortKey(day: DayRecord, column: SortColumn): string | number {
 }
 
 export default function BookingsView({ state, dispatch }: ViewProps) {
-  const tableRef = useRef<HTMLDivElement>(null);
+  // On the section, which is always rendered. Moving the last booking back to
+  // a hold unmounts the table, and a ref on the table would leave the drawer
+  // nowhere to send focus but <body>.
+  const sectionRef = useRef<HTMLElement>(null);
 
   const rows = useMemo(() => {
     const { column, dir } = state.sort;
@@ -58,14 +61,14 @@ export default function BookingsView({ state, dispatch }: ViewProps) {
 
   return (
     <div className={s.view}>
-      <section className={s.card} aria-labelledby="bk-title">
+      <section className={s.card} aria-labelledby="bk-title" ref={sectionRef} tabIndex={-1}>
         <header className={s.cardHead}>
           <div>
             <h3 className={s.cardTitle} id="bk-title">
               Confirmed bookings
             </h3>
             <p className={s.cardSub}>
-              {rows.length} in 2027, {money(total)} booked.
+              {rows.length} in {CAL_YEAR}, {money(total)} booked.
             </p>
           </div>
         </header>
@@ -73,10 +76,10 @@ export default function BookingsView({ state, dispatch }: ViewProps) {
         {rows.length === 0 ? (
           <p className={s.empty}>Nothing confirmed yet. Holds live in the calendar.</p>
         ) : (
-          <div className={s.tableWrap} ref={tableRef} tabIndex={-1}>
+          <div className={s.tableWrap}>
             <table className={s.table}>
               <caption className={s.srOnly}>
-                Confirmed bookings for 2027, sortable by column.
+                Confirmed bookings for {CAL_YEAR}, sortable by column.
               </caption>
               <thead>
                 <tr>
@@ -111,8 +114,13 @@ export default function BookingsView({ state, dispatch }: ViewProps) {
                     key={day.date}
                     className={s.row}
                     // The button in the first cell is the real control. This
-                    // only saves a mouse from having to aim at it.
-                    onClick={() => dispatch({ type: 'openBooking', date: day.date })}
+                    // only saves a mouse from having to aim at it, so a click
+                    // that already landed on the button is left to the button
+                    // rather than dispatched twice.
+                    onClick={(event) => {
+                      if ((event.target as HTMLElement).closest('button')) return;
+                      dispatch({ type: 'openBooking', date: day.date });
+                    }}
                   >
                     <th scope="row">
                       <button
@@ -147,7 +155,7 @@ export default function BookingsView({ state, dispatch }: ViewProps) {
       </section>
 
       {open && (
-        <BookingDrawer key={open.date} day={open} dispatch={dispatch} returnFocusTo={tableRef} />
+        <BookingDrawer key={open.date} day={open} dispatch={dispatch} returnFocusTo={sectionRef} />
       )}
     </div>
   );

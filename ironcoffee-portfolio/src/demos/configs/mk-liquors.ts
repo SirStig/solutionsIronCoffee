@@ -28,8 +28,7 @@ import type { DemoConfig } from '../types';
  *
  * Kraft & Company, LLC, entity 20011136224, formed 10 July 2001, in good
  * standing, registered agent Pamela Sue Kraft of Kiowa. Address 240 Comanche
- * St. Retail liquor store license, so full spirits, wine and beer to take
- * away. No website: mkliquors.com is M K Liquor Store of Houston, Texas, an
+ * St. Retail liquor store license, so full spirits, wine and beer to go. No website: mkliquors.com is M K Liquor Store of Houston, Texas, an
  * unrelated family business, and kcliquors.com does not resolve.
  *
  * **One trap.** facebook.com/mkliquors is "MK Wine & Liquor" of Colorado
@@ -84,7 +83,7 @@ const mkLiquors: DemoConfig = {
   business: {
     // Confirmed against the state liquor license, not against a directory.
     name: 'MK Liquors',
-    tagline: 'Family owned, and we will order in whatever you ask for.',
+    tagline: 'Family owned, and special orders welcome.',
     city: 'Kiowa',
     state: 'CO',
     address: '240 Comanche St',
@@ -121,7 +120,7 @@ const mkLiquors: DemoConfig = {
       group: 'Beer',
       icon: 'can',
       items: [
-        { name: 'By the six pack' },
+        { name: 'By the six-pack' },
         { name: 'By the case' },
         { name: 'Seltzers and ciders' },
       ],
@@ -150,23 +149,21 @@ const mkLiquors: DemoConfig = {
       body: 'If we do not stock it, ask. Getting a bottle in for somebody is most of what a store this size does.',
     },
     {
-      title: 'Wine, with an opinion',
-      icon: 'bottle',
-      body: 'Tell us the meal or the budget and you will get a straight answer rather than a shrug at the shelf.',
-    },
-    {
       title: 'Owner operated',
       icon: 'star',
       body: 'The people behind the counter own the place. That is why you get an answer rather than a shrug toward the shelf.',
     },
   ],
 
+  // Family ownership and special orders already have the tagline, a card and
+  // an FAQ each, so the band carries what is on the shelf and where. Nothing
+  // about the hours: they are still only "likely", see the header.
   marquee: [
-    'Family owned',
-    'Owner operated',
-    'Special orders welcome',
-    'Beer, wine and spirits',
-    'On Comanche Street',
+    'Beer, wine and spirits to go',
+    'Whiskey, bourbon and rye',
+    'Red, white and sparkling',
+    'Seltzers, ciders and mixers',
+    '240 Comanche St, Kiowa',
   ],
 
   /*
@@ -193,7 +190,7 @@ const mkLiquors: DemoConfig = {
 
   about: {
     heading: 'The one on Comanche Street.',
-    body: 'MK Liquors is on Comanche Street in Kiowa, run by the family that owns it rather than by a chain. If what you want is not on the shelf, ask and it can be ordered in. The next store is a long way down the highway, which is the whole reason this one is worth keeping.',
+    body: 'MK Liquors is on Comanche Street in Kiowa, run by the family that owns it rather than by a chain. If what you want is not on the shelf, ask and it can be ordered in.',
     // Drawn, where the photographs are not. A picture of the trade can
     // stand beside the story; it cannot be the story, and one illustration
     // per page is what stops five previews looking like five stock sets.
@@ -241,11 +238,7 @@ const mkLiquors: DemoConfig = {
   faq: [
     {
       q: 'Can you order something in for me?',
-      a: 'Yes. Ring or come in and tell us what you are after. Special orders are a normal part of the week here, not a favor.',
-    },
-    {
-      q: 'Can you help me pick a wine?',
-      a: 'Ask. Tell us the meal or the budget and you will get a straight answer rather than being pointed at a shelf.',
+      a: 'Yes. Call or come in and tell us what you are looking for. Special orders are a normal part of the week here, not a favor.',
     },
     {
       q: 'Who runs the store?',

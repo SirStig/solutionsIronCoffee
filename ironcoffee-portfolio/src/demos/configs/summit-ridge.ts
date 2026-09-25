@@ -18,7 +18,7 @@ const summitRidge: DemoConfig = {
       label: 'Service area',
       kind: 'areas',
       title: 'Where we work',
-      intro: 'Elbert and Douglas County, and the towns in between.',
+      intro: 'Elbert and Douglas Counties, and the towns in between.',
     },
     {
       slug: 'work',
@@ -38,7 +38,7 @@ const summitRidge: DemoConfig = {
 
   business: {
     name: 'Summit Ridge Services',
-    tagline: 'Roofing, gutters and siding across Elbert and Douglas County.',
+    tagline: 'Roofing, gutters and siding across Elbert and Douglas Counties.',
     city: 'Elizabeth',
     state: 'CO',
     phone: '(303) 555-0117',
@@ -62,7 +62,7 @@ const summitRidge: DemoConfig = {
 
   badges: [
     'Licensed & insured',
-    'Owens Corning preferred',
+    'Manufacturer-certified installer',
     '10-year workmanship warranty',
     'Insurance claims handled',
   ],
@@ -95,8 +95,8 @@ const summitRidge: DemoConfig = {
     {
       title: 'Emergency tarping',
       icon: 'shield',
-      body: 'Something opened up overnight. Call and we will get it covered before the next storm, then deal with the rest in daylight.',
-      price: '24/7',
+      body: 'Something opened up overnight. Call any hour, day or night, and we will get it covered before the next storm, then deal with the rest in daylight.',
+      price: 'Call for pricing',
     },
   ],
 
@@ -135,6 +135,15 @@ const summitRidge: DemoConfig = {
     'Ponderosa Park',
     'Larkspur',
   ],
+
+  copy: {
+    servicesIntro:
+      'Every job starts with someone coming out to look at it properly, at no cost to you.',
+    formTitle: 'Get a free quote',
+    formIntro:
+      'Tell us what is going on and we will get you on the schedule for a free inspection.',
+    formSubmit: 'Request my free quote',
+  },
 
   hours: [
     { day: 'Monday', open: '7am to 5pm' },

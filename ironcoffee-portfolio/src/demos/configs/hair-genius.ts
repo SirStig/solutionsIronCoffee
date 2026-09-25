@@ -91,8 +91,8 @@ const hairGenius: DemoConfig = {
   hero: {
     // No "book online" and no "open seven days". One is broken and the other
     // is disputed by half the listings that mention it.
-    headline: 'A proper skin fade, in a suite off Dransfeldt Road.',
-    sub: 'Walk in if there is a chair free. Ring first if you would rather not find out the hard way.',
+    headline: 'A clean skin fade, in a suite off Dransfeldt Road.',
+    sub: 'Walk in if there is a chair free. Call first if you would rather not find out the hard way.',
     image: 'demos/hair-genius/hero',
     ctaLabel: 'Call the Shop',
     ctaHref: 'tel:+13038055348',
@@ -124,12 +124,12 @@ const hairGenius: DemoConfig = {
     {
       title: 'Beard trim and line up',
       icon: 'comb',
-      body: 'Shaped to the jaw, edges clean, hot towel if you want one.',
+      body: 'Shaped to the jaw, with the edges cleaned up.',
     },
     {
-      title: 'Kids',
+      title: 'Kids and teens',
       icon: 'child',
-      body: 'First haircuts included, and nobody here is in a hurry about it.',
+      body: 'Say who the cut is for when you call.',
     },
   ],
 
@@ -142,7 +142,7 @@ const hairGenius: DemoConfig = {
     'Walk in if there is a chair',
     'Skin fades',
     'Beard trims and line ups',
-    'First haircuts',
+    'Kids and teens',
     'Suite 128, off Dransfeldt',
   ],
 
@@ -167,7 +167,7 @@ const hairGenius: DemoConfig = {
 
   about: {
     heading: 'Family run, in Suite 128.',
-    body: 'Hair Genius is a family owned and operated barbershop in a suite set back off Dransfeldt Road. It takes a minute to find the first time, which is why the directions link is on this page and the address is not left to do the work on its own. Inside it is classic and modern in equal measure: walk in when there is a chair, ring ahead when there is not.',
+    body: 'Hair Genius is a barbershop, family owned and operated, in a suite set back off Dransfeldt Road. It takes a minute to find the first time, so give yourself a few extra minutes on your first visit. Walk in when there is a chair, call ahead when there is not.',
     // Drawn, where the photographs are not. A picture of the trade can
     // stand beside the story; it cannot be the story, and one illustration
     // per page is what stops five previews looking like five stock sets.
@@ -229,7 +229,7 @@ const hairGenius: DemoConfig = {
       slug: 'services',
       label: 'Services',
       kind: 'services',
-      intro: 'Prices are not published, so ring the shop and they will tell you before you come in.',
+      intro: 'Prices are not published, so call the shop and they will tell you before you come in.',
     },
     {
       slug: 'about',
@@ -249,12 +249,12 @@ const hairGenius: DemoConfig = {
   faq: [
     {
       q: 'Do you take walk-ins?',
-      a: 'Yes, when there is a chair. Afternoons are the busy stretch, so a call first saves you standing around.',
+      a: 'Yes, when there is a chair. A call first saves you standing around.',
     },
     {
       // The question the price column used to answer four times over.
       q: 'What does a cut cost?',
-      a: 'Prices are not published online. Ring the shop and they will tell you before you come in.',
+      a: 'Prices are not published online. Call the shop and they will tell you before you come in.',
     },
     {
       q: 'Where exactly are you?',
@@ -262,7 +262,7 @@ const hairGenius: DemoConfig = {
     },
     {
       q: 'Do you cut kids’ hair?',
-      a: 'Yes, first haircuts included. Say it is their first when you ring and there will be time set aside for it.',
+      a: 'Teenagers, yes. For younger children, call and ask.',
     },
   ],
 

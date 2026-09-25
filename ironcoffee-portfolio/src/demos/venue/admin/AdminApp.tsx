@@ -26,15 +26,15 @@ import type { DemoConfig } from '../../types';
 import s from '../Admin.module.css';
 import BookingsView from './BookingsView';
 import CalendarView from './CalendarView';
-import EnquiriesView from './EnquiriesView';
+import InquiriesView from './InquiriesView';
 import Overview from './Overview';
 import PagesView from './PagesView';
-import { initialState, reducer, summarize, type ViewId } from './state';
+import { CAL_YEAR, initialState, reducer, summarize, type ViewId } from './state';
 
 const NAV: { id: ViewId; label: string; icon: LucideIcon }[] = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
   { id: 'calendar', label: 'Calendar', icon: CalendarDays },
-  { id: 'enquiries', label: 'Enquiries', icon: Inbox },
+  { id: 'inquiries', label: 'Inquiries', icon: Inbox },
   { id: 'bookings', label: 'Bookings', icon: Table2 },
   { id: 'pages', label: 'Pages', icon: FileText },
 ];
@@ -54,6 +54,18 @@ export default function AdminApp({ config }: { config: DemoConfig }) {
    */
   useEffect(() => {
     if (state.focusTick === 0) return;
+    // Child effects run first, so by now a drawer or the calendar's day panel
+    // may already have placed focus deliberately. Taking it back to <main>
+    // would pull it out of a modal dialog or off the heading that says where
+    // the user landed.
+    const active = document.activeElement;
+    if (
+      active instanceof HTMLElement &&
+      active !== document.body &&
+      (active.closest('[role="dialog"]') || main.current?.contains(active))
+    ) {
+      return;
+    }
     main.current?.focus();
   }, [state.focusTick]);
 
@@ -81,7 +93,7 @@ export default function AdminApp({ config }: { config: DemoConfig }) {
           {NAV.map((item) => {
             const Icon = item.icon;
             const on = item.id === state.view;
-            const badge = item.id === 'enquiries' ? summary.newEnquiries : 0;
+            const badge = item.id === 'inquiries' ? summary.newInquiries : 0;
             return (
               <button
                 key={item.id}
@@ -107,7 +119,7 @@ export default function AdminApp({ config }: { config: DemoConfig }) {
       <div className={s.pane}>
         <header className={s.bar}>
           <div>
-            <p className={s.eyebrow}>2027 season</p>
+            <p className={s.eyebrow}>{CAL_YEAR} season</p>
             <h2 className={s.viewTitle} id="admin-view">
               {current.label}
             </h2>
@@ -128,7 +140,7 @@ export default function AdminApp({ config }: { config: DemoConfig }) {
         <main className={s.main} ref={main} tabIndex={-1} aria-labelledby="admin-view">
           {state.view === 'overview' && <Overview state={state} dispatch={dispatch} />}
           {state.view === 'calendar' && <CalendarView state={state} dispatch={dispatch} />}
-          {state.view === 'enquiries' && <EnquiriesView state={state} dispatch={dispatch} />}
+          {state.view === 'inquiries' && <InquiriesView state={state} dispatch={dispatch} />}
           {state.view === 'bookings' && <BookingsView state={state} dispatch={dispatch} />}
           {state.view === 'pages' && (
             <PagesView state={state} dispatch={dispatch} config={config} />

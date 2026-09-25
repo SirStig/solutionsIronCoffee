@@ -12,6 +12,7 @@ import { CalendarDays, FileText, Inbox } from 'lucide-react';
 import { MONTHS, money, pretty } from '../data';
 import s from '../Admin.module.css';
 import {
+  CAL_YEAR,
   heldDays,
   isDirty,
   monthOf,
@@ -30,7 +31,7 @@ export default function Overview({ state, dispatch }: ViewProps) {
   const summary = useMemo(() => summarize(state), [state]);
   const series = useMemo(() => revenueByMonth(state.days), [state.days]);
   const held = useMemo(() => heldDays(state.days), [state.days]);
-  const unread = state.enquiries.filter((e) => e.state === 'new');
+  const unread = state.inquiries.filter((e) => e.state === 'new');
   const dirty = isDirty(state);
 
   const peak = series.reduce((best, m) =>
@@ -42,9 +43,9 @@ export default function Overview({ state, dispatch }: ViewProps) {
   const y = (value: number) => H - (value / ceiling) * H;
 
   const tiles = [
-    { label: 'Confirmed', value: String(summary.confirmed), note: 'weddings in 2027' },
+    { label: 'Confirmed', value: String(summary.confirmed), note: `weddings in ${CAL_YEAR}` },
     { label: 'On hold', value: String(summary.held), note: `${money(summary.heldValue)} if they land` },
-    { label: 'New enquiries', value: String(summary.newEnquiries), note: 'nobody has answered' },
+    { label: 'New inquiries', value: String(summary.newInquiries), note: 'nobody has answered' },
     { label: 'Booked', value: money(summary.revenue), note: 'confirmed packages' },
   ];
 
@@ -145,7 +146,7 @@ export default function Overview({ state, dispatch }: ViewProps) {
         {/* The bars are decoration to a screen reader. This is the same data as
             a table, which is the form that can actually be read out. */}
         <table className={s.srOnly}>
-          <caption>Revenue booked by month, 2027</caption>
+          <caption>Revenue booked by month, {CAL_YEAR}</caption>
           <thead>
             <tr>
               <th scope="col">Month</th>
@@ -176,21 +177,21 @@ export default function Overview({ state, dispatch }: ViewProps) {
           <p className={s.empty}>Nothing waiting. The inbox is clear and every hold is settled.</p>
         ) : (
           <ul className={s.needs}>
-            {unread.map((enquiry) => (
-              <li key={enquiry.id}>
+            {unread.map((inquiry) => (
+              <li key={inquiry.id}>
                 <button
                   type="button"
                   className={s.need}
                   onClick={() => {
-                    dispatch({ type: 'go', view: 'enquiries', focus: true });
-                    dispatch({ type: 'openEnquiry', id: enquiry.id });
+                    dispatch({ type: 'go', view: 'inquiries', focus: true });
+                    dispatch({ type: 'openInquiry', id: inquiry.id });
                   }}
                 >
                   <Inbox className={s.needIcon} size={16} aria-hidden="true" />
                   <span className={s.needText}>
-                    <strong>{enquiry.name}</strong> has not had a reply.
+                    <strong>{inquiry.name}</strong> has not had a reply.
                     <span className={s.needSub}>
-                      {enquiry.wants ? pretty(enquiry.wants) : 'No date yet'}, {enquiry.guests}{' '}
+                      {inquiry.wants ? pretty(inquiry.wants) : 'No date yet'}, {inquiry.guests}{' '}
                       guests
                     </span>
                   </span>

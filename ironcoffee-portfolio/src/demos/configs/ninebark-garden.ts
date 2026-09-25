@@ -53,7 +53,7 @@ const ninebarkGarden: DemoConfig = {
 
   hero: {
     headline: 'Grown for six thousand feet.',
-    sub: 'Everything on our benches has been through a winter here. If it will not survive Castle Rock, we do not sell it.',
+    sub: 'Every tree and shrub on our benches has been through a winter here. If it will not survive Castle Rock, we do not sell it.',
     image: 'demos/ninebark-garden/hero',
     ctaLabel: 'See what is in stock',
     ctaHref: '/templates/ninebark-garden/stock',
@@ -61,7 +61,7 @@ const ninebarkGarden: DemoConfig = {
 
   marquee: [
     'Everything hardened off outdoors',
-    'One year guarantee on trees and shrubs',
+    'One-year guarantee on trees and shrubs',
     'Soil testing on the bench',
     'Bulk compost by the yard',
     'We load it for you',
@@ -77,10 +77,10 @@ const ninebarkGarden: DemoConfig = {
           name: 'Bare-root fruit trees',
           desc: 'Apple, pear, cherry. Grafted on hardy rootstock.',
           price: 'From $65',
-          availability: 'In stock',
+          availability: 'Seasonal, March to May',
         },
         {
-          name: 'Shade trees, 2 inch caliper',
+          name: 'Shade trees, 2-inch caliper',
           desc: 'Maple, honeylocust, hackberry.',
           price: 'From $240',
           availability: 'In stock',
@@ -147,7 +147,8 @@ const ninebarkGarden: DemoConfig = {
         },
         {
           name: 'Tools and gloves',
-          desc: 'Secateurs, trowels, twine, leather gloves.',
+          desc: 'Pruners, trowels, twine, leather gloves.',
+          price: 'Priced in store',
           availability: 'In stock',
         },
       ],
@@ -173,7 +174,7 @@ const ninebarkGarden: DemoConfig = {
       price: 'From $90',
     },
     {
-      title: 'One year guarantee',
+      title: 'One-year guarantee',
       icon: 'shield',
       body: 'Any tree or shrub that dies inside a year, bring back the tag and we will replace it once.',
     },
@@ -195,36 +196,35 @@ const ninebarkGarden: DemoConfig = {
     'demos/ninebark-garden/seedlings',
     'demos/ninebark-garden/soil',
     'demos/ninebark-garden/tools',
-    'demos/ninebark-garden/hero',
   ],
 
   about: {
-    heading: 'We kill the plants so you do not have to.',
-    body: 'Ninebark started in 2009 as four hoop houses behind a house on Founders Parkway. Everything we sell is grown or finished on site and left outside through the winter, which is the only honest way to find out what survives at six thousand feet with forty mile an hour wind in March. Plenty of things have not. Those are the ones you will not find on our benches, and that is most of what you are paying for.',
+    heading: 'We test the plants so you do not have to.',
+    body: 'Ninebark started in 2009 as four hoop houses behind a house on Founders Parkway. Every tree and shrub we sell is grown or finished on site and left outside through the winter, which is the only honest way to find out what survives at six thousand feet with forty-mile-an-hour wind in March. Plenty of things have not. Those are the ones you will not find on our benches, and that is most of what you are paying for.',
     image: 'demos/ninebark-garden/about',
   },
 
   stats: [
     { value: '2009', label: 'Growing since', icon: 'leaf' },
-    { value: '1 year', label: 'Guarantee on woody plants', icon: 'shield' },
+    { value: '4', label: 'Hoop houses we started with', icon: 'roof' },
     { value: '6,200 ft', label: 'Everything hardened at', icon: 'pin' },
-    { value: '7 days', label: 'Open in season', icon: 'clock' },
+    { value: '3 acres', label: 'Of benches to walk', icon: 'basket' },
   ],
 
   testimonials: [
     {
-      quote: 'They talked me out of the tree I came in for and sold me a cheaper one that is still alive four years later.',
-      name: 'Rachel M.',
+      quote: 'They steered me away from the tree I came in for and sold me a cheaper one that is still alive four years later.',
+      name: 'Hannah K.',
       detail: 'Castle Rock',
     },
     {
       quote: 'Took a bag of dirt in, got a straight answer and a plan, spent nothing that day.',
-      name: 'Tom W.',
+      name: 'Luis G.',
       detail: 'Larkspur',
     },
     {
       quote: 'The only place around here that will tell you when something is a bad idea for your yard.',
-      name: 'Priya S.',
+      name: 'Megan T.',
       detail: 'Franktown',
     },
   ],

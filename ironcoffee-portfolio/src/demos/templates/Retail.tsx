@@ -16,9 +16,10 @@ import {
   Testimonials,
   StatsBand,
   VisitBlock,
+  businessTimeZone,
+  useToday,
 } from '../components/blocks';
 import { Bleed, Section, SectionHead } from '../components/primitives';
-import { todayName } from '../index';
 import { homeNavLinks, type NavLink } from '../components/DemoNav';
 import styles from '../Demo.module.css';
 
@@ -32,7 +33,7 @@ import styles from '../Demo.module.css';
 export default function RetailTemplate({ config }: { config: DemoConfig }) {
   const anchors: NavLink[] = [
     ...(config.products?.length ? [{ label: 'In stock', href: '#stock' }] : []),
-    { label: 'Services', href: '#services' },
+    ...(config.services.length ? [{ label: 'Services', href: '#services' }] : []),
     { label: 'About', href: '#about' },
     { label: 'Visit', href: '#visit' },
   ];
@@ -40,7 +41,10 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
   // Anchors on a one-page sample, real page links on a multi-page one.
   const links = homeNavLinks(config, anchors);
 
-  const today = config.hours.find((h) => h.day === todayName());
+  const { phone } = config.business;
+  // Decided from the config alone, so the server and the browser agree on
+  // whether the band exists; only the "Today" line inside it waits for a clock.
+  const hasNote = Boolean(phone) || config.hours.length > 0;
 
   const { lead, others } = splitQuotes(config.testimonials);
 
@@ -50,14 +54,12 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
         config={config}
         variant="strip"
         note={
-          <div className={styles.heroNoteInner}>
-            {today && <span>Today: {today.open}</span>}
-            {config.business.phone && (
-              <span>
-                Call {config.business.phone} and we will check the shelf for you.
-              </span>
-            )}
-          </div>
+          hasNote ? (
+            <div className={styles.heroNoteInner}>
+              <TodayHours config={config} />
+              {phone && <span>Questions? Call {phone}.</span>}
+            </div>
+          ) : undefined
         } />
 
       {config.marquee?.length ? <Marquee items={config.marquee} /> : null}
@@ -67,7 +69,11 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
           <SectionHead
             eyebrow="On the shelves"
             title="What we carry"
-            sub="Call before you drive out and we will tell you what is on the shelf. This page is only ever as current as our last update." />
+            sub={
+              phone
+                ? 'Worth a call before you drive out. This page is only ever as current as its last update.'
+                : 'This page is only ever as current as its last update.'
+            } />
           <ProductBlock groups={config.products} />
         </Section>
       ) : null}
@@ -99,6 +105,7 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
         <GalleryGrid
           images={config.gallery}
           business={config.business.name}
+          sample={config.placeholderPhotos}
           fullBleed />
       )}
 
@@ -131,4 +138,18 @@ export default function RetailTemplate({ config }: { config: DemoConfig }) {
       <DemoOutro config={config} />
     </DemoShell>
   );
+}
+
+/**
+ * Today's hours, in the business's own time zone, once the page has mounted.
+ *
+ * Resolving the weekday during render would bake the build machine's day into
+ * the HTML and then disagree with it on hydration, so this renders nothing
+ * until there is a real clock to read, the same as <HoursList>.
+ */
+function TodayHours({ config }: { config: DemoConfig }) {
+  const today = useToday(businessTimeZone(config));
+  const row = today ? config.hours.find((h) => h.day === today) : undefined;
+  if (!row) return null;
+  return <span>Today: {row.open}</span>;
 }
