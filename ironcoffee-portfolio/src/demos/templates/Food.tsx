@@ -9,7 +9,7 @@ import {
   FaqList,
   GalleryGrid,
   HoursList,
-  HoursStrip,
+  HoursBar,
   Marquee,
   MenuBlock,
   PullQuote,
@@ -50,11 +50,7 @@ export default function FoodTemplate({ config }: { config: DemoConfig }) {
     <DemoShell config={config} links={links}>
       <DemoHero config={config} variant="full" />
 
-      <div className={styles.badgeBar}>
-        <div className={styles.container}>
-          <HoursStrip hours={config.hours} timeZone={businessTimeZone(config)} />
-        </div>
-      </div>
+      <HoursBar config={config} />
 
       {config.marquee?.length ? <Marquee items={config.marquee} /> : null}
 

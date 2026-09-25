@@ -3,7 +3,7 @@ import { site } from '../../content/site';
 import styles from '../Demo.module.css';
 
 /** Section background treatments. `dark` paints the brand's deep tone. */
-type Tone = 'plain' | 'alt' | 'dark';
+export type Tone = 'plain' | 'alt' | 'dark';
 
 const toneClass: Record<Tone, string> = {
   plain: '',
