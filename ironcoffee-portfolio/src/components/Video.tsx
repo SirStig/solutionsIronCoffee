@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { Pause, Play } from 'lucide-react';
 import Img from './Img';
 import manifest from '../generated/videos.json';
@@ -35,6 +42,21 @@ export interface VideoProps {
   sizes?: string;
   className?: string;
   aspectRatio?: string;
+  /** Load the poster eagerly. Off for anything below the first screen. */
+  priority?: boolean;
+  /**
+   * Draw the play/pause button inside the frame. Turn it off where the video
+   * sits inside a link, since a button inside an <a> is invalid and clicking
+   * it would navigate. The caller then renders its own button outside the
+   * link and drives it through the ref and `onPlayingChange`.
+   */
+  toggle?: boolean;
+  /** Called with false once the video is ready, then on every play or pause. */
+  onPlayingChange?: (playing: boolean) => void;
+}
+
+export interface VideoHandle {
+  toggle: () => void;
 }
 
 /**
@@ -52,13 +74,19 @@ export interface VideoProps {
  * there because anything moving for longer than five seconds has to be
  * stoppable (WCAG 2.2.2).
  */
-export default function Video({
-  name,
-  alt,
-  sizes,
-  className,
-  aspectRatio,
-}: VideoProps) {
+const Video = forwardRef<VideoHandle, VideoProps>(function Video(
+  {
+    name,
+    alt,
+    sizes,
+    className,
+    aspectRatio,
+    priority = true,
+    toggle: showToggle = true,
+    onPlayingChange,
+  },
+  handle
+) {
   const entry = videos[name];
   const ref = useRef<HTMLVideoElement>(null);
   // What the viewer wants, as opposed to what the browser is doing right now.
@@ -67,6 +95,12 @@ export default function Video({
   const [mounted, setMounted] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [shown, setShown] = useState(false);
+
+  const report = useRef(onPlayingChange);
+  report.current = onPlayingChange;
+  useEffect(() => {
+    if (mounted) report.current?.(playing);
+  }, [mounted, playing]);
 
   const start = useCallback(() => {
     const el = ref.current;
@@ -136,13 +170,15 @@ export default function Video({
     };
   }, [entry, sync]);
 
-  if (!entry) return null;
-
-  const toggle = () => {
+  const toggle = useCallback(() => {
     wanted.current = !playing;
     if (playing) ref.current?.pause();
     else start();
-  };
+  }, [playing, start]);
+
+  useImperativeHandle(handle, () => ({ toggle }), [toggle]);
+
+  if (!entry) return null;
 
   return (
     <div
@@ -155,7 +191,7 @@ export default function Video({
         sizes={sizes}
         aspectRatio={aspectRatio}
         className={styles.poster}
-        priority
+        priority={priority}
       />
       <video
         ref={ref}
@@ -172,20 +208,37 @@ export default function Video({
         }}
         onPause={() => setPlaying(false)}
       />
-      {mounted && (
-        <button
-          type="button"
-          className={styles.toggle}
-          onClick={toggle}
-          aria-label={playing ? 'Pause video' : 'Play video'}
-        >
-          {playing ? (
-            <Pause size={16} aria-hidden fill="currentColor" />
-          ) : (
-            <Play size={16} aria-hidden fill="currentColor" />
-          )}
-        </button>
+      {mounted && showToggle && (
+        <VideoToggle playing={playing} onClick={toggle} />
       )}
     </div>
+  );
+});
+
+export default Video;
+
+/** The play/pause button, for callers that set `toggle={false}`. */
+export function VideoToggle({
+  playing,
+  onClick,
+  className,
+}: {
+  playing: boolean;
+  onClick: () => void;
+  className?: string;
+}) {
+  return (
+    <button
+      type="button"
+      className={[styles.toggle, className].filter(Boolean).join(' ')}
+      onClick={onClick}
+      aria-label={playing ? 'Pause video' : 'Play video'}
+    >
+      {playing ? (
+        <Pause size={16} aria-hidden fill="currentColor" />
+      ) : (
+        <Play size={16} aria-hidden fill="currentColor" />
+      )}
+    </button>
   );
 }

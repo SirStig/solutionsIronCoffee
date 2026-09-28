@@ -1,6 +1,7 @@
 /* --- Feature card ------------------------------------------------------- */
 .card {
   list-style: none;
+  position: relative;
 }
 
 .link {
@@ -27,12 +28,30 @@
   border-radius: 0;
 }
 
-.link:hover .image img {
+.link:hover .image img,
+.link:hover .image video {
   transform: scale(1.03);
 }
 
-.image img {
-  transition: transform var(--dur-slow) var(--ease);
+.image img,
+.image video {
+  transition: transform var(--dur-slow) var(--ease),
+    opacity var(--dur-fast) var(--ease);
+}
+
+/* A card with a video puts its pause button beside the link, not inside it,
+   and so pins it to the card instead. Top left is the corner of the picture in
+   both layouts. It rides the same lift as the card so the two stay together. */
+.card .toggle {
+  inset-block: var(--space-3) auto;
+  inset-inline: var(--space-3) auto;
+  z-index: 1;
+  transition: opacity var(--dur-fast) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.card:hover .toggle {
+  transform: translateY(-3px);
 }
 
 .body {

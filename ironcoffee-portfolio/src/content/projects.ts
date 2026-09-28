@@ -56,8 +56,9 @@ export interface Project {
   /** Manifest key from src/generated/images.json. */
   image: string;
   /**
-   * Manifest key from src/generated/videos.json. Replaces `image` as the hero
-   * on the project page only; cards and share images keep using `image`.
+   * Manifest key from src/generated/videos.json. Replaces `image` on the
+   * project page and on every card; share images keep using `image`, which
+   * also stands in wherever the video is missing.
    */
   video?: string;
   gallery?: { name: string; alt: string }[];

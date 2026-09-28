@@ -1,7 +1,9 @@
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { statusLabels, type Project } from '../content/projects';
 import Img from './Img';
+import Video, { VideoToggle, hasVideo, type VideoHandle } from './Video';
 import styles from './ProjectCard.module.css';
 
 interface Props {
@@ -15,12 +17,79 @@ interface Props {
   priority?: boolean;
 }
 
+interface MediaProps {
+  project: Project;
+  className: string;
+  sizes: string;
+  priority: boolean;
+}
+
+/**
+ * The card's picture: the project's video where it has one, else its still.
+ * The video's own button is off because the media sits inside the card's
+ * link; the card renders the button beside the link instead.
+ */
+function useCardMedia({ project, className, sizes, priority }: MediaProps) {
+  const video = useRef<VideoHandle>(null);
+  const [playing, setPlaying] = useState<boolean | null>(null);
+  const alt = `${project.name}: ${project.tagline}`;
+
+  if (!hasVideo(project.video)) {
+    return {
+      media: (
+        <Img
+          name={project.image}
+          alt={alt}
+          className={className}
+          aspectRatio="16 / 10"
+          sizes={sizes}
+          priority={priority}
+        />
+      ),
+      toggle: null,
+    };
+  }
+
+  return {
+    media: (
+      <Video
+        ref={video}
+        name={project.video}
+        alt={alt}
+        className={className}
+        aspectRatio="16 / 10"
+        sizes={sizes}
+        priority={priority}
+        toggle={false}
+        onPlayingChange={setPlaying}
+      />
+    ),
+    toggle:
+      playing === null ? null : (
+        <VideoToggle
+          playing={playing}
+          onClick={() => video.current?.toggle()}
+          className={styles.toggle}
+        />
+      ),
+  };
+}
+
 export default function ProjectCard({
   project,
   variant = 'feature',
   priority = false,
 }: Props) {
   const to = `/work/${project.slug}`;
+  const wide = variant === 'wide';
+  const { media, toggle } = useCardMedia({
+    project,
+    className: wide ? `${styles.image} ${styles.wideImage}` : styles.image,
+    sizes: wide
+      ? '(min-width: 800px) 36rem, 100vw'
+      : '(min-width: 900px) 34rem, 100vw',
+    priority,
+  });
 
   if (variant === 'compact') {
     return (
@@ -39,14 +108,7 @@ export default function ProjectCard({
     return (
       <li className={`${styles.card} ${styles.wide}`}>
         <Link to={to} className={`${styles.link} ${styles.wideLink}`}>
-          <Img
-            name={project.image}
-            alt={`${project.name}: ${project.tagline}`}
-            className={`${styles.image} ${styles.wideImage}`}
-            aspectRatio="16 / 10"
-            sizes="(min-width: 800px) 36rem, 100vw"
-            priority={priority}
-          />
+          {media}
 
           <div className={`${styles.body} ${styles.wideBody}`}>
             <div className={styles.head}>
@@ -68,6 +130,7 @@ export default function ProjectCard({
             </ul>
           </div>
         </Link>
+        {toggle}
       </li>
     );
   }
@@ -75,14 +138,7 @@ export default function ProjectCard({
   return (
     <li className={styles.card}>
       <Link to={to} className={styles.link}>
-        <Img
-          name={project.image}
-          alt={`${project.name}: ${project.tagline}`}
-          className={styles.image}
-          aspectRatio="16 / 10"
-          sizes="(min-width: 900px) 34rem, 100vw"
-          priority={priority}
-        />
+        {media}
 
         <div className={styles.body}>
           <div className={styles.head}>
@@ -104,6 +160,7 @@ export default function ProjectCard({
           </ul>
         </div>
       </Link>
+      {toggle}
     </li>
   );
 }
