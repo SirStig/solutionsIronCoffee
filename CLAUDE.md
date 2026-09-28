@@ -358,6 +358,15 @@ Both outputs are gitignored and regenerated on demand. Use
 `<picture>` with intrinsic dimensions. Portrait sources in a wider frame are
 letterboxed rather than cropped.
 
+Videos go in `assets/videos/` and come out of the same script as AV1 WebM and
+H.264 MP4 at 1280 and 1920, no audio track, into `public/video/` (gitignored)
+with `src/generated/videos.json`. It needs ffmpeg; without it, a cached encode
+is reused and anything else is dropped, so the page shows its still. `<Video>`
+prerenders a poster of the first frame, gives the `<video>` a src only once it
+is on screen, and stays a still under reduced motion or Save-Data. A project's
+`video` replaces `image` on its own page only. Safari will not play video from
+a server that ignores `Range`, which is why `serve.mjs` answers 206.
+
 **Styling.** CSS Modules over custom properties. `src/styles/tokens.css` is the
 whole design system: palette, fluid type scale, spacing and motion, with light
 as the base and dark overriding only what changes. `src/styles/base.css` is the

@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import Seo from '../components/Seo';
 import Img from '../components/Img';
+import Video, { hasVideo } from '../components/Video';
 import LiveVersionBadge from '../components/LiveVersionBadge';
 import { adjacentProjects, getProject, statusLabels } from '../content/projects';
 import { site } from '../content/site';
@@ -127,18 +128,28 @@ export default function ProjectPage() {
             column. Four blocks all clamped to 46rem, in the same order, was the
             single biggest reason every one of these pages read as the same
             page with different words in it. */}
-        <Img
-          name={project.image}
-          alt={`${project.name}: ${project.tagline}`}
-          className={`${styles.hero} ${tallHero ? styles.heroTall : ''}`}
-          aspectRatio={tallHero ? undefined : '16 / 9'}
-          sizes={
-            tallHero
-              ? '(min-width: 40rem) 22rem, 70vw'
-              : '(min-width: 1100px) 68rem, 100vw'
-          }
-          priority
-        />
+        {hasVideo(project.video) ? (
+          <Video
+            name={project.video}
+            alt={`${project.name}: ${project.tagline}`}
+            className={styles.hero}
+            aspectRatio="16 / 9"
+            sizes="(min-width: 1100px) 68rem, 100vw"
+          />
+        ) : (
+          <Img
+            name={project.image}
+            alt={`${project.name}: ${project.tagline}`}
+            className={`${styles.hero} ${tallHero ? styles.heroTall : ''}`}
+            aspectRatio={tallHero ? undefined : '16 / 9'}
+            sizes={
+              tallHero
+                ? '(min-width: 40rem) 22rem, 70vw'
+                : '(min-width: 1100px) 68rem, 100vw'
+            }
+            priority
+          />
+        )}
 
         {/* Prose on the left, facts in a rail beside it. The rail is what stops
             "Built with" being a third list stacked under two other lists. It

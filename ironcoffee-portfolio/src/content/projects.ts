@@ -55,6 +55,11 @@ export interface Project {
   links: ProjectLink[];
   /** Manifest key from src/generated/images.json. */
   image: string;
+  /**
+   * Manifest key from src/generated/videos.json. Replaces `image` as the hero
+   * on the project page only; cards and share images keep using `image`.
+   */
+  video?: string;
   gallery?: { name: string; alt: string }[];
   /** Order on the work index. Lower is higher. */
   weight: number;
@@ -81,17 +86,17 @@ export const projects: Project[] = [
     name: 'Beyond25',
     tagline: 'It reads the music press before it builds you a playlist.',
     summary:
-      'An AI music curator that does the reading first. It runs real searches, pulls from the music press, then resolves every track against a live catalog so nothing it hands you is invented. One tap saves the finished thing to Apple Music or YouTube Music.',
+      "An AI music curator that does the reading first and remembers what you like. It searches the web live, shows you its sources, and checks every track against a real catalog so nothing it hands you is invented. Save it to Apple Music or YouTube Music in one tap, or send it on to Spotify.",
     story:
-      "Ask most AI playlist tools for something and they'll confidently give you songs that don't exist. Beyond25 goes and reads first. It searches, pulls from Wikipedia, Genius, Billboard, Rolling Stone and the Grammys, and shows you the sources above the result. Then every track gets matched against a real catalog before it reaches you.\n\nThere are two ways to brief it. Type it in chat, or open Canvas and build the thing with your hands, dragging moods and eras and genres and artists around until the pile looks right. Blend lets a few people feed one playlist from a shared link. Discover is where the published ones end up.\n\nIt isn't one model in there, it's a chain of them, and every link has its own cost and its own ways of being subtly wrong. So I built an admin-only Lab that swaps the model behind each step independently and runs five configurations against the same brief at once. That's how a research pass went from about forty seconds down to five.\n\nIt runs on iPhone, iPad, Android, the web and natively on Mac. If you'd rather nothing left the house, point it at a local Ollama model, or let it use Apple's on-device models on iOS.",
+      "Ask most AI playlist tools for something and they'll confidently give you songs that don't exist. Beyond25 goes and reads first. It searches, pulls from Wikipedia, Genius, Billboard, Rolling Stone and the Grammys, and shows you the sources above the result. Then every track gets matched against a real catalog before it reaches you.\n\nYou can brief it in chat, or open Canvas and build the request from mood, genre and decade chips without typing. It'll make ten tracks or five thousand. Blend lets up to eight friends feed one playlist from a link, no account needed.\n\nThe newest part is taste. It remembers what you ask for, what you keep and, if you let it, what you actually play, so the fifth thing you ask for doesn't start from zero. You can see it as a map of artists and eras and change whatever it got wrong. That part's free, even on the free plan.\n\nIt isn't one model in there, it's a chain of them, and every link has its own cost and its own ways of being subtly wrong. So I built an admin-only Lab that swaps the model behind each step independently and runs five configurations against the same brief at once. That's how a research pass went from about forty seconds down to five.\n\nIt runs on iPhone, iPad, Android, the web and natively on Mac. Spotify still hasn't let it out of developer mode, so anything headed there goes through a transfer service and shows up about a minute later. If you'd rather nothing left the house, point it at a local Ollama model, or let it use Apple's on-device models on iOS.",
     year: '2026',
     status: 'live',
     categories: ['apps'],
     highlights: [
-      'Cites its sources: Wikipedia, Genius, Billboard, Rolling Stone',
-      'Every track resolved against a live catalog, so the playlist plays',
-      'Canvas: drag moods and eras around instead of describing them',
-      'Blend: a few people, one link, one playlist',
+      'Cites its sources, and only hands you tracks that exist',
+      'Remembers your taste, shown as a map you can edit',
+      'Anywhere from ten tracks to five thousand',
+      'Blend: up to eight friends, one link, one playlist',
       'Runs local through Ollama or Apple on-device models',
     ],
     tech: [
@@ -116,6 +121,7 @@ export const projects: Project[] = [
       },
     ],
     image: 'projects/beyond25/mac-canvas',
+    video: 'projects/beyond25/product-hunt',
     gallery: [
       {
         name: 'projects/beyond25/mac-playlist-sources',

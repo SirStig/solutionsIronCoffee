@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import manifest from '../generated/images.json';
+import videoManifest from '../generated/videos.json';
 import {
   allProjects,
   featuredProjects,
@@ -29,6 +30,19 @@ describe('projects', () => {
       for (const shot of project.gallery ?? []) {
         expect(images, `${project.slug} gallery`).toHaveProperty(shot.name);
       }
+    }
+  });
+
+  // A missing video falls back to the still without complaint, which is
+  // exactly why it needs a test: nobody would notice the hero had gone quiet.
+  it('references videos that exist in the manifest, with a poster', () => {
+    for (const project of projects) {
+      if (!project.video) continue;
+      const entry = (videoManifest as Record<string, { poster: string }>)[
+        project.video
+      ];
+      expect(entry, `${project.slug} video`).toBeDefined();
+      expect(images, `${project.slug} poster`).toHaveProperty(entry.poster);
     }
   });
 

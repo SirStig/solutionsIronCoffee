@@ -12,4 +12,5 @@ npm-debug.log*
 
 # Generated from assets/ by scripts/optimize-media.mjs — see README.
 public/img
+public/video
 src/generated

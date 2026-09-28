@@ -35,6 +35,7 @@ const TYPES = {
   '.ico': 'image/x-icon',
   '.woff2': 'font/woff2',
   '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
 };
 
 /** The permanent moves .htaccess performs, mirrored so `npm run verify` and
@@ -141,6 +142,31 @@ createServer(async (req, res) => {
       type
     );
   const wantsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] ?? '');
+
+  /* Byte ranges, which Apache answers on its own. Safari will not play a
+     video from a server that ignores them: it asks for the first two bytes,
+     gets the whole file with a 200, and gives up. Without this every video
+     was dead in WebKit here and fine in production. */
+  const range = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range ?? '');
+  if (range && match.status === 200 && !compressible) {
+    const { size } = await stat(match.file);
+    const start = range[1] ? Number(range[1]) : Math.max(0, size - Number(range[2]));
+    const end = range[1] && range[2] ? Math.min(Number(range[2]), size - 1) : size - 1;
+    if (start >= size || start > end) {
+      res.writeHead(416, { 'content-range': `bytes */${size}` });
+      res.end();
+      return;
+    }
+    res.writeHead(206, {
+      'content-type': type,
+      'content-length': end - start + 1,
+      'content-range': `bytes ${start}-${end}/${size}`,
+      'accept-ranges': 'bytes',
+      'cache-control': 'public, max-age=31536000, immutable',
+    });
+    createReadStream(match.file, { start, end }).pipe(res);
+    return;
+  }
 
   res.writeHead(match.status, {
     'content-type': type,
