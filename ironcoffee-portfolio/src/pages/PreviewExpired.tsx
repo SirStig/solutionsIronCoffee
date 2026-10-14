@@ -8,14 +8,14 @@ import styles from './PreviewExpired.module.css';
  *
  * A dead link is a wasted introduction, so this page does the job the preview
  * was doing: says what the link was, offers to put it back, and points at the
- * gallery and the pricing for anyone who arrived here cold.
+ * work and the pricing for anyone who arrived here cold.
  */
 export default function PreviewExpired({ business }: { business?: string }) {
   return (
     <>
       <Seo
         title="This preview has expired"
-        description="The website preview at this link is no longer live. Ask for it back, or see the sample sites and pricing."
+        description="The website preview at this link is no longer live. Ask for it back, or see the work and the pricing."
         path="/preview-expired"
         noindex
       />
@@ -39,8 +39,8 @@ export default function PreviewExpired({ business }: { business?: string }) {
           <a className={`${styles.btn} ${styles.primary}`} href={`${site.url}/contact`}>
             Ask for it back
           </a>
-          <a className={`${styles.btn} ${styles.secondary}`} href={`${site.url}/templates`}>
-            See sample sites
+          <a className={`${styles.btn} ${styles.secondary}`} href={`${site.url}/work`}>
+            See the work
           </a>
           <a className={`${styles.btn} ${styles.secondary}`} href={`${site.url}/services`}>
             Pricing
@@ -48,8 +48,7 @@ export default function PreviewExpired({ business }: { business?: string }) {
         </div>
 
         <p className={styles.note}>
-          Joshua Kac builds websites for small businesses, for a fixed price,
-          and you see yours finished before you pay for it. Email{' '}
+          Joshua Kac builds websites and software. Email{' '}
           <a href={`mailto:${site.email}`}>{site.email}</a>.
         </p>
       </div>

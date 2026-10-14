@@ -4,7 +4,7 @@ import Seo from '../components/Seo';
 import Img from '../components/Img';
 import SocialLinks from '../components/SocialLinks';
 import ProjectCard from '../components/ProjectCard';
-import { featuredProjects } from '../content/projects';
+import { featuredProjects, getProject } from '../content/projects';
 import { formatDate, posts } from '../content/blog';
 import { site } from '../content/site';
 import styles from './Home.module.css';
@@ -27,7 +27,13 @@ const personSchema = {
 
 export default function Home() {
   const recentPosts = posts.slice(0, 3);
-  const showcase = featuredProjects.slice(0, 4);
+  const lead = [getProject('eaglechair'), getProject('beyond25')].flatMap((project) =>
+    project ? [project] : [],
+  );
+  const showcase = [
+    ...lead,
+    ...featuredProjects.filter((project) => !lead.some((item) => item.slug === project.slug)),
+  ].slice(0, 4);
 
   return (
     <>
@@ -54,22 +60,22 @@ export default function Home() {
             portfolio.
           </p>
           <p>
-            Right now most of my time goes to{' '}
+            The work to look at is{' '}
+            <Link to="/work/eaglechair">EagleChair</Link>, a catalog and CMS for
+            a chair maker in Houston. Most of my time still goes to{' '}
             <Link to="/work/beyond25">Beyond25</Link>, an AI music curator on
-            iOS, Android, Mac and the web, and{' '}
-            <Link to="/work/ourlee">Ourlee</Link>, a quiet shared space for
-            couples that&rsquo;s in closed beta. Before those I spent a year
-            building <Link to="/work/project-yoked">Project Yoked</Link> and
-            learned more from it not working out than from anything that did.
+            iOS, Android, Mac and the web. <Link to="/work/ourlee">Ourlee</Link>{' '}
+            is a quiet shared space for couples, in closed beta. Before those I
+            spent a year on <Link to="/work/project-yoked">Project Yoked</Link>{' '}
+            and learned more from it not working out than from anything that did.
           </p>
           <p>
             I build with AI heavily and say so openly.{' '}
             <Link to="/about">Here&rsquo;s how I actually use it</Link>.
           </p>
           <p>
-            I also build <Link to="/services">small business websites</Link> for
-            a fixed price, and there are{' '}
-            <Link to="/templates">finished samples</Link> you can open.
+            I take client work too.{' '}
+            <Link to="/services">Here&rsquo;s what it costs</Link>.
           </p>
         </div>
 

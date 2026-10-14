@@ -7,4 +7,8 @@ Allow: /
 Disallow: /demo/
 Disallow: /preview-expired
 
+# Sample sites are unpublished for now. A direct link still resolves.
+# The pages carry a noindex tag as well.
+Disallow: /templates
+
 Sitemap: https://solutions.ironcoffee.com/sitemap.xml

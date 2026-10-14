@@ -66,6 +66,8 @@ export default function Templates() {
         description="Finished sample websites for restaurants, salons, trades, clinics and shops. Real working pages you can open on your phone, not screenshots."
         path="/templates"
         image="/og-templates.png"
+        noindex
+        nofollow
         jsonLd={collectionSchema}
       />
 
@@ -163,8 +165,7 @@ export default function Templates() {
         <section className={styles.cta}>
           <h2 className={styles.ctaTitle}>Want to see yours?</h2>
           <p className={styles.ctaBody}>
-            I will build the first version before you pay anything. Look at it,
-            then decide.
+            A one-page site is $1,500. The other prices are on the pricing page.
           </p>
           <div className={styles.ctaActions}>
             <Link to="/services" className={styles.btnPrimary}>

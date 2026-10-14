@@ -58,7 +58,7 @@ export const socials = [
  */
 export const nav = [
   { label: 'Work', href: '/work' },
-  { label: 'Websites', href: '/services' },
+  { label: 'Pricing', href: '/services' },
   { label: 'Blog', href: '/blog' },
   { label: 'About', href: '/about' },
 ] as const;

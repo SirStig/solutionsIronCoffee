@@ -21,9 +21,6 @@ export default function Footer() {
               </Link>
             ))}
             <Link to="/contact">Contact</Link>
-            {/* /services is in the main navigation as "Websites"; this is the
-                sample gallery behind it, which nothing else links to. */}
-            <Link to="/templates">Sample sites</Link>
             <a href="/rss.xml">RSS</a>
           </nav>
         </div>

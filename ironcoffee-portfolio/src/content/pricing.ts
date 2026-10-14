@@ -1,216 +1,327 @@
 /**
- * What a website costs, and the case for paying for one.
+ * What the work costs.
  *
- * Kept here with the rest of the copy so the page stays layout only, and so
- * changing a price is one edit in one file.
+ * Source of truth is Joshua's pricing sheet, October 2026. The public
+ * number is the "My Price" column. The market column stays in the data
+ * and is not printed: two prices on one line is what made the page hard
+ * to read. His price is the low end of that band. Use the printed
+ * number. The sheet is a starting point: simpler work comes down,
+ * harder work goes up.
  *
- * Two things this file is built around, both learned the hard way.
+ * The sheet itself is confidential. Do not publish the family-rate
+ * story or the client-count line from the footer. This file is the
+ * public card.
  *
- * One: lead with the price most people will pay. The entry tier costs about
- * a year of a website builder, a comparison worth inviting. Never put the
- * $1,800 tier beside a monthly price: a subscription wins that on arithmetic,
- * and printing it teaches the reader to run it.
+ * A range without a rule is not a price, so every line is one number.
+ * Add-ons stack. The terms below say how a bill is built.
  *
- * Two: keep it short. Every line here earns its place or it goes. A pricing
- * page that has to be read twice has already lost.
+ * Two layout rules that still hold. The first number a skimming reader
+ * meets is the one-page site and the general hourly rate, never a
+ * five-figure build sitting next to a monthly price. And schema prices
+ * are the `amount` field, never digits stripped out of a formatted
+ * string.
  */
 
-/** Kept in one place because it is quoted in three. */
-export const DIY_SURVEY = {
-  abandoned: '51%',
-  neverReturned: '22%',
-  note: 'Survey of 1,000 US adults who tried a website builder, 2025.',
-  href: 'https://allaboutcookies.org/web-builder-statistics',
-} as const;
+/** Whole dollars, with a thousands separator. */
+export const usd = (n: number) => `$${n.toLocaleString('en-US')}`;
 
-export interface Tier {
+export interface Priced {
+  name: string;
+  /** Whole dollars. The public price. */
+  amount: number;
+  /** Experienced direct rates, low and high, whole dollars. */
+  market: readonly [number, number];
+  unit?: 'hour' | 'month';
+  /** One plain sentence on what the money covers. Only where the name doesn't. */
+  note?: string;
+}
+
+export const priceLabel = (item: Priced) => {
+  const n = usd(item.amount);
+  if (item.unit === 'hour') return `${n} an hour`;
+  if (item.unit === 'month') return `${n} a month`;
+  return n;
+};
+
+export const marketLabel = (item: Priced) => {
+  const [lo, hi] = item.market;
+  const unit =
+    item.unit === 'hour' ? ' an hour' : item.unit === 'month' ? ' a month' : '';
+  return `Market: ${usd(lo)} to ${usd(hi)}${unit}.`;
+};
+
+const line = (
+  name: string,
+  amount: number,
+  marketLo: number,
+  marketHi: number,
+  unit?: Priced['unit'],
+  note?: string,
+): Priced => ({ name, amount, market: [marketLo, marketHi], unit, note });
+
+/**
+ * Gallery chips. Keyed by the same ids the sample configs use, so a
+ * leftover sample URL cannot render a blank chip. The gallery is
+ * unpublished. These labels stay honest if someone still opens one.
+ */
+export const tiers = [
+  { id: 'site', chip: 'A site \u00b7 from $1,200' },
+  { id: 'software', chip: 'Custom software \u00b7 scoped' },
+  { id: 'system', chip: 'A system \u00b7 scoped' },
+] as const;
+
+export interface Term {
+  title: string;
+  body: string;
+}
+
+/** Same rules on every line. Short on purpose. */
+export const terms: Term[] = [
+  {
+    title: 'Half up front',
+    body: 'Half to start, half when I hand it over. Once I\u2019ve started work the deposit isn\u2019t refundable.',
+  },
+  {
+    title: 'Rush',
+    body: 'Need it in under two weeks? Add 25%. Under a week, add 50%.',
+  },
+  {
+    title: 'Revisions',
+    body: 'Two rounds of changes per milestone are included. After that it\u2019s hourly.',
+  },
+  {
+    title: 'After delivery',
+    body: 'I fix bugs for free for 30 days. After that it\u2019s $150 a month per site if you want me to keep looking after it.',
+  },
+  {
+    title: 'Ownership',
+    body: 'It\u2019s yours once the last payment clears, and you get the private repo.',
+  },
+  {
+    title: 'Canceling',
+    body: 'Cancel before it\u2019s half done and it\u2019s 25% of the project. After that, 50%.',
+  },
+  {
+    title: 'Bundles',
+    body: 'Prices add together. Take a few at once and I knock about 10% off.',
+  },
+  {
+    title: 'Big jobs',
+    body: 'If it doesn\u2019t fit a line, we talk it through and I give you one fixed price.',
+  },
+  {
+    title: 'Changes',
+    body: 'A fixed price covers what we wrote down at the start. Anything new after that is hourly, or a new quote.',
+  },
+  {
+    title: 'Hosting',
+    body: 'Setting up the domain, SSL and CDN is in the project price. After that, hosting is whatever the host charges, plus $20 a month if you want me running it.',
+  },
+];
+
+/** The five hourly rows on the sheet, in the sheet's order. */
+export const hourly: Priced[] = [
+  line('Building a website, an app, or the part behind it', 60, 95, 160, 'hour'),
+  line('AI work', 75, 80, 140, 'hour'),
+  line('Servers and deploys', 70, 100, 180, 'hour'),
+  line('Small fixes and advice', 60, 75, 150, 'hour'),
+  line('Reading through existing code', 100, 100, 250, 'hour'),
+];
+
+export interface RateGroup {
   id: string;
-  name: string;
-  price: string;
-  /** The one-line answer to "what is this". */
-  summary: string;
-  /** The question that separates the tiers, answered. */
-  login: string;
-  /** What actually gets built. Three lines, no more. */
-  built: string[];
-  timeline: string;
-  /**
-   * The short form, for the chip on a gallery card.
-   *
-   * Lives here rather than in the gallery because the two used to be separate
-   * lists keyed by tier id, and when the ids changed the gallery kept its old
-   * keys, matched nothing, and quietly rendered six empty chips. One list
-   * cannot fall out of step with itself.
-   */
-  chip: string;
-  /** Which sample on the gallery page is this tier. */
-  seeIt?: { label: string; slug: string };
-  /** The tier the page points at. Its badge text, if so. */
-  featured?: string;
+  title: string;
+  /** Only when the heading does not already say it. */
+  lede?: string;
+  /** What is in the group, short enough to sit under its title on a closed card. */
+  blurb?: string;
+  lines: Priced[];
 }
 
-/**
- * Three tiers, and the difference between them is not page count.
- *
- * A ladder that reads "one page / five pages / more pages" makes each step
- * look like a markup for a few more pages. What actually changes is whether
- * there is software behind the page, so every tier answers the same question,
- * `login`: "no", "you do", "you and your staff do". Three different jobs,
- * not three sizes of one.
- *
- * The first tier is the featured one, and that is the point of the page. Most
- * visitors are a small business that needs the $200 site. When the $1,800
- * card carried the highlight, a reader scrolling past saw that number, took
- * it for the price, and left without ever reading the one meant for them.
- * The higher tiers print their prices smaller for the same reason.
- */
-export const tiers: Tier[] = [
-  {
-    id: 'site',
-    name: 'A website',
-    price: '$200 to $500',
-    chip: 'A site \u00b7 $200 to $500',
-    summary: 'Words, photos, hours and a phone number. One page or several.',
-    login: 'Nothing to log into',
-    built: [
-      'Written for you, with your photos',
-      'Tap to call, tap for directions',
-      'Set up to show up on Google',
-    ],
-    timeline: 'About a week',
-    seeIt: { label: 'Most of the samples are this', slug: 'ridgeline-smokehouse' },
-    featured: 'Where most start',
-  },
-  {
-    id: 'software',
-    name: 'With bookings or orders',
-    price: 'From $1,800',
-    chip: 'With software \u00b7 from $1,800',
-    summary: 'A site with software behind it, and a screen where you run it.',
-    login: 'You log in',
-    built: [
-      'Real bookings, orders or stock',
-      'A dashboard only you can see',
-      'A text or email when one comes in',
-    ],
-    timeline: 'Quoted after a call',
-  },
-  {
-    id: 'system',
-    name: 'Run by your staff',
-    price: 'From $3,200',
-    chip: 'A system \u00b7 from $3,200',
-    summary: 'All of that, plus staff accounts, payments and your other tools.',
-    login: 'You and your staff log in',
-    built: [
-      'Edit your own pages and prices',
-      'Staff accounts and card payments',
-      'Square, Toast or Shopify wired in',
-    ],
-    timeline: 'Quoted after a call',
-    seeIt: { label: 'Wren Hollow is this one', slug: 'wren-hollow' },
-  },
-];
-
-/**
- * The comparison that is worth making.
- *
- * Not price. Who does the work, and what is left standing if the money stops.
- * Every row is checkable by the reader in about a minute, which is the only
- * reason to print a table like this at all.
- */
-export interface CompareRow {
-  question: string;
-  diy: string;
-  mine: string;
-}
-
-export const compare: CompareRow[] = [
-  {
-    question: 'Who builds it?',
-    diy: 'You do, on a weekend you do not have',
-    mine: 'I do, and you see it finished first',
-  },
-  {
-    question: 'Who writes the words?',
-    diy: 'You stare at a blank box',
-    mine: 'I do, you fix what I got wrong',
-  },
-  {
-    question: 'Who fixes it at 8pm?',
-    diy: 'A help article',
-    mine: 'You text me',
-  },
-  {
-    question: 'If you stop paying?',
-    diy: 'The site goes dark',
-    mine: 'You keep it. It is yours',
-  },
-];
-
-export interface CarePlan {
-  name: string;
-  price: string;
-  note: string;
-  features: string[];
-}
-
-export const care: CarePlan = {
-  name: 'Looking after it',
-  price: '$49 to $99 a month',
-  note: 'Optional. Cancel any time and the site stays yours.',
-  features: [
-    'Hosting, domain and certificate',
-    'Unlimited small text and photo changes',
-    'Your Google listing kept current',
-    'Backups, and someone to call',
+export const websites: RateGroup = {
+  id: 'websites',
+  title: 'Websites',
+  lede: 'Pointing your domain at the site, and the security certificate, are included.',
+  lines: [
+    line('One page', 1500, 1500, 5000, undefined,
+      'Who you are, what you do and how to reach someone, on a single page.'),
+    line('5 to 10 pages', 3500, 2500, 6000, undefined,
+      'A proper site with its own design, and a page for each thing you do.'),
+    line('10 to 20 pages', 6000, 5000, 12000, undefined,
+      'For when there\u2019s a lot to say: services, listings, menus, the lot.'),
+    line('Redesign, with the old content moved over', 3000, 2000, 8000),
+    line('WordPress custom theme', 2000, 1500, 5000),
+    line('Webflow or Framer site', 2500, 2000, 7000),
+    line('Portfolio or personal site', 1200, 1000, 3000),
+    line('Restaurant or hospitality site', 2500, 2000, 6000),
+    line('Real estate or property listing site', 4000, 3000, 10000),
   ],
 };
+
+/** Everything past a website, in the sheet's order. */
+export const catalog: RateGroup[] = [
+  {
+    id: 'backend',
+    title: 'The part behind the site',
+    blurb: 'APIs, databases, payments and webhooks, background jobs, search.',
+    lines: [
+      line('The site talking to its data, a small version (REST, about 5 to 10 endpoints)', 2500, 2000, 6000),
+      line('The site talking to its data, a large version (REST, 20 or more endpoints)', 7000, 6000, 15000),
+      line('A flexible way to ask for that data (GraphQL)', 5000, 4000, 12000),
+      line('Designing how the data is stored', 1500, 1000, 4000),
+      line('PostgreSQL or MySQL, set up', 1500, 1000, 3000),
+      line('MongoDB, set up', 1500, 1000, 3000),
+      line('Moving the old data over', 3000, 2000, 8000),
+      line('Connecting Stripe, Twilio, or something like them', 800, 500, 2500),
+      line('Letting other services ping yours (webhooks)', 1500, 1000, 3000),
+      line('Jobs that run in the background', 2000, 1500, 4000),
+      line('Search across the content (Elasticsearch or Meilisearch)', 3000, 2000, 6000),
+    ],
+  },
+  {
+    id: 'auth',
+    title: 'Logins',
+    blurb: 'Accounts, sign in with Google or Apple, who can see what.',
+    lines: [
+      line('Email and password', 1200, 1000, 3000),
+      line('Sign in with Google or Apple', 700, 500, 1500),
+      line('Who can see what', 2000, 1500, 4000),
+      line('A separate space for each customer', 4000, 3000, 10000),
+      line('Password reset, and confirming the email', 700, 500, 1500),
+      line('A second check at login (two-factor)', 1500, 1000, 3000),
+    ],
+  },
+  {
+    id: 'commerce',
+    title: 'A store',
+    blurb: 'Shopify, or your own checkout and subscriptions on Stripe.',
+    lines: [
+      line('Shopify, set up with a theme', 2000, 1500, 5000),
+      line('Your own store: products, cart, and checkout (Stripe)', 6000, 5000, 15000),
+      line('Subscriptions (Stripe Billing)', 2500, 2000, 6000),
+      line('A marketplace, more than one seller', 18000, 15000, 50000),
+      line('Taking payments', 1500, 1000, 3000),
+      line('Tracking inventory', 4000, 3000, 10000),
+    ],
+  },
+  {
+    id: 'cms',
+    title: 'Editing it yourself',
+    blurb: 'So you can change the words yourself without calling me.',
+    lines: [
+      line('Edit the site yourself (Sanity, Strapi, or Contentful)', 2500, 2000, 6000),
+      line('A blog or news section', 700, 500, 2000),
+      line('Moving the old pages over', 1500, 1000, 4000),
+      line('More than one language', 2000, 1500, 5000),
+    ],
+  },
+  {
+    id: 'mobile',
+    title: 'Phone apps',
+    blurb: 'iPhone and Android, plus getting it into the stores.',
+    lines: [
+      line('A phone app, first version, 3 to 5 screens (React Native)', 10000, 8000, 25000),
+      line('A phone app, 10 or more screens (React Native)', 25000, 20000, 60000),
+      line('An iPhone app, written for Apple (Swift)', 18000, 15000, 50000),
+      line('An Android app, written for Android (Kotlin)', 18000, 15000, 50000),
+      line('Submitting it to the app store', 700, 500, 1500),
+      line('Push notifications', 1500, 1000, 3000),
+      line('Buying things inside the app', 2500, 2000, 6000),
+    ],
+  },
+  {
+    id: 'desktop',
+    title: 'Computer apps',
+    blurb: 'Mac, Windows, or both from one codebase.',
+    lines: [
+      line('An app for Mac and Windows (Electron or Tauri)', 7000, 5000, 20000),
+      line('A Mac app (Swift)', 12000, 10000, 40000),
+      line('A Windows app (.NET or C#)', 12000, 10000, 40000),
+      line('An app for several systems (Rust or C++)', 20000, 15000, 60000),
+    ],
+  },
+  {
+    id: 'ai',
+    title: 'AI',
+    blurb: 'Chatbots on your own documents, pulling data out of a mess, voice.',
+    lines: [
+      line('A chatbot that answers from your own documents', 6000, 5000, 20000),
+      line('Pulling structured data out of messy sources', 10000, 8000, 25000),
+      line('Sorting or grading things automatically', 6000, 5000, 20000),
+      line('Image generation, wired into the product', 2500, 2000, 8000),
+      line('A voice agent, on the phone or in the app', 12000, 10000, 40000),
+      line('Automation (Zapier, Make, or custom)', 1500, 1000, 5000),
+      line('Reading documents, including scans', 4000, 3000, 12000),
+    ],
+  },
+  {
+    id: 'devops',
+    title: 'Servers',
+    blurb: 'Deploys, cloud setup, backups, alerts, and making it faster.',
+    lines: [
+      line('Deploys that run themselves (CI/CD)', 1500, 1000, 4000),
+      line('Cloud setup (AWS, Google Cloud, or Azure)', 3000, 2000, 8000),
+      line('Packaging the app so it runs the same everywhere (Docker)', 1500, 1000, 3000),
+      line('Many servers, managed together (Kubernetes)', 7000, 5000, 20000),
+      line('A server, set up and locked down', 1500, 1000, 4000),
+      line('Domain, DNS, the certificate, and the fast-delivery network', 400, 300, 1000),
+      line('Alerts when something breaks', 2000, 1500, 5000),
+      line('Backups, and a plan if it fails', 2000, 1500, 5000),
+      line('Making it faster', 1500, 1000, 4000),
+      line('A security check', 3000, 2000, 8000),
+    ],
+  },
+  {
+    id: 'other',
+    title: 'Everything else',
+    blurb: 'Rescuing old software, games, search setup, analytics, email.',
+    lines: [
+      line('Advice on a hard problem', 100, 100, 250, 'hour'),
+      line('Keeping a site running, per site', 150, 75, 300, 'month'),
+      line('A few days a month, ongoing', 4000, 3000, 12000, 'month'),
+      line('Taking apart old software, or rescuing it', 8000, 5000, 30000),
+      line('A game, or work inside a game engine', 20000, 10000, 100000),
+      line('Search setup for Google', 1500, 1000, 4000),
+      line('Analytics (Google Analytics)', 700, 500, 2000),
+      line('Email the site can send', 1500, 1000, 3000),
+    ],
+  },
+];
+
+export const generalDev = hourly[0];
+export const onePage = websites.lines[0];
+
+export const priceLine = () =>
+  `Building is ${priceLabel(generalDev)}. A one-page site is ${priceLabel(onePage)}.`;
 
 export interface PricingFaq {
   q: string;
   a: string;
 }
 
-/**
- * Objections, in the order they actually come up on a phone call. The answers
- * are short because a long answer to a short worry reads as a sales pitch.
- */
 export const pricingFaq: PricingFaq[] = [
   {
-    q: 'Wix is thirty dollars a month.',
-    a: 'And you still build it yourself. Most sites here cost about a year of Wix, and I do the building.',
+    q: 'I just need a website. Where do I look?',
+    a: 'The three cards at the top. A one-page site is $1,500. If one page turns out not to be enough, adding more later is hourly work.',
   },
   {
-    q: 'What if I see it and hate it?',
-    a: 'Then you owe nothing. You see the real site before any money moves.',
+    q: 'I already have a site and need a small change.',
+    a: 'That\u2019s $60 an hour. If I have to dig through a lot of someone else\u2019s code first, that part is $100 an hour.',
   },
   {
-    q: 'Do I pay it all up front?',
-    a: 'Half when you approve it, half when it goes live.',
+    q: 'Do I own it when it\u2019s done?',
+    a: 'Yes, once the last payment clears. You get the private repo, so you can take it to anyone.',
   },
   {
-    q: 'Who owns it?',
-    a: 'You do. Domain in your name, files yours, handed over whenever you ask.',
+    q: 'Can you do it faster?',
+    a: 'That\u2019s what the rush rate is for. Under two weeks adds 25%, under a week adds 50%.',
   },
   {
-    q: 'Do I need the monthly plan?',
-    a: 'No. Host it yourself for a few dollars a month if you like.',
+    q: 'What I want isn\u2019t on the list.',
+    a: 'Email me anyway. Tell me what you want and I\u2019ll quote it as one fixed price.',
   },
   {
-    q: 'Will this get me more customers?',
-    a: 'It gets you the ones already searching for what you do. Anyone promising more is guessing.',
+    q: 'What happens after it launches?',
+    a: 'Bug fixes are free for 30 days. After that I can keep it running for $150 a month, or you can take it from there.',
   },
-];
-
-/** The price, said once near the top. Built from the tiers so it cannot go stale. */
-export const priceLine = () =>
-  `Most sites are ${tiers[0].price}, fixed. No contract.`;
-
-/** What happens after you say yes. Four steps, one line each. */
-export const steps = [
-  { title: 'A phone call', body: 'Twenty minutes about what you do.' },
-  { title: 'I build it', body: 'With your photos. You get a link.' },
-  { title: 'You mark it up', body: 'Tell me what to change.' },
-  { title: 'It goes live', body: 'Domain, Google and all.' },
 ];

@@ -78,6 +78,8 @@ export default function TemplateShowcase() {
             ? `/templates/${demo.slug}/${page.slug}`
             : `/templates/${demo.slug}`
         }
+        noindex
+        nofollow
         jsonLd={breadcrumbs}
       />
       {page ? (

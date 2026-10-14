@@ -64,7 +64,7 @@ export default function About() {
             build when I want to stop thinking about product: a
             from-scratch Swift rebuild of a 2002 space sim, which mostly meant
             reverse-engineering file formats nobody has documented in twenty
-            years.
+            years, and then the original executable itself.
           </p>
 
           <h2>The one that didn&rsquo;t work</h2>
@@ -129,13 +129,12 @@ export default function About() {
             <Link to="/games">whole page of it</Link>.
           </p>
 
-          <h2>Small business websites</h2>
+          <h2>Client work</h2>
           <p>
-            Alongside the app work I build{' '}
-            <Link to="/services">websites for small businesses</Link> at a fixed
-            price, and I build the first version before anyone pays for it.
-            There are <Link to="/templates">finished samples</Link> you can open
-            on a phone.
+            I take that too. The current one is{' '}
+            <Link to="/work/eaglechair">EagleChair</Link>, a catalog and CMS for
+            a chair maker in Houston. Half up front.{' '}
+            <Link to="/services">The prices</Link>.
           </p>
         </div>
 

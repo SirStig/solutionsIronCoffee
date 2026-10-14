@@ -76,10 +76,10 @@ const pageCards = [
   [
     'og-services.png',
     card({
-      kicker: 'SMALL BUSINESS WEBSITES',
-      title: 'See it before you pay',
-      sub: 'One page $500. Full site $1,800.',
-      foot: 'Fixed price. No retainer. Yours the day it goes live.',
+      kicker: 'PRICING',
+      title: 'What it costs',
+      sub: 'One-page sites, $1,500.',
+      foot: 'Building, $60 an hour.',
     }),
   ],
   [

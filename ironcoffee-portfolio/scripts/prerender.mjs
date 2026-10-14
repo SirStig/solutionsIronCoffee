@@ -202,7 +202,7 @@ function buildRoutes({ projects, posts, previews, showcases, demoRoutes, images 
     { url: '/blog', priority: '0.8', changefreq: 'weekly' },
     { url: '/about', priority: '0.8', changefreq: 'monthly' },
     { url: '/services', priority: '0.9', changefreq: 'monthly' },
-    { url: '/templates', priority: '0.9', changefreq: 'monthly' },
+    { url: '/templates', priority: '0.9', changefreq: 'monthly', skipSitemap: true },
     { url: '/contact', priority: '0.6', changefreq: 'yearly' },
   ];
 
@@ -231,12 +231,13 @@ function buildRoutes({ projects, posts, previews, showcases, demoRoutes, images 
       changefreq: 'yearly',
       lastmod: p.date,
     })),
-    // The gallery samples are public and indexed. They are the sales
-    // collateral, so they belong in search results. Multi-page samples
-    // contribute every one of their pages.
+    // The gallery is unpublished. Pages still prerender so a direct link
+    // works, and they stay out of the sitemap. robots.txt and a noindex
+    // tag cover the same URLs.
     ...showcases.flatMap((d) =>
       demoRoutes(d).map((url, i) => ({
         url,
+        skipSitemap: true,
         priority: i === 0 ? '0.7' : '0.5',
         changefreq: 'monthly',
         // Only the home page. An interior page's hero is a heading, not a

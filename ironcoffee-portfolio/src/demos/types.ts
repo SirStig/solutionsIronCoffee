@@ -256,8 +256,8 @@ export type PageKind =
    *
    * Exists because the two expensive tiers are invisible otherwise. A visitor
    * looking at a booking form cannot tell whether it writes to a database or
-   * sends an email, and "from $1,800" against "$500" reads as a markup until
-   * you can see the screen the owner gets. This is that screen.
+   * sends an email, and a higher price reads as a markup until you can see
+   * the screen the owner gets. This is that screen.
    *
    * It is rendered from the config like every other page kind, and it is
    * labeled on the page as a demonstration, because it is one.
@@ -436,9 +436,12 @@ export interface DemoConfig {
   map?: { lat: number; lng: number };
 
   /**
-   * Set on the fictional businesses in the public gallery. A showcase renders
-   * at `/templates/<slug>`, is indexed, never expires, and is labeled as a
-   * demonstration rather than as a preview built for a real owner.
+   * Set on the fictional businesses in the sample gallery. A showcase renders
+   * at `/templates/<slug>`, never expires, and is labeled as a demonstration
+   * rather than as a preview built for a real owner. The gallery is
+   * unpublished right now: noindex, left out of the sitemap, and disallowed
+   * in robots.txt. Clearing this flag does not hide a sample. It turns the
+   * page into an expiring preview.
    */
   showcase?: boolean;
 

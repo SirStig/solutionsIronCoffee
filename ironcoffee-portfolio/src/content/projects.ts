@@ -150,6 +150,69 @@ export const projects: Project[] = [
   },
 
   {
+    slug: 'kate',
+    name: 'Kate',
+    tagline: 'Like Apple Music, but for songs you recorded yourself.',
+    summary:
+      "A music player I built so Kate's recordings had somewhere better to live than Voice Memos. It gives your own songs albums, playlists, looping and lyrics that follow along, and it's free on the App Store for anyone who wants it.",
+    story:
+      "Kate, who I'm marrying, would sing songs and record them for me, and I'd end up listening to them in Voice Memos, which I hated. I looked around for something better and nothing really did what I wanted. I basically wanted them to sit in Apple Music like any other album, with playlists and looping and all of that. So I built an app that did that, just for the two of us, and named it Kate.\n\nThen I kept adding stuff to it. Words that follow along with the song, a way to sing over them and record yourself, an editor for cleaning up a take. At some point it had turned into a pretty full music app, so I put it on the App Store. It's free, there's no subscription and nothing's locked away. There didn't seem to be much reason to charge for it.\n\nGetting the lyrics to line up took the longest by far. Kate listens to the song on your phone and works out when each word is sung, which is a lot harder with a band underneath than with just a voice, so it pulls the vocal out first and listens to that. You can always tap along to sync a song by hand instead.\n\nYour library lives in your own iCloud, and you can share it, so a family or a band can all add songs to the same one. I don't run a server for any of it and there's no account to make.\n\nI did have live lyrics on the Lock Screen for a while, but they kept freezing a few lines in. iOS won't let an app that's only playing audio keep that card updated on its own, and the proper fix is running a push server, so I took it out before launch.",
+    year: '2026',
+    status: 'live',
+    categories: ['apps'],
+    highlights: [
+      'Albums, playlists and looping for your own recordings',
+      'Lyrics that follow along word by word',
+      'An editor for cleaning up a take',
+      'Shared libraries over iCloud',
+      'Free, with no account and no ads',
+    ],
+    tech: [
+      'Expo',
+      'React Native',
+      'TypeScript',
+      'Swift',
+      'AVFoundation',
+      'SpeechAnalyzer',
+      'Foundation Models',
+      'CloudKit',
+    ],
+    links: [
+      { label: 'kate.ironcoffee.com', href: 'https://kate.ironcoffee.com', primary: true },
+      {
+        label: 'App Store',
+        href: 'https://apps.apple.com/us/app/kate-music-player-lyrics/id6818270135',
+      },
+    ],
+    image: 'projects/kate/universal',
+    gallery: [
+      {
+        name: 'projects/kate/header',
+        alt: 'Kate on two iPhones, lyrics lighting up word by word on one and the Studio editing a take on the other, under the line "The songs you made, played like a record."',
+      },
+      {
+        name: 'projects/kate/search',
+        alt: 'Kate playing a song with synced lyrics beside the Studio, next to the line "A music player for songs you make."',
+      },
+      {
+        name: 'projects/kate/studio',
+        alt: 'The Kate Studio editing a take, with the waveform, Clean Up, Level and Tone tools, a Before and After switch and an Ask the Studio prompt',
+      },
+      {
+        name: 'projects/kate/listen-now',
+        alt: 'Kate Listen Now, with a song of the day, recently added recordings and albums from a personal library',
+      },
+      {
+        name: 'projects/kate/album',
+        alt: 'A Kate album page with its cover, artist, year and track list, for a record somebody made themselves',
+      },
+    ],
+    weight: 2,
+    featured: true,
+    note: 'iPhone and iPad. Free, with an optional tip jar.',
+  },
+
+  {
     slug: 'ourlee',
     name: 'Ourlee',
     tagline: 'One private space for a couple, or a whole household.',
@@ -215,62 +278,72 @@ export const projects: Project[] = [
     name: 'NovaSwift',
     tagline: 'A space sim from 2002, rebuilt from scratch in Swift.',
     summary:
-      "A ground-up rebuild of EV Nova, written in Swift so it runs natively on Mac, iPad, iPhone and Apple TV. Newtonian flight, the galaxy map, the mission system, co-op over Wi-Fi or Game Center, and an in-game plug-in store. It ships none of the original game's files. You bring your own copy.",
+      "A from-scratch rebuild of EV Nova, the 2002 space sim, in Swift. It runs on Mac, iPhone, iPad and Apple TV, and there's an early build for Linux and Steam Deck now too. It doesn't include any of the original files, so you need your own copy.",
     story:
-      "I played EV Nova constantly as a kid and it barely runs on anything modern. I set out to make it playable again. I did not expect that to mean writing an entire game engine, but that is what it turned out to mean.\n\nThe hard part isn't the flight physics or the rendering. It's that nobody wrote down how the original works. The ship AI lives in resource tables that had to be pulled apart and guessed at from the outside, by watching what the game actually did. That AI is still the weakest thing in here and I would rather say so than have someone find out.\n\nSomewhere in the middle of fixing a performance problem I built a fairly serious debug console: live frame timings broken down per subsystem, a command prompt, inspectors for ships and outfits and governments. It started as instrumentation and turned into the thing I use most.\n\nA Godot port for Linux and Windows is in progress on the side, sharing the same Swift engine underneath. Flight, combat and the HUD work there. Sound and the galaxy map don't yet, and nothing on those platforms has been verified anywhere but CI.\n\nMost of the engine, and the digging through resource formats behind it, was built working alongside Claude Code. I'd rather say that outright than have someone assume otherwise.",
+      "I played EV Nova constantly as a kid and it barely runs on anything modern now, so I set out to make it playable again. I didn't expect that to mean writing a whole game engine in Swift, but that's what it turned out to mean.\n\nFor a long time I was working from the outside. I had the resource files, the EV Bible and my own memory of how it all behaved, and I was guessing at the rest. The AI especially was pretty far off. Eventually I went into the original Windows executable itself, decompiled it, and compared everything against it one function at a time: flight, combat, the AI, missions, the economy. That's finished now. It's still a beta and there are definitely bugs, but if something plays differently from the original, I'd like to hear about it. None of the decompiled code is in the repo, just my notes on what each part does.\n\nIt's picked up a lot along the way that the original never had. Controller support, touch controls for the phone, a store for community plug-ins, and an editor where you can make a plug-in and fly it straight away to test it. Anything that changes how it actually plays is off unless you turn it on.\n\nMultiplayer sits on top of your own save, so everyone keeps their own galaxy and you only sync up when you're in the same system. On Apple devices it goes through Game Center. The Linux and Steam Deck build is very new and pretty rough, and there's a small dedicated server people can run themselves. Windows isn't built yet, and Apple and Linux players can't play together yet either.\n\nMost of the engine, and the reverse engineering behind it, was built working alongside Claude Code. I'd rather say that outright than have someone assume otherwise.",
     year: '2026',
     status: 'beta',
     categories: ['games', 'open-source'],
     highlights: [
-      'Written from scratch in Swift, native on Mac, iPad, iPhone and Apple TV',
-      'Velocity-Verlet flight, with the original inertialess hulls still right',
-      'Ship AI reconstructed from reverse-engineered resource tables',
-      'Co-op over local Wi-Fi or Game Center',
-      'Debug console with per-subsystem frame timings',
+      'Runs on Mac, iPhone, iPad and Apple TV, plus an early Linux build',
+      'Checked against the original, one function at a time',
+      'Multiplayer over Game Center, LAN or a dedicated server',
+      'Controller and touch support',
+      'A plug-in store and a plug-in editor',
     ],
     tech: [
       'Swift',
       'SwiftUI',
       'SpriteKit',
       'GameKit',
-      'MultipeerConnectivity',
       'Godot',
+      'SwiftGodot',
+      'ENet',
       'SwiftPM',
     ],
     links: [
       {
-        label: 'TestFlight beta',
-        href: 'https://testflight.apple.com/join/3FBzwwq1',
+        label: 'Download',
+        href: 'https://sirstig.github.io/NovaSwift/download.html',
         primary: true,
       },
+      { label: 'TestFlight beta', href: 'https://testflight.apple.com/join/3FBzwwq1' },
       { label: 'Site', href: 'https://sirstig.github.io/NovaSwift/' },
       { label: 'GitHub', href: 'https://github.com/SirStig/NovaSwift' },
     ],
-    image: 'projects/novaswift/presentation-modes',
+    image: 'projects/novaswift/logo-banner',
     gallery: [
+      {
+        name: 'projects/novaswift/spaceport',
+        alt: 'Landed on Ryll in NovaSwift, with the planet description and buttons for the bar, mission board, trade center, shipyard and outfitter',
+      },
+      {
+        name: 'projects/novaswift/map-classic',
+        alt: 'The NovaSwift galaxy map, with hyperspace routes and a panel showing the selected system\'s government, goods and services',
+      },
+      {
+        name: 'projects/novaswift/shipyard',
+        alt: 'The NovaSwift shipyard, with a row of hulls to choose from and the Valkyrie selected beside its description and price',
+      },
+      {
+        name: 'projects/novaswift/action-wheel',
+        alt: 'NovaSwift in flight with a gamepad, a radial Combat & Fleet wheel open with cloak, eject and orders for escorts',
+      },
+      {
+        name: 'projects/novaswift/multiplayer-browse',
+        alt: 'The NovaSwift server browser, listing a co-op server with its rules, ping and player count, plus filters for LAN and public games',
+      },
+      {
+        name: 'projects/novaswift/editor-testrun',
+        alt: 'Test Run in the NovaSwift plug-in editor, flying a plug-in in progress with a panel for cheats, game speed and spawning ships and fleets',
+      },
+      {
+        name: 'projects/novaswift/iphone-touch',
+        alt: 'NovaSwift on iPhone, with touch flight controls and a button to land on Earth',
+      },
       {
         name: 'projects/novaswift/dev-console',
         alt: 'The NovaSwift debug console: a live engine log beside per-subsystem frame timings and a command prompt',
-      },
-      {
-        name: 'projects/novaswift/story-guide',
-        alt: 'The NovaSwift story guide, tracking progress through seven campaigns with locked steps and prerequisites',
-      },
-      {
-        name: 'projects/novaswift/host-lobby',
-        alt: 'Hosting a NovaSwift co-op lobby, with per-lobby rules for PvP, splash damage and permadeath',
-      },
-      {
-        name: 'projects/novaswift/plugin-manager',
-        alt: 'The NovaSwift plug-in manager, with community total conversions installed and reorderable',
-      },
-      {
-        name: 'projects/novaswift/flight-hud',
-        alt: 'NovaSwift flight on iPhone, with touch controls and the original metal status bar',
-      },
-      {
-        name: 'projects/novaswift/galaxy-map',
-        alt: 'The NovaSwift galaxy map, showing systems, hyperspace routes and government territory',
       },
     ],
     weight: 4,

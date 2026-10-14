@@ -240,7 +240,8 @@ export function fullAddress(demo: DemoConfig): string {
 /**
  * Where this demo lives.
  *
- * Gallery samples are public at /templates/<slug>; previews are noindexed at
+ * Gallery samples live at /templates/<slug> and are unpublished (noindex,
+ * sitemap, robots). Previews are noindexed at
  * /demo/<slug>. Every internal link is built from this, so a config never has
  * to know which of the two it is.
  */
