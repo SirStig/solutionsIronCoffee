@@ -187,10 +187,6 @@ export const projects: Project[] = [
     image: 'projects/kate/universal',
     gallery: [
       {
-        name: 'projects/kate/header',
-        alt: 'Kate on two iPhones, lyrics lighting up word by word on one and the Studio editing a take on the other, under the line "The songs you made, played like a record."',
-      },
-      {
         name: 'projects/kate/search',
         alt: 'Kate playing a song with synced lyrics beside the Studio, next to the line "A music player for songs you make."',
       },
@@ -803,12 +799,25 @@ export const getProject = (slug: string) =>
   projects.find((p) => p.slug === slug);
 
 /**
+ * Section order on the work index, strongest first. Client work sits second
+ * because EagleChair is the biggest thing here somebody paid for, and it used
+ * to be the last section on the page. Open source goes last: five libraries
+ * read best once a visitor already knows what they were built for.
+ */
+export const workOrder: Category[] = ['apps', 'client', 'games', 'open-source'];
+
+/** Current work in the order the index shows it: by section, then by weight. */
+export const indexOrder = workOrder.flatMap((category) =>
+  allProjects.filter((p) => p.categories[0] === category && p.weight < ARCHIVE_WEIGHT),
+);
+
+/**
  * The project either side of this one, in the order the work index shows them.
  * Archive entries are excluded on both sides: landing on a 2016 WinForms app
  * as the thing after a live product reads as the site having run out.
  */
 export const adjacentProjects = (slug: string) => {
-  const list = allProjects.filter((p) => p.weight < ARCHIVE_WEIGHT);
+  const list = indexOrder;
   const i = list.findIndex((p) => p.slug === slug);
   if (i === -1) return { prev: undefined, next: undefined };
   return { prev: list[i - 1], next: list[i + 1] };

@@ -7,6 +7,7 @@ import { CategoryField, CategoryMark } from '../components/CategoryMark';
 import {
   ARCHIVE_WEIGHT,
   allProjects,
+  workOrder,
   type Category,
 } from '../content/projects';
 import styles from './Work.module.css';
@@ -18,7 +19,7 @@ import styles from './Work.module.css';
  * A project's first category is its primary one, which keeps anything tagged
  * twice (NovaSwift is both a game and open source) in exactly one group here.
  */
-const groups: {
+const sections: {
   key: Category;
   title: string;
   /** One line under the heading. What this pile is, not what is in it. */
@@ -34,7 +35,7 @@ const groups: {
   {
     key: 'open-source',
     title: 'Open source',
-    blurb: 'Tools I needed, published so somebody else does not have to write them.',
+    blurb: 'Tools I needed, published so somebody else doesn\'t have to write them.',
     href: '/open-source',
   },
   {
@@ -46,9 +47,12 @@ const groups: {
   {
     key: 'client',
     title: 'Client work',
-    blurb: 'Built to a brief, for a business that is not mine.',
+    blurb: 'Built to a brief, for a business that isn\'t mine.',
   },
 ];
+
+/** In the order `workOrder` sets, which the project pages' next links follow too. */
+const groups = workOrder.flatMap((key) => sections.filter((group) => group.key === key));
 
 const primary = (key: Category) =>
   allProjects.filter((p) => p.categories[0] === key);
@@ -96,8 +100,8 @@ export default function Work() {
         <header className={styles.header}>
           <h1>Work</h1>
           <p className={styles.intro}>
-            Everything worth showing, grouped by what it is. Newest and most
-            active first.
+            Everything worth showing, grouped by what it is, with the stuff
+            I&rsquo;m proudest of up top.
           </p>
         </header>
 
@@ -131,10 +135,13 @@ export default function Work() {
            * sections of identical two-column grid from reading as one grid
            * with headings dropped into it.
            *
-           * Not at exactly two, where it would leave a single half-width card
-           * stranded beside empty space.
+           * If the lead leaves an odd number behind, the last card runs wide
+           * too, so a single half-width card is never stranded beside empty
+           * space. At exactly two that means both, which is what puts
+           * EagleChair's walkthrough at full size.
            */
-          const lead = items.length === 2 ? -1 : 0;
+          const lead = 0;
+          const tail = (items.length - 1) % 2 === 1 ? items.length - 1 : -1;
 
           return (
             <section
@@ -174,7 +181,7 @@ export default function Work() {
                   <ProjectCard
                     key={project.slug}
                     project={project}
-                    variant={i === lead ? 'wide' : 'feature'}
+                    variant={i === lead || i === tail ? 'wide' : 'feature'}
                     priority={group.key === 'apps' && i === 0}
                   />
                 ))}
